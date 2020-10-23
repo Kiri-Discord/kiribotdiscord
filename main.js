@@ -15,6 +15,6 @@ client.on('message', message => {
     
     if(command --- 'ping'){
         message.channel.send('pong!');
-    }
+    };
 });
 client.login(process.env.token);
