@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 
 const client = new Discord.Client();
+
 const prefix = '/';
 
 client.once('ready', () => {
@@ -13,7 +14,7 @@ client.on('message', message =>{
 
     const command = args.shift().toLowerCase();
     
-    if(command --- 'ping'){
+    if(command === 'ping'){
         message.channel.send('pong!');
     }
 });
