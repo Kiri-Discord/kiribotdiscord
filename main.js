@@ -15,13 +15,11 @@ client.on('ready', () => {
     client.user.setActivity('your heartbeat', { type: 'LISTENING'}).catch(console.error);
 });
 
-let token, prefix;
+let token;
 try {
   const config = require("./config.json");
-  token = config.token;
   prefix = config.prefix;
 } catch (error) {
-  token = process.env.token;
   prefix = process.env.prefix;
 }
 
@@ -80,4 +78,4 @@ client.on('message', message => {
 	}
 });
 
-client.login(token);
+client.login(process.env.token);
