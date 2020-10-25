@@ -15,7 +15,7 @@ client.on('ready', () => {
     client.user.setActivity('your heartbeat', { type: 'LISTENING'}).catch(console.error);
 });
 
-let token;
+let prefix;
 try {
   const config = require("./config.json");
   prefix = config.prefix;
@@ -26,7 +26,6 @@ try {
 client.prefix = prefix
 
 const cooldowns = new Discord.Collection();
-
 
 
 client.on('message', message => {
