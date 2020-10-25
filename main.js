@@ -1,6 +1,5 @@
 const fs = require('fs');
-const Discord = require('discord.js');
-
+const { Client, Collection } = require('discord.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -23,7 +22,11 @@ try {
   prefix = process.env.prefix;
 }
 
+client.prefix = prefix
+
 const cooldowns = new Discord.Collection();
+
+
 
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
