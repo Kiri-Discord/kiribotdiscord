@@ -1,15 +1,23 @@
-const fs = require('fs');
-const Discord = require('discord.js');
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+// Requiring dependencies
+const { readdirSync } = require('fs');
+const { Client, Collection, GuildMember, Guild } = require('discord.js');
+const client = new Client();
+const { sep } = require("path");
+const cooldowns = new Collection();
+client.commands = new Collection();
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+// Reading through commands folder and all of its subfolders
+const dir = './commands/';
+readdirSync(dir).forEach(dirs => {
+    const commandFiles = readdirSync(`${dir}${sep}/${dirs}${sep}`);
+    for (const file of commandFiles) {
+        // Looping through the files and requiring them
+        const pull = require(`${dir}${dirs}/${file}`);
+        if (typeof pull.name !== 'undefined') client.commands.set(pull.name, pull); // Checking if the command exists and adding it to the collection
+    }
+});
 
- 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
+//Bot's activity
 client.on('ready', () => {
     console.log(`i am ready!`);
     client.user.setActivity('your heartbeat', { type: 'LISTENING'}).catch(console.error);
@@ -25,8 +33,6 @@ try {
 
 client.prefix = prefix
 
-const cooldowns = new Discord.Collection();
-
 
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -39,8 +45,12 @@ client.on('message', message => {
 
 	if (!command) return;
 
-	if (command.guildOnly && message.channel.type === 'dm') {
-		return message.reply('i can\'t execute that command inside DMs!');
+	if (command.guildOnly && message.channel.type === 'dm') return message.reply('i can\'t execute that command inside DMs!'); // stop user from running commands thru dm
+	
+	if (command.userPermissions) for (permission in command.userPermissions) {
+		const sed = client.emojis.cache.get("769852738632548393");
+		if (!message.member.hasPermission(command.userPermissions[permission])) return message.reply(`that might be a mistype, but you don't have permission. sorry ${sed}`);
+		
 	}
 
 	if (command.args && !args.length) {
@@ -54,7 +64,7 @@ client.on('message', message => {
 	}
 
 	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
+		cooldowns.set(command.name, new Collection());
 	}
 
 	const now = Date.now();
@@ -81,4 +91,4 @@ client.on('message', message => {
 	}
 });
 
-client.login(process.env.token);
+client.login('NzY5NDExMjE1ODU1MTkwMDI2.X5OoCA.OhUYikKKg0I-ffnxUHTerN1p4BM');

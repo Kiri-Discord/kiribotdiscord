@@ -4,6 +4,7 @@ module.exports = {
   name: "help",
   aliases: ["h"],
   description: "display all commands and descriptions",
+  guildOnly: true,
   execute(message) {
     let commands = message.client.commands.array();
 
