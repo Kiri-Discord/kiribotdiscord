@@ -1,5 +1,5 @@
 {
-  "name": "sliverblazebot",
+  "name": "sefydiscordbot",
   "version": "1.0.0",
   "description": "duh",
   "main": "main.js",
@@ -9,6 +9,7 @@
   "author": "r3zenix",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.4.0"
+    "discord.js": "^12.4.0",
+    "random-anime": "^1.0.6"
   }
 }
