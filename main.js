@@ -20,7 +20,7 @@ readdirSync(dir).forEach(dirs => {
 //Bot's activity
 client.on('ready', () => {
     console.log(`i am ready!`);
-    client.user.setActivity('your heartbeat', { type: 'LISTENING'}).catch(console.error);
+    client.user.setActivity('so call me maybe', { type: 'WATCHING'}).catch(console.error);
 });
 
 let prefix;
