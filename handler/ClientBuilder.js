@@ -1,6 +1,6 @@
 const {Client, Collection} = require("c:/Users/HP/Documents/GitHub/sefybotdiscord/events/node_modules/discord.js.js");
 
-module.exports = class TutorialBot extends Client {
+module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
     
