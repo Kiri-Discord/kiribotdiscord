@@ -1,4 +1,4 @@
-const {Client, Collection} = require("c:/Users/HP/Documents/GitHub/sefybotdiscord/events/node_modules/discord.js.js");
+const {Client, Collection} = require("discord.js");
 
 module.exports = class sefy extends Client {
   constructor(options) {
