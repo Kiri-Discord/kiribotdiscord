@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const fs = require("fs");
+const Discord = require("discord.js"),
+      fs = require("fs");
 
 // Please be careful, this code will makes you confusing and it will risks an error if you don't try to focus it.
 
