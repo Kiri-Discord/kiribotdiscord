@@ -36,7 +36,7 @@ exports.help = {
     name: "binary",
     description: "Convert text to binary or otherwise.",
     usage: "binary <encode | decode> <text>",
-    example: "binary encode blob development"
+    example: "binary encode i love you"
 };
 
 exports.conf = {
