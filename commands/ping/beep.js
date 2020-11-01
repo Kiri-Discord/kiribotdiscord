@@ -9,10 +9,11 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "beep",
   description: "very self-explanatory",
-  usage: `${prefix}beep`,
-  example: `${prefix}beep`
+  usage: `beep`,
+  example: `beep`
 }
 
 exports.conf = {
+  aliases: [],
   cooldown: 2
 }

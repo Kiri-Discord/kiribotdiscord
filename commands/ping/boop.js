@@ -10,12 +10,8 @@ exports.help = {
 	example: "boop"
 };
   
-<<<<<<< Updated upstream
-  exports.conf = {
-=======
 exports.conf = {
     aliases: [],
->>>>>>> Stashed changes
 	cooldown: 2
 };
   

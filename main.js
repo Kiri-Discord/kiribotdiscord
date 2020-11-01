@@ -8,4 +8,4 @@ require("./handler/Event.js")(client);
 client.package = require("./package.json");
 client.on("warn", console.warn); // This will warn you via logs if there was something wrong with your bot.
 client.on("error", console.error); // This will send you an error message via logs if there was something missing with your coding.
-client.login('NzY5NDExMjE1ODU1MTkwMDI2.X5OoCA.Kt-umOcdl_hCefYd7XQGsyKKZss').catch(console.error); // This token will leads to the .env file. It's safe in there.
+client.login(process.env.token).catch(console.error); // This token will leads to the .env file. It's safe in there.
