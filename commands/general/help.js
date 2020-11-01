@@ -59,7 +59,7 @@ exports.help = {
   name: "help",
   description: "Show a command list.",
   usage: "help [command]",
-  example: "/help verify"
+  example: "help verify"
 }
 
 exports.conf = {
