@@ -1,6 +1,6 @@
 
 exports.run = async (client, message, args) => {
-	message.reply('dont hit me in the face lmao');
+	message.channel.send('dont hit me in the face lmao');
 	
 };
 exports.help = {
