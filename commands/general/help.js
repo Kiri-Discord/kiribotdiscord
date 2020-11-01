@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
     // This will hide a folder from display that includes "hide: true" in their module.json
     if (!client.config.owners.includes(message.author.id)) module = client.helps.array().filter(x => !x.hide);
     const embed = new Discord.MessageEmbed()
-    .setColor(DAF7A6)
+    .setColor('#DAF7A6')
     .setTimestamp(new Date())
     .setDescription(`Type \`${prefix}help [command]\` to get more specific information a command `)
     .setTitle("Dude, how can i help?")
@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
       let example = command.help.example ? command.help.example : "No example provided.";
       
       let embed = new Discord.MessageEmbed()
-      .setColor(DAF7A6)
+      .setColor('#DAF7A6')
       .setTitle(name)
       .setDescription(desc)
       .setThumbnail(client.user.displayAvatarURL())
