@@ -8,9 +8,14 @@ exports.help = {
 	description: "if you run this you autist",
 	usage: "boop",
 	example: "boop"
-  }
+};
   
+<<<<<<< Updated upstream
   exports.conf = {
+=======
+exports.conf = {
+    aliases: [],
+>>>>>>> Stashed changes
 	cooldown: 2
-  }
+};
   

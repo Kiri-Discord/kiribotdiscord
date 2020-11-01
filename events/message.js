@@ -22,10 +22,18 @@ module.exports = async (client, message) => {
   while (args[0] && args[0][0] === "-") {
     message.flags.push(args.shift().slice(1)); // Example: /play -soundcloud UP pice
   }
+
+  
   
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) return; // If the commands doesn't exist, ignore it. Don't send any warning on this.
   
+  
+  if (commandFile.userPermissions) for (permission in commandFile.userPermissions) {
+		const sed = client.emojis.cache.get("769852738632548393");
+		if (!message.member.hasPermission(commandFile.userPermissions[permission])) return message.reply(`that might be a mistype, but you don't have permission. sorry ${sed}`);
+		
+	}
   // This will set a cooldown to a user after typing a command.
   if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Discord.Collection());
   
