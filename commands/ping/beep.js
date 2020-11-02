@@ -14,6 +14,6 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: [],
+  aliases: ["beep"],
   cooldown: 2
 }
