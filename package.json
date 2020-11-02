@@ -9,8 +9,10 @@
   "author": "r3zenix",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.6.1",
     "discord.js": "^12.4.0",
     "node-superfetch": "^0.1.10",
-    "random-anime": "^1.0.6"
+    "random-anime": "^1.0.6",
+    "weather-js": "^2.0.0"
   }
 }

@@ -4,6 +4,8 @@ const Discord = require("discord.js"), cooldowns = new Discord.Collection()
 module.exports = async (client, message) => {
 
   if (message.author.bot || message.author === client.user) return;
+
+  if (message.channel.type === "dm") return;
   
   let prefix = client.config.prefix;
   // Prevent any chit-chats with other bots, or by himself.
@@ -16,8 +18,6 @@ module.exports = async (client, message) => {
   let cmd = args.shift().toLowerCase();
   let sender = message.author;
   
-  // Many people don't know what is message.flags.
-  // We've already seen a bot who has a message.flags or they would called, parameter things.
   message.flags = []
   while (args[0] && args[0][0] === "-") {
     message.flags.push(args.shift().slice(1)); // Example: /play -soundcloud UP pice
@@ -28,12 +28,6 @@ module.exports = async (client, message) => {
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) return; // If the commands doesn't exist, ignore it. Don't send any warning on this.
   
-  
-  if (commandFile.userPermissions) for (permission in commandFile.userPermissions) {
-		const sed = client.emojis.cache.get("769852738632548393");
-		if (!message.member.hasPermission(commandFile.userPermissions[permission])) return message.reply(`that might be a mistype, but you don't have permission. sorry ${sed}`);
-		
-	}
   // This will set a cooldown to a user after typing a command.
   if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Discord.Collection());
   
@@ -65,6 +59,5 @@ module.exports = async (client, message) => {
     console.log(`${sender.tag} (${sender.id}) ran a command: ${cmd}`);
   } catch (error) {
     console.error(error);
-    message.reply('there was an error trying to execute that command!');
   }
-}
+};

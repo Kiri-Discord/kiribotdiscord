@@ -47,7 +47,7 @@ exports.run = async (client, message, args) => {
       .addField("Aliases", aliases, true)
       .addField("Usage", usage, true)
       .addField("Example", example, true)
-      .setImage('https://i.imgur.com/zH5IkQz.png')
+      .setImage('https://i.imgur.com/3ceyLEO.png')
       
       return message.channel.send(embed);
     } else {
