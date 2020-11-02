@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.4.0",
+    "node-superfetch": "^0.1.10",
     "random-anime": "^1.0.6"
   }
 }
