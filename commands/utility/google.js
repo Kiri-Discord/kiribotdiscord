@@ -8,7 +8,7 @@ exports.run = async (client, message, args) => {
     let query = args.join(" ");
     let result;
 
-    if (!query) return message.channel.send("Please enter the query.");
+    if (!query) return message.channel.send("Enter something so i can search 👀");
 
     href = await search(query);
     if (!href) return message.channel.send("Unknown search.");
