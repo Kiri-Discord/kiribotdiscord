@@ -1,22 +1,10 @@
 const Discord = require("discord.js")
 const request = require("node-superfetch")
 
-exports.help = {
-	name: "google",
-	description: "Google sth for ya",
-	usage: "google <query>",
-	example: "google discord"
-};
-  
-exports.conf = {
-	aliases: [],
-	cooldown: 2
-};
-
 exports.run = async (client, message, args) => {
-    let googleKey = "[]";
+    let googleKey = "AIzaSyBRAcAxx2LCIk3lO8316D_cltPxsoOvH_g";
 
-    let csx = "[]"; // Search engine ID.
+    let csx = "9c68a713c9b721c86"; // Search engine ID.
 
     let query = args.join(" ");
 
@@ -69,4 +57,16 @@ exports.run = async (client, message, args) => {
         return body.items[0];
 
     }
-}
+};
+
+exports.help = {
+	name: "google",
+	description: "Google sth for ya",
+	usage: "google <query>",
+	example: "google discord"
+};
+  
+exports.conf = {
+	aliases: [],
+	cooldown: 2
+};
