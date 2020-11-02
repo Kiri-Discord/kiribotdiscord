@@ -21,6 +21,7 @@ exports.run = async (client, message, args) => {
   .setDescription(`[Avatar URL of **${user.tag}**](${avatar})`)
   .setColor('#DAF7A6')
   .setImage(avatar)
+  .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
   
   return message.channel.send(embed);
 }

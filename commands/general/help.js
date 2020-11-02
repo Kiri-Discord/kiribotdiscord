@@ -15,6 +15,7 @@ exports.run = async (client, message, args) => {
     .setDescription(`Type \`${prefix}help [command]\` to get more specific information a command `)
     .setTitle("Dude, how can i help?")
     .setThumbnail(client.user.displayAvatarURL())
+    .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
     
     for (const mod of module) {
       // You can change the .join(" | ") to commas, dots or every symbol.
