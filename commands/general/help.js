@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
     .setColor('#DAF7A6')
     .setTimestamp(new Date())
     .setDescription(`Type \`${prefix}help [command]\` to get more specific information a command `)
-    .setTitle("Dude, how can i help?")
+    .setTitle("Hey, how can i help?")
     .setThumbnail(client.user.displayAvatarURL())
     .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
     
