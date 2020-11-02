@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
   
   const embed = new Discord.MessageEmbed()
   .setTitle(`${user.tag} avatar`)
-  .setDescription(`[Avatar URL of **${user.tag}**](${avatar})`)
+  .setDescription(`[**URL**](${avatar})`)
   .setColor('#DAF7A6')
   .setImage(avatar)
   .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
