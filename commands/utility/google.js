@@ -32,9 +32,9 @@ exports.run = async (client, message, args) => {
 
     .setURL(result.link)
 
-    .setColor(0x7289DA)
+    .setColor('#DAF7A6')
 
-    .setFooter("Powered by Google")
+    .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
 
 
 
@@ -68,5 +68,5 @@ exports.help = {
   
 exports.conf = {
 	aliases: [],
-	cooldown: 2
+	cooldown: 5,
 };
