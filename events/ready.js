@@ -1,11 +1,10 @@
 module.exports = client => {
-  console.log("The bot is ready!");
-
+  console.log(`Logged in as ${client.user.tag}!`);
   client.user.setPresence({
-      game: { 
-          name: 'so call me maybe',
-          type: 'LISTENING'
-      },
-      status: 'idle'
-    })
-}
+      status: "idle",  // You can show online, idle... Do not disturb is dnd
+      game: {
+          name: "so call me maybe",  // The message shown
+          type: "LISTENING" // PLAYING, WATCHING, LISTENING, STREAMING,
+      }
+  });
+};
