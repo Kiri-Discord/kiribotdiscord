@@ -1,5 +1,4 @@
-const Constants = require('discord.js/src/util/Constants.js')
-Constants.DefaultOptions.ws.properties.$browser = `Discord iOS`
+
 
 module.exports = client => {
   console.log(`Logged in as ${client.user.tag}`);
