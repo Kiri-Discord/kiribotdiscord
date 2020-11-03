@@ -1,8 +1,6 @@
 const Discord = require("discord.js");
 const sefy = require("./handler/ClientBuilder.js"); // We're gonna create this soon.
 const client = new sefy();
-const Constants = require('discord.js/src/util/Constants.js')
-Constants.DefaultOptions.ws.properties.$browser = `Discord iOS`
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 
