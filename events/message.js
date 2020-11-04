@@ -1,12 +1,38 @@
-const Discord = require("discord.js"), cooldowns = new Discord.Collection()
+const Discord = require("discord.js"), cooldowns = new Discord.Collection(), Guild = require('../model/guild'), mongoose = require('mongoose');
 // cooldowns will store the user when they are still in the cooldown mode.
 
 module.exports = async (client, message) => {
 
   if (message.author.bot || message.author === client.user) return;
-  
-  let prefix = client.config.prefix;
-  // Prevent any chit-chats with other bots, or by himself.
+
+  if (message.channel.type === "dm") return;
+
+  const setting = await Guild.findOne({
+    guildID: message.guild.id
+  }, (err, guild) => {
+    if (err) console.error(err)
+    if (!guild) {
+      const newGuild = new Guild({
+        _id: mongoose.Types.ObjectId(),
+        guildID: message.guild.id,
+        guildName: message.guild.name,
+        prefix: client.config.prefix,
+        logChannelID: null
+      })
+
+      newGuild.save()
+      .then(result => console.log(result)
+      .catch(err => console.error(err))
+      )
+    }
+  }); 
+
+  const prefix = setting.prefix;
+
+
+
+
+  // Prevent any chit-chats with other bots, or by himself. 
 
   // If the user doesn't doing any to the bot, return it.
   if (!message.content.startsWith(prefix)) return;
