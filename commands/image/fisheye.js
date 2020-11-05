@@ -8,12 +8,11 @@ exports.run = async (client, message, args) => {
     if (attachments.length === 0) return message.reply("please upload some images!");
     else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
 
-    // The level of the craziness!
-    var level = 50; // You can put it like 100, 1000, or etc.
-    // More higher, more time to let the bot processing the images.
+ 
+    var level = 50; 
 
     try {
-        message.channel.startTyping(true); // More look like a "notsobot" :)
+        message.channel.startTyping(true); 
         
         const {body} = await request.get(attachments[0].url);
         const data = await loadImage(body);
