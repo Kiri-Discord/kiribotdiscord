@@ -44,15 +44,15 @@ module.exports = async (client, message) => {
   
   message.flags = []
   while (args[0] && args[0][0] === "-") {
-    message.flags.push(args.shift().slice(1)); // Example: /play -soundcloud UP pice
+    message.flags.push(args.shift().slice(1)); 
   }
 
   
   
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-  if (!commandFile) return; // If the commands doesn't exist, ignore it. Don't send any warning on this.
+  if (!commandFile) return; 
   
-  // This will set a cooldown to a user after typing a command.
+
   if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Discord.Collection());
   
   const member = message.member,
@@ -62,7 +62,7 @@ module.exports = async (client, message) => {
   
   if (!timestamps.has(member.id)) {
     if (!client.config.owners.includes(message.author.id)) {
-      // If the user wasn't you or other owners that stored in config.json
+
       timestamps.set(member.id, now);
     }
   } else {

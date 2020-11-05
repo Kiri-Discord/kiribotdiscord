@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
     let question = args.join(" ")
+
+
     if(!question) return message.channel.send('you must write something lmao.')
 
     const responses = [
@@ -10,8 +12,6 @@ exports.run = async (client, message, args) => {
         "idk",
         "unprobably",
         "no",
-        "sounds good",
-        "i would love to",
         "heck no",
         ]
     const randomResponse = Math.floor(Math.random() * (responses.length - 1) + 1);

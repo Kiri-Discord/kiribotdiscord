@@ -4,7 +4,7 @@ const Guild = require('../../model/guild');
 
 exports.run = async (client, message, args) => {
 	if (!message.member.hasPermission('MANAGE_GUILD')) {
-        return message.channel.send('You do not have permission to use this command!').then(m => m.delete({timeout: 10000}));
+        return message.channel.send('You do not have \`Manage Server\` permission to use this command 😔').then(m => m.delete({timeout: 10000}));
     };
     
     const settings = await Guild.findOne({
@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
     });
 
     if (args.length < 1) {
-        return message.channel.send(`You must specify a prefix to set for your guild! Your current guild prefix is \`${settings.prefix}\``).then(m => m.delete({timeout: 10000}));
+        return message.channel.send(`Your current guild prefix is \`${settings.prefix}\`. Use ${settings.prefix}setprefix <prefix> to change it.`).then(m => m.delete({timeout: 10000}));
     };
 
     await settings.updateOne({
@@ -43,12 +43,12 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "setprefix",
-  description: "Change the way you call me",
+  description: "Change my prefix",
   usage: `setprefix <prefix>`,
   example: `setprefix s!`
 }
 
 exports.conf = {
-  aliases: ["setprefix"],
+  aliases: ["setprefix", "prefix"],
   cooldown: 5
 }
