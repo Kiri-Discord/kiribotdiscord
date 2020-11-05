@@ -31,7 +31,6 @@ exports.run = async (client, message, args) => {
       .setColor("RANDOM")
       .setTimestamp(new Date())
       .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
-      .setAuthor(client.user.tag, client.user.displayAvatarURL())
 
     return message.channel.send(embed);
     });
