@@ -40,6 +40,6 @@ exports.help = {
 };
 
 exports.conf = {
-    aliases: [],
+    aliases: ["binary"],
     cooldown: 5
 }

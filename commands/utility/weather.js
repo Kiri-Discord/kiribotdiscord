@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
 
         const embed = new Discord.MessageEmbed()
         .setAuthor(current.observationpoint)
-        .setDescription(`> ${current.skytext}`)
+        .setTitle(`${current.skytext}`)
         .setThumbnail(current.imageUrl)
         .setTimestamp()
         .setColor(0x7289DA)

@@ -1,15 +1,21 @@
 const Discord = require("discord.js");
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => {  
   let user;
-  
-  if (message.mentions.users.first()) {
-    user = message.mentions.users.first();
-  } else if (args[0]) {
-    user = message.guild.members.cache.get(args[0]).user;
-  } else {
-    user = message.author;
+  try {
+    if (message.mentions.users.first()) {
+      user = message.mentions.users.first();
+    } else if (args[0]) {
+      user = message.guild.members.cache.get(args[0]).user;
+    } else {
+      user = message.author;
+    }
+  } catch (error) {
+    return message.channel.send(`Ouch. Jezzz u gave me a wrong mention or user ID :v`); 
   }
+
+  
+
   
   let avatar = user.displayAvatarURL({size: 4096, dynamic: true});
   // 4096 is the new biggest size of the avatar.
@@ -18,7 +24,7 @@ exports.run = async (client, message, args) => {
   
   const embed = new Discord.MessageEmbed()
   .setTitle(`${user.tag} avatar`)
-  .setDescription(`[Avatar URL of **${user.tag}**](${avatar})`)
+  .setDescription(`[**Avatar URL**](${avatar})`)
   .setColor('#DAF7A6')
   .setImage(avatar)
   .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
