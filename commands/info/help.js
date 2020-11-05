@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
-  let prefix = client.config.prefix;
   
   if (!args[0]) {
     // This will turn the folder (category) into array.
@@ -12,7 +11,7 @@ exports.run = async (client, message, args) => {
     const embed = new Discord.MessageEmbed()
     .setColor('#DAF7A6')
     .setTimestamp(new Date())
-    .setDescription(`Type \`${prefix}help [command]\` to get more specific information about a command 😄`)
+    .setDescription(`Use \`help [command]\` to get more specific information about a command 😄`)
     .setTitle("Hey, how can i help?")
     .setThumbnail(client.user.displayAvatarURL())
     .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
