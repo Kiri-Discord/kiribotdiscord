@@ -80,8 +80,8 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "kick",
   description: "Kick someone out of the guild",
-  usage: `kick <mention | user ID>`,
-  example: `kick @Bell`
+  usage: `kick <mention> [reason]`,
+  example: `kick @Bell because it has to be`
 }
 
 exports.conf = {
