@@ -43,12 +43,12 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "setmodlogs",
 	description: "Set the logs channel where i will logs moderation action",
-	usage: "setmodlogs",
-	example: "setmodlogs"
+	usage: "setmodlogs <channel mention>",
+	example: "setmodlogs #logs"
 };
   
 exports.conf = {
-	aliases: ["setmodlogs"],
+	aliases: ["setmodlogs", "sml"],
 	cooldown: 5
 };
   
