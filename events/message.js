@@ -1,4 +1,4 @@
-const Discord = require("discord.js"), cooldowns = new Discord.Collection(), Guild = require('../model/guild'), mongoose = require('mongoose');
+const Discord = require("discord.js"), cooldowns = new Discord.Collection(), mongoose = require('mongoose');
 // cooldowns will store the user when they are still in the cooldown mode.
 
 module.exports = async (client, message) => {
@@ -7,12 +7,12 @@ module.exports = async (client, message) => {
 
   if (message.channel.type === "dm") return;
 
-  const setting = await Guild.findOne({
+  const setting = await client.guildlist.findOne({
     guildID: message.guild.id
   }, (err, guild) => {
     if (err) console.error(err)
     if (!guild) {
-      const newGuild = new Guild({
+      const newGuild = new client.guildlist({
         _id: mongoose.Types.ObjectId(),
         guildID: message.guild.id,
         guildName: message.guild.name,

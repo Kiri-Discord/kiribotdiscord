@@ -7,12 +7,12 @@ exports.run = async (client, message, args) => {
         return message.channel.send('You do not have \`Manage Server\` permission to use this command 😔').then(m => m.delete({timeout: 10000}));
     };
     
-    const settings = await Guild.findOne({
+    const settings = await client.guildlist.findOne({
         guildID: message.guild.id
       }, (err, guild) => {
         if (err) console.error(err)
         if (!guild) {
-          const newGuild = new Guild({
+          const newGuild = new client.guildlist({
             _id: mongoose.Types.ObjectId(),
             guildID: message.guild.id,
             guildName: message.guild.name,
