@@ -63,7 +63,12 @@ exports.run = async (client, message, args) => {
     .addField('Kicked by', message.author)
     .addField('Reason', reason);
 
-    member.kick(reason);
+    member
+    .kick({
+        reason
+    })
+    
+    
     message.channel.send(kickembed);
 
     if (!logChannel) {
