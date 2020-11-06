@@ -3,7 +3,7 @@ const jimp = require("jimp")
 exports.run = async (client, message, args) => {
 
         let img = jimp.read("https://i.imgur.com/sLaJt9q.png")
-        if (!args[0]) return message.reply("Indicate that Trump should speak pls:D")
+        if (!args[0]) return message.reply("Indicate that Trump should speak pls :D")
         img.then(image => {
             jimp.loadFont(jimp.FONT_SANS_32_BLACK).then(font => {
                 image.resize(1000,500)

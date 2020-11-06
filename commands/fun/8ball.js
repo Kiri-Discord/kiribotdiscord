@@ -16,9 +16,15 @@ exports.run = async (client, message, args) => {
         ]
     const randomResponse = Math.floor(Math.random() * (responses.length - 1) + 1);
 
-    message.channel.send(`${responses[randomResponse]}`)
-}
+    message.channel.startTyping()
+    setTimeout(() => {       
+        message.channel.send(`${responses[randomResponse]}`).then((message)=>{
+            message.channel.stopTyping();
+        });
+    }, 10000);
     
+
+}
 
 
 exports.help = {
