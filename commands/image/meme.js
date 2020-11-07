@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
       .send(loadingEmbed)
       .then(m => m.delete({ timeout: 2000 }));
 
-      let random = ["Memes", "Meme", "Davie504", "Dankmemer", "funny"]
+      let random = ["Memes", "Meme", "Davie504", "Dankmemer", "funny", "wholesomememes", "dankmemes", "raimimemes", "historymemes", "lastimages", "okbuddyretard", "comedyheaven", "pewdiepiesubmissions"]
       let memes = random[Math.floor(Math.random() * random.length)]
       fetch(`https://www.reddit.com/r/${memes}.json?sort=top&t=daily`)
       .then(res => res.json())
@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
       .setImage(allowed[randomnumber].data.url)
       .setDescription("**-----------------------------------**")
       .addField("Meme provided by", `https://reddit.com/r/${memes}`)
-      .addField("Upvotes and Comments", `<:upvote:586072006097633280> **${allowed[randomnumber].data.ups}** | <:comment:664994844590211085> **${allowed[randomnumber].data.num_comments}**`)
+      .addField("Upvotes and Comments", `Upvote: **${allowed[randomnumber].data.ups}** | Comment(s) **${allowed[randomnumber].data.num_comments}**`)
       .setColor("RANDOM")
       .setTimestamp(new Date())
       .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())

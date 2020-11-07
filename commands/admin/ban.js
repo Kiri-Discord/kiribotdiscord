@@ -8,22 +8,6 @@ exports.run = async (client, message, args) => {
 
     const guildDB = await Guild.findOne({
         guildID: message.guild.id
-    }, async (err, guild) => {
-        if (err) console.error(err);
-        
-        if (!guild) {
-            const newGuild = new Guild({
-                _id: mongoose.Types.ObjectId(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                prefix: client.config.prefix,
-                logChannelID: null
-            });
-
-            await newGuild.save()
-            .then(result => console.log(result))
-            .catch(err => console.error(err));
-        };
     });
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
@@ -63,11 +47,18 @@ exports.run = async (client, message, args) => {
     .addField('Banned by', message.author)
     .addField('Reason', reason);
 
-    member
-    .ban({
-        reason
-    })
     message.channel.send(kickembed);
+
+    
+
+    member.send(`🔨You were \`banned\` from **${message.guild.name}** \n**Reason**: ${reason}.`);
+
+    setTimeout(function(){
+        member.ban({reason}) 
+    }, 2000)
+
+
+
 
     if (!logChannel) {
         return
@@ -77,6 +68,7 @@ exports.run = async (client, message, args) => {
         return logChannel.send(logembed);
 
     };
+
 };
 
 

@@ -8,22 +8,6 @@ exports.run = async (client, message, args) => {
 
     const guildDB = await Guild.findOne({
         guildID: message.guild.id
-    }, async (err, guild) => {
-        if (err) console.error(err);
-        
-        if (!guild) {
-            const newGuild = new Guild({
-                _id: mongoose.Types.ObjectId(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                prefix: client.config.prefix,
-                logChannelID: null
-            });
-
-            await newGuild.save()
-            .then(result => console.log(result))
-            .catch(err => console.error(err));
-        };
     });
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
@@ -63,11 +47,12 @@ exports.run = async (client, message, args) => {
     .addField('Kicked by', message.author)
     .addField('Reason', reason);
 
-    member
-    .kick({
-        reason
-    })
-    
+
+    member.send(`🔨You were \`kicked\` from **${message.guild.name}** \n**Reason**: ${reason}.`);
+
+    setTimeout(function(){
+        member.kick({reason}) 
+    }, 2000)
     
     message.channel.send(kickembed);
 

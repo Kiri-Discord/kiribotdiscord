@@ -1,5 +1,3 @@
-// In here, we're can add some events in /events folder, so we don't need to fill it up the server.js with all these events.
-
 const { readdirSync } = require("fs"); // You don't need to install this again.
 
 module.exports = client => {
