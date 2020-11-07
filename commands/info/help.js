@@ -1,6 +1,13 @@
 const Discord = require("discord.js");
+const Guild = require('../../model/guild');
 
 exports.run = async (client, message, args) => {
+
+  const setting = await Guild.findOne({
+    guildID: message.guild.id
+  });
+
+  const prefix = setting.prefix;
   
   if (!args[0]) {
     // This will turn the folder (category) into array.
@@ -11,7 +18,7 @@ exports.run = async (client, message, args) => {
     const embed = new Discord.MessageEmbed()
     .setColor('#DAF7A6')
     .setTimestamp(new Date())
-    .setDescription(`Use \`help [command]\` to get more specific information about a command 😄`)
+    .setDescription(`Use \`${prefix}help [command]\` to get more specific information about a command 😄`)
     .setTitle("Hey, how can i help?")
     .setThumbnail(client.user.displayAvatarURL())
     .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
@@ -38,7 +45,8 @@ exports.run = async (client, message, args) => {
       
       let embed = new Discord.MessageEmbed()
       .setColor('#DAF7A6')
-      .setTitle(name)
+      .setAuthor(client.user.tag, client.user.displayAvatarURL())
+      .setTitle(`${prefix}${name}`)
       .setDescription(desc)
       .setThumbnail(client.user.displayAvatarURL())
       .setFooter("[] optional, <> required. Don't includes these things while typing a command.")
@@ -58,7 +66,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "help",
-  description: "Show a command list.",
+  description: "Show my command list with its description and usage",
   usage: "help [command]",
   example: "help verify"
 }

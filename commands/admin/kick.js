@@ -8,22 +8,6 @@ exports.run = async (client, message, args) => {
 
     const guildDB = await Guild.findOne({
         guildID: message.guild.id
-    }, async (err, guild) => {
-        if (err) console.error(err);
-        
-        if (!guild) {
-            const newGuild = new Guild({
-                _id: mongoose.Types.ObjectId(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                prefix: client.config.prefix,
-                logChannelID: null
-            });
-
-            await newGuild.save()
-            .then(result => console.log(result))
-            .catch(err => console.error(err));
-        };
     });
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
@@ -47,6 +31,7 @@ exports.run = async (client, message, args) => {
     const kickembed = new Discord.MessageEmbed()
     .setTitle('I kicked that user.')
     .setThumbnail(member.user.displayAvatarURL())
+    .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .addField('Member', member)
     .addField('Moderator', message.author)
     .addField('Reason', reason)
@@ -56,6 +41,7 @@ exports.run = async (client, message, args) => {
 
     const logembed = new Discord.MessageEmbed()
     .setColor(15158332)
+    .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .setTitle('User kicked')
     .setThumbnail(member.user.avatarURL())
     .addField('Username', member.user.username)
@@ -63,11 +49,12 @@ exports.run = async (client, message, args) => {
     .addField('Kicked by', message.author)
     .addField('Reason', reason);
 
-    member
-    .kick({
-        reason
-    })
-    
+
+    member.send(`🔨You were \`kicked\` from **${message.guild.name}** \n**Reason**: ${reason}.`);
+
+    setTimeout(function(){
+        member.kick({reason}) 
+    }, 2000)
     
     message.channel.send(kickembed);
 

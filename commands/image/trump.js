@@ -1,7 +1,6 @@
 const jimp = require("jimp")
 
 exports.run = async (client, message, args) => {
-    message.delete();
 
     message.channel.startTyping();
 

@@ -3,39 +3,27 @@ const Guild = require('../../model/guild');
 
 
 exports.run = async (client, message, args) => {
+  const settings = await Guild.findOne({
+    guildID: message.guild.id
+  });
 	if (!message.member.hasPermission('MANAGE_GUILD')) {
         return message.channel.send('You do not have \`Manage Server\` permission to use this command 😔').then(m => m.delete({timeout: 10000}));
     };
-    
-    const settings = await client.guildlist.findOne({
-        guildID: message.guild.id
-      }, (err, guild) => {
-        if (err) console.error(err)
-        if (!guild) {
-          const newGuild = new client.guildlist({
-            _id: mongoose.Types.ObjectId(),
-            guildID: message.guild.id,
-            guildName: message.guild.name,
-            prefix: client.config.prefix,
-            logChannelID: null
-          })
-    
-          newGuild.save()
-          .then(result => console.log(result)
-          .catch(err => console.error(err))
-          )
-        }
-    });
 
-    if (args.length < 1) {
-        return message.channel.send(`Your current guild prefix is \`${settings.prefix}\`. Use ${settings.prefix}setprefix <prefix> to change it.`).then(m => m.delete({timeout: 10000}));
-    };
+  if (args.length < 1) {
+      return message.channel.send(`Your current guild prefix is \`${settings.prefix}\`. Use ${settings.prefix}setprefix <prefix> to change it.`).then(m => m.delete({timeout: 10000}));
+  };
 
-    await settings.updateOne({
-        prefix: args[0]
-    });
+  await Guild.findOneAndUpdate({
+    guildID: message.guild.id,
+  },
+  {
+    prefix: args[0]
+  })
+  .catch(err => console.error(err));
 
-    return message.channel.send(`Your guild prefix has been updated to \`${args[0]}\``);
+
+  return message.channel.send(`Your guild prefix has been updated to \`${args[0]}\``);
 
     
 };

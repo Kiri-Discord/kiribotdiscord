@@ -10,34 +10,16 @@ exports.run = async (client, message, args) => {
     if (!channel) return message.channel.send('I cannot find that channel. Please mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
 
 
-    await guildlist.findOne({
-        guildID: message.guild.id
-    }, async (err, guild) => {
-        if (err) console.error(err);
-        if (!guild) {
-            const newGuild = new client.guildlist({
-                _id: mongoose.Types.ObjectId(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                prefix: client.config.prefix,
-                logChannelID: channel.id
-            });
-            await newGuild.save()
-            .then(result => console.log(result))
-            .catch(err => console.error(err));
 
-            return message.channel.send(`The mod logs channel has been set to ${channel}`);
-        } else {
-            guild.updateOne({
-                logChannelID: channel.id
-            })
-            .catch(err => console.error(err));
-            
+    await Guild.findOneAndUpdate({
+        guildID: message.guild.id,
+    },
+    {
+        logChannelID: channel.id
+    })
+    .catch(err => console.error(err));
+    message.channel.send(`The mod logs channel has been set to ${channel}!`);
 
-            return message.channel.send(`The mod logs channel has been set to ${channel}!`);
-
-        };
-    });
 }
         
 exports.help = {

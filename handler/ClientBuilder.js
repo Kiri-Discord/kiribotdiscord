@@ -1,4 +1,4 @@
-const {Client, Collection, GuildMember} = require("discord.js");
+const {Client, Collection, Guild, GuildMember} = require("discord.js");
 
 module.exports = class sefy extends Client {
   constructor(options) {
