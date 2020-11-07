@@ -13,7 +13,6 @@ module.exports = async (client, message) => {
 
   const prefix = setting.prefix;
 
-
   // Prevent any chit-chats with other bots, or by himself. 
 
   // If the user doesn't doing any to the bot, return it.
