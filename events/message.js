@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-const Discord = require("discord.js"), cooldowns = new Discord.Collection(), Guild = require('../model/guild'), mongoose = require('mongoose');
-=======
 const Discord = require("discord.js"), cooldowns = new Discord.Collection(), mongoose = require('mongoose'); Guild = require('../model/guild');
->>>>>>> Stashed changes
 // cooldowns will store the user when they are still in the cooldown mode.
 
 module.exports = async (client, message) => {
