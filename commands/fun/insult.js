@@ -17,6 +17,8 @@ exports.run = async (client, message, args) => {
             message.channel.send("i can't seem to be able to insult :v maybe that he/she isn't worth it ?");
             return console.error(err);
         });
+    message.channel.stopTyping()
+
 };
 
 exports.help = {

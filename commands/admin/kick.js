@@ -31,6 +31,7 @@ exports.run = async (client, message, args) => {
     const kickembed = new Discord.MessageEmbed()
     .setTitle('I kicked that user.')
     .setThumbnail(member.user.displayAvatarURL())
+    .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .addField('Member', member)
     .addField('Moderator', message.author)
     .addField('Reason', reason)
@@ -40,6 +41,7 @@ exports.run = async (client, message, args) => {
 
     const logembed = new Discord.MessageEmbed()
     .setColor(15158332)
+    .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .setTitle('User kicked')
     .setThumbnail(member.user.avatarURL())
     .addField('Username', member.user.username)
