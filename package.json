@@ -17,6 +17,7 @@
     "node-pre-gyp": "^0.16.0",
     "node-superfetch": "^0.1.10",
     "random-anime": "^1.0.6",
-    "weather-js": "^2.0.0"
+    "weather-js": "^2.0.0",
+    "common-tags": "^1.8.0"
   }
 }
