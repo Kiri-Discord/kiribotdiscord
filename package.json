@@ -9,9 +9,12 @@
   "author": "r3zenix",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.3.3",
     "canvas": "^2.6.1",
+    "common-tags": "^1.8.0",
     "discord.js": "^12.4.0",
     "dotenv": "^8.2.0",
+    "ffmpeg-static": "^4.2.7",
     "jimp": "^0.16.1",
     "mongoose": "^5.10.11",
     "node-pre-gyp": "^0.16.0",

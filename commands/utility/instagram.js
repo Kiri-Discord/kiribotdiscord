@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
         const name = args.join(" ");
 
         if (!name) {
-            return message.reply("Maybe it's useful to actually search for someone...!")
+            return message.reply("maybe it's useful to actually search for someone?")
                 .then(m => m.delete(5000));
         }
 
@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
         try {
             res = await fetch(url).then(url => url.json());
         } catch (e) {
-            return message.reply("I couldn't find that account... :(")
+            return message.reply("i couldn't find that account... :(")
                 .then(m => m.delete(5000));
         }
 
@@ -40,15 +40,14 @@ exports.run = async (client, message, args) => {
         message.channel.send(embed);
     }
 
-
 exports.help = {
-	name: "instagram",
-	description: "grab profile info from instagram",
-	usage: "instagram <username>",
-	example: "instagram discord"
-};
+    name: "instagram",
+    description: "grab some info for an instagram account",
+    usage: "instagram <username>",
+    example: "instagram asus"
+}
   
 exports.conf = {
-	aliases: ["insta", "ins"],
-	cooldown: 5
-};
+    aliases: ["ins", "insta"],
+    cooldown: 5
+}

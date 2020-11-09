@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
 
   if (message.channel.type === "dm") return;
 
-  const setting = await Guild.findOne({
+  const setting = await client.guildlist.findOne({
     guildID: message.guild.id
   }); 
 
