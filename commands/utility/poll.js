@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
         let pollDescription = args.slice(1).join(' ');
 
         let embedPoll = new Discord.MessageEmbed()
-        .setTitle('New poll! ❗ ')
+        .setTitle('New poll!')
         .setDescription(pollDescription)
         .setColor('YELLOW')
         let msgEmbed = await pollChannel.send(embedPoll);
@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
         name: "poll",
     description: "Create a poll in an defined channel",
-    usage: "poll <topic>",
+    usage: "poll <#channel> <topic>",
     example: "poll yes or no"
 }
 
@@ -26,4 +26,3 @@ exports.conf = {
     aliases: [""],
     cooldown: 30
 }
- 
