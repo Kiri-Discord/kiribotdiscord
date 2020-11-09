@@ -7,8 +7,7 @@ exports.run = async (client, message, args) => {
         const name = args.join(" ");
 
         if (!name) {
-            return message.reply("maybe it's useful to actually search for someone?")
-                .then(m => m.delete(5000));
+            return message.reply("maybe it's useful to actually search for someone?").then(m => m.delete({timeout: 5000}))
         }
 
         const url = `https://instagram.com/${name}/?__a=1`;
@@ -18,8 +17,7 @@ exports.run = async (client, message, args) => {
         try {
             res = await fetch(url).then(url => url.json());
         } catch (e) {
-            return message.reply("i couldn't find that account... :(")
-                .then(m => m.delete(5000));
+            return message.reply("i couldn't find that account... :(").then(m => m.delete({timeout: 5000}))
         }
 
         const account = res.graphql.user;
