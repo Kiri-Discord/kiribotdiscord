@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
         let pollDescription = args.slice(1).join(' ');
 
         let embedPoll = new Discord.MessageEmbed()
-        .setTitle(`${message.user.tag} started a new poll!`)
+        .setTitle(`${message.author.user.tag} started a new poll!`)
         .setDescription(pollDescription)
         .setColor('YELLOW')
         let msgEmbed = await pollChannel.send(embedPoll);
