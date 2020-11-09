@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 const mongoose = require('mongoose');
 const sefy = require("./handler/ClientBuilder.js");
 const client = new sefy();
-const mongo = require('./utils/mongo.js')
+const mongo = require('./handler/mongo.js')
 
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
