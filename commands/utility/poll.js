@@ -19,7 +19,7 @@ exports.help = {
         name: "poll",
     description: "Create a poll in an defined channel",
     usage: "poll <#channel> <topic>",
-    example: "poll yes or no"
+    example: "poll #test yes or no"
 }
 
 exports.conf = {
