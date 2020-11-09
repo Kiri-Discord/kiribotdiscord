@@ -3,8 +3,6 @@ const {Client, Collection, Guild, GuildMember} = require("discord.js");
 module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
-    
-    
     this.commands = new Collection(); 
     this.cooldowns = new Collection(); // This will store your commands with cooldowns.
     this.aliases = new Collection(); // This will store your alternative commands. Example: /server -> /serverinfo, /guild, /guildinfo
