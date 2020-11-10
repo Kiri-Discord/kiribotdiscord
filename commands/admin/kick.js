@@ -4,7 +4,7 @@ const Discord = require('discord.js')
 
 exports.run = async (client, message, args) => {
 
-    const member = message.mentions.members.first();
+    const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
     const guildDB = await Guild.findOne({
         guildID: message.guild.id
@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
 
     if (!member) return message.channel.send('I cannot find the specified member. Please mention a member in this Discord server.').then(m => m.delete({timeout: 5000}));
 
-    if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.send('You do not have permission to use this command 😔').then(m => m.delete({timeout: 5000}));
+    if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.send('You do not have \`Kick Members\` permission to use this command 😔').then(m => m.delete({timeout: 5000}));
 
     if (!member.kickable) return message.channel.send('This user can\'t be kicked. It is either because they are a mod/admin, or their highest role is higher than mine 😔').then(m => m.delete({timeout: 5000}));
 
@@ -29,7 +29,8 @@ exports.run = async (client, message, args) => {
 
 
     const kickembed = new Discord.MessageEmbed()
-    .setTitle('I kicked that user.')
+    .setTitle(`${member.user.tag} was kicked!`)
+    .setColor("#ff0000")
     .setThumbnail(member.user.displayAvatarURL())
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .addField('Member', member)
@@ -40,7 +41,6 @@ exports.run = async (client, message, args) => {
 
 
     const logembed = new Discord.MessageEmbed()
-    .setColor(15158332)
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .setTitle('User kicked')
     .setThumbnail(member.user.avatarURL())
@@ -72,7 +72,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "kick",
   description: "Kick someone out of the guild",
-  usage: `kick <mention> [reason]`,
+  usage: `kick <mention | user ID> [reason]`,
   example: `kick @Bell because it has to be`
 }
 
