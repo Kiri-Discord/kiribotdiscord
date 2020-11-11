@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
     let googleKey = process.env.gg_key;
 
     let csx = process.env.csx_key; // Search engine ID.
-    let query = args.join(" ");
+    let query = message.content.slice(message.content.indexOf(args[0]), message.content.length);
     let result;
 
     if (!query) return message.channel.send("Enter something so i can search 👀");
@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
     .setDescription(href.snippet)
     .setImage(href.pagemap ? href.pagemap.cse_thumbnail[0].src : null) // Sometimes, the thumbnail might be unavailable in variant site. Return it to null.
     .setURL(href.link)
-    .setColor('#DAF7A6')
+    .setColor('RANDOM')
 
     .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
     return message.channel.send(embed);

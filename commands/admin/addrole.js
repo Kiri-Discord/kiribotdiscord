@@ -35,6 +35,7 @@ exports.run = async (client, message, args) => {
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
     .setTitle(`Role added to ${member.user.tag}`)
     .setThumbnail(member.user.avatarURL())
+    .addField('Role added', roleName.name)
     .addField('Username', member.user.username)
     .addField('User ID', member.id)
     .addField('Moderator', message.author)
@@ -57,12 +58,12 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "role",
     description: "i will give someone a role when you run this",
-    usage: `role <@user> <@role>`,
-    example: `role @bach @pvp`
-  }
+    usage: `addrole <@user> <@role>`,
+    example: `addrole @bach @pvp`
+};
   
-  exports.conf = {
-    aliases: ["role", "give-role"],
+exports.conf = {
+    aliases: ["add-role", "give-role"],
     cooldown: 5
-  }
+};
   
