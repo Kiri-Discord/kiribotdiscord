@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
     let googleKey = process.env.gg_key;
 
     let csx = process.env.csx_key; // Search engine ID.
-    let query = message.content.slice(message.content.indexOf(args[0]), message.content.length);
+    let query = args.join(" ");
     let result;
 
     if (!query) return message.channel.send("Enter something so i can search 👀");
