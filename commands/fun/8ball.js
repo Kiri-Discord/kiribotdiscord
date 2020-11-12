@@ -25,8 +25,6 @@ exports.run = async (client, message, args) => {
     
 
 }
-
-
 exports.help = {
 	name: "8ball",
 	description: "Your life depends on this one.",

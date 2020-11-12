@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
       .addField("Upvotes and Comments", `Upvote: **${allowed[randomnumber].data.ups}** | Comment(s) **${allowed[randomnumber].data.num_comments}**`)
       .setColor("RANDOM")
       .setTimestamp(new Date())
-      .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
+      .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 
     return message.channel.send(embed);
     });

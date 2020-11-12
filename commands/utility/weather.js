@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
         .setThumbnail(current.imageUrl)
         .setTimestamp()
         .setColor(0x7289DA)
-        .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
+        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 
         embed.addField("Latitude", location.lat, true)
         .addField("Longitude", location.long, true)

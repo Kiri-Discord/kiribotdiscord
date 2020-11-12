@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
     .setDescription(`Use \`${prefix}help [command]\` to get more specific information about a command 😄`)
     .setTitle("Hey, how can i help?")
     .setThumbnail(client.user.displayAvatarURL())
-    .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
+    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
     
     for (const mod of module) {

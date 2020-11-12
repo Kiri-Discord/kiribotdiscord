@@ -28,6 +28,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: [""],
+	aliases: ["joke"],
 	cooldown: 3
 };

@@ -10,19 +10,20 @@ exports.run = async (client, message, args) => {
         .setTitle(`${message.author.tag} started a new poll!`)
         .setDescription(pollDescription)
         .setColor('YELLOW')
+        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
         let msgEmbed = await pollChannel.send(embedPoll);
         await msgEmbed.react('👍')
         await msgEmbed.react('👎')
     }
 
 exports.help = {
-        name: "poll",
+    name: "poll",
     description: "Create a poll in an defined channel",
     usage: "poll <#channel> <topic>",
     example: "poll #test yes or no"
 }
 
 exports.conf = {
-    aliases: [""],
+    aliases: ["poll"],
     cooldown: 30
 }

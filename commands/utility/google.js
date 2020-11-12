@@ -14,13 +14,15 @@ exports.run = async (client, message, args) => {
     if (!href) return message.channel.send("Unknown search.");
 
     const embed = new Discord.MessageEmbed()
+    .setTimestamp(new Date())
     .setTitle(href.title)
     .setDescription(href.snippet)
     .setImage(href.pagemap ? href.pagemap.cse_thumbnail[0].src : null) // Sometimes, the thumbnail might be unavailable in variant site. Return it to null.
     .setURL(href.link)
-    .setColor('RANDOM')
+    .setColor('#DAF7A6')
+    .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png')
 
-    .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
+    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     return message.channel.send(embed);
 
     async function search(query) {
@@ -42,5 +44,5 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["google", "gg"],
-	cooldown: 5,
+	cooldown: 7,
 };

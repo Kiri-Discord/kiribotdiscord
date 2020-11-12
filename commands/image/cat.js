@@ -6,10 +6,10 @@ exports.run = async (client, message, args) => {
 	.then(res => res.json())
 	.then(json => {
 		const embed = new Discord.MessageEmbed()
-		.setTitle('*cat*')
+		.setTitle('🐱')
         .setImage(json.link)
 		.setTimestamp()
-		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
+		.setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 		message.channel.send(embed)
 	  })
 	  .catch(err => console.error(err))

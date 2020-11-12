@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
     .setTitle('say hi to my uncle')
     .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
-    .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL())
+    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     
     if (message.channel.nsfw) {
         message.channel.send(embed1);
