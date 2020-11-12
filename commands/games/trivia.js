@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
   if (!topic) { // Pick a random topic if none given
     topic = message.client.topics[Math.floor(Math.random() * message.client.topics.length)];
   } else if (!message.client.topics.includes(topic))
-    return message.channel.send(`Please provide a valid topic, use ${prefix}triviatopics for a list`);
+    return message.channel.send(`can you provide a vaild topic please? use ${prefix}triviatopics for a list 😬`);
   
   // Get question and answers
   const directory = __basedir + "/trivia/" + topic + '.yml';
@@ -73,12 +73,12 @@ exports.run = async (client, message, args) => {
   
 exports.help = {
 	name: "trivia",
-	description: "compete against your friends in a game of trivia (anyone can answer)\n if no topic is given, a random one will be chosen :)\nthe question will expire after 15 seconds.",
+	description: "compete against your friends in a game of trivia (anyone can answer)\nif no topic is given, a random one will be chosen :)\nthe question will expire after 15 seconds.",
 	usage: "trivia [topic]",
 	example: "trivia anime"
 };
   
 exports.conf = {
 	aliases: ["trivia", "t"],
-	cooldown: 60
+	cooldown: 15
 };
