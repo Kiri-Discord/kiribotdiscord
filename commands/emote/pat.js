@@ -1,15 +1,15 @@
 const Discord = require("discord.js")
 const { Random } = require("something-random-on-discord")
 const random = new Random();
-const hugSchema = require('../../model/hug')
+const patSchema = require('../../model/pat')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("hug")
+    let data = await random.getAnimeImgURL("pat")
 
     const target = message.mentions.users.first()
     if (!target) {
-      message.reply("you can't just hug **air** :( please mention somebody to hug pls")
+      message.reply("you can't just pat **air** :( please mention somebody to pat pls")
       return
     }
 
@@ -20,11 +20,11 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === authorId) {
-      message.reply('you hug yourself :( here, take my hug instead 🤗')
+      message.reply('**pat pat pat pat pat**')
       return
     }
 
-    const authorData = await hugSchema.findOne({
+    const authorData = await patSchema.findOne({
       userId: authorId,
       guildId,
     })
@@ -32,7 +32,7 @@ exports.run = async (client, message, args) => {
 
 
 
-    await hugSchema.findOneAndUpdate(
+    await patSchema.findOneAndUpdate(
       {
         userId: authorId,
         guildId,
@@ -48,7 +48,7 @@ exports.run = async (client, message, args) => {
     )
 
 
-    const result = await hugSchema.findOneAndUpdate(
+    const result = await patSchema.findOneAndUpdate(
       {
         userId: targetId,
         guildId,
@@ -70,7 +70,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("#ff9900") 
-    .setDescription(`<@${message.author.id}> hugged <@${targetId}>! They now have been hugged ${amount} time(s)`) 
+    .setDescription(`<@${message.author.id}> pat <@${targetId}>! They now have been pat ${amount} time(s)`) 
     .setImage(data)
     .setTimestamp(new Date())
     .setFooter(client.user.tag, client.user.displayAvatarURL())
@@ -81,10 +81,10 @@ exports.run = async (client, message, args) => {
 }
 
 exports.help = {
-    name: "hug",
-    description: "why are you still seeing this page? just do it lmao",
-    usage: "hug <@mention>",
-    example: "hug @Somebody"
+    name: "pat",
+    description: "this is super duper self-explanatory",
+    usage: "pat <@mention>",
+    example: "pat @Somebody"
 };
 
 exports.conf = {
