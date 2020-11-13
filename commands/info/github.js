@@ -22,6 +22,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["github", "git"],
+	aliases: ["git"],
 	cooldown: 2
 };

@@ -10,6 +10,7 @@ module.exports = class sefy extends Client {
     this.aliases = new Collection(); // This will store your alternative commands. Example: /server -> /serverinfo, /guild, /guildinfo
     this.config = require('../config.json');
     this.recent = new Set();
+    this.dbguilds = require('../model/guild');
         /** 
      * Array of trivia topics
      * @type {Array<string>}

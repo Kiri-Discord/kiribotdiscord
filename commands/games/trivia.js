@@ -2,11 +2,9 @@
 const { MessageEmbed, MessageCollector } = require('discord.js');
 const fs = require('fs');
 const YAML = require('yaml');
-const Guild = require('../../model/guild');
-const mongoose = require('mongoose');
 
 exports.run = async (client, message, args) => {
-  const setting = await Guild.findOne({
+  const setting = await client.dbguilds.findOne({
     guildID: message.guild.id
   });
   const prefix = setting.prefix;
@@ -79,6 +77,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["trivia", "t"],
+	aliases: ["t"],
 	cooldown: 15
 };

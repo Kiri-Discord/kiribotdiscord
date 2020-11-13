@@ -3,7 +3,7 @@ const Guild = require('../../model/guild');
 
 
 exports.run = async (client, message, args) => {
-  const settings = await Guild.findOne({
+  const settings = await client.dbguilds.findOne({
     guildID: message.guild.id
   });
 	if (!message.member.hasPermission('MANAGE_GUILD')) {
@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
       return message.channel.send(`Your current guild prefix is \`${settings.prefix}\`. Use ${settings.prefix}setprefix <prefix> to change it.`).then(m => m.delete({timeout: 10000}));
   };
 
-  await Guild.findOneAndUpdate({
+  await client.dbguilds.findOneAndUpdate({
     guildID: message.guild.id,
   },
   {
@@ -37,6 +37,6 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: ["setprefix", "prefix"],
+  aliases: ["prefix"],
   cooldown: 5
 }

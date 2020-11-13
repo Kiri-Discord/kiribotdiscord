@@ -24,6 +24,6 @@ exports.help = {
 }
 
 exports.conf = {
-    aliases: ["poll"],
+    aliases: [],
     cooldown: 30
 }

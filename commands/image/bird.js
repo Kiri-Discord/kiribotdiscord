@@ -25,6 +25,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["bird"],
+	aliases: [],
 	cooldown: 4
 };

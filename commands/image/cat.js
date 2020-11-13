@@ -25,6 +25,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["cat"],
+	aliases: [],
 	cooldown: 4
 };

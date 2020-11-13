@@ -11,7 +11,7 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["ping"],
+	aliases: [],
 	cooldown: 2
 };
   

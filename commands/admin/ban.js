@@ -1,12 +1,10 @@
-const mongoose = require('mongoose');
-const Guild = require('../../model/guild');
 const Discord = require('discord.js')
 
 exports.run = async (client, message, args) => {
 
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
-    const guildDB = await Guild.findOne({
+    const guildDB = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
 
@@ -83,6 +81,6 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: ["ban", "b"],
+  aliases: ["b"],
   cooldown: 5
 }

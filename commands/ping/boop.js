@@ -11,7 +11,7 @@ exports.help = {
 };
   
 exports.conf = {
-    aliases: ["boop"],
+    aliases: [],
 	cooldown: 2
 };
   

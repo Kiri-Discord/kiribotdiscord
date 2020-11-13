@@ -43,6 +43,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["google", "gg"],
+	aliases: ["gg"],
 	cooldown: 7,
 };

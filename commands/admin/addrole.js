@@ -1,11 +1,10 @@
-const Guild = require('../../model/guild');
 const { MessageEmbed } = require('discord.js');
 
 
 exports.run = async (client, message, args) => {
 
 
-    const guildDB = await Guild.findOne({
+    const guildDB = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
 

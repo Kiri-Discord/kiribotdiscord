@@ -3,7 +3,7 @@ const Guild = require('../../model/guild');
 
 exports.run = async (client, message, args) => {
 
-  const setting = await Guild.findOne({
+  const setting = await client.dbguilds.findOne({
     guildID: message.guild.id
   });
 

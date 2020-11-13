@@ -15,6 +15,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["anime"],
+	aliases: [],
 	cooldown: 4
 };

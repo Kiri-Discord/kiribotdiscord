@@ -1,9 +1,7 @@
 const { MessageEmbed } = require('discord.js');
-const Guild = require('../../model/guild');
-const mongoose = require('mongoose');
 
 exports.run = async (client, message, args) => {
-    const setting = await Guild.findOne({
+    const setting = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
     const prefix = setting.prefix;

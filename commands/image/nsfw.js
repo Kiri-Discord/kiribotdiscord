@@ -29,6 +29,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["anime-nsfw","nsfw"],
+	aliases: ["anime-nsfw"],
 	cooldown: 4
 };

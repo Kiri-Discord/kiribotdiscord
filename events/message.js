@@ -1,4 +1,4 @@
-const Discord = require("discord.js"), cooldowns = new Discord.Collection(), mongoose = require('mongoose'); Guild = require('../model/guild');
+const Discord = require("discord.js"), cooldowns = new Discord.Collection();
 // cooldowns will store the user when they are still in the cooldown mode.
 
 module.exports = async (client, message) => {
@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
 
   if (message.channel.type === "dm") return;
 
-  const setting = await Guild.findOne({
+  const setting = await client.dbguilds.findOne({
     guildID: message.guild.id
   }); 
 
@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
   // Prevent any chit-chats with other bots, or by himself. 
 
   // If the user doesn't doing any to the bot, return it.
-  if(!message.content.toLowerCase().startsWith(prefix)) return;
+  if(!message.content.toLowerCase().startsWith(prefix))return;
   
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   let msg = message.content.toLowerCase();

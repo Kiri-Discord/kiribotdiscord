@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
 
 
 
-    await Guild.findOneAndUpdate({
+    await client.dbguilds.findOneAndUpdate({
         guildID: message.guild.id,
     },
     {
@@ -30,7 +30,7 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["setmodlogs", "sml"],
+	aliases: ["sml"],
 	cooldown: 5
 };
   
