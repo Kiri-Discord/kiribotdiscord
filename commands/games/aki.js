@@ -19,8 +19,8 @@ class Game {
     async run() {
         this.msg.edit('', new MessageEmbed()
             .setColor('#DAF7A6')
-            .setAuthor(client.user.tag, client.user.displayAvatarURL())
-            .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+            .setAuthor(this.message.member.displayName,  this.message.author.displayAvatarURL({ dynamic: true }))
+            .setTimestamp(new Date())
             .setTitle('Akinator:')
             
             .addFields(
@@ -48,8 +48,8 @@ class Game {
         const embed = new MessageEmbed()
             .setTitle(`Akinator Guess ${this.i + 1}:`)
             .setColor('#3498db')
-            .setAuthor(client.user.tag, client.user.displayAvatarURL())
-            .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+            .setAuthor(this.message.member.displayName,  this.message.author.displayAvatarURL({ dynamic: true }))
+            .setTimestamp(new Date())
             .addField(`Name: ${answer.name}`, `Description: ${answer.description}`)
             .setImage(answer.absolute_picture_path)
             .setDescription('Is this guess correct? Type y / n');
