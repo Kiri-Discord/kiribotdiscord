@@ -18,10 +18,10 @@ module.exports = async (client, guild) => {
     guildID: guild.id
   });
 
-  const prefix = setting.prefix;
+  const prefix = client.config.prefix;
 
   const embed = new Discord.MessageEmbed()
-	.setTitle('Thanks for inviting me :D')
+  .setTitle('Thanks for inviting me :D')
   .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + `${prefix}` + `\n\nType ${prefix}help to see a full list of commands. Have fun!`)
   .setColor('#DAF7A6')
   .setTimestamp(new Date())
