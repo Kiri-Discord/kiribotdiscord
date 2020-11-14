@@ -55,7 +55,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
-    name: "role",
+    name: "addrole",
     description: "i will give someone a role when you run this",
     usage: `addrole <@user> <@role>`,
     example: `addrole @bach @pvp`
