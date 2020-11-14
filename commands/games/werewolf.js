@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 class Game {
     constructor(message, client) {
         this.client = client;
