@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
     return message.channel.send(`can you provide a vaild topic please? use ${prefix}triviatopics for a list 😬`);
   
   // Get question and answers
-  const directory = __basedir + "/trivia/" + topic + '.yml';
+  const directory = __basedir + "/assets/trivia/" + topic + '.yml';
   const questions = YAML.parse(fs.readFileSync(directory, 'utf-8')).questions;
   const n = Math.floor(Math.random() * questions.length);
   const question = questions[n].question;

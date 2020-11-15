@@ -21,7 +21,9 @@
     "node-superfetch": "^0.1.10",
     "random-anime": "^1.0.6",
     "something-random-on-discord": "0.0.2",
+    "soundcloud-downloader": "^0.2.0",
     "weather-js": "^2.0.0",
-    "yaml": "^1.10.0"
+    "yaml": "^1.10.0",
+    "ytdl-core-discord": "^1.2.4"
   }
 }

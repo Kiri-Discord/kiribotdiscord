@@ -51,7 +51,7 @@ module.exports = async (client, message) => {
     
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
-      return message.channel.send(`Calm down dude, please wait **${timeLeft.toFixed(1)}** seconds to try the command again.`);
+      return message.channel.send(`calm down, you are in cooldown. please wait **${timeLeft.toFixed(1)}** seconds`);
     }
     
     timestamps.set(member.id, now);

@@ -14,9 +14,6 @@ module.exports = async (client, guild) => {
   })
 
   newGuild.save();
-  const setting = await Guild.findOne({
-    guildID: guild.id
-  });
 
   const prefix = client.config.prefix;
 
