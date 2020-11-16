@@ -11,7 +11,6 @@ module.exports = class sefy extends Client {
     this.config = require('../config.json');
     this.recent = new Set();
     this.dbguilds = require('../model/guild');
-    this.queue = new Map();
         /** 
      * Array of trivia topics
      * @type {Array<string>}
