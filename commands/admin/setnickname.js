@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
   let nick = args.slice(1).join(" ");
   if (!nick) return message.channel.send("you need to input the nickname!");
   
-  member.setNickname(nick).then(() => message.channel.send({embed: {color: "f3f3f3", description: `➕ I changed **${user.tag}** nickname to **${nick}**!`}})).then(() => {
+  member.setNickname(nick).then(() => message.channel.send({embed: {color: "f3f3f3", description: `➕ I changed **${user}** nickname to **${nick}**!`}})).then(() => {
     if (!logChannel) {
         return
     } else {
