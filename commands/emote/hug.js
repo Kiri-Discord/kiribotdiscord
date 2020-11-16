@@ -24,28 +24,6 @@ exports.run = async (client, message, args) => {
       return
     }
 
-    const authorData = await hugSchema.findOne({
-      userId: authorId,
-      guildId,
-    })
-
-
-
-
-    await hugSchema.findOneAndUpdate(
-      {
-        userId: authorId,
-        guildId,
-      },
-      {
-        userId: authorId,
-        guildId,
-        lastGave: now,
-      },
-      {
-        upsert: true,
-      }
-    )
 
 
     const result = await hugSchema.findOneAndUpdate(

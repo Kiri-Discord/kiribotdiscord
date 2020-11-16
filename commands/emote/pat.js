@@ -24,30 +24,6 @@ exports.run = async (client, message, args) => {
       return
     }
 
-    const authorData = await patSchema.findOne({
-      userId: authorId,
-      guildId,
-    })
-
-
-
-
-    await patSchema.findOneAndUpdate(
-      {
-        userId: authorId,
-        guildId,
-      },
-      {
-        userId: authorId,
-        guildId,
-        lastGave: now,
-      },
-      {
-        upsert: true,
-      }
-    )
-
-
     const result = await patSchema.findOneAndUpdate(
       {
         userId: targetId,

@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
 		.setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 		message.channel.send(embed)
 	  })
-	  .catch(err => console.error(err))
+	.catch(err => console.error(err))
 
 };
 

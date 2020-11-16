@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
     .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png')
 
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    return message.channel.send(embed);
+    return message.channel.send(embed).catch(err => message.channel.send("i can't seem to be able to grab you a result for that :( here is a hug for now 🤗"));
 
     async function search(query) {
         const { body } = await request.get("https://www.googleapis.com/customsearch/v1").query({
