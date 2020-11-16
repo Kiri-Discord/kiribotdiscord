@@ -12,10 +12,12 @@ exports.run = async (client, message, args) => {
 
     if (!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send(`You do not have \`Manage Roles\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
 
-    if (!args[0] || !args[1]) return message.channel.send("Incorrect usage, It's `<username || user id> <role name || id>").then(m => m.delete({ timeout: 5000 }))
+    if (!args[0] || !args[1]) return message.reply("incorrect usage bruh, it's `<username || user id> <role name || id>").then(m => m.delete({ timeout: 5000 }))
 
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     const roleName = message.guild.roles.cache.find(r => (r.name === args[1].toString()) || (r.id === args[1].toString().replace(/[^\w\s]/gi, '')));
+
+    if (!roleName) return message.reply('p l e a s e provide a vaild role for me to add pls');
 
     const alreadyHasRole = member._roles.includes(roleName.id);
 
