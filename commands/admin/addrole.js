@@ -25,8 +25,13 @@ exports.run = async (client, message, args) => {
     .setDescription(`➕ Moderator **${message.author.tag}** has successfully given the role **${roleName.name}** to **${member.user.tag}**`)
     .setColor('f3f3f3')
 
-    member.roles.add(roleName).then(() => message.channel.send(embed)).catch(err => {
-        console.error(err);
+    member.roles.add(roleName).then(() => message.channel.send(embed)).then(() => {
+        if (!logChannel) {
+            return
+        } else {
+            return logChannel.send(rolelog);
+        }
+    }).catch(err => {
         message.channel.send("Ouch, i bumped by an error :( Can you check the role ID or my perms? That user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
     });
 
@@ -39,16 +44,6 @@ exports.run = async (client, message, args) => {
     .addField('User ID', member.id)
     .addField('Moderator', message.author)
 
-    if (!logChannel) {
-        return
-    } else {
- 
-
-        return logChannel.send(rolelog);
-
-    };
-
-    
 
 
     
