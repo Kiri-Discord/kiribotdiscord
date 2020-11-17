@@ -21,7 +21,7 @@ module.exports = async (client, message) => {
                 level: 0,
                 xp: client.leveling.gainedXp()
             })
-            newuserprof.save().catch(err => console.error(err))
+            return newuserprof.save().catch(err => console.error(err))
 
         }
 
