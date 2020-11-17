@@ -21,17 +21,18 @@ module.exports = async (client, message) => {
                 level: 0,
                 xp: client.leveling.gainedXp()
             })
-            return newuserprof.save().catch(err => console.error(err))
+            await newuserprof.save().catch(err => console.error(err))
 
+        } else {
+            userprof.updateOne({
+                $inc: {
+                    xp: client.leveling.gainedXp()
+                }, 
+            })
         }
 
     });
 
-    await userprof.updateOne({
-        $inc: {
-            xp: client.leveling.gainedXp()
-        }, 
-    })
 
     // Notice them if the user has leveled/ranked up.
     if (client.leveling.getLevel(userprof.xp) > userprof.level) {
