@@ -21,7 +21,7 @@ module.exports = async (client, message) => {
                 level: 0,
                 xp: client.leveling.gainedXp()
             })
-            await newuserprof.save().catch(err => console.error(err))
+            newuserprof.save().catch(err => console.error(err))
 
         } else {
             userprof.updateOne({
