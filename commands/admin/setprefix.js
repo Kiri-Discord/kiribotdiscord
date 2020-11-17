@@ -1,7 +1,3 @@
-const mongoose = require('mongoose');
-const Guild = require('../../model/guild');
-
-
 exports.run = async (client, message, args) => {
   const settings = await client.dbguilds.findOne({
     guildID: message.guild.id

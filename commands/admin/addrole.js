@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     const roleName = message.guild.roles.cache.find(r => (r.name === args[1].toString()) || (r.id === args[1].toString().replace(/[^\w\s]/gi, '')));
 
-    if (!roleName) return message.reply('p l e a s e provide a vaild role for me to add pls');
+    if (!roleName) return message.reply('p l e a s e provide a vaild role for me to add pls').then(m => m.delete({ timeout: 5000 }));
 
     const alreadyHasRole = member._roles.includes(roleName.id);
 

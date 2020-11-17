@@ -47,7 +47,7 @@ class Game {
                     time: 30000,
                     errors: ['time'],
                 }).catch(() => {
-                    this.msg.edit('This game has timed out.');
+                    this.msg.edit('this game has timed out lmao');
                 });
                 response = response.get(Array.from(response.keys()).toString()).content;
                 await fetch(`http://www.anagramica.com/all/:${this.letters}`)

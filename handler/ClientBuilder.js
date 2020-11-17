@@ -6,13 +6,15 @@ module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
     this.commands = new Collection(); 
-    this.cooldowns = new Collection(); // This will store your commands with cooldowns.
-    this.aliases = new Collection(); // This will store your alternative commands. Example: /server -> /serverinfo, /guild, /guildinfo
+    this.cooldowns = new Collection();
+    this.aliases = new Collection();
     this.config = require('../config.json');
     this.recent = new Set();
     this.dbguilds = require('../model/guild');
+    this.leveling = require("./LevelingUtil.js");
+    this.dbleveling = require("../model/leveling")
         /** 
-     * Array of trivia topics
+     * 
      * @type {Array<string>}
      */
     this.topics = [];
@@ -20,7 +22,7 @@ module.exports = class sefy extends Client {
     
   }
     /**
-   * Loads all available trivia topics
+   * 
    * @param {string} path 
    */
   loadTopics(path) {

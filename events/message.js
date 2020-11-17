@@ -13,9 +13,7 @@ module.exports = async (client, message) => {
 
   const prefix = setting.prefix;
 
-  // Prevent any chit-chats with other bots, or by himself. 
-
-  // If the user doesn't doing any to the bot, return it.
+  client.emit('experience', message);
   if(!message.content.toLowerCase().startsWith(prefix))return;
   
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -57,6 +55,8 @@ module.exports = async (client, message) => {
     timestamps.set(member.id, now);
     setTimeout(() => timestamps.delete(member.id), cooldownAmount); // This will delete the cooldown from the user by itself.
   }
+
+  
   
   try {
     if (!commandFile) return;
