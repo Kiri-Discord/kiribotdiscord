@@ -1,4 +1,4 @@
-const {Client, Collection, Guild, GuildMember} = require("discord.js");
+const {Client, Collection, Guild, GuildMember, Structures} = require("discord.js");
 const { readdir, readdirSync } = require('fs');
 const { join, resolve } = require('path');
 
