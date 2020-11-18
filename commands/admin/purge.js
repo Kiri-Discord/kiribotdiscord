@@ -5,6 +5,10 @@ exports.run = async (client, message, args) => {
         guildID: message.guild.id
     });
 
+    if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {
+      return message.channel.send(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
+    }
+
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const amount = parseInt(args[0]) + 1;
     if (isNaN(amount)) {
