@@ -40,7 +40,7 @@ module.exports = async (client, message) => {
             new: true,
         })
         userprof.level = client.leveling.getLevel(userprof.xp);
-        message.reply(`you are slowly escaping from being a introvert here in this guild and has reached level **${userprof.level}**!`).then(m => m.delete({ timeout: 5000 }));
+        message.reply(`you has reached level **${userprof.level}**! this msg will be deleted in 5 seconds.`).then(m => m.delete({ timeout: 5000 }));
     };
 
     // Generate a random timer. (2)
