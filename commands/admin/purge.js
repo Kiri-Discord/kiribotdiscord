@@ -5,9 +5,7 @@ exports.run = async (client, message, args) => {
         guildID: message.guild.id
     });
 
-    if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {
-        return message.reply(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
-    }
+    if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) return message.reply(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const amount = parseInt(args[0]) + 1;
@@ -16,7 +14,7 @@ exports.run = async (client, message, args) => {
     } else if (amount <= 1 || amount > 100) {
         return message.reply('you need to input a number between 1 and 99.');
     }
-    message.channel.bulkDelete(amount, true).catch(err => {
+    await message.channel.bulkDelete(amount, true).catch(err => {
         console.error(err);
         message.channel.send('there was an error when i tried to prune messages in this channel! can you check my perms?');
     });
