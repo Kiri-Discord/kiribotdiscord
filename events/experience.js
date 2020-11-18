@@ -9,29 +9,19 @@ module.exports = async (client, message) => {
     // If the user has an exp. cooldown, ignore it.
     if (recent.has(message.author.id)) return;
 
-    let userprof = await client.dbleveling.findOne({
+    let userprof = await client.dbleveling.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
-    }, (err, guild) => {
-        if (err) console.error(err)
-        if (!guild) {
-            const newuserprof = new client.dbleveling({
-                guildId: message.guild.id,
-                userId: message.author.id,
-                level: 0,
-                xp: client.leveling.gainedXp()
-            })
-            newuserprof.save().catch(err => console.error(err))
-
-        } else {
-            userprof.updateOne({
-                $inc: {
-                    xp: client.leveling.gainedXp()
-                }, 
-            })
-        }
-
-    });
+    }, {
+        guildId: message.guild.id,
+        userId: message.author.id,
+        $inc: {
+            xp: client.leveling.gainedXp()
+        }, 
+    }, {
+        upsert: true,
+        new: true,
+    })
 
 
     // Notice them if the user has leveled/ranked up.
@@ -50,11 +40,11 @@ module.exports = async (client, message) => {
             new: true,
         })
         userprof.level = client.leveling.getLevel(userprof.xp);
-        message.reply(`you are slowly escaping from being a introvert here in this guild and has reached level **${userprof.level} :D i don't have a leaderboard yet, maybe that's what i will be implemented in the future 😉\n*hopefully***`).then(m => m.delete({ timeout: 5000 }));
+        message.reply(`you are slowly escaping from being a introvert here in this guild and has reached level **${userprof.level}**!`).then(m => m.delete({ timeout: 5000 }));
     };
 
     // Generate a random timer. (2)
-    let randomTimer = getRandomInt(10, 20); // Around 60 - 75 seconds. You can change it.
+    let randomTimer = getRandomInt(40000, 50000); // Around 60 - 75 seconds. You can change it.
 
     // Add the user into the Set()
     recent.add(message.author.id);
