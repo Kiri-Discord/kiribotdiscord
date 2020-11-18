@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-	message.channel.send('since the beginning of time, there was **mommarosa**, the mother of all discord bots in the world. all the bots looks the same.\nbut then, \n\n\nsomething happened.\n\nthe end.');
+	message.channel.send('||mom, you there? mom?.. ||', {files: [{ attachment: "https://i.imgur.com/JmoFRU7.jpeg", name: "SPOILER_help.jpeg"}]});
 	
 };
 exports.help = {
