@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { Structures } = require('discord.js'); 
 class Game {
     constructor(message, client) {
         this.client = client;
