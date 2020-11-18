@@ -2,8 +2,7 @@ const Guild = require('../../model/guild');
 const mongoose = require('mongoose');
 
 exports.run = async (client, message, args) => {
-    if (!message.member.hasPermission('MANAGE_GUILD'))
-    return message.channel.send('You do not have \`Manage Server\` permission to use this command 😔').then(m => m.delete({timeout: 5000}));
+    if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('You do not have \`Manage Server\` permission to use this command 😔').then(m => m.delete({timeout: 5000}));
 
     const channel = await message.mentions.channels.first();
 
