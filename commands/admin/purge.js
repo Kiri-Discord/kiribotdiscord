@@ -6,7 +6,7 @@ exports.run = async (client, message, args) => {
     });
 
     if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {
-      return message.channel.send(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
+        return message.reply(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
     }
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
