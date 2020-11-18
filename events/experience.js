@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
     };
 
     // Generate a random timer. (2)
-    let randomTimer = getRandomInt(40000, 50000); // Around 60 - 75 seconds. You can change it.
+    let randomTimer = getRandomInt(80000, 90000); // Around 60 - 75 seconds. You can change it.
 
     // Add the user into the Set()
     recent.add(message.author.id);
