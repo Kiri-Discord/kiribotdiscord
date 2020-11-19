@@ -11,13 +11,13 @@ exports.run = async (client, message, args) => {
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
 
-    if (!member) return message.channel.send('I cannot find the specified member. Please mention a member in this Discord server.').then(m => m.delete({timeout: 5000}));
+    if (!member) return message.reply('I cannot find the specified member. Please mention a member in this Discord server.').then(m => m.delete({timeout: 5000}));
 
-    if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.send('You do not have \`Kick Members\` permission to use this command 😔').then(m => m.delete({timeout: 5000}));
+    if (!message.member.hasPermission('KICK_MEMBERS')) return message.reply("you don't have \`KICK_MEMBERS\` permission to use this command 😔").then(m => m.delete({timeout: 5000}));
 
-    if (!member.kickable) return message.channel.send('This user can\'t be kicked. It is either because they are a mod/admin, or their highest role is higher than mine 😔').then(m => m.delete({timeout: 5000}));
+    if (!member.kickable) return message.reply('this user can\'t be kicked. it\'s either because they are a mod/admin, or their highest role is higher than mine 😔').then(m => m.delete({timeout: 5000}));
 
-    if (message.member.roles.highest.position < member.roles.highest.position) return message.channel.send('You cannot kick someone with a higher role than you.').then(m => m.delete({timeout: 5000}));
+    if (message.member.roles.highest.position < member.roles.highest.position) return message.reply('you can\'t kick someone with a higher role than you!').then(m => m.delete({timeout: 5000}));
 
 
     let reason = 'No reason specified';
@@ -48,7 +48,7 @@ exports.run = async (client, message, args) => {
     .addField('Reason', reason);
 
 
-    member.send(`🔨You were \`kicked\` from **${message.guild.name}** \n**Reason**: ${reason}.`);
+    member.send(`🔨you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}.`);
 
     setTimeout(function(){
         member.kick({reason}) 

@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
       user = message.author;
     }
   } catch (error) {
-    return message.channel.send(`Ouch. Jezzz you gave me a wrong mention or user ID 😔`); 
+    return message.channel.send(`Ouch. Jezzz you gave me a wrong mention or user ID 😔`).then(m => m.delete({ timeout: 5000 }));
   }
 
   

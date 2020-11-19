@@ -22,12 +22,12 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "joke",
-	description: "Gives you a random joke",
+	description: "gives you a random joke",
 	usage: "joke",
 	example: "joke"
 };
   
 exports.conf = {
-	aliases: ["joke"],
+	aliases: [],
 	cooldown: 3
 };

@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const Guild = require('../../model/guild');
 
 exports.run = async (client, message, args) => {
 
@@ -18,8 +17,8 @@ exports.run = async (client, message, args) => {
     const embed = new Discord.MessageEmbed()
     .setColor('#DAF7A6')
     .setTimestamp(new Date())
-    .setDescription(`Use \`${prefix}help [command]\` to get more specific information about a command 😄`)
-    .setTitle("Hey, how can i help?")
+    .setDescription(`use \`${prefix}help [command]\` to get more specific information about a command 😄`)
+    .setTitle("hey, how can i help?")
     .setThumbnail(client.user.displayAvatarURL())
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
@@ -39,9 +38,9 @@ exports.run = async (client, message, args) => {
       let name = command.help.name; // The command name.
       let desc = command.help.description; // The command description.
       let cooldown = command.conf.cooldown + " second(s)"; // The command cooldown.
-      let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "No aliases provided.";
-      let usage = command.help.usage ? command.help.usage : "No usage provided.";
-      let example = command.help.example ? command.help.example : "No example provided.";
+      let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
+      let usage = command.help.usage ? command.help.usage : "no usage provided.";
+      let example = command.help.example ? command.help.example : "no example provided.";
       
       let embed = new Discord.MessageEmbed()
       .setColor('#DAF7A6')
@@ -49,11 +48,11 @@ exports.run = async (client, message, args) => {
       .setTitle(`${prefix}${name}`)
       .setDescription(desc)
       .setThumbnail(client.user.displayAvatarURL())
-      .setFooter("[] optional, <> required. Don't includes these things while typing a command.")
-      .addField("Cooldown", cooldown)
-      .addField("Aliases", aliases, true)
-      .addField("Usage", usage, true)
-      .addField("Example", example, true)
+      .setFooter("[] optional, <> required. don't includes these things while typing a command.")
+      .addField("cooldown", cooldown)
+      .addField("aliases", aliases, true)
+      .addField("usage", usage, true)
+      .addField("example", example, true)
       .setImage('https://i.imgur.com/nq0IYHX.png')
       
       return message.channel.send(embed);

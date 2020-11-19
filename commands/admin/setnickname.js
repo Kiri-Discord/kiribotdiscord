@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
         return logChannel.send(rolelog);
     }
   }).catch(err => {
-    return message.channel.send("Ouch, i bumped by an error :( Can you check my perms? That user also might have a higher role than me btw");
+    return message.reply("ouch, i bumped by an error :( can you check my perms? that user also might have a higher role than me btw");
   });
 
   const rolelog = new Discord.MessageEmbed()
@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "setnickname",
-  description: "Set a user nickname.",
+  description: "set a user nickname.",
   usage: "setnickname <@user> <nick>",
   example: "setnickname @bell#9999 hoisted"
 }

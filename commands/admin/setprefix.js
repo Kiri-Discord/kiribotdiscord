@@ -3,11 +3,11 @@ exports.run = async (client, message, args) => {
     guildID: message.guild.id
   });
 	if (!message.member.hasPermission('MANAGE_GUILD')) {
-        return message.channel.send('You do not have \`Manage Server\` permission to use this command 😔').then(m => m.delete({timeout: 10000}));
+        return message.reply('you don\'t have the \`MANAGE_GUILD\` permission to use this command 😔').then(m => m.delete({timeout: 10000}));
     };
 
   if (args.length < 1) {
-      return message.channel.send(`Your current guild prefix is \`${settings.prefix}\`. Use ${settings.prefix}setprefix <prefix> to change it.`).then(m => m.delete({timeout: 10000}));
+      return message.channel.send(`my current guild prefix here is \`${settings.prefix}\`. use ${settings.prefix}setprefix <prefix> to change it.`).then(m => m.delete({timeout: 10000}));
   };
 
   await client.dbguilds.findOneAndUpdate({
@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
   .catch(err => console.error(err));
 
 
-  return message.channel.send(`Your guild prefix has been updated to \`${args[0]}\``);
+  return message.channel.send(`my current guild prefix here has been updated to \`${args[0]}\``);
 
     
 };
@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "setprefix",
-  description: "Change my prefix",
+  description: "change my prefix\npretty self-explanatory huh :D",
   usage: `setprefix <prefix>`,
   example: `setprefix s!`
 }

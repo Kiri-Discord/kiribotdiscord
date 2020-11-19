@@ -21,10 +21,10 @@ exports.run = async (client, message, args) => {
 
     const alreadyHasRole = member._roles.includes(roleName.id);
 
-    if (alreadyHasRole) return message.channel.send('that user already has that role!').then(m => m.delete({ timeout: 5000 }));
+    if (alreadyHasRole) return message.reply('that user already has that role!').then(m => m.delete({ timeout: 5000 }));
 
     const embed = new MessageEmbed()
-    .setDescription(`➕ Moderator **${message.author.tag}** has successfully given the role **${roleName.name}** to **${member.user.tag}**`)
+    .setDescription(`☑️ successfully given the role **${roleName.name}** to **${member.user.tag}**`)
     .setColor('f3f3f3')
 
     member.roles.add(roleName).then(() => message.channel.send(embed)).then(() => {
@@ -34,7 +34,7 @@ exports.run = async (client, message, args) => {
             return logChannel.send(rolelog);
         }
     }).catch(err => {
-        message.channel.send("Ouch, i bumped by an error :( Can you check the role ID or my perms? That user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
+        message.reply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
     });
 
     const rolelog = new MessageEmbed()
