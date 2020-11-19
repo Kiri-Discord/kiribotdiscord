@@ -1,21 +1,7 @@
 exports.run = async (client, message, args) => {
-	message.channel.send(
-		`.  。　　　since the beginning of time, there was **mommarosa**,•　    　ﾟ　　。
-	　　      。。　.　　　　　。　　   。　.      。。　.　　　　　。　　   。　.	
-		。。　.　　　　　。　　   。　.      。。　.　　　　　。　　   。　.	
-		.　　　.　　the mother of all discord bots in the world.　  　　.　　　　　。　　   。　.
+	message.channel.send('since the beginning of time, there was **mommarosa**, the mother of all discord bots in the world. all the bots looks the same.\nbut then, \n\n\nsomething happened.\n\nthe end.');
 	
-		but then,　.　　。。　　。　　   。　.    something happened.　    .    •
-   
-		•            . 　 。　.
-		。。　.　　　　　。　　  *the end*　.　　　　　。　　   。　.	
-		。。　.　　　　　。　　   。　.  。。　.　　　　　。　　   。　.
-  　 　　。　　　　　　ﾟ　　　.　　　　　.
-  ,　　　||*mom, you there? mom?..*||      。`, {files: [{ attachment: "https://i.imgur.com/JmoFRU7.jpeg", name: "SPOILER_help.jpeg"}]}
-
-	)
-},
-  
+};
 exports.help = {
 	name: "mom",
 	description: "more info about my mom :)",
@@ -24,7 +10,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["mom"],
+	aliases: [],
 	cooldown: 2
 };
-  

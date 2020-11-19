@@ -1,15 +1,15 @@
 const Discord = require("discord.js")
 const { Random } = require("something-random-on-discord")
 const random = new Random();
-const patSchema = require('../../model/pat')
+const punchSchema = require('../../model/punch')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("pat")
+    let data = await random.getAnimeImgURL("punch")
 
     const target = message.mentions.users.first()
     if (!target) {
-      message.reply("you can't just pat **air** :( please mention somebody to pat pls")
+      message.reply("you can't just punch *air* :( please mention somebody to punch pls")
       return
     }
 
@@ -19,12 +19,14 @@ exports.run = async (client, message, args) => {
     const authorId = message.author.id
     const now = new Date()
 
-    if (targetId === authorId) {
-      message.reply('**pat pat pat pat pat**')
+    if (targetId === client.user.id) {
+      message.reply('you truly are the lowest scum in history')
       return
     }
 
-    const result = await patSchema.findOneAndUpdate(
+
+
+    const result = await punchSchema.findOneAndUpdate(
       {
         userId: targetId,
         guildId,
@@ -44,19 +46,18 @@ exports.run = async (client, message, args) => {
 
     const amount = result.received
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> pat <@${targetId}>! They now have been pat ${amount} time(s)`) 
+    .setDescription(`<@${message.author.id}> punch <@${targetId}>! They now have been punched ${amount} time(s)`) 
     .setImage(data)
 
     message.channel.send(embed)
 }
-
 exports.help = {
-    name: "pat",
-    description: "this is super duper self-explanatory",
-    usage: "pat <@mention>",
-    example: "pat @Somebody"
+    name: "punch",
+    description: "feeling triggered? do this.\ni won't judge you tho 😏",
+    usage: "punch",
+    example: "punch"
 };
 
 exports.conf = {

@@ -1,10 +1,22 @@
 const Discord = require("discord.js");
 
 module.exports = async (client, message) => {
-    let recent = client.recent; // new Set();
+
+    const setting = await client.dbguilds.findOne({
+        guildID: message.guild.id
+    }); 
+    
+    const prefix = setting.prefix;
+
+    let recent = client.recent; 
 
     // Ignore the bot.
     if (message.author.bot || message.author === client.user) return;
+
+    
+    // Ignore cmd with prefix
+    if(message.content.toLowerCase().startsWith(prefix)) return;
+    
 
     // If the user has an exp. cooldown, ignore it.
     if (recent.has(message.author.id)) return;
@@ -40,11 +52,11 @@ module.exports = async (client, message) => {
             new: true,
         })
         userprof.level = client.leveling.getLevel(userprof.xp);
-        message.reply(`you has reached level **${userprof.level}**! this msg will be deleted in 5 seconds.`).then(m => m.delete({ timeout: 5000 }));
+        message.reply(`you has reached level **${userprof.level}**! i will disappear from this convo in a sec..`).then(m => m.delete({ timeout: 5000 }));
     };
 
     // Generate a random timer. (2)
-    let randomTimer = getRandomInt(80000, 90000); // Around 60 - 75 seconds. You can change it.
+    let randomTimer = getRandomInt(65000, 80000); // Around 60 - 75 seconds. You can change it.
 
     // Add the user into the Set()
     recent.add(message.author.id);

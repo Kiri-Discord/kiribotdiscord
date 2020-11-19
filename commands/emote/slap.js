@@ -1,15 +1,15 @@
 const Discord = require("discord.js")
 const { Random } = require("something-random-on-discord")
 const random = new Random();
-const patSchema = require('../../model/pat')
+const slapSchema = require('../../model/slap')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("pat")
+    let data = await random.getAnimeImgURL("slap")
 
     const target = message.mentions.users.first()
     if (!target) {
-      message.reply("you can't just pat **air** :( please mention somebody to pat pls")
+      message.reply("you can't just slap *air* :( please mention somebody to slap pls")
       return
     }
 
@@ -19,12 +19,14 @@ exports.run = async (client, message, args) => {
     const authorId = message.author.id
     const now = new Date()
 
-    if (targetId === authorId) {
-      message.reply('**pat pat pat pat pat**')
+    if (targetId === client.user.id) {
+      message.reply('what did you say?')
       return
     }
 
-    const result = await patSchema.findOneAndUpdate(
+
+
+    const result = await slapSchema.findOneAndUpdate(
       {
         userId: targetId,
         guildId,
@@ -44,19 +46,18 @@ exports.run = async (client, message, args) => {
 
     const amount = result.received
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> pat <@${targetId}>! They now have been pat ${amount} time(s)`) 
+    .setDescription(`<@${message.author.id}> slap <@${targetId}>! They now have been slapped ${amount} time(s)`) 
     .setImage(data)
 
     message.channel.send(embed)
 }
-
 exports.help = {
-    name: "pat",
-    description: "this is super duper self-explanatory",
-    usage: "pat <@mention>",
-    example: "pat @Somebody"
+    name: "slap",
+    description: "slap someone with your best",
+    usage: "slap",
+    example: "slap"
 };
 
 exports.conf = {

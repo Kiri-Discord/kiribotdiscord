@@ -47,13 +47,9 @@ exports.run = async (client, message, args) => {
     const amount = result.received
 
     const embed = new Discord.MessageEmbed() 
-    .setColor("#ff9900") 
+    .setColor("RANDOM") 
     .setDescription(`<@${message.author.id}> hugged <@${targetId}>! They now have been hugged ${amount} time(s)`) 
     .setImage(data)
-    .setTimestamp(new Date())
-    .setFooter(client.user.tag, client.user.displayAvatarURL())
-    .setAuthor(message.author.tag,  message.author.displayAvatarURL({ dynamic: true }))
-
 
     message.channel.send(embed)
 }

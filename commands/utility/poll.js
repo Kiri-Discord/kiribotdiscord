@@ -7,10 +7,12 @@ exports.run = async (client, message, args) => {
         let pollDescription = args.slice(1).join(' ');
 
         let embedPoll = new Discord.MessageEmbed()
-        .setTitle(`${message.author.tag} started a new poll!`)
+        .setTitle(`${message.member.displayName} started a new poll!`)
         .setDescription(pollDescription)
         .setColor('YELLOW')
         .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+        .setTimestamp(new Date())
+
         let msgEmbed = await pollChannel.send(embedPoll);
         await msgEmbed.react('👍')
         await msgEmbed.react('👎')

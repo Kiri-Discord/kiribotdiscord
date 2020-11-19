@@ -3,12 +3,10 @@ const {loadImage, createCanvas} = require("canvas");
 const request = require("node-superfetch");
 
 exports.run = async (client, message, args) => {
-    // Let's try with drag-drop content, first!
     let attachments = message.attachments.array();
     if (attachments.length === 0) return message.reply("please upload some images!");
     else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
 
- 
     var level = 50; 
 
     try {
@@ -22,11 +20,11 @@ exports.run = async (client, message, args) => {
         await fishEye(ctx, level, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer();
         await message.channel.stopTyping(true);
-        if (Buffer.byteLength(attachment) > 8e+6) return message.channel.send("The file is way too big for me to upload it.");
+        if (Buffer.byteLength(attachment) > 8e+6) return message.channel.send("the file is way too big for me to upload lmao");
         return message.channel.send({files: [{attachment, name: "fish-eye.png"}] });
     } catch (error) {
         await message.channel.stopTyping(true);
-        return message.channel.send(`An error occured: \`${error.message}\`.`); 
+        return message.channel.send(`sorry :( i got an error. try again later!`); 
     }
 }
 
@@ -38,8 +36,8 @@ exports.help = {
 };
 
 exports.conf = {
-    aliases: ["fisheye","fish-eye"],
-    cooldown: 10
+    aliases: ["fish-eye"],
+    cooldown: 6
 }
 
 async function fishEye(ctx, level, x, y, width, height) {
