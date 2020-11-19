@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
 	try {
         message.channel.startTyping(true); 
         let distort_level = args[0];
-        if (isNaN(distort_level)) return message.reply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``);
+        if (isNaN(distort_level)) return message.reply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``).then(() => message.channel.stopTyping(true));
         const { body } = await request.get(attachments[0].url);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
