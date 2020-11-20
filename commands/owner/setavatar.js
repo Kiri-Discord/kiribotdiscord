@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "setavatar",
-	description: "change the way i look. :sad:",
+	description: "change the way i look. 😔",
 	usage: "setavatar <image attachment>",
 	example: "setavatar <insert random image here>"
 };
