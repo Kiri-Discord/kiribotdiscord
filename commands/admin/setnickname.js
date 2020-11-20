@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
   }
   
   let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
-  if (!user) return message.channel.send("p l e a s e mention the user properly or provide me with a valid ID :V");
+  if (!user) return message.reply("p l e a s e mention the user properly or provide me with a valid ID :V");
   let member = message.guild.members.cache.get(user.id);
   
   let nick = args.slice(1).join(" ");
