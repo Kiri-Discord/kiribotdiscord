@@ -65,10 +65,6 @@ exports.run = async (client, message, args) => {
     );
   });
 };
-  
-
-
-  
 exports.help = {
 	name: "trivia",
 	description: "compete against your friends in a game of trivia (anyone can answer)\nif no topic is given, a random one will be chosen :)\nthe question will expire after 15 seconds.",
