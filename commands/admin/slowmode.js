@@ -1,4 +1,5 @@
 const ms = require("ms");
+const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
   if (!message.member.permissions.any(["ADMINISTRATOR", "MANAGE_CHANNELS"])) {
