@@ -13,6 +13,7 @@ module.exports = class sefy extends Client {
     this.dbguilds = require('../model/guild');
     this.leveling = require("./LevelingUtil.js");
     this.dbleveling = require("../model/leveling")
+    this.dbverify = require("../model/verify")
         /** 
      * 
      * @type {Array<string>}

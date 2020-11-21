@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
     }).sort([["xp", "descending"]]).exec((err, res) => {
         if (err) {
             console.log(err)
-            return message.channel.send("there was an error");
+            return message.channel.send("There was an error while executing this command!");
         }
         let embed = new MessageEmbed()
         .setTitle(`My leveling leaderboard for ${message.guild.name}:`)
@@ -62,6 +62,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["lb"],
+	aliases: ["lvb"],
 	cooldown: 2
 };

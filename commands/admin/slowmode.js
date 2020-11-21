@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
   .addField('Moderator', message.author)
   
   await channel.setRateLimitPerUser(toSecond).then(() => {
-    message.channel.send({embed: {color: "f3f3f3", description: `this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.`}});
+    message.channel.send({embed: {color: "f3f3f3", description: `☑️ this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.`}});
   }).then(() => {
     if (!logChannel) {
         return
