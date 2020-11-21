@@ -38,13 +38,13 @@ exports.run = async (client, message, args) => {
   .addField('Moderator', message.author)
   
   await channel.setRateLimitPerUser(toSecond).then(() => {
+    message.channel.send({embed: {color: "f3f3f3", description: `this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.`}});
+  }).then(() => {
     if (!logChannel) {
         return
     } else {
         return logChannel.send(rolelog);
     }
-  }).then(() => {
-    message.channel.send({embed: {color: "f3f3f3", description: `this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.`}});
   }).catch(err => {
     return message.reply("ouch, i bumped by an error :( can you check my perms?");
   });
