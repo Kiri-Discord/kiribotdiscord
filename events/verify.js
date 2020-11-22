@@ -35,10 +35,11 @@ module.exports = async (client, message) => {
             if (!message.author.bot) {
                 let code = verifydb.code;
                 if (message.content !== `${code}`) {
-                    message.delete()
+                    await message.delete();
                     message.reply("Are you sure that it is the right code?").then(i => i.delete({timeout: 10000}));
                 }
                 if (message.content === `${code}`) {
+                    await message.delete();
                     await client.dbverify.findOneAndDelete({
                         guildID: message.guild.id,
                         userID: message.author.id,
