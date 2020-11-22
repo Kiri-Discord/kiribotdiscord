@@ -1,16 +1,19 @@
 const Discord = require("discord.js");
 
 module.exports = async (client, member) => {
+
+  if (member.user.bot) return;
+
   const setting = await client.dbguilds.findOne({
     guildID: member.guild.id
-  }); 
+  });
 
-  
-  if (member.user.bot) return;
-  // If the user was a robot, return it.
+  const alreadyHasRole = member._roles.includes(setting.verifyRole);
+
+  if (alreadyHasRole) return;
   
   let number = randomInteger(100000, 1000000);
-  // The number will be shuffled from the range 100K - 1M
+
   let verifyChannel = member.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
   
   if (!verifyChannel) return;
