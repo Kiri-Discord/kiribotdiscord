@@ -9,10 +9,10 @@ exports.run = async (client, message, args) => {
 
 
 exports.help = {
-	name: "waifugen",
-	description: "base on bell's *homework* folder, i will generate a waifu for you 😂\n*no clickbait*",
-	usage: "waifugen",
-	example: "waifugen"
+	name: "freepfp",
+	description: "base on bell's *homework* folder, i will generate a pfp for you 😂\n*no clickbait*",
+	usage: "freepfp",
+	example: "freepfp"
 };
   
 exports.conf = {
