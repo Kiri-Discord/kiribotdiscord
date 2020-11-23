@@ -4,7 +4,7 @@ const { MessageAttachment } = require('discord.js')
 exports.run = async (client, message, args) => {
     let rank;
 
-    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]).user || message.author;
+    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
 
     let mention = message.guild.members.cache.get(user.id);
 
@@ -44,14 +44,14 @@ exports.run = async (client, message, args) => {
     message.channel.startTyping(true);
 
     const rankboard = new canvacord.Rank()
-    .setAvatar(user.displayAvatarURL({size: 1024, dynamic: false, format: 'png'}))
+    .setAvatar(mention.user.displayAvatarURL({size: 1024, dynamic: false, format: 'png'}))
     .setCurrentXP(target.xp)
     .setRequiredXP(neededXP)
-    .setStatus(user.presence.status)
+    .setStatus(mention.user.presence.status)
     .setLevel(target.level)
     .setRank(rank)
-    .setDiscriminator(user.discriminator)
-    .setUsername(user.username)
+    .setDiscriminator(mention.user.discriminator)
+    .setUsername(mention.user.username)
     .setProgressBar("#e6e6ff", "COLOR")
     .setBackground("IMAGE", "https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg")
     
