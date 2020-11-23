@@ -57,7 +57,7 @@ exports.run = async (client, message, args) => {
     
     rankboard.build().then(data => {
       message.channel.stopTyping(true);
-      message.channel.send(`*behold, the rank card for* **${user.username}**!`, {files: [{ attachment: data, name: "rank.png"}]})
+      message.channel.send(`*behold, the rank card for* **${mention.user.username}**!`, {files: [{ attachment: data, name: "rank.png"}]})
     })
 }
 
