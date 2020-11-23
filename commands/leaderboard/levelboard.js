@@ -47,7 +47,7 @@ exports.run = async (client, message, args) => {
                             if (err) console.error(err)
                         });
                 } else {
-                    embed.addField(`${i + 1}. ${member.user.username}`, `Level: ${res[i].level}, XP: ${res[i].xp}`);
+                    embed.addField(`✨ ${i + 1}. ${member.user.username}`, `Level: ${res[i].level}, XP: ${res[i].xp}`);
                 }
             }
         }
