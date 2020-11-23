@@ -1,6 +1,6 @@
 const { MessageCollector } = require('discord.js')
 exports.run = async (client, message, args) => {
-    if (!client.config.owners.includes(message.author.id)) return message.channel.send('only coco or bell can execute this command!');
+    if (!client.config.owners.includes(message.author.id)) return message.message.reply('only coco or bell can execute this command!');
     const yes = "y";
     let attachments = message.attachments.array()
     if (attachments.length === 0) return message.reply("please upload some images!");

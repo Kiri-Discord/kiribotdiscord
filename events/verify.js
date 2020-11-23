@@ -16,6 +16,7 @@ module.exports = async (client, message) => {
   try {
     if (message.channel.id === setting.verifyChannelID) {
         if (message.content.startsWith("resend")) {
+          if (!verifydb) return;
             let code = verifydb.code;
             await message.delete();
             let verifyChannel = message.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
@@ -32,6 +33,7 @@ module.exports = async (client, message) => {
             return message.reply("Check your DM.").then(i => i.delete({timeout: 10000}));
         }
         if (!alreadyHasRole) {
+          if (!verifydb) return;
             if (!message.author.bot) {
                 let code = verifydb.code;
                 if (message.content !== `${code}`) {
@@ -55,7 +57,7 @@ module.exports = async (client, message) => {
         }
     }
   } catch (error) {
-    return 
+    return
   }
 }
 

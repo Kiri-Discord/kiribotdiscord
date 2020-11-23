@@ -23,6 +23,7 @@ exports.run = async (client, message, args) => {
   // If it's not animated, it will result as a normal image format.
   
   const embed = new Discord.MessageEmbed()
+  .setTimestamp(new Date())
   .setTitle(`${user.tag} avatar`)
   .setDescription(`[**Avatar URL**](${avatar})`)
   .setColor('#DAF7A6')

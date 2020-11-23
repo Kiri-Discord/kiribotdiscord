@@ -1,6 +1,6 @@
 const request = require('node-superfetch');
 const { createCanvas, loadImage } = require('canvas');
-const canvasFuncs = require('../../handler/canvas.js');
+const canvasFuncs = require('../../util/canvas.js');
 exports.run = async (client, message, args) => {
   let attachments = message.attachments.array();
   if (attachments.length === 0) return message.reply("please upload some images!");

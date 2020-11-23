@@ -1,9 +1,7 @@
 
-const Discord = require("discord.js");
-const mongoose = require('mongoose');
 const sefy = require("./handler/ClientBuilder.js");
 const client = new sefy();
-const mongo = require('./handler/mongo.js');
+const mongo = require('./util/mongo.js');
 global.__basedir = __dirname;
 
 require("./handler/module.js")(client);
