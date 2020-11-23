@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+
 exports.run = async (client, message, args) => {
     const num = Math.floor(Math.random() * 100000);
     const embed = new Discord.MessageEmbed().setColor('#DAF7A6').setTimestamp(new Date()).setDescription(`powered by bell's homework folder`).setTitle("i created this..").setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true })).setImage(`https://www.thiswaifudoesnotexist.net/example-${num}.jpg`)
