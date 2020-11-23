@@ -4,7 +4,7 @@ const { MessageAttachment } = require('discord.js')
 exports.run = async (client, message, args) => {
     let rank;
 
-    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
+    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]).user|| message.author;
 
     let mention = message.guild.members.cache.get(user.id);
 
