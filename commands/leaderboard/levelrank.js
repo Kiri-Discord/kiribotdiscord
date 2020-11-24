@@ -1,5 +1,4 @@
 const canvacord = require('canvacord');
-const { MessageAttachment } = require('discord.js')
 
 exports.run = async (client, message, args) => {
     let rank;

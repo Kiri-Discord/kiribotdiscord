@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 module.exports = {
     init: () => {
         const dbOptions = {
+            keepAlive: true,
             useNewUrlParser: true,
             useUnifiedTopology: true,
             autoIndex: false,
