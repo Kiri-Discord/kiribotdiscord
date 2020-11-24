@@ -5,7 +5,15 @@ module.exports = async (client, member) => {
         userID: member.user.id,
     }, (err) => {
         if (err) console.error(err)
-    });   
+    });
+
+
+    await client.dbleveling.findOneAndDelete({
+        guildId: member.guild.id,
+        userId: member.user.id,
+    }, (err) => {
+        if (err) console.error(err)
+    }); 
     
 
 }
