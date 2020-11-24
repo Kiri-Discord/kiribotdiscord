@@ -65,10 +65,8 @@ exports.run = async (client, message, args) => {
       "link",
       "normal",
       "ritual",
-      "spell",
       "synchro",
       "token",
-      "trap",
       "xyz",
     ]
     const list2 = [
@@ -159,13 +157,13 @@ exports.run = async (client, message, args) => {
 
 
 exports.help = {
-	name: "yugiohgen",
+	name: "yugiohrank",
 	description: "generate yours or other's yugioh card 😄",
-	usage: "yugiohgen [@member]",
-	example: "yugiohgen @bell"
+	usage: "yugiohrank [@member]",
+	example: "yugiohrank @bell"
 };
   
 exports.conf = {
-	aliases: [],
+	aliases: ["yrank"],
 	cooldown: 5
 };
