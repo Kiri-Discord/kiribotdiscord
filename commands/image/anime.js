@@ -3,8 +3,12 @@ const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
     const anime = randomanime.anime();
-    const embed = new Discord.MessageEmbed().setColor('#DAF7A6').setTimestamp(new Date()).setDescription(`powered by bell's homework folder`).setTitle("i found this..").setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true })).setImage(anime)
-    message.channel.send(embed)
+	const embed = new Discord.MessageEmbed()
+	.setDescription(`*powered by bell's homework folder*`)
+	.setImage(anime)
+	.setColor('RANDOM')
+
+	await message.channel.send(embed)
 }
 
 exports.help = {

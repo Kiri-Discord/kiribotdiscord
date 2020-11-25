@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-
+const Pagination = require('discord-paginationembed');
 exports.run = async (client, message, args) => {
 
   const setting = await client.dbguilds.findOne({
@@ -9,26 +9,30 @@ exports.run = async (client, message, args) => {
   const prefix = setting.prefix;
   
   if (!args[0]) {
-    // This will turn the folder (category) into array.
     let module = client.helps.array();
-    
-    // This will hide a folder from display that includes "hide: true" in their module.json
+
     if (!client.config.owners.includes(message.author.id)) module = client.helps.array().filter(x => !x.hide);
-    const embed = new Discord.MessageEmbed()
-    .setColor('#DAF7A6')
-    .setTimestamp(new Date())
-    .setDescription(`use \`${prefix}help [command]\` to get more specific information about a command 😄`)
-    .setTitle("hey, how can i help?")
+
+    const embeds = [];
+    for (const mod of module) embeds.push(new Discord.MessageEmbed().addField(`${mod.name}`, mod.cmds.map(x => `\`${x}\``).join(" | ")));
+
+    new Pagination.Embeds()
+    .setArray(embeds)
+    .setAuthorizedUsers([message.author.id])
+    .setPageIndicator(true)
+    .setChannel(message.channel)
+    .setPage(3)
     .setThumbnail(client.user.displayAvatarURL())
-    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
-    
-    for (const mod of module) {
-      // You can change the .join(" | ") to commas, dots or every symbol.
-      embed.addField(`${mod.name}`, mod.cmds.map(x => `\`${x}\``).join(" | "));
-    }
-    
-    return message.channel.send(embed);
+    .setTitle('hey, how can i help?')
+    .setDescription(`hi, i'm Sefy!\nuse \`${prefix}help [command]\` to get more specific information about a command 😄\n\n*btw dont abuse this or you will get a huge* **cooldown** *from me* :no_mouth:`)
+    .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+    .setFooter(client.user.tag, client.user.displayAvatarURL())
+    .setColor('#ffe6cc')
+    .setTimestamp(new Date())
+    .setDeleteOnTimeout(true)
+    .setImage('https://i.ibb.co/h9jQkk0/christmas3.jpg')
+    .build();
+
   } else {
     let cmd = args[0];
     
@@ -43,8 +47,9 @@ exports.run = async (client, message, args) => {
       let example = command.help.example ? command.help.example : "no example provided.";
       
       let embed = new Discord.MessageEmbed()
-      .setColor('#DAF7A6')
-      .setAuthor(client.user.tag, client.user.displayAvatarURL())
+      .setColor('#ffe6cc')
+      .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+      .setFooter(client.user.tag, client.user.displayAvatarURL())
       .setTitle(`${prefix}${name}`)
       .setDescription(desc)
       .setThumbnail(client.user.displayAvatarURL())
@@ -53,7 +58,6 @@ exports.run = async (client, message, args) => {
       .addField("aliases", aliases, true)
       .addField("usage", usage, true)
       .addField("example", example, true)
-      .setImage('https://i.imgur.com/nq0IYHX.png')
       
       return message.channel.send(embed);
     } else {

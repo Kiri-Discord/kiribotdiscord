@@ -29,11 +29,11 @@ exports.run = async (client, message, args) => {
   // Get user answer
   const questionEmbed = new MessageEmbed()
     .setColor('#DAF7A6')
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
+    .setFooter(client.user.tag, client.user.displayAvatarURL())
     .setTitle('Trivia')
     .addField('Topic', `\`${topic}\``)
     .addField('Question', `${question}`)
-    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+    .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setTimestamp()
     .setColor('RANDOM')
   const url = question.match(/\bhttps?:\/\/\S+/gi);
@@ -52,9 +52,9 @@ exports.run = async (client, message, args) => {
   collector.on('end', () => {
     const answerEmbed = new MessageEmbed()
       .setColor('#DAF7A6')
-      .setAuthor(client.user.tag, client.user.displayAvatarURL())
+      .setFooter(client.user.tag, client.user.displayAvatarURL())
       .setTitle('Trivia')
-      .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+      .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setTimestamp()
       .setColor(message.guild.me.displayHexColor);
     if (winner) 
