@@ -87,7 +87,7 @@ class Game {
 }
 
 exports.run = async (client, message, args) => {
-    const game = new Game(message);
+    const game = new Game(client, message);
     game.init();
 },
 
