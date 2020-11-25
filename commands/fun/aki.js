@@ -3,7 +3,7 @@ const region = 'en';
 const { MessageEmbed } = require('discord.js');
 
 class Game {
-    constructor(message) {
+    constructor(client, message) {
         this.message = message;
         this.aki = new Aki(region);
         this.client = client
