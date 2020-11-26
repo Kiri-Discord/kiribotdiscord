@@ -5,6 +5,10 @@ module.exports = async (client, message) => {
 
   if (message.author.bot || message.author === client.user) return;
 
+  const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
+
+  const duh = staffsv.emojis.cache.find(emoji => emoji.name === 'duh');
+
   if (message.channel.type === "dm") return;
 
   const setting = await client.dbguilds.findOne({
@@ -12,6 +16,11 @@ module.exports = async (client, message) => {
   });
   const prefix = setting.prefix
 
+    // Checks if the bot was mentioned, with no message after it, returns the prefix.
+  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
+  if (message.content.match(prefixMention)) {
+    return message.channel.send(`huh? oh btw my prefix on this guild is \`${prefix}\`, cya ${duh}`);
+  }
 
   client.emit('verify', message);
 
