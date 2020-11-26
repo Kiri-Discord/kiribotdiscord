@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
   }).sort({
     xp: -1
   })
-  if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( \n\n*try chatting more to level up :D`}});
+  if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( try chatting more to level up :D`}});
 
   var limit = 15;
 
@@ -59,7 +59,7 @@ exports.run = async (client, message, args) => {
   .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
   .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
   .setDescription(`${arr.join("\n")}`)
-  .setFooter(`Page: ${page} of ${lastpage} | you are ranked ${rank} in this guild :)`)
+  .setFooter(`page: ${page} of ${lastpage} | you are ranked ${rank} in this guild :)`)
   return message.channel.send(embed);
 }
 

@@ -1,3 +1,8 @@
+const hugSchema = require('../model/hug')
+const punchSchema = require('../model/punch')
+const slapSchema = require('../model/slap')
+const patSchema = require('../model/pat')
+
 module.exports = async (client, member) => {
 
     await client.dbverify.findOneAndDelete({
@@ -13,7 +18,33 @@ module.exports = async (client, member) => {
         userId: member.user.id,
     }, (err) => {
         if (err) console.error(err)
-    }); 
-    
+    });
 
+    await hugSchema.findOneAndDelete({
+        userId: member.user.id,
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await punchSchema.findOneAndDelete({
+        userId: member.user.id,
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await slapSchema.findOneAndDelete({
+        userId: member.user.id,
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await patSchema.findOneAndDelete({
+        userId: member.user.id,
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
 }

@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send({files: [{attachment, name: "deep-fried.png"}] });
     } catch (error) {
         await message.channel.stopTyping(true);
-        return message.channel.send(`sorry :( i got an error. try again later!`); 
+        return message.channel.send(`sorry :( i got an error. try again later! can you check the image files?`); 
     }
 
 }

@@ -13,6 +13,8 @@ exports.run = async (client, message, args) => {
       return
     }
 
+    if (target.bot) return message.reply("you can't slap that bot, sorry :(")
+
     const { guild } = message
     const guildId = guild.id
     const targetId = target.id
