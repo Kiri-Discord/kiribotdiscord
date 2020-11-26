@@ -24,6 +24,8 @@ exports.run = async (client, message, args) => {
       xp: -1
     })
 
+    if (!result) return message.reply("this guild doesn't have any leveling data yet. chat more to show yours :)");
+
     for (let counter = 0; counter < result.length; ++counter) {
 
       let member = message.guild.members.cache.get(result[counter].userId)

@@ -1,67 +1,76 @@
-const { MessageEmbed } = require('discord.js')
+const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
+  let rank;
+  let data = await client.dbleveling.find({
+    guildId: message.guild.id,
+  }).sort({
+    xp: -1
+  })
+  if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( \n\n*try chatting more to level up :D`}});
 
-    await client.dbleveling.find({
+  var limit = 10;
+
+  let lastpage = Math.ceil(Object.keys(data).length / limit);
+  let page = parseInt(args[0]);
+  if (!page) page = 1;
+  if (page > lastpage) return message.channel.send({embed: {color: "f3f3f3", description: `❌ sorry, i have no data for page \`${page}\` :(`}});
+
+  let frompages = limit * (page - 1);
+  let pageslimit = 15 * page;
+
+  let list = Object.entries(data).sort((a, b) => b[1].xp - a[1].xp).slice(frompages, pageslimit);
+  let arr = [];
+
+  for (var i in list) {
+    let member = message.guild.members.cache.get(list[i][1].userId)
+    if (!member) {
+      client.dbleveling.findOneAndDelete({
+        userId: list[i][1].userId,
         guildId: message.guild.id,
-    }).sort([["xp", "descending"]]).exec((err, res) => {
-        if (err) {
-            console.log(err)
-            return message.channel.send("There was an error while executing this command!");
-        }
-        let embed = new MessageEmbed()
-        .setTitle(`My leveling leaderboard for ${message.guild.name}:`)
-        .setThumbnail(message.guild.iconURL())
-        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-        .setAuthor(client.user.tag, client.user.displayAvatarURL())
-        .setDescription(`the higher level you get, the harder it will take for you to level up 😏\ni will only show the top 10 users with the highest rank.`)
-        .setColor('#DAF7A6')
-        .setTimestamp(new Date())
+      }, (err) => {
+        if (err) console.error(err)
+      });
+      arr.push(`✨ \`${i * 1 + 1 + frompages}\` ||Left user|| — XP: **${list[i][1].xp}** | Level: **${list[i][1].level}**`);
+    } else {
+      arr.push(`✨ \`${i * 1 + 1 + frompages}\` **${member.user.username}** — XP: **${list[i][1].xp}** | Level: **${list[i][1].level}**`);
+    }
+  };
 
-        if (res.length === 0) {
-            embed.setColor("RED")
-            embed.setTitle("No leveling data found :(")
-            embed.setDescription("please type in chat to level up :D")
-        } else if (res.length < 10) {
-            for (i = 0; i < res.length; i++) {
-                let member = message.guild.members.cache.get(res[i].userId) || "Left user"
-                if (member === "Left user")  {
-                        client.dbleveling.findOneAndDelete({
-                            userId: res[i].userId,
-                            guildId: message.guild.id,
-                        }, (err) => {
-                            if (err) console.error(err)
-                        });
-                } else {
-                    embed.addField(`${i + 1}. ${member.user.username}`, `Level: ${res[i].level}, XP: ${res[i].xp}`);
-                }
-            }
-        } else {
-            for (i = 0; i < 10; i++) {
-                let member = message.guild.members.cache.get(res[i].userId) || "Left user"
-                if (member === "Left user") {
-                        client.dbleveling.findOneAndDelete({
-                            userId: res[i].userId,
-                            guildId: message.guild.id,
-                        }, (err) => {
-                            if (err) console.error(err)
-                        });
-                } else {
-                    embed.addField(`✨ ${i + 1}. ${member.user.username}`, `Level: ${res[i].level}, XP: ${res[i].xp}`);
-                }
-            }
-        }
-        message.channel.send(embed)
-    })
-};
+  for (let counter = 0; counter < data.length; ++counter) {
+
+    let member = message.guild.members.cache.get(data[counter].userId)
+
+    if (!member) {
+      client.dbleveling.findOneAndDelete({
+          userId: data[counter].userId,
+          guildId: message.guild.id,
+      }, (err) => {
+          if (err) console.error(err)
+      });
+
+    } else if (member.user.id === message.author.id) {
+      rank = counter + 1
+    }
+  }
+
+  const embed = new Discord.MessageEmbed()
+  .setColor("RANDOM")
+  .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, message.guild.iconURL({size: 2048, dynamic: true}))
+  .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
+  .setDescription(`${arr.join("\n")}`)
+  .setFooter(`Page: ${page} of ${lastpage} | You are ranked ${rank} in this guild.`)
+  return message.channel.send(embed);
+}
+
 exports.help = {
 	name: "levelboard",
-	description: "i will show the guild's leveling leaderboard when you use this. easy to understand, right?",
-	usage: "levelboard",
-	example: "levelboard"
+	description: "i will show the guild's leveling leaderboard when you use this. easy to understand, right? :D",
+	usage: "levelboard <page>",
+	example: "levelboard 2"
 };
   
 exports.conf = {
 	aliases: ["lvb"],
-	cooldown: 2
+	cooldown: 5
 };
