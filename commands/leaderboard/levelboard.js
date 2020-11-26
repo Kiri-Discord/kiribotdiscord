@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
   })
   if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( \n\n*try chatting more to level up :D`}});
 
-  var limit = 20;
+  var limit = 25;
 
   let lastpage = Math.ceil(Object.keys(data).length / limit);
   let page = parseInt(args[0]);
