@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
   })
   if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( \n\n*try chatting more to level up :D`}});
 
-  var limit = 8;
+  var limit = 5;
 
   let lastpage = Math.ceil(Object.keys(data).length / limit);
   let page = parseInt(args[0]);
@@ -56,7 +56,7 @@ exports.run = async (client, message, args) => {
 
   const embed = new Discord.MessageEmbed()
   .setColor("RANDOM")
-  .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, message.guild.iconURL({size: 2048, dynamic: true}))
+  .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
   .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
   .setDescription(`${arr.join("\n")}`)
   .setFooter(`Page: ${page} of ${lastpage} | you are ranked ${rank} in this guild :)`)
