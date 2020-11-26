@@ -59,7 +59,7 @@ exports.run = async (client, message, args) => {
   .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, message.guild.iconURL({size: 2048, dynamic: true}))
   .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
   .setDescription(`${arr.join("\n")}`)
-  .setFooter(`Page: ${page} of ${lastpage} | You are ranked ${rank} in this guild.`)
+  .setFooter(`Page: ${page} of ${lastpage} | you are ranked ${rank} in this guild :)`)
   return message.channel.send(embed);
 }
 
