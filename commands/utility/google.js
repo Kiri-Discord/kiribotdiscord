@@ -4,11 +4,11 @@ const request = require("node-superfetch")
 exports.run = async (client, message, args) => {
     let googleKey = process.env.gg_key;
 
-    let csx = process.env.csx_key; // Search engine ID.
+    let csx = process.env.csx_key; 
     let query = args.join(" ");
     let result;
 
-    if (!query) return message.channel.send("enter something so i can search 👀");
+    if (!query) return message.reply("pls enter something so i can search 👀");
 
     href = await search(query);
     if (!href) return message.channel.send("unknown search :(");
