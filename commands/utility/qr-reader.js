@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
             .query({ fileurl: attachments[0].url });
         const data = body[0].symbol[0];
         if (!data.data) return message.reply(`i couldn't get a link from this qr code. are you sure that this is the right image?`);
-        return message.reply(`here is the link: ${shorten(data.data, 2000 - (message.author.toString().length + 2))}`);
+        return message.reply(`here is your link: \n${shorten(data.data, 2000 - (message.author.toString().length + 2))}`);
     } catch (err) {
         return message.channel.send(`sorry :( i got an error. try again later! can you check the image files?`);
     }
