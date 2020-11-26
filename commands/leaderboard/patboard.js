@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
         let embed = new MessageEmbed()
         .setThumbnail(message.guild.iconURL())
         .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-        .setAuthor(`hug leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
+        .setAuthor(`pat leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
         .setDescription(`these are users with that received the most pat in this server 😄\ni will only show 5 people with the most pat :pensive:`)
         .setColor('RANDOM')
         .setTimestamp(new Date())
