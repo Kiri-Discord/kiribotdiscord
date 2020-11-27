@@ -1,7 +1,7 @@
 const request = require('node-superfetch');
 const { createCanvas, loadImage } = require('canvas');
 const { stripIndents } = require('common-tags');
-const { base64 } = require('../../util/Util');
+const { base64 } = require('../../util/util');
 exports.run = async (client, message, args) => {
 
     let attachments = message.attachments.array();
