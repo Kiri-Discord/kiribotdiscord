@@ -81,7 +81,7 @@ async function search(file) {
 
 exports.help = {
     name: "what-anime",
-    description: "detect the anime by just a screenshot",
+    description: "detect the anime by just a screenshot or a gif :)",
     usage: "what-anime <screenshot>",
     example: "what-anime <random image>"
 }
