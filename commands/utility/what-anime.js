@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
             ${result.prob < 87 ? '_this probablity is rather low, try using a higher quality image._' : ''}
         `, result.preview ? { files: [{ attachment: result.preview, name: 'preview.mp4' }] } : {});
     } catch (err) {
-        return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`);
+        return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`).then(() => message.channel.stopTyping(true));
     }
 }
 
