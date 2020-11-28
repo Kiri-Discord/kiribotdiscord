@@ -70,7 +70,7 @@ module.exports = async (client, message) => {
   
   try {
     if (!commandFile) return;
-    commandFile.run(client, message, args);
+    commandFile.run(client, message, args, staffsv);
     console.log(`${sender.tag} (${sender.id}) ran a command: ${cmd}`);
   } catch (error) {
     console.error(error);

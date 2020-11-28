@@ -60,5 +60,5 @@ exports.help = {
 
 exports.conf = {
     aliases: ["face-analysis"],
-    cooldown: 4
+    cooldown: 10
 }
