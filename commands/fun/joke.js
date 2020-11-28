@@ -1,6 +1,4 @@
 const fetch = require('node-fetch');
-
-
 exports.run = async (client, message, args) => {
     fetch(`https://sv443.net/jokeapi/v2/joke/Any?`)
     .then(res => res.json())

@@ -40,9 +40,10 @@ exports.run = async (client, message, args) => {
     
     const embed = new MessageEmbed()
     .setAuthor(mention.user.tag, avatar)
+    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setThumbnail(avatar)
     .setTimestamp()
-    .setColor(0x7289DA)
+    .setColor('#ffe6cc')
     .addField("Highest role", highestrole, true)
     .addField("ID", mention.user.id, true)
     .addField("Nickname", nickname, true)
@@ -63,5 +64,5 @@ exports.help = {
 
 exports.conf = {
   aliases: ["userinfo"],
-  cooldown: 5
+  cooldown: 3
 }

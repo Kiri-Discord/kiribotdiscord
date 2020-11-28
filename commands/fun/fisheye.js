@@ -4,8 +4,8 @@ const request = require("node-superfetch");
 
 exports.run = async (client, message, args) => {
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.reply("please upload some images!");
-    else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
+    if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+    else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
 
     var level = 50; 
 

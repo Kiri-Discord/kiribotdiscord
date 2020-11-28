@@ -31,7 +31,7 @@ exports.run = async (client, message, args) => {
                             if (err) console.error(err)
                         });
                 } else {
-                    embed.addField(`✨ \`${i + 1}\` ${member.user.username} received ${res[i].received} pat(s)`, `\u200B`);
+                    embed.addField(`✨ \`${i + 1}\` ${member.user.username}`, `Received ${res[i].received} pat(s)`);
                 }
             }
         } else {
@@ -45,7 +45,7 @@ exports.run = async (client, message, args) => {
                             if (err) console.error(err)
                         });
                 } else {
-                    embed.addField(`✨ \`${i + 1}\` ${member.user.username} received ${res[i].received} pat(s)`, `\u200B`);
+                    embed.addField(`✨ \`${i + 1}\` ${member.user.username}`, `Received ${res[i].received} pat(s)`);
                 }
             }
         }

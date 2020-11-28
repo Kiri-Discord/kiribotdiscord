@@ -24,7 +24,7 @@ exports.run = async (client, message, args) => {
     .setPage(3)
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
-    .setDescription(`hi, i'm Sefy!\nuse \`${prefix}help [command]\` to get more specific information about a command 😄\n\n*btw dont abuse this or you will get a huge* **cooldown** *from me* :no_mouth:`)
+    .setDescription(`hi, i'm Sefy, Sefiria's exclusive assistant :D\nuse \`${prefix}help [command]\` to get more specific information about a command 😄\n\n*btw dont abuse this or you will get a huge* **cooldown** *from me* :no_mouth:`)
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(client.user.tag, client.user.displayAvatarURL())
     .setColor('#ffe6cc')

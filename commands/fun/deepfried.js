@@ -3,8 +3,8 @@ const request = require('node-superfetch');
 
 exports.run = async (client, message, args) => {
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.reply("please upload some images!");
-    else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
+    if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+    else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
 
     try {
         message.channel.startTyping(true);
@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
         contrast(ctx, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer('image/jpeg', {quality: 0.2});
         await message.channel.stopTyping(true);
-        if (Buffer.byteLength(attachment) > 8e+6) return message.channel.send("the file is way too big for me to upload lmao");
+        if (Buffer.byteLength(attachment) > 8e+6) return message.channel.send("the file is way too big for me to upload lmao").then(m => m.delete({ timeout: 5000 }));
         return message.channel.send({files: [{attachment, name: "deep-fried.png"}] });
     } catch (error) {
         await message.channel.stopTyping(true);

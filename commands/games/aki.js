@@ -11,7 +11,7 @@ class Game {
 
     async init() {
         await this.aki.start();
-        this.message.channel.send('Are you thinking of a character and ready to begin? y / n').then(msg => { this.msg = msg; });
+        this.message.channel.send('are you thinking of a character and ready to begin? y / n').then(msg => { this.msg = msg; });
         const filter = m => /^[yn]$/i.test(m.content) && m.author === this.message.author;
         const response = await this.getResponse(filter);
         if (response === 'y') this.run();
@@ -46,7 +46,7 @@ class Game {
 
     async win() {
         const answer = this.aki.answers[this.i];
-        if (!answer) this.msg.edit(':confused: I don\'t know.');
+        if (!answer) return this.msg.edit(':confused: I don\'t know.');
         const embed = new MessageEmbed()
             .setTitle(`Akinator Guess ${this.i + 1}:`)
             .setColor('#3498db')

@@ -12,10 +12,10 @@ exports.run = async (client, message, args) => {
 }
 
 exports.help = {
-	name: "anime",
-	description: "Get a random anime image from bell's homework folder",
-	usage: "anime",
-	example: "anime"
+	name: "waifu",
+	description: "bell's homework folder has a lot of **homework**\n*and you know what is this for*",
+	usage: "waifu",
+	example: "waifu"
 };
   
 exports.conf = {

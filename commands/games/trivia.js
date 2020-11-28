@@ -11,22 +11,19 @@ exports.run = async (client, message, args) => {
   let topic = args[0];
   if (!topic) { // Pick a random topic if none given
     topic = message.client.topics[Math.floor(Math.random() * message.client.topics.length)];
-  } else if (!message.client.topics.includes(topic))
-    return message.channel.send(`can you provide a vaild topic please? use ${prefix}triviatopics for a list 😬`);
-  
-  // Get question and answers
+  } else if (!message.client.topics.includes(topic)) return message.channel.send(`can you provide a vaild topic please? use ${prefix}triviatopics for a list 😬`);
+    
   const directory = __basedir + "/assets/trivia/" + topic + '.yml';
   const questions = YAML.parse(fs.readFileSync(directory, 'utf-8')).questions;
   const n = Math.floor(Math.random() * questions.length);
   const question = questions[n].question;
   const answers = questions[n].answers;
   const origAnswers = [...answers].map(a => `\`${a}\``);
-  // Clean answers
   for (let i = 0; i < answers.length; i++) {
     answers[i] = answers[i].trim().toLowerCase().replace(/\.|'|-|\s/g, '');
   }
 
-  // Get user answer
+
   const questionEmbed = new MessageEmbed()
     .setColor('#DAF7A6')
     .setFooter(client.user.tag, client.user.displayAvatarURL())

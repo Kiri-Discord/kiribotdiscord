@@ -5,7 +5,7 @@ const { shorten } = require('../../util/util');
 exports.run = async (client, message, args) => {
 
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.reply("please upload some images!");
+    if (attachments.length === 0) return message.reply("can you upload image along with that command?");
     else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
     try {
         const { body } = await request
