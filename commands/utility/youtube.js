@@ -23,11 +23,11 @@ exports.run = async (client, message, args) => {
           .setDescription(body.items[0].snippet.description)
           .setAuthor('YouTube', 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png')
           .setURL(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`)
-          .setThumbnail(body.items[0].snippet.thumbnails.default.url)
+          .setImage(body.items[0].snippet.thumbnails.default.url)
           .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
         message.channel.send(embed).catch(console.error);
       } catch (err) {
-        if (err.status === 404) return message.channel.send('could not find any results for that video');
+        if (err.status === 404) return message.reply('i cant find any results for that video :(');
         console.log(err);
         return message.channel.send(`sorry :( i got an error while trying to get you a result. try again later!`);
     }
@@ -43,5 +43,5 @@ exports.help = {
 
 exports.conf = {
     aliases: ["yt"],
-    cooldown: 7.5
+    cooldown: 5
 }
