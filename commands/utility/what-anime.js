@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
         const result = await search(body, message.channel.nsfw);
         if (result === 'size') return message.reply('the file is way too big for me to handle lmao. remember not to upload any image or gif larger than 10mb.');
         if (result.nsfw && !msg.channel.nsfw) {
-            return message.reply('this is from a hentai, and this isn\'t an NSFW channel lmao.');
+            return message.reply('this is from a ||hentai||, and this isn\'t an NSFW channel lmao.');
         }
         const title = `${result.title}${result.episode ? ` episode ${result.episode}` : ''}`;
         await message.channel.stopTyping(true);
