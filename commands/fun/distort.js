@@ -28,7 +28,8 @@ exports.run = async (client, message, args) => {
         await message.channel.stopTyping(true);
         return message.channel.send({ files: [{ attachment, name: 'greyscale.png' }] });
     } catch (err) {
-        return message.channel.send(`sorry :( i got an error. try again later!`);
+        await message.channel.stopTyping(true);
+        return message.reply(`sorry :( i got an error. try again later! can you check the image files?`);
     }
 };
 
