@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
     }
 
     let lyricsEmbed = new MessageEmbed()
-    .setTitle(`Lyrics `)
+    .setTitle(`Lyrics for ${songs}`)
     .setDescription(lyrics)
     .setColor('RANDOM')
     .setTimestamp()
