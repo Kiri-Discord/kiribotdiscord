@@ -14,6 +14,7 @@ module.exports = class sefy extends Client {
     this.leveling = require("../util/LevelingUtil.js");
     this.dbleveling = require("../model/leveling")
     this.dbverify = require("../model/verify")
+    this.queue = new Map();
         /** 
      * 
      * @type {Array<string>}
