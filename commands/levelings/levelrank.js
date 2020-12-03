@@ -70,6 +70,6 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["rank"],
+	aliases: ["rank", "level"],
 	cooldown: 5
 };
