@@ -17,6 +17,8 @@ exports.run = async (client, message, args) => {
         return message.reply(`i found no lyrics for **${songs}** :(`);
     }
 
+    let each = lyrics.slice().trim().split(/ +/g);
+
     let lyricsEmbed = new MessageEmbed()
     .setTitle(`Lyrics for ${songs}`)
     .setDescription(lyrics)
