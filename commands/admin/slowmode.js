@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "slowmode",
   description: "slow down the channel.",
-  usage: "slowmode [channel] <time>",
+  usage: "slowmode [channel] <time> [-off]",
   example: "slowmode #general 5s \nslowmode 5.25 hrs"
 }
 

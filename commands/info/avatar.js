@@ -37,7 +37,7 @@ exports.help = {
   name: "avatar",
   description: "Display a user avatar",
   usage: "avatar [@user | user ID]",
-  example: "avatar @Sefy#6822 \n\n\navatar"
+  example: "avatar @Sefy#6822"
 }
 
 exports.conf = {

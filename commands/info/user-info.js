@@ -63,6 +63,6 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: ["userinfo"],
+  aliases: ["userinfo", "whois"],
   cooldown: 3
 }

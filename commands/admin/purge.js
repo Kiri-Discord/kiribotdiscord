@@ -16,10 +16,9 @@ exports.run = async (client, message, args) => {
 
     const logembed = new MessageEmbed()
     .setAuthor(client.user.tag, client.user.displayAvatarURL())
-    .setDescription(`${amount} messages deleted in #${message.channel}`)
+    .setDescription(`${amount} messages deleted in ${message.channel}`)
     .addField('Moderator', message.author.tag)
     .addField('User ID', message.author.id)
-    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     await message.channel.bulkDelete(amount, true).then(() => {
         if (!logChannel) {
             return

@@ -26,7 +26,7 @@ module.exports = async (client, message) => {
             .setDescription(`Hello! Before you get started, I just want you to verify yourself first.\nPut the below code into the channel ${verifyChannel} to verify yourself.`)
             .addField(`This is your code:`, `||${code}||`)
             await message.author.send(dm).catch(() => {
-              return message.reply("Your DM is still locked. Unlock your DM first.")
+              return message.reply("your DM is still locked. unlock your DM first :D")
               .then(i => i.delete({timeout: 10000}));
             })
             

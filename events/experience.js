@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = async (client, message) => {
 
     const setting = await client.dbguilds.findOne({
@@ -7,15 +5,19 @@ module.exports = async (client, message) => {
     }); 
     
     const prefix = setting.prefix;
+    const ignorechannel = setting.ignoreLevelingsChannelID;
+    const verifychannel = setting.verifyChannelID
 
     let recent = client.recent; 
 
     // Ignore the bot.
     if (message.author.bot || message.author === client.user) return;
-
     
     // Ignore cmd with prefix
     if(message.content.toLowerCase().startsWith(prefix)) return;
+    //ignore ignore channel
+    if (ignorechannel && message.channel.id === ignorechannel) return;
+    if (verifychannel && message.channel.id === verifychannel) return;
     
 
     // If the user has an exp. cooldown, ignore it.
@@ -55,19 +57,13 @@ module.exports = async (client, message) => {
         message.reply(`you has reached level **${userprof.level}**! i will disappear from this convo in a sec..`).then(m => m.delete({ timeout: 5000 }));
     };
 
-    // Generate a random timer. (2)
-    let randomTimer = getRandomInt(65000, 80000); // Around 60 - 75 seconds. You can change it.
-
-    // Add the user into the Set()
+    let randomTimer = getRandomInt(65000, 80000); 
     recent.add(message.author.id);
-
-    // Remove the user when it's time to stop the cooldown.
     client.setTimeout(() => {
         recent.delete(message.author.id)
     }, randomTimer);
 }
 
-// Generate a random timer.
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);

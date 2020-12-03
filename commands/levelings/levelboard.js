@@ -51,6 +51,8 @@ exports.run = async (client, message, args) => {
 
     } else if (member.user.id === message.author.id) {
       rank = counter + 1
+    } else {
+      rank = message.guild.memberCount
     }
   }
 

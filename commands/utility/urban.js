@@ -2,10 +2,16 @@ const urban = require("relevant-urban");
 const { MessageEmbed } = require('discord.js')
 
 exports.run = async (client, message, args) => {
-    if (!args[0]) return message.reply("pls enter something so i can search 👀");
-    let result = await urban(args[0]).catch(e => {
-        return message.reply(`i can't find definition for word phrase of **${args[0]}**, please try again pls :(`);
-    })
+    let result;
+    let query = args.join(" ");
+    if (!query) return message.reply("pls enter something so i can search 👀");
+
+    try {
+        result = await urban(query)
+    } catch (error) {
+        return message.reply(`i can't find definition for word phrase of **${query}**, please try again pls :(`);
+    }
+
     const embed = new MessageEmbed()
     .setTimestamp(new Date())
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
