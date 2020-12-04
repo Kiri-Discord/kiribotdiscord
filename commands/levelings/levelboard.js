@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
-  let rank;
+  let rank = message.guild.memberCount;
   let data = await client.dbleveling.find({
     guildId: message.guild.id,
   }).sort({
@@ -51,8 +51,6 @@ exports.run = async (client, message, args) => {
 
     } else if (member.user.id === message.author.id) {
       rank = counter + 1
-    } else {
-      rank = message.guild.memberCount
     }
   }
 
