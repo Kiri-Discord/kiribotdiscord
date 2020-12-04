@@ -14,9 +14,9 @@ exports.run = async (client, message, args) => {
 
         try {
             if (yes.includes(msg.content.trim().toLowerCase())) {
-                client.user.setAvatar(attachments[0].url)
-                collector.stop()
-                message.channel.send(`my avatar has been changed to ${attachments[0].url}`);
+                await client.user.setAvatar(attachments[0].url)
+                await collector.stop()
+                return message.channel.send(`my avatar has been changed to ${attachments[0].url}`);
             } else {
                 return message.channel.send('gotcha.')
             }
@@ -35,6 +35,7 @@ exports.help = {
   
 exports.conf = {
 	aliases: [],
-	cooldown: 2
+    cooldown: 2,
+    guildOnly: true
 };
   

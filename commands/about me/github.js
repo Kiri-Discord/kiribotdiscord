@@ -23,5 +23,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["git"],
-	cooldown: 2
+	cooldown: 2,
+	guildOnly: false
 };

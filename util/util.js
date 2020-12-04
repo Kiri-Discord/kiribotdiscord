@@ -21,3 +21,6 @@ module.exports = class Util {
 	}
 
 };
+
+const inGame = [];
+module.exports.inGame = inGame;

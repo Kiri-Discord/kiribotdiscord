@@ -12,12 +12,13 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "fact",
-	description: "Gives you a fun, random fact.",
+	description: "gives you a fun, random fact.",
 	usage: "fact",
 	example: "fact"
 };
   
 exports.conf = {
 	aliases: ["funfact"],
-	cooldown: 3
+    cooldown: 3,
+    guildOnly: true
 };

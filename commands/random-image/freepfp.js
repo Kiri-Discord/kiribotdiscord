@@ -1,11 +1,16 @@
 const Discord = require('discord.js')
+const { Random } = require("something-random-on-discord")
+const random = new Random();
 
 exports.run = async (client, message, args) => {
+	let data = await random.getAnimeImgURL("waifu")
+
+
     const num = Math.floor(Math.random() * 100000);
 	const embed = new Discord.MessageEmbed()
 	.setColor('RANDOM')
 	.setDescription(`powered by bell's homework folder`)
-	.setImage(`https://www.thiswaifudoesnotexist.net/example-${num}.jpg`)
+	.setImage(data)
     message.channel.send(embed)
 }
 
@@ -20,5 +25,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: [],
-	cooldown: 4
+	cooldown: 4,
+	guildOnly: true
 };

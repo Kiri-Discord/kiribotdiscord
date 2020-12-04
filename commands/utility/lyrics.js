@@ -40,5 +40,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["lyric"],
-	cooldown: 7,
+  cooldown: 7,
+  guildOnly: true
 };

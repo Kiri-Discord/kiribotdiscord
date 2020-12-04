@@ -23,5 +23,6 @@ exports.help = {
 
 exports.conf = {
     aliases: ["gendername"],
-    cooldown: 4
+    cooldown: 4,
+    guildOnly: true
 }

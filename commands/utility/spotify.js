@@ -49,10 +49,11 @@ exports.help = {
     name: "spotify",
     description: "wondering what is that member listening to on spotify? run this :D\nthis works on yourself as well",
     usage: "spotify [@user]",
-    example: "spotify @bell#9999"
+    example: ["spotify @bell#9999", "spotify"]
 };
   
 exports.conf = {
     aliases: [],
-    cooldown: 5
+    cooldown: 5,
+    guildOnly: true
 }

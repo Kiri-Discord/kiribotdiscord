@@ -72,5 +72,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["lvb"],
-	cooldown: 5
+  cooldown: 5,
+  guildOnly: true
 };

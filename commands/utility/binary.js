@@ -34,12 +34,13 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "binary",
-    description: "Convert text to binary or otherwise.",
+    description: "convert text to binary or otherwise.",
     usage: "binary <encode | decode> <text>",
     example: "binary encode i love you"
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 5
+    cooldown: 5,
+    guildOnly: true
 }

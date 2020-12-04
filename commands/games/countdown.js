@@ -89,5 +89,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["anagram", "letters"],
-	cooldown: 5
+    cooldown: 5,
+    guildOnly: true
 };

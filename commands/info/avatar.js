@@ -42,5 +42,6 @@ exports.help = {
 
 exports.conf = {
   aliases: ["icon", "pfp", "ava"],
-  cooldown: 5
+  cooldown: 5,
+  guildOnly: true
 }

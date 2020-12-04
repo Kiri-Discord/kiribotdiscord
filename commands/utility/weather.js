@@ -43,5 +43,6 @@ exports.help = {
 
 exports.conf = {
     aliases: [],
-    cooldown: 7.5
+    cooldown: 7.5,
+    guildOnly: true
 }

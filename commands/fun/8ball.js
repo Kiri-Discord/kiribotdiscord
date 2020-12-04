@@ -34,5 +34,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["8ball"],
-	cooldown: 4
+    cooldown: 3,
+    guildOnly: true
 };

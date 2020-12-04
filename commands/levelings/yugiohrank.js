@@ -169,5 +169,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["yrank"],
-	cooldown: 5
+	cooldown: 5,
+	guildOnly: true
 };

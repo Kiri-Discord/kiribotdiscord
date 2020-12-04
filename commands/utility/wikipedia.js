@@ -30,5 +30,6 @@ exports.help = {
 
 exports.conf = {
   aliases: ["wiki"],
-  cooldown: 10
+  cooldown: 10,
+  guildOnly: true
 }

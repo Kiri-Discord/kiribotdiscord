@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
         logChannelID: channel.id
     })
     .catch(err => console.error(err));
-    message.channel.send(({embed: {color: "f3f3f3", description: `❌ the mod logs channel has been set to ${channel}!`}}));
+    message.channel.send(({embed: {color: "f3f3f3", description: `☑️ the mod logs channel has been set to ${channel}!`}}));
 
 }
         
@@ -35,6 +35,7 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["sml"],
-	cooldown: 5
+    cooldown: 5,
+    guildOnly: true
 };
   

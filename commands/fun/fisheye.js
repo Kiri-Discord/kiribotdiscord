@@ -37,7 +37,8 @@ exports.help = {
 
 exports.conf = {
     aliases: ["fish-eye"],
-    cooldown: 6
+    cooldown: 6,
+    guildOnly: true
 }
 
 async function fishEye(ctx, level, x, y, width, height) {

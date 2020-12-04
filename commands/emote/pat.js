@@ -9,8 +9,7 @@ exports.run = async (client, message, args) => {
 
     const target = message.mentions.users.first()
     if (!target) {
-      message.reply("you can't just pat **air** :( please mention somebody to pat pls")
-      return
+      return message.reply("you can't just pat **air** :( please mention somebody to pat pls")
     }
 
     if (target.bot) return message.reply("this isn't plastic memories so you can't pat that bot, sorry :(")
@@ -22,7 +21,7 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === authorId) {
-      message.reply('**pat pat pat pat pat**')
+      message.reply('**pat pat pat pat pat**\nyes, you!')
       return
     }
 
@@ -63,5 +62,6 @@ exports.help = {
 
 exports.conf = {
     aliases: [],
-    cooldown: 4
+    cooldown: 4,
+    guildOnly: true
 }

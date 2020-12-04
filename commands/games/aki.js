@@ -101,5 +101,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["akinator"],
-	cooldown: 5
+    cooldown: 7,
+    guildOnly: true
 };

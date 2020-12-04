@@ -30,5 +30,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["burn", "roast"],
-	cooldown: 3
+    cooldown: 3,
+    guildOnly: true
 };

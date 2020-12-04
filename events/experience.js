@@ -1,4 +1,7 @@
 module.exports = async (client, message) => {
+    if (message.author.bot || message.author === client.user) return;
+
+    if (message.channel.type === "dm") return;
 
     const setting = await client.dbguilds.findOne({
         guildID: message.guild.id
@@ -10,8 +13,6 @@ module.exports = async (client, message) => {
 
     let recent = client.recent; 
 
-    // Ignore the bot.
-    if (message.author.bot || message.author === client.user) return;
     
     // Ignore cmd with prefix
     if(message.content.toLowerCase().startsWith(prefix)) return;

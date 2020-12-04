@@ -60,5 +60,6 @@ exports.help = {
 
 exports.conf = {
     aliases: ["face-analysis"],
-    cooldown: 10
+    cooldown: 10,
+    guildOnly: true
 }
