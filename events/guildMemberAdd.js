@@ -9,35 +9,32 @@ module.exports = async (client, member) => {
   });
 
   const alreadyHasRole = member._roles.includes(setting.verifyRole);
+  let verifyChannel = member.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
 
-  if (alreadyHasRole) return;
-  
   let number = randomInteger(100000, 1000000);
 
-  let verifyChannel = member.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
-  
-  if (!verifyChannel) return;
-  
-  await client.dbverify.findOneAndUpdate({
-    guildID: member.guild.id,
-    userID: member.user.id,
-  }, {
-    guildID: member.guild.id,
-    userID: member.user.id,
-    code: number
-  }, {
-      upsert: true,
-      new: true
-  })
-  const dm = new Discord.MessageEmbed()
-  .setColor(0x7289DA)
-  .setTitle(`Welcome to ${member.guild.name}!`)
-  .setDescription(`Hello! Before you get started, I just want you to verify yourself first.\nPut the below code into the channel ${verifyChannel} to verify yourself.`)
-  .addField(`This is your code:`, `||${number}||`)
-  await member.send(dm).catch(() => {
-    verifyChannel.send(`<@!${member.user.id}> Hey, I guess your DM is locked so i can't send you the verify code. How about you unlock it first and type \`resend\` here.`)
-    .then(i => i.delete({timeout: 10000}));
-  })
+  if (!alreadyHasRole && verifyChannel) {
+    await client.dbverify.findOneAndUpdate({
+      guildID: member.guild.id,
+      userID: member.user.id,
+    }, {
+      guildID: member.guild.id,
+      userID: member.user.id,
+      code: number
+    }, {
+        upsert: true,
+        new: true
+    })
+    const dm = new Discord.MessageEmbed()
+    .setColor('RANDOM')
+    .setTitle(`Welcome to ${member.guild.name}!`)
+    .setDescription(`Hello! Before you get started, I just want you to verify yourself first.\nPut the below code into the channel ${verifyChannel} to verify yourself.`)
+    .addField(`This is your code:`, `||${number}||`)
+    await member.send(dm).catch(() => {
+      verifyChannel.send(`<@!${member.user.id}> Hey, I guess your DM is locked so i can't send you the verify code. How about you unlock it first and type \`resend\` here.`)
+      .then(i => i.delete({timeout: 10000}));
+    })
+  }
 }
 
 function randomInteger(min, max) {

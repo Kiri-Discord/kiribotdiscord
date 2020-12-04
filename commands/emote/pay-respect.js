@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
         const botReact = await user.bot;
         const userReact = await reaction.message.guild.members.cache.get(user.id);
 
-        if(!botReact) message.channel.send(`**${userReact.user.username}** has paid their respect.`);
+        if(!botReact) message.channel.send(`**${userReact.user.username}** has paid their respect.`).then(m => m.delete({ timeout: 4000 }));
 
         return reaction.emoji.id === "🇫";
       }
@@ -25,7 +25,7 @@ exports.run = async (client, message, args) => {
         const botReact = await user.bot;
         const userReact = await reaction.message.guild.members.cache.get(user.id);
 
-        if(!botReact) message.channel.send(`**${userReact.user.username}** has paid their respect.`);
+        if(!botReact) message.channel.send(`**${userReact.user.username}** has paid their respect.`).then(m => m.delete({ timeout: 4000 }));
 
         return reaction.emoji.id === "🇫";
       }
