@@ -85,7 +85,7 @@ class Game {
 
 exports.run = async (client, message, args) => {
     const challenged = message.mentions.users.first();
-    if (!challenged || challenged === message.member || challenged.bot) return message.reply('you should mention a valid user :(');
+    if (!challenged || challenged === message.member || challenged.bot) return message.reply('you should mention a valid user to play with :(');
     if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
