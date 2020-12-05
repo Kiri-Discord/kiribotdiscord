@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "waifu",
-	description: "bell's homework folder has a lot of **homework**\n*and you know what is this for*",
+	description: "get a random waifu from bell's homework folder",
 	usage: "waifu",
 	example: "waifu"
 };

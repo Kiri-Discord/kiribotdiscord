@@ -17,8 +17,14 @@ class Game { // Creating a game class so there is support for multiple games at 
     }
 
     async init() {
+
+        try {
+            this.dmChannel = await this.message.author.send('please enter the word to be guessed :D')
+        } catch (error) {
+            return this.message.reply("your DM is still locked so i can't get the word from you :( enable your DM.").then(i => i.delete({ timeout: 10000 }))
+        }
         this.msg = await this.message.channel.send(`${this.stages[0]}\nwaiting for <@${this.message.author.id}> to enter a word`);
-        this.dmChannel = await this.message.author.send('please enter the word to be guessed :D');
+        
 
 
         let word = await this.dmChannel.channel.awaitMessages(m => m.author.id === this.message.author.id, {

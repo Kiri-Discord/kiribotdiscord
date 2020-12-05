@@ -16,17 +16,12 @@ exports.run = async (client, message, args) => {
         message.channel.send("i can't seem to be able to do that :( here is a hug for now 🤗");
         return console.error(err);
     });
-    
-
-
-	
-
 
 }
 
 exports.help = {
 	name: "neko",
-	description: "bell's homework folder has a lot of **homework**\n*and you know what is this for*",
+	description: "get a random neko from bell's homework folder",
 	usage: "neko",
 	example: "neko"
 };

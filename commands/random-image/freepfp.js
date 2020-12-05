@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "freepfp",
-	description: "base on bell's *homework* folder, i will generate a pfp for you 😂\n*no clickbait*",
+	description: "generate a pfp for you base on bell's *homework* folder 😂\n*no clickbait*",
 	usage: "freepfp",
 	example: "freepfp"
 };

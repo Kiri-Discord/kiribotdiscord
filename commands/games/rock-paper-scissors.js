@@ -9,11 +9,19 @@ class Game {
     }
 
     async run() {
+        let p1Message;
+        let p2Message;
         const filter = m => /^[rps]$/i.test(m.content);
-        this.message.channel.send(`you have challenged ${this.args[0]} to a game of **rock-paper-scissors**! Please move into DMs.`);
-        const p1Message = await this.message.author.send('you have created a game of rps. please enter r, p, s');
-        const p2Message = await this.challenged.send('you have been challenged to a game of rps. please enter r, p, s'); // Sending both messages and storing the dm channel
-        // Awaiting a response from p1 and timing out if none is given
+        this.message.channel.send(`you have challenged ${this.args[0]} to a game of **rock-paper-scissors**! please move into DMs.`);
+
+        try {
+            p1Message = await this.message.author.send('you have created a game of rps. please choose \`r, p, s\`');
+            p2Message = await this.challenged.send('you have been challenged to a game of rps. please choose \`r, p, s\`');
+        } catch (error) {
+            return this.message.reply("your DM or your opponent's DM is still locked so i can't get the choice from you :( enable your both DMs.").then(i => i.delete({ timeout: 10000 }))
+        }
+        // sending both messages and storing the dm channel
+        // awaiting a response from p1 and timing out if none is given
         const p1Response = p1Message.channel.awaitMessages(filter, {
             max: 1,
             time: 30000,
@@ -32,7 +40,7 @@ class Game {
             this.endGame();
         });
 
-        // Waiting until both awaitMessages has been fufilled and running the win calculations
+        // waiting until both awaitMessages has been fufilled and running the win calculations
         Promise.all([p1Response, p2Response]).then(values => {
             if (typeof values[0] !== 'undefined' || typeof values[0] !== 'undefined') {
                 this.winChecks(values);
@@ -51,14 +59,14 @@ class Game {
     }
 
     win(type) {
-        switch (type) { // Sending win messages based on the outcome of the win calculations
+        switch (type) { // sending win messages based on the outcome of the win calculations
             case 'p1':
                 this.message.author.send(`you won!`);
                 this.challenged.send('you lost :(');
                 break;
             case 'p2':
                 this.challenged.send('you won!');
-                this.message.author.send('You lost :(');
+                this.message.author.send('you lost :(');
                 break;
             case 'draw':
                 this.message.author.send('it was a draw.');
@@ -69,7 +77,7 @@ class Game {
     }
 
     endGame() {
-        // Filtering the people in the game out of the utils.inGame array
+        // filtering the people in the game out of the utils.inGame array
         utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
         utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
     }
