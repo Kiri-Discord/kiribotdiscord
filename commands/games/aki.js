@@ -49,7 +49,7 @@ class Game {
         if (!answer) return this.msg.edit(':confused: I don\'t know.');
         const embed = new MessageEmbed()
             .setTitle(`Akinator Guess ${this.i + 1}:`)
-            .setColor('#3498db')
+            .setColor('RANDOM')
             .setAuthor(this.message.member.displayName,  this.message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp(new Date())
             .addField(`Name: ${answer.name}`, `Description: ${answer.description}`)
@@ -75,7 +75,7 @@ class Game {
             time: 30000,
             errors: ['time'],
         }).catch(() => {
-            this.msg.edit('The game has timed out');
+            this.msg.edit('the game has timed out');
             response = 'exit';
         });
         if (response !== 'exit') {
@@ -94,7 +94,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "aki",
-	description: "Think about a real or fictional character.\nI will try to guess who it is 😄",
+	description: "think about a real or fictional character.\ni will try to guess who it is 😄",
 	usage: "aki",
 	example: "aki"
 };

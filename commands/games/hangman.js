@@ -1,11 +1,11 @@
 const utils = require('../../util/util');
-class Game { // Creating a game class so there is support for multiple games at once.
-    constructor(message, challenged) { // Defining vars and running the game logic
-        // eslint-disable-next-line no-useless-escape
+class Game { 
+    constructor(message, challenged) { 
+
         this.stages = ['\_\_\_\n*      |\n*    \n*    \n*      \n*    \n*', '\_\_\_\n*      |\n*    :dizzy_face: \n*      | \n*      \n*    \n*',
-            // eslint-disable-next-line no-useless-escape
+
             '\_\_\_\n*      |\n*    :dizzy_face: \n*    /|\\ \n*      \n*    \n*', '\_\_\_\n*      |\n*    :dizzy_face: \n*    /|\\ \n*      |\n*    \n*',
-            // eslint-disable-next-line no-useless-escape
+
             '\_\_\_\n*      |\n*    :dizzy_face: \n*    /|\\ \n*      |\n*    /\n*', '\_\_\_\n*      |\n*    :dizzy_face: \n*    /|\\ \n*      |\n*    / \\\n*'];
         this.message = message;
         this.challenged = challenged;
