@@ -21,7 +21,6 @@ class Game {
         this.msg.edit('', new MessageEmbed()
             .setColor('#DAF7A6')
             .setAuthor(this.message.member.displayName,  this.message.author.displayAvatarURL({ dynamic: true }))
-            .setFooter(this.client.user.tag, this.client.user.displayAvatarURL())
             .setTimestamp(new Date())
             .setTitle('Akinator:')
             
@@ -55,7 +54,6 @@ class Game {
             .addField(`Name: ${answer.name}`, `Description: ${answer.description}`)
             .setImage(answer.absolute_picture_path)
             .setDescription('Is this guess correct? Type y / n')
-            .setFooter(this.client.user.tag, this.client.user.displayAvatarURL());
 
         this.msg.edit(embed);
         const filter = m => /^[yn]$/i.test(m.content) && m.author === this.message.author;
