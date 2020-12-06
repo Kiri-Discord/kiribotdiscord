@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
-const { embedURL, cleanAnilistHTML, trimArray } = require('../../util/Util');
+const { embedURL, cleanAnilistHTML, trimArray } = require('../../util/util');
 const searchGraphQL = stripIndents`
 	query ($search: String) {
 		characters: Page (perPage: 1) {
