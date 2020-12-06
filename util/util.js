@@ -2,6 +2,31 @@ const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
 module.exports = class Util {
+	static async awaitPlayers(message, max, min = 1) {
+		if (max === 1) return [message.author.id];
+		const addS = min - 1 === 1 ? '' : 's';
+		await message.channel.send(
+			`you will need at least ${min - 1} more player${addS} (at max ${max - 1}). to join, type \`join game\`.`
+		);
+		const joined = [];
+		joined.push(message.author.id);
+		const filter = res => {
+			if (res.author.bot) return false;
+			if (joined.includes(res.author.id)) return false;
+			if (res.content.toLowerCase() !== 'join game') return false;
+			joined.push(res.author.id);
+			res.react('✅').catch(() => null);
+			return true;
+		};
+		const verify = await message.channel.awaitMessages(filter, { max: max - 1, time: 60000 });
+		verify.set(message.id, message);
+		if (verify.size < min) return false;
+		return verify.map(player => player.author.id);
+	}
+
+	static delay(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
 	static list(arr, conj = 'and') {
 		const len = arr.length;
 		if (len === 0) return '';
@@ -38,10 +63,10 @@ module.exports = class Util {
 		if (removeLineBreaks) clean = clean.replace(/\r|\n|\f/g, '');
 		clean = entities.decode(clean);
 		clean = clean
-			.replace('<br>', '\n')
-			.replace(/<\/?i>/g, '*')
-			.replace(/<\/?b>/g, '**')
-			.replace(/~!|!~/g, '||');
+		.split('<br>').join('\n')
+		.replace(/<\/?i>/g, '*')
+		.replace(/<\/?b>/g, '**')
+		.replace(/~!|!~/g, '||');
 		if (clean.length > 2000) clean = `${clean.substr(0, 1995)}...`;
 		const spoilers = (clean.match(/\|\|/g) || []).length;
 		if (spoilers !== 0 && (spoilers && (spoilers % 2))) clean += '||';

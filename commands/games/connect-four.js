@@ -223,6 +223,6 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["c4", "connect4"],
-    cooldown: 4,
+    cooldown: 6,
     guildOnly: true
 };

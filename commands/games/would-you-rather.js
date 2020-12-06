@@ -5,16 +5,15 @@ const choices = ['1', '2'];
 
 
 exports.run = async (client, message, args) => {
-    const current = client.games.get(message.channel.id);
-    if (current) return message.reply(`please wait until the current game of **${current.name.username}** is finished first :(`);
-    client.games.set(message.channel.id, { name: message.author });
+    const current = client.games.get(`${message.channel.id}-wouldyourather`);
+    if (current) return message.reply(`please wait until the current **would you rather...?** game of **${current.name.username}** is finished first :(`);
+    client.games.set(`${message.channel.id}-wouldyourather`, { name: message.author });
     try {
         const data = await fetchScenario();
         await message.channel.send(stripIndents`
-            ${data.prefix ? `${data.prefix}, would you rather...` : 'would you rather...'}
+            ${data.prefix ? `${data.prefix.toLowerCase()}, would you rather...` : 'would you rather...'}
             **1.** ${data.option_1.toLowerCase()}
             **2.** ${data.option_2.toLowerCase()}
-
             _respond with either **1** or **2** to continue._
         `);
         const filter = res => res.author.id === message.author.id && choices.includes(res.content.toLowerCase());
@@ -23,7 +22,7 @@ exports.run = async (client, message, args) => {
             max: 1
         });
         if (!msgs.size) {
-            client.games.delete(message.channel.id);
+            client.games.delete(`${message.channel.id}-wouldyourather`);
             return message.reply(stripIndents`
                 no response? :D
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
@@ -33,13 +32,13 @@ exports.run = async (client, message, args) => {
         await postResponse(data.id, option1);
         const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
         const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-        client.games.delete(message.channel.id);
+        client.games.delete(`${message.channel.id}-wouldyourather`);
         return message.reply(stripIndents`
             **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
             1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
         `);
     } catch (err) {
-        client.games.delete(message.channel.id);
+        client.games.delete(`${message.channel.id}-wouldyourather`);
         return message.reply(`sorry :( i got an error. try again later!`);
     }
 }
