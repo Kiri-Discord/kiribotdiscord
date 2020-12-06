@@ -109,6 +109,7 @@ exports.run = async (client, message, args) => {
             .addField(':arrow_right: External Links', anime.externalLinks.length
                 ? anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ')
                 : 'None');
+        await message.channel.stopTyping(true);
         return message.channel.send(embed);
     } catch (err) {
         await message.channel.stopTyping(true);
