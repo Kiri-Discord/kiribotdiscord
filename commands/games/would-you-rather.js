@@ -68,7 +68,7 @@ exports.help = {
 };
   
 exports.conf = {
-    aliases: ['wouldyourather', 'wyt'],
+    aliases: ['wouldyourather', 'wyr'],
     cooldown: 5,
     guildOnly: true
 };
