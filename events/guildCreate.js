@@ -22,7 +22,7 @@ module.exports = async (client, guild) => {
   .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + `${prefix}` + `\n\nType ${prefix}help to see a full list of commands. Have fun!`)
   .setColor('#DAF7A6')
   .setTimestamp(new Date())
-  .setAuthor(client.user.tag, client.user.displayAvatarURL())
+  .setAuthor(client.user.username, client.user.displayAvatarURL())
   .setImage('https://i.imgur.com/1ef8ZEw.png')
   .setFooter('Image by Cabbie #1964')
 

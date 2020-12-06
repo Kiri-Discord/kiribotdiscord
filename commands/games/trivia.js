@@ -26,7 +26,7 @@ exports.run = async (client, message, args) => {
 
   const questionEmbed = new MessageEmbed()
     .setColor('#DAF7A6')
-    .setFooter(client.user.tag, client.user.displayAvatarURL())
+    .setFooter(client.user.username, client.user.displayAvatarURL())
     .setTitle('Trivia')
     .addField('Topic', `\`${topic}\``)
     .addField('Question', `${question}`)
@@ -49,7 +49,7 @@ exports.run = async (client, message, args) => {
   collector.on('end', () => {
     const answerEmbed = new MessageEmbed()
       .setColor('#DAF7A6')
-      .setFooter(client.user.tag, client.user.displayAvatarURL())
+      .setFooter(client.user.username, client.user.displayAvatarURL())
       .setTitle('Trivia')
       .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setTimestamp()

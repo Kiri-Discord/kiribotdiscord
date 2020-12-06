@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
 
   const Embed = new MessageEmbed()
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    .setFooter(client.user.tag, client.user.displayAvatarURL())
+    .setFooter(client.user.username, client.user.displayAvatarURL())
     .setColor(`RANDOM`)
     .setTimestamp()
     .setImage(mem.user.displayAvatarURL({size: 4096, dynamic: true}))

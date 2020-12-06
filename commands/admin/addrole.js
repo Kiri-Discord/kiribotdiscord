@@ -44,7 +44,7 @@ exports.run = async (client, message, args) => {
     });
 
     const rolelog = new MessageEmbed()
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
+    .setAuthor(client.user.username, client.user.displayAvatarURL())
     .setDescription(`Role added to ${member.user.tag}`)
     .setThumbnail(member.user.avatarURL())
     .addField('Role added', role.name)

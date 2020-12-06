@@ -31,7 +31,7 @@ exports.run = async (client, message, args) => {
   });
 
   const rolelog = new Discord.MessageEmbed()
-  .setAuthor(client.user.tag, client.user.displayAvatarURL())
+  .setAuthor(client.user.username, client.user.displayAvatarURL())
   .setDescription(`Successfully changed **${user}** nickname to **${nick}**`)
   .addField('Target user ID', user.id)
   .addField('Moderator', message.author)

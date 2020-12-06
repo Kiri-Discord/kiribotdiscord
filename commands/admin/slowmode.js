@@ -33,7 +33,7 @@ exports.run = async (client, message, args) => {
   if (toSecond > 21600) return message.channel.send("the timer should be less than or equal to 6 hours!");
   else if (toSecond < 1) return message.channel.send("the timer should be more than or equal to 1 second!");
   const rolelog = new Discord.MessageEmbed()
-  .setAuthor(client.user.tag, client.user.displayAvatarURL())
+  .setAuthor(client.user.username, client.user.displayAvatarURL())
   .setDescription(`Successfully set slowmode for <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)
   .addField('Moderator', message.author)
   

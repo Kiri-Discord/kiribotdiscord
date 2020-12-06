@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
     }
 
     const logembed = new MessageEmbed()
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
+    .setAuthor(client.user.username, client.user.displayAvatarURL())
     .setDescription(`${amount} messages deleted in ${message.channel}`)
     .addField('Moderator', message.author.tag)
     .addField('User ID', message.author.id)

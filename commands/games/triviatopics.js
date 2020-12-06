@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
     });
     const embed = new MessageEmbed()
     .setColor('#DAF7A6')
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
+    .setAuthor(client.user.username, client.user.displayAvatarURL())
     .setTitle('Trivia topics')
     .setDescription(`${topics.join(' ')}\n\nType \`${prefix}trivia [topic]\` to choose one 😄`)
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))

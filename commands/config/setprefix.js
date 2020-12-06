@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
   };
 
   if (args.length < 1) {
-      return message.channel.send({embed: {color: "f3f3f3", description: `my current guild prefix here is \`${settings.prefix}\`. use ${settings.prefix}setprefix <prefix> to change it.`}}).then(m => m.delete({timeout: 10000}));
+      return message.channel.send({embed: {color: "f3f3f3", description: `ℹ️ my current guild prefix here is \`${settings.prefix}\` you could use \`${settings.prefix}setprefix <prefix>\` to change it :D`}}).then(m => m.delete({timeout: 10000}));
   };
 
   await client.dbguilds.findOneAndUpdate({
@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
   .catch(err => console.error(err));
 
 
-  return message.channel.send({embed: {color: "f3f3f3", description: `my current guild prefix here has been updated to \`${args[0]}\``}});
+  return message.channel.send({embed: {color: "f3f3f3", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\``}});
 
     
 };

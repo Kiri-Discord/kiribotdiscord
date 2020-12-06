@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
     const kickembed = new Discord.MessageEmbed()
     .setTitle(`${member.user.tag} was banned!`)
     .setColor("#ff0000")
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
+    .setAuthor(client.user.username, client.user.displayAvatarURL())
     .setThumbnail(member.user.displayAvatarURL())
     .addField('Member', member)
     .addField('Moderator', message.author)
@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
 
     const logembed = new Discord.MessageEmbed()
     .setColor(15158332)
-    .setAuthor(client.user.tag, client.user.displayAvatarURL())
+    .setAuthor(client.user.username, client.user.displayAvatarURL())
     .setTitle('User banned')
     .setThumbnail(member.user.avatarURL())
     .addField('Username', member.user.username)
