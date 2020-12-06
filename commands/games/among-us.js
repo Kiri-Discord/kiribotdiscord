@@ -58,7 +58,7 @@ exports.run = async (client, message, args) => {
             };
             const msgs = await message.channel.awaitMessages(filter, {
                 max: 1,
-                time: 600000
+                time: 240000
             });
             if (msgs.size) {
                 const killedMsg = msgs.first();
