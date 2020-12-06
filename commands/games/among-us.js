@@ -148,8 +148,8 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "among-us",
 	description: "who is the imposter among us?",
-	usage: "among-us <@mention>",
-	example: "among-us @bell"
+	usage: "among-us <number of players>",
+	example: "among-us 4"
 };
   
 exports.conf = {
