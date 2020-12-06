@@ -1,6 +1,6 @@
 const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
-const { formatNumber } = require('../../util/Util');
+const { formatNumber } = require('../../util/util');
 const choices = ['1', '2'];
 
 
