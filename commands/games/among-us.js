@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
         const imposter = awaitedPlayers[Math.floor(Math.random() * awaitedPlayers.length)];
         await message.channel.send(oneLine`
             welcome to **among us**! in this game, you will have to figure out who the imposter is!
-            all you have to do is watch what other players say. there's a special word called a kill word, which is sent to your DM!
+            all you have to do is watch what other players say in 4 minutes. there's a special word called a kill word, which is sent to your DM!
             only the imposter can say it, and if anyone else does, they die! to win, figure out what the kill
             word is, and try to catch the imposter saying it. as for the imposter, you know the word, try to get
             everyone to say it!
