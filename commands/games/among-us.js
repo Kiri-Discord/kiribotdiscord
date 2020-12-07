@@ -74,7 +74,7 @@ exports.run = async (client, message, args) => {
                 `);
             } else {
                 await message.channel.send(stripIndents`
-                    none has said the word for 10 minutes. we're voting anyway! who looks suspicious?
+                    no one has said the word for 4 minutes. we're voting anyway! who looks suspicious?
                     talk amongst yourselves, who is the imposter? voting begins in 1 minute.
                 `);
             }
