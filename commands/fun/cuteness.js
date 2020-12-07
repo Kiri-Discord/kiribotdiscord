@@ -8,14 +8,14 @@ exports.run = async (client, message, args) => {
     if (user.id === client.user.id) return message.channel.send('me? well you decide instead :D');
     const random = MersenneTwister19937.seed(user.id);
     const cuteness = integer(0, texts.length - 1)(random);
-    return message.channel.send(`${authorUser ? 'you are' : `**${user.username}** is`} ${texts[cuteness]}\n||*hey, coco didn't made those texts, its actually me saying it :)*||`);
+    return message.channel.send(`i think ${authorUser ? 'you are' : `${user.username} is`} ${texts[cuteness]}`);
 }
 
 
 exports.help = {
 	name: "cuteness",
 	description: "determines a user's cuteness.",
-	usage: "cuteness <@mention>",
+	usage: "cuteness [@mention]",
 	example: "cuteness @someone"
 };
   
