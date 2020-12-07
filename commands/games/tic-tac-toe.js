@@ -19,9 +19,12 @@ exports.run = async (client, message, args) => {
     if (!player_two || player_two == message.author || player_two.bot) return message.reply('you should mention a valid user to play with :(');
     if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
     if (utils.inGame.includes(player_two.id)) return message.reply('that user is allready in a game. try again in a minute.');
+    const current = client.games.get(message.channel.id);
+    if (current) return message.reply(`please wait until the current game of **${current.name}** is finished :(`);
+    client.games.set(message.channel.id, { name: 'Tic-Tac-Toe' });
     utils.inGame.push(player_two.id, message.author.id);
     class Game {
-        constructor(message, player_two) {
+        constructor(client, message, player_two) {
             this.player_two = player_two
             this.message = message;
             this.grid = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:']
@@ -31,6 +34,7 @@ exports.run = async (client, message, args) => {
             this.send_message = true
             this.playing_game = true
             this.ttt_message = false
+            this.client = client
             this.run();
         }
     
@@ -147,6 +151,7 @@ exports.run = async (client, message, args) => {
         end_game(player_two, message) {
             utils.inGame = utils.inGame.filter(i => i != message.author.id);
             utils.inGame = utils.inGame.filter(i => i != player_two.id);
+            this.client.games.delete(message.channel.id);
             this.playing_game = false
             this.ttt_message.reactions.removeAll()
             game = null                

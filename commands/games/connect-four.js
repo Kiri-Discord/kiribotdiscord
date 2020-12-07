@@ -2,8 +2,9 @@
 const utils = require('../../util/util');
 
 class Game { // Creating a game class so there is support for multiple games at once.
-    constructor(message, challenged) { // Defining vars and running the game logic
+    constructor(client, message, challenged) { // Defining vars and running the game logic
         this.message = message;
+        this.client = client;
         this.challenged = challenged;
         this.grid = new Array(6).fill();
         this.footer = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:'];
@@ -61,6 +62,7 @@ class Game { // Creating a game class so there is support for multiple games at 
                 this.msg.edit('this game has timed out lol');
                 utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
                 utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
+                this.client.games.delete(message.channel.id);
                 this.msg.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
             });
 
@@ -197,6 +199,7 @@ class Game { // Creating a game class so there is support for multiple games at 
         }
         utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
         utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
+        this.client.games.delete(message.channel.id);
         this.msg.edit(`${this.grid[0].join('')}\n${this.grid[1].join('')}\n${this.grid[2].join('')}\n${this.grid[3].join('')}\n${this.grid[4].join('')}\n${this.grid[5].join('')}\n${this.footer.join('')}\n\n${win}`);
         this.msg.reactions.removeAll().catch(error => console.error('failed to clear reactions: ', error));
     }
@@ -204,6 +207,9 @@ class Game { // Creating a game class so there is support for multiple games at 
 
 exports.run = async (client, message, args) => {
     const challenged = message.mentions.users.first();
+    const current = client.games.get(message.channel.id);
+    if (current) return message.reply(`please wait until the current game of **${current.name}** is finished :(`);
+    client.games.set(message.channel.id, { name: 'Connect Four' });
     if (!challenged || challenged === message.member || challenged.bot) return message.reply('you should mention a valid user to play with :(');
     if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');

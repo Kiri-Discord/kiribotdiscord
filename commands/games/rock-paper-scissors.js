@@ -18,6 +18,7 @@ class Game {
             p1Message = await this.message.author.send('you have created a game of rps. please choose \`r, p, s\`');
             p2Message = await this.challenged.send('you have been challenged to a game of rps. please choose \`r, p, s\`');
         } catch (error) {
+            await this.endGame();
             return this.message.reply("your DM or your opponent's DM is still locked so i can't get the choice from you :( enable your both DMs.").then(i => i.delete({ timeout: 10000 }))
         }
         // sending both messages and storing the dm channel
@@ -52,7 +53,6 @@ class Game {
         const p1Choise = values[0].get(Array.from(values[0].keys()).toString()).content;
         const p2Choise = values[1].get(Array.from(values[1].keys()).toString()).content;
 
-        // Win checks. I don't like this code and may change it later
         if (p1Choise === 'r' && p2Choise === 's') return this.win('p1'); else if (p2Choise === 'r' && p1Choise === 's') return this.win('p2'); else if (p2Choise === 'r' && p1Choise === 'r') return this.win('draw'); // Rock checks
         if (p1Choise === 'p' && p2Choise === 'r') return this.win('p1'); else if (p2Choise === 'p' && p1Choise === 'r') return this.win('p2'); else if (p2Choise === 'p' && p1Choise === 'p') return this.win('draw'); // Paper checks
         if (p1Choise === 's' && p2Choise === 'p') return this.win('p1'); else if (p2Choise === 's' && p1Choise === 'p') return this.win('p2'); else if (p2Choise === 's' && p1Choise === 's') return this.win('draw'); // Scissors checks
@@ -77,7 +77,6 @@ class Game {
     }
 
     endGame() {
-        // filtering the people in the game out of the utils.inGame array
         utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
         utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
     }

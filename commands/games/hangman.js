@@ -1,6 +1,6 @@
 const utils = require('../../util/util');
 class Game { 
-    constructor(message, challenged) { 
+    constructor(client, message, challenged) { 
 
         this.stages = ['\_\_\_\n*      |\n*    \n*    \n*      \n*    \n*', '\_\_\_\n*      |\n*    :dizzy_face: \n*      | \n*      \n*    \n*',
 
@@ -14,6 +14,7 @@ class Game {
         this.correct = 0;
         this.letters = 0;
         this.stage = 0;
+        this.client = client;
     }
 
     async init() {
@@ -21,6 +22,7 @@ class Game {
         try {
             this.dmChannel = await this.message.author.send('please enter the word to be guessed :D')
         } catch (error) {
+            this.end();
             return this.message.reply("your DM is still locked so i can't get the word from you :( enable your DM.").then(i => i.delete({ timeout: 10000 }))
         }
         this.msg = await this.message.channel.send(`${this.stages[0]}\nwaiting for <@${this.message.author.id}> to enter a word`);
@@ -87,6 +89,7 @@ class Game {
     }
 
     end() {
+        this.client.games.delete(message.channel.id);
         utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
         utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
         this.game = null;
@@ -96,6 +99,9 @@ class Game {
 
 exports.run = async (client, message, args) => {
     const challenged = message.mentions.users.first();
+    const current = client.games.get(message.channel.id);
+    if (current) return message.reply(`please wait until the current game of **${current.name}** is finished :(`);
+    client.games.set(message.channel.id, { name: 'Hangman' });
     if (!challenged || challenged === message.author || challenged.bot) return message.reply('you should mention a valid user to play with :(');
     if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
