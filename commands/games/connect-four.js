@@ -215,7 +215,7 @@ exports.run = async (client, message, args) => {
     if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
 
-    const game = new Game(message, challenged);
+    const game = new Game(client, message, challenged);
     game.init();
 }
 

@@ -158,7 +158,7 @@ exports.run = async (client, message, args) => {
             return;
         }
     }
-    var game = new Game(message, player_two)
+    var game = new Game(client, message, player_two)
 }
 
 

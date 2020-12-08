@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
     
     const embed2 = new Discord.MessageEmbed()
     .setColor(0x7289DA)
-    .setDescription(`he will shoot anybody who is trying to fail nnn \nand to call me to do this illegal stuff \nin normal channel\ndo this in a nsfw channel to make him feel happier`)
+    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
     .setTitle('say hi to my uncle')
     .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
 
