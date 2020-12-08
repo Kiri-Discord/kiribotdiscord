@@ -28,7 +28,8 @@ exports.run = async (client, message, args) => {
 
     let query = args.join(" ");
     if (!query) return message.reply('you have to give me an URL where i will take the screenshot from :(') 
-    let site = /^(https?:\/\/)/i.test(query) ? : `http://${query}`
+    let site;
+    site = /^(https?:\/\/)/i.test(query) ? site : `http://${query}`
 
     try {
         if (!pornList) await fetchPornList();
