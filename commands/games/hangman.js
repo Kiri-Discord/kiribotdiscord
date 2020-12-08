@@ -89,7 +89,7 @@ class Game {
     }
 
     end() {
-        this.client.games.delete(message.channel.id);
+        this.client.games.delete(this.message.channel.id);
         utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
         utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
         this.game = null;
