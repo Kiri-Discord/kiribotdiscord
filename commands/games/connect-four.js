@@ -62,7 +62,7 @@ class Game { // Creating a game class so there is support for multiple games at 
                 this.msg.edit('this game has timed out lol');
                 utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
                 utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
-                this.client.games.delete(message.channel.id);
+                this.client.games.delete(this.message.channel.id);
                 this.msg.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
             });
 
@@ -199,7 +199,7 @@ class Game { // Creating a game class so there is support for multiple games at 
         }
         utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
         utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
-        this.client.games.delete(message.channel.id);
+        this.client.games.delete(this.message.channel.id);
         this.msg.edit(`${this.grid[0].join('')}\n${this.grid[1].join('')}\n${this.grid[2].join('')}\n${this.grid[3].join('')}\n${this.grid[4].join('')}\n${this.grid[5].join('')}\n${this.footer.join('')}\n\n${win}`);
         this.msg.reactions.removeAll().catch(error => console.error('failed to clear reactions: ', error));
     }
