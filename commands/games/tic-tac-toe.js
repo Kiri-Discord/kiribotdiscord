@@ -151,7 +151,7 @@ exports.run = async (client, message, args) => {
         end_game(player_two, message) {
             utils.inGame = utils.inGame.filter(i => i != message.author.id);
             utils.inGame = utils.inGame.filter(i => i != player_two.id);
-            this.client.games.delete(message.channel.id);
+            this.client.games.delete(this.message.channel.id);
             this.playing_game = false
             this.ttt_message.reactions.removeAll()
             game = null                
