@@ -211,8 +211,8 @@ exports.run = async (client, message, args) => {
     if (current) return message.reply(`please wait until the current game of **${current.name}** is finished :(`);
     client.games.set(message.channel.id, { name: 'Connect Four' });
     if (!challenged || challenged === message.member || challenged.bot) return message.reply('you should mention a valid user to play with :(');
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
-    if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
+    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
+    if (utils.inGame.includes(challenged.id)) return message.reply('that user is already in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
 
     const game = new Game(client, message, challenged);

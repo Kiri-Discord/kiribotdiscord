@@ -17,8 +17,8 @@ exports.conf = {
 exports.run = async (client, message, args) => {
     const player_two = message.mentions.users.first();
     if (!player_two || player_two == message.author || player_two.bot) return message.reply('you should mention a valid user to play with :(');
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
-    if (utils.inGame.includes(player_two.id)) return message.reply('that user is allready in a game. try again in a minute.');
+    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
+    if (utils.inGame.includes(player_two.id)) return message.reply('that user is already in a game. try again in a minute.');
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(`please wait until the current game of **${current.name}** is finished :(`);
     client.games.set(message.channel.id, { name: 'Tic-Tac-Toe' });
