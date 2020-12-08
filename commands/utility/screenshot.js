@@ -27,6 +27,7 @@ exports.run = async (client, message, args) => {
     .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
 
     let query = args.join(" ");
+    if (!query) return message.reply('you have to give me an URL where i will take the screenshot from :(') 
     let site = /^(https?:\/\/)/i.test(query) ? site : `http://${query}`
 
     try {
