@@ -44,6 +44,7 @@ exports.run = async (client, message, args) => {
         }
         message.channel.startTyping(true);
         const { body } = await request.get(`https://image.thum.io/get/width/1920/crop/675/noanimate/${site}`);
+        await message.channel.stopTyping(true);
         return message.channel.send('*powered by bell\'s laptop*',{ files: [{ attachment: body, name: 'screenshot.png' }] });
     } catch (err) {
         await message.channel.stopTyping(true);
