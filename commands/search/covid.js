@@ -23,12 +23,12 @@ exports.run = async (client, message, args) => {
         .setThumbnail(country === 'all' ? null : data.countryInfo.flag || null)
         .setFooter('I updated this data in', client.user.displayAvatarURL())
         .setTimestamp(data.updated)
-        .addField(':arrow_right: Total Cases', `${formatNumber(data.cases)} (${formatNumber(data.todayCases)} Today)`, true)
-        .addField(':arrow_right: Total Deaths', `${formatNumber(data.deaths)} (${formatNumber(data.todayDeaths)} Today)`, true)
-        .addField(':arrow_right: Total Recoveries',
+        .addField(':arrow_right: Total cases', `${formatNumber(data.cases)} (${formatNumber(data.todayCases)} Today)`, true)
+        .addField(':arrow_right: Total deaths', `${formatNumber(data.deaths)} (${formatNumber(data.todayDeaths)} Today)`, true)
+        .addField(':arrow_right: Total recoveries',
             `${formatNumber(data.recovered)} (${formatNumber(data.todayRecovered)} Today)`, true)
-        .addField(':arrow_right: Active Cases', formatNumber(data.active), true)
-        .addField(':arrow_right: Active Critical Cases', formatNumber(data.critical), true)
+        .addField(':arrow_right: Active cases', formatNumber(data.active), true)
+        .addField(':arrow_right: Active critical cases', formatNumber(data.critical), true)
         .addField(':arrow_right: Tests', formatNumber(data.tests), true);
     return message.channel.send(embed);
     } catch (err) {
