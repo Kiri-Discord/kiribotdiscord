@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
     });
     const prefix = setting.prefix;
     let playersCount = args[0];
-    if (!playersCount|| playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
+    if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(`please wait until the current game of **${current.name}** is finished :(`);
     client.games.set(message.channel.id, { name: 'Among Us' });
