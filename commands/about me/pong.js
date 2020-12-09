@@ -1,5 +1,4 @@
-
-exports.run = async (client, message, args) => {
+exports.run = async message => {
 	message.channel.send('dont hit me in the face lmao');
 	
 };

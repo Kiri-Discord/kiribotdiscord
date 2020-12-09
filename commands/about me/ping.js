@@ -1,6 +1,5 @@
-
-exports.run = async (client, message, args) => {
-	message.channel.send('pong.');
+exports.run = async message => {
+	message.channel.send('pong!');
 	
 };
 exports.help = {

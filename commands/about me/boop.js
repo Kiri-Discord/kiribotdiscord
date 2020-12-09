@@ -1,5 +1,4 @@
-
-exports.run = async (client, message, args) => {
+exports.run = async message => {
 	message.reply('are you in pain?');
 	
 };
@@ -15,4 +14,3 @@ exports.conf = {
 	cooldown: 2,
 	guildOnly: false
 };
-  

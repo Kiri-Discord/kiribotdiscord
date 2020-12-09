@@ -17,9 +17,7 @@ exports.run = async (client, message) => {
 		const image = await createImage(data, true);
 		const answerimage = await createImage(data, false);
 		const embed = new MessageEmbed()
-		.setTimestamp(new Date())
 		.setColor('RANDOM')
-		.setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 		.setTitle('you have 15 seconds, who\'s that Pokémon?')
 		.attachFiles(image)
 		.setImage(`attachment://${image.name}`);
@@ -31,7 +29,6 @@ exports.run = async (client, message) => {
 		client.games.delete(`${message.channel.id}-whospokemon`);
 		const embed1 = new MessageEmbed()
 		.setColor('RANDOM')
-		.setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 		.setTitle(`time is up! it's ${data.name}!`)
 		.attachFiles(answerimage)
 		.setImage(`attachment://${answerimage.name}`)
@@ -41,17 +38,15 @@ exports.run = async (client, message) => {
 		if (!names.includes(guess) && data.slug !== slug) {
 			const embed2 = new MessageEmbed()
 			.setColor('RANDOM')
-			.setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 			.setTitle(`nope! it's ${data.name}!`)
-			.attachFiles(send2)
+			.attachFiles(answerimage)
 			.setImage(`attachment://${answerimage.name}`)
 			return message.channel.send(embed2);
 		}
 		const embed3 = new MessageEmbed()
 		.setColor('RANDOM')
-		.setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
 		.setTitle(`nice! it's ${data.name}!`)
-		.attachFiles(send2)
+		.attachFiles(answerimage)
 		.setImage(`attachment://${answerimage.name}`)
 		return message.channel.send(embed3)
 	} catch (err) {
