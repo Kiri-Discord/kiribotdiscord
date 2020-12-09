@@ -2,6 +2,29 @@ const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
 module.exports = class Util {
+	static removeDuplicates(arr) {
+		if (arr.length === 0 || arr.length === 1) return arr;
+		const newArr = [];
+		for (let i = 0; i < arr.length; i++) {
+			if (newArr.includes(arr[i])) continue;
+			newArr.push(arr[i]);
+		}
+		return newArr;
+	}
+	static async reactIfAble(message, user, emoji, fallbackEmoji) {
+		const dm = !message.guild;
+		if (fallbackEmoji && (!dm && !message.channel.permissionsFor(user).has('USE_EXTERNAL_EMOJIS'))) {
+			emoji = fallbackEmoji;
+		}
+		if (dm || message.channel.permissionsFor(user).has(['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'])) {
+			try {
+				await message.react(emoji);
+			} catch {
+				return null;
+			}
+		}
+		return null;
+	}
 	static async awaitPlayers(message, max, min = 1) {
 		if (max === 1) return [message.author.id];
 		const addS = min - 1 === 1 ? '' : 's';

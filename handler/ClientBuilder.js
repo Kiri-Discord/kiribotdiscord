@@ -1,6 +1,8 @@
+
 const {Client, Collection, Guild, GuildMember, Structures} = require("discord.js");
 const { readdir, readdirSync } = require('fs');
 const { join, resolve } = require('path');
+const PokemonStore = require('./pokemon/pokemonstore');
 
 module.exports = class sefy extends Client {
   constructor(options) {
@@ -15,6 +17,7 @@ module.exports = class sefy extends Client {
     this.dbleveling = require("../model/leveling")
     this.dbverify = require("../model/verify")
     this.games = new Collection();
+    this.pokemon = new PokemonStore();
         /** 
      * 
      * @type {Array<string>}

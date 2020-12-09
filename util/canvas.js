@@ -1,4 +1,5 @@
 module.exports = {
+    
     greyscale: (ctx, x, y, width, height) => {
         const data = ctx.getImageData(x, y, width, height);
         for (let i = 0; i < data.data.length; i += 4) {
@@ -10,6 +11,17 @@ module.exports = {
         ctx.putImageData(data, x, y);
         return ctx;
     },
+    
+	silhouette: (ctx, x, y, width, height) => {
+		const data = ctx.getImageData(x, y, width, height);
+		for (let i = 0; i < data.data.length; i += 4) {
+			data.data[i] = 0;
+			data.data[i + 1] = 0;
+			data.data[i + 2] = 0;
+		}
+		ctx.putImageData(data, x, y);
+		return ctx;
+	},
     invert: (ctx, x, y, width, height) => {
         const data = ctx.getImageData(x, y, width, height);
         for (let i = 0; i < data.data.length; i += 4) {
@@ -88,4 +100,5 @@ module.exports = {
             return resolve(lines);
         });
     }
+    
 };

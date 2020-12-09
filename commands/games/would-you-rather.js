@@ -6,8 +6,8 @@ const choices = ['1', '2'];
 
 exports.run = async (client, message, args) => {
     const current = client.games.get(`${message.channel.id}-wouldyourather`);
-    if (current) return message.reply(`please wait until the current **would you rather...?** game of **${current.name.username}** is finished first :(`);
-    client.games.set(`${message.channel.id}-wouldyourather`, { name: message.author });
+    if (current) return message.reply(`please wait until **${current.player.username}** is finished first :(`);
+    client.games.set(`${message.channel.id}-wouldyourather`, { player: message.author });
     try {
         const data = await fetchScenario();
         await message.channel.send(stripIndents`
