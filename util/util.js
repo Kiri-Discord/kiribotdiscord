@@ -4,6 +4,21 @@ const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', '
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 
 module.exports = class Util {
+	static today(timeZone) {
+		const now = new Date();
+		now.setHours(0);
+		now.setMinutes(0);
+		now.setSeconds(0);
+		now.setMilliseconds(0);
+		if (timeZone) now.setUTCHours(now.getUTCHours() + timeZone);
+		return now;
+	}
+	static tomorrow(timeZone) {
+		const today = Util.today(timeZone);
+		today.setDate(today.getDate() + 1);
+		return today;
+	}
+
 	static removeDuplicates(arr) {
 		if (arr.length === 0 || arr.length === 1) return arr;
 		const newArr = [];
