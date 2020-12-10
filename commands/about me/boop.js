@@ -1,4 +1,4 @@
-exports.run = async message => {
+exports.run = async (client, message, args) => {
 	message.reply('are you in pain?');
 	
 };
