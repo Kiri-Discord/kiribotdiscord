@@ -6,7 +6,7 @@ const path = require('path');
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Pokemon Solid.ttf'), { family: 'Pokemon' });
 const pokemonCount = 893;
 
-exports.run = async (client, message) => {
+exports.run = async (client, message, args) => {
 	const pokemon = Math.floor(Math.random() * (pokemonCount + 1))
 	const current = client.games.get(`${message.channel.id}-whospokemon`);
 	if (current) return message.reply(`please wait until **${current.player.username}** is finished first :(`);
