@@ -22,7 +22,8 @@ exports.run = async (client, message, args) => {
 	const current = client.games.get(message.channel.id);
 	if (current) return message.reply(current.prompt);
 	const opponent = message.mentions.users.first();
-	const time = args[1] || 10
+	const time = args[1] || 10;
+	if (isNaN(time) || time > 15 || time < 3 ) return message.reply('the waiting time should be a number, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(')
 	if (!opponent) return message.reply('you should tag someone to play :(')
 	if (opponent.bot) return message.reply('since bots are too smart, i couldn\'t allow that :(');
 	if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
