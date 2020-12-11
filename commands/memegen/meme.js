@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 exports.run = async (client, message, args) => {
     let loadingEmbed = new Discord.MessageEmbed()
     .setColor("RANDOM")
-    .setDescription(`Getting a meme... Hang tight!`)
+    .setDescription(`getting a meme... hang tight!`)
     let msg = await message.channel
       .send(loadingEmbed)
       .then(m => m.delete({ timeout: 2000 }));
@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
       fetch(`https://www.reddit.com/r/${memes}.json?sort=top&t=daily`)
       .then(res => res.json())
       .then(body => {
-        if (!body) return message.reply("Ouch. I fell, try again please.");
+        if (!body) return message.reply("ouch. i fell, try again please.");
 
       const allowed = message.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
       if (!allowed.length) return message.channel.send('Hmm looks like an error to me...');
@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
       .setImage(allowed[randomnumber].data.url)
       .setDescription("**-----------------------------------**")
       .addField("Meme provided by", `https://reddit.com/r/${memes}`)
-      .addField("Upvotes and Comments", `Upvote: **${allowed[randomnumber].data.ups}** | Comment(s) **${allowed[randomnumber].data.num_comments}**`)
+      .addField("Upvotes and comments", `Upvote: **${allowed[randomnumber].data.ups}** | Comment(s) **${allowed[randomnumber].data.num_comments}**`)
       .setColor("RANDOM")
       .setTimestamp(new Date())
       .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
