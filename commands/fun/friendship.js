@@ -4,6 +4,7 @@ exports.run = async (client, message, args) => {
     const first = message.author;
     const second = message.mentions.users.first();
     if (!second) return message.reply('you must to mention someone!');
+    if (second.id === client.user.id) return message.channel.send('well you decide it yourself tho')
     if (second.bot) return message.reply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
     let level;
     const self = first.id === second.id;
