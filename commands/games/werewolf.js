@@ -71,7 +71,7 @@ class Game {
                 for (const player in this.werewolves) {
                     this.message.guild.members.cache.get(this.werewolves[player]).roles.add(roleWerewolves);
                 }
-                channel.send('This is the channel where you, the werewolves, will decide who to kill Don\'t worry, this channel is private so you won\'t get any villagers snooping around.');
+                channel.send('this is the channel where you, the werewolves, will decide who to kill. don\'t worry, this channel is private so you won\'t get any villagers snooping around.');
             });
         await this.message.guild.channels.create('Werewolves party - Villagers', 'text')
             .then(async channel => {
@@ -94,7 +94,7 @@ class Game {
                 for (const player in this.villagers) {
                     this.message.guild.members.cache.get(this.villagers[player]).roles.add(roleVillagers);
                 }
-                channel.send('This is the channel where you will all discus who to kill each round. But beware, the **werewolves** are also somewhere in this room!');
+                channel.send('this is the channel where you will all discuss who to kill each round. but beware, the **werewolves** are also somewhere in this room!');
             });
 
         this.night();
@@ -120,8 +120,8 @@ class Game {
     }
 
     night() {
-        this.globalChannel.send('It is night time and you all fall to sleep. There are werewolves snooping around the village choosing one person to eat tonight');
-        this.voteKill(this.werewolvesChannel, 'You must discuss and agree on a villager to kill. Once you have decided type ``-kill username``');
+        this.globalChannel.send('it is night time and you all fall to sleep. there are werewolves snooping around the village choosing one person to eat tonight');
+        this.voteKill(this.werewolvesChannel, 'you must discuss and agree on a villager to kill. once you have decided type ``-kill username``');
     }
 
     async voteKill(channel, message) {
@@ -137,7 +137,7 @@ class Game {
         response = response.slice(6);
 
         let user = this.client.users.cache.find(u => u.username === response);
-        let msg = await this.werewolvesChannel.send(`Vote to kill ${user.username}. All players must agree.`);
+        let msg = await this.werewolvesChannel.send(`vote to kill ${user.username}. all players must agree.`);
         await msg.react('👍');
         await msg.react('👎');
         for (const i in this.werewolves) {
@@ -146,10 +146,10 @@ class Game {
                 max: 1,
             });
             if (reaction.emoji.name === '👎' && !reaction.bot) {
-                message.edit('Someone dissagreed.');
+                message.edit('someone dissagreed.');
                 this.voteKill(channel, message);
             } else if (i === this.werewolves.length - 1) {
-                channel.send(`Vote over, killing ${user.username}`);
+                channel.send(`vote over, killing ${user.username}`);
             }
         }
     }

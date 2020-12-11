@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "praise",
-	description: "you feel sad 😞 ? let me praise you ;)",
+	description: "give you a free compliment ;)",
 	usage: "praise",
 	example: "praise"
 };

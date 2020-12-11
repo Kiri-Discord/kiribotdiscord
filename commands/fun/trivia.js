@@ -8,6 +8,9 @@ exports.run = async (client, message, args) => {
     guildID: message.guild.id
   });
   const prefix = setting.prefix;
+  const current = client.games.get(message.channel.id);
+	if (current) return message.reply(current.prompt);
+	client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** is finished first :(` });
   let topic = args[0];
   if (!topic) { // Pick a random topic if none given
     topic = message.client.topics[Math.floor(Math.random() * message.client.topics.length)];
@@ -54,12 +57,17 @@ exports.run = async (client, message, args) => {
       .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setTimestamp()
       .setColor(message.guild.me.displayHexColor);
-    if (winner) 
+    if (winner) {
       message.channel.send(answerEmbed.setDescription(`Congratulations ${winner}, you gave the correct answer!`));
-    else message.channel.send(answerEmbed
+      client.games.delete(message.channel.id);
+    }
+    else {
+      client.games.delete(message.channel.id);
+      message.channel.send(answerEmbed
       .setDescription('Sorry, time\'s up! Better luck next time :(')
       .addField('Correct answers', origAnswers.join('\n'))
     );
+    }
   });
 };
 exports.help = {

@@ -8,9 +8,9 @@ const pokemonCount = 893;
 
 exports.run = async (client, message, args) => {
 	const pokemon = Math.floor(Math.random() * (pokemonCount + 1))
-	const current = client.games.get(`${message.channel.id}-whospokemon`);
-	if (current) return message.reply(`please wait until **${current.player.username}** is finished first :(`);
-	client.games.set(`${message.channel.id}-whospokemon`, { player: message.author });
+	const current = client.games.get(message.channel.id);
+	if (current) return message.reply(current.prompt);
+	client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** is finished first :(` });
 	try {
 		const data = await client.pokemon.fetch(pokemon.toString());
 		const names = data.names.map(name => name.name.toLowerCase());
@@ -26,7 +26,7 @@ exports.run = async (client, message, args) => {
 			max: 1,
 			time: 15000
 		});
-		client.games.delete(`${message.channel.id}-whospokemon`);
+		client.games.delete(message.channel.id);
 		const embed1 = new MessageEmbed()
 		.setColor('RANDOM')
 		.setTitle(`time is up! it's ${data.name}!`)
@@ -50,7 +50,7 @@ exports.run = async (client, message, args) => {
 		.setImage(`attachment://${answerimage.name}`)
 		return message.channel.send(embed3)
 	} catch (err) {
-		client.games.delete(`${message.channel.id}-whospokemon`);
+		client.games.delete(message.channel.id);
 		return console.log(err)
 	}
 }

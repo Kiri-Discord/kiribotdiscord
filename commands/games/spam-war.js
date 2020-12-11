@@ -7,14 +7,14 @@ exports.run = async (client, message, args) => {
 	if (opponent.bot) return message.reply('you can\'t spam with bot! well technically you can, but..');
 	if (opponent.id === client.user.id) return message.reply('me? nah i\'m busy :(');
 	
-	const current = client.games.get(`${message.channel.id}-spamwar`);
-	if (current) return message.reply(`you should wait until **${current.player1.username}** and **${current.player2.username}** stop spamming :)`);
-	client.games.set(`${message.channel.id}-spamwar`, { player1: message.author, player2: opponent });
+	const current = client.games.get(message.channel.id);
+	if (current) return message.reply(current.prompt);
+	client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** and **${opponent.username}** stop spamming :)` });
 	try {
-		await message.channel.send(`${opponent}, do you accept this challenge?`);
+		await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
 		const verification = await verify(message.channel, opponent);
 		if (!verification) {
-			client.games.delete(`${message.channel.id}-spamwar`);
+			client.games.delete(message.channel.id);
 			return message.channel.send('looks like they declined...');
 		}
 		await message.channel.send('you get one point per character in your messages. you get 20 seconds to spam.');
@@ -32,13 +32,13 @@ exports.run = async (client, message, args) => {
 		const winner = authorMsgs > opponentMsgs ? message.author : opponent;
 		const winnerPts = authorMsgs > opponentMsgs ? authorMsgs : opponentMsgs;
 		const loserPts = authorMsgs > opponentMsgs ? opponentMsgs : authorMsgs;
-		client.games.delete(`${message.channel.id}-spamwar`);
+		client.games.delete(message.channel.id);
 		if (authorMsgs === opponentMsgs) {
 			return message.channel.send(`it was a tie! you both got **${winnerPts}** points! for *spamming*`);
 		}
 		return message.channel.send(`the winner is ${winner}, with **${winnerPts}** points! your opponent only got ${loserPts} :(`);
 	} catch (err) {
-		client.games.delete(`${message.channel.id}-spamwar`);
+		client.games.delete(message.channel.id);
 		throw err;
 	}
 }

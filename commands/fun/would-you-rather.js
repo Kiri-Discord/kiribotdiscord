@@ -5,9 +5,9 @@ const choices = ['1', '2'];
 
 
 exports.run = async (client, message, args) => {
-    const current = client.games.get(`${message.channel.id}-wouldyourather`);
-    if (current) return message.reply(`please wait until **${current.player.username}** is finished first :(`);
-    client.games.set(`${message.channel.id}-wouldyourather`, { player: message.author });
+    const current = client.games.get(message.channel.id);
+    if (current) return message.reply(current.prompt);
+    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** is finished first :(` });
     try {
         const data = await fetchScenario();
         await message.channel.send(stripIndents`
@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
             max: 1
         });
         if (!msgs.size) {
-            client.games.delete(`${message.channel.id}-wouldyourather`);
+            client.games.delete(message.channel.id);
             return message.reply(stripIndents`
                 no response? :D
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
@@ -32,13 +32,13 @@ exports.run = async (client, message, args) => {
         await postResponse(data.id, option1);
         const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
         const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-        client.games.delete(`${message.channel.id}-wouldyourather`);
+        client.games.delete(message.channel.id);
         return message.reply(stripIndents`
             **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
             1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
         `);
     } catch (err) {
-        client.games.delete(`${message.channel.id}-wouldyourather`);
+        client.games.delete(message.channel.id);
         return message.reply(`sorry :( i got an error. try again later!`);
     }
 }
