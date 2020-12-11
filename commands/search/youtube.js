@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
           .setDescription(body.items[0].snippet.description)
           .setAuthor('YouTube', 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png')
           .setURL(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`)
-          .setImage(body.items[0].snippet.thumbnails.default.url)
+          .setThumbnail(body.items[0].snippet.thumbnails.default.url)
           .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
         message.channel.send(embed).catch(console.error);
       } catch (err) {
