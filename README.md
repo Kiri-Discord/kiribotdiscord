@@ -2,6 +2,8 @@ Attention: Join my friend's Discord server where i will host it: https://discord
 
 I will do my best to help out if your having issues hosting but also not gonna spoonfeed you either
 
+DO NOT SPAM GENERAL ASKING FOR HELP, DM ME INSTEAD
+
 # Sefy
 
 this is a bot i made for fun for my friends, and is written in discord.js of course :)
