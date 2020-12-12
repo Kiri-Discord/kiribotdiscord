@@ -38,7 +38,7 @@ exports.conf = {
     cooldown: 6,
     guildOnly: true,
     userPerms: [],
-	clientPerms: []
+	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
 }
 
 function contrast(ctx, x, y, width, height) {

@@ -26,8 +26,8 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "greyscale",
   description: "is that blue? no, black.",
-  usage: "greyscale",
-  example: "greyscale"
+  usage: "greyscale `<image>`",
+  example: "greyscale `you upload it yourself`"
 };
 
 exports.conf = {
@@ -35,5 +35,5 @@ exports.conf = {
   cooldown: 5,
   guildOnly: true,
   userPerms: [],
-	clientPerms: []
+	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
 }

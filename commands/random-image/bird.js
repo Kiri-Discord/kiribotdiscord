@@ -26,5 +26,5 @@ exports.conf = {
 	aliases: [],
 	cooldown: 3,
 	userPerms: [],
-	clientPerms: []
+	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
