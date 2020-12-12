@@ -55,7 +55,11 @@ module.exports = async (client, message) => {
             new: true,
         })
         userprof.level = client.leveling.getLevel(userprof.xp);
-        message.reply(`you has reached level **${userprof.level}**! i will disappear from this convo in a sec..`).then(m => m.delete({ timeout: 5000 }));
+        message.reply(`you has reached level **${userprof.level}**! i will disappear from this convo in a sec..`).then(m => m.delete({ timeout: 5000 })).catch(() => {
+            message.author.send(`you has reached level **${userprof.level}** in **${message.guild.name}**!\ni send you this via DM since i don't have the perm to notify you via the channel you're chatting :(`).catch(() => {
+              return;
+            })
+        });
     };
 
     let randomTimer = getRandomInt(65000, 80000); 

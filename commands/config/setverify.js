@@ -45,6 +45,6 @@ exports.conf = {
 	aliases: ["verify"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    userPerms: ["MANAGE_GUILD"],
 	clientPerms: []
 };

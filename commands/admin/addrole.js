@@ -10,13 +10,11 @@ exports.run = async (client, message, args) => {
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
-    if (!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send(`You do not have \`MANAGE_ROLES\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
-
-    if (!args[0] || !args[1]) return message.reply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
-
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
     const roleName = args.slice(1).join(' ');
+
+    if (!member || !roleName) return message.reply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
     

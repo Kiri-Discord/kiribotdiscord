@@ -9,10 +9,6 @@ exports.run = async (client, message, args) => {
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
   
-  if (!message.member.hasPermission(["MANAGE_GUILD", "ADMINISTRATOR"])) {
-    return message.channel.send(`you do not have \`MANAGE_GUILD\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
-  }
-  
   let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
   if (!user) return message.reply("p l e a s e mention the user properly or provide me with a valid ID :V");
   let member = message.guild.members.cache.get(user.id);
@@ -36,8 +32,6 @@ exports.run = async (client, message, args) => {
   .addField('Target user ID', user.id)
   .addField('Moderator', message.author)
 
-
-
 }
 
 exports.help = {
@@ -51,6 +45,6 @@ exports.conf = {
   aliases: ["setnick"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
-	clientPerms: []
+  userPerms: ["MANAGE_NICKNAMES"],
+	clientPerms: ["EMBED_LINKS", "SEND_MESSAGES", "MANAGE_NICKNAMES"]
 }

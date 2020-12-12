@@ -16,8 +16,6 @@ module.exports = async (client, message) => {
     prefix = setting.prefix
   }
 
-  
-
   const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
 
   const duh = staffsv.emojis.cache.find(emoji => emoji.name === 'duh');
@@ -59,23 +57,20 @@ module.exports = async (client, message) => {
   if (commandFile.conf.userPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.userPerms) {
       if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-        perms.push(commandFile.conf.userPerms[permission])
-        return message.reply(`sorry, you don't have \`${perms.join(", ")}\` permission to do this command ${sed}`);
-      }
-    }
-  }
-  if (commandFile.conf.userPerms && message.channel.type !== "dm") {
-    for (permission in commandFile.conf.userPerms) {
-      if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-        perms.push(commandFile.conf.userPerms[permission])
-        return message.reply(`sorry, i don't have \`${perms.join(", ")}\` permission to do this command ${sed}`);
+        return message.reply(`sorry, you don't have ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission, so i can't do that ${sed}`);
       }
     }
   }
 
   if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.clientPerms) {
-      if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) return;
+      if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
+        return message.reply(`sorry, i don't have ${permsme.join(", ")} permission to do this for you ${sed}`).catch(() => {
+          message.author.send(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission in **${message.guild.name}** to do that for you ${sed}`).catch(() => {
+            return;
+          })
+        });
+      };
     }
   }
   

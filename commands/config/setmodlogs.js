@@ -37,7 +37,7 @@ exports.conf = {
 	aliases: ["sml"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    userPerms: ["MANAGE_GUILD"],
 	clientPerms: []
 };
   

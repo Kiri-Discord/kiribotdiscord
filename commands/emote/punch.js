@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === client.user.id) {
-      message.reply('you truly are the lowest scum in history')
+      message.reply('you truly are the lowest scum in history.')
       return
     }
 
@@ -67,5 +67,5 @@ exports.conf = {
     cooldown: 4,
     guildOnly: true,
     userPerms: [],
-    clientPerms: []
+    clientPerms: ["EMBED_LINKS", "SEND_MESSAGES"]
 }

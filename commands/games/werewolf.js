@@ -11,7 +11,7 @@ class Game {
     }
 
     async init() {
-        this.msg = await this.message.channel.send(`<@${this.message.author.id}> has started a game of **werewolves**! press the blue join button to join the party. once there are 7 players <@${this.message.author.id}> will have the option to start the game.\ncheck my following perms: \`CREATE_CHANNEL\` and \`MANAGE_ROLES\` before you start!`);
+        this.msg = await this.message.channel.send(`<@${this.message.author.id}> has started a game of **werewolves**! press the blue join button to join the party. once there are 7 players <@${this.message.author.id}> will have the option to start the game.`);
         this.msg.react('🔵');
         this.reactionCount = 0;
         this.party();
@@ -185,5 +185,5 @@ exports.conf = {
     cooldown: 7,
     guildOnly: true,
     userPerms: [],
-	clientPerms: []
+	clientPerms: ["SEND_MESSAGES", "MANAGE_CHANNELS", "MANAGE_ROLES", "ADD_REACTIONS"]
 };

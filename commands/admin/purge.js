@@ -43,6 +43,6 @@ exports.conf = {
 	aliases: [],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
-    clientPerms: []
+    userPerms: ["MANAGE_MESSAGES"],
+    clientPerms: ["MANAGE_MESSAGES", "SEND_MESSAGES", "EMBED_LINKS"]
 };

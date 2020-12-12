@@ -26,5 +26,5 @@ exports.conf = {
 	cooldown: 2,
 	guildOnly: false,
 	userPerms: [],
-	clientPerms: []
+	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 };

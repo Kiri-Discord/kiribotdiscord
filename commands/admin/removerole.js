@@ -65,6 +65,6 @@ exports.conf = {
     aliases: ["deleterole", "delrole"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: []
+    userPerms: ["MANAGE_ROLES"],
+	clientPerms: ["MANAGE_ROLES", "SEND_MESSAGES", "EMBED_LINKS"]
 };

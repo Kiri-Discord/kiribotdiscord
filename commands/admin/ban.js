@@ -48,25 +48,25 @@ exports.run = async (client, message, args) => {
     .addField('Banned by', message.author)
     .addField('Reason', reason);
 
-    message.channel.send(kickembed);
-
+    message.channel.send(kickembed)
+    .then(() => {
+        try {
+            member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}.`)
+        } catch (error) {
+            throw error
+        }
+    })
+    .then(() => member.ban({reason}))
+    .then(() => {
+        if (!logChannel) {
+            return
+        } else {
+     
     
-
-    member.send(`🔨you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}.`);
-
-    setTimeout(function(){
-        member.ban({reason}) 
-    }, 2000)
-
-    if (!logChannel) {
-        return
-    } else {
- 
-
-        return logChannel.send(logembed);
-
-    };
-
+            return logChannel.send(logembed);
+    
+        };
+    })
 };
 
 
@@ -81,6 +81,6 @@ exports.conf = {
   aliases: ["b"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
-  clientPerms: []
+  userPerms: ["BAN_MEMBERS"],
+  clientPerms: ["BAN_MEMBERS", "SEND_MESSAGES", "EMBED_LINKS"]
 }

@@ -48,36 +48,39 @@ exports.run = async (client, message, args) => {
     .addField('Reason', reason);
 
 
-    member.send(`🔨you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}.`);
-
-    setTimeout(function(){
-        member.kick({reason}) 
-    }, 2000)
+    message.channel.send(kickembed)
+    .then(() => {
+        try {
+            member.send(`🔨 you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}.`)
+        } catch (error) {
+            throw error
+        }
+    })
+    .then(() => member.kick({reason}))
+    .then(() => {
+        if (!logChannel) {
+            return
+        } else {
+     
     
-    message.channel.send(kickembed);
-
-    if (!logChannel) {
-        return
-    } else {
- 
-
-        return logChannel.send(logembed);
-
-    };
+            return logChannel.send(logembed);
+    
+        };
+    })
 };
 
 
 exports.help = {
   name: "kick",
-  description: "Kick someone out of the guild",
-  usage: ["kick <mention | user ID> [reason]", "kick <mention | user ID>"],
-  example: ["kick @Bell because it has to be", "kick @kuru"]
+  description: "kick someone out of the guild.",
+  usage: ["kick `<mention | user ID> [reason]`", "kick `<mention | user ID>`"],
+  example: ["kick `@Bell because it has to be`", "kick `@kuru`"]
 }
 
 exports.conf = {
   aliases: ["k"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
-  clientPerms: []
+  userPerms: ["KICK_MEMBERS"],
+  clientPerms: ["KICK_MEMBERS", "SEND_MESSAGES", "EMBED_LINKS"]
 }

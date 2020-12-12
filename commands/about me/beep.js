@@ -16,6 +16,6 @@ exports.conf = {
   aliases: [],
   cooldown: 2,
   guildOnly: false,
-  userPerms: ["MANAGE_ROLES"],
-	clientPerms: ["MANAGE_ROLES", "SEND_MESSAGES"]
+  userPerms: [],
+	clientPerms: ["SEND_MESSAGES"]
 }

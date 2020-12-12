@@ -36,12 +36,11 @@ exports.run = async (client, message, args) => {
   } else {
     let cmd = args[0];
     
-    // If the user type the [command], also with the aliases.
     if (client.commands.has(cmd) || client.commands.get(client.aliases.get(cmd))) {
       let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-      let name = command.help.name; // The command name.
-      let desc = command.help.description; // The command description.
-      let cooldown = command.conf.cooldown + " second(s)"; // The command cooldown.
+      let name = command.help.name; 
+      let desc = command.help.description;
+      let cooldown = command.conf.cooldown + " second(s)";
       let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
       let usage = command.help.usage ? command.help.usage : "no usage provided.";
       let example = command.help.example ? command.help.example : "no example provided.";
@@ -78,5 +77,5 @@ exports.conf = {
   cooldown: 3,
   guildOnly: true,
   userPerms: [],
-  clientPerms: []
+  clientPerms: ["EMBED_LINKS", "SEND_MESSAGES", "ADD_REACTIONS"]
 }
