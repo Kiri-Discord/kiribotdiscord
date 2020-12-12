@@ -104,5 +104,7 @@ exports.help = {
 exports.conf = {
 	aliases: ["rps", "rockpaperscissors"],
     cooldown: 4,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

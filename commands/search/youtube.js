@@ -37,12 +37,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "youtube",
     description: "get you a youtube video.",
-    usage: "youtube <query>",
-    example: "youtube rickroll"
+    usage: "youtube `<query>`",
+    example: "youtube `rickroll`"
 };
 
 exports.conf = {
     aliases: ["yt"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+    clientPerms: []
 }

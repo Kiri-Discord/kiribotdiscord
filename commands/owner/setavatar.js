@@ -29,13 +29,15 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "setavatar",
 	description: "change the way i look. 😔",
-	usage: "setavatar <image attachment>",
-	example: "setavatar <insert random image here>"
+	usage: "setavatar `<image attachment>`",
+	example: "setavatar `<insert random image here>`"
 };
   
 exports.conf = {
 	aliases: [],
     cooldown: 2,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };
   

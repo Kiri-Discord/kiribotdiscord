@@ -154,12 +154,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "among-us",
 	description: "who is the imposter among us?",
-	usage: "among-us <number of players>",
-	example: "among-us 4"
+	usage: "among-us `<number of players>`",
+	example: "among-us `4`"
 };
   
 exports.conf = {
 	aliases: ["imposter", "amongus"],
     cooldown: 10,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

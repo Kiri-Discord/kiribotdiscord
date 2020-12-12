@@ -30,6 +30,8 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["anime-nsfw"],
-    cooldown: 4,
-    guildOnly: true
+    cooldown: 3,
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

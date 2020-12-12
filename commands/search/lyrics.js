@@ -35,11 +35,13 @@ exports.help = {
 	name: "lyrics",
 	description: "get the lyrics for a song",
 	usage: "lyrics <song>",
-	example: "lyrics never let me go"
+	example: "lyrics `never let me go`"
 };
   
 exports.conf = {
 	aliases: ["lyric"],
   cooldown: 7,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 };

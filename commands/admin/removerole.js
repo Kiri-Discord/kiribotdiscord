@@ -27,13 +27,13 @@ exports.run = async (client, message, args) => {
 
     const alreadyHasRole = member._roles.includes(role.id);
 
-    if (alreadyHasRole) return message.reply('that user already has that role!').then(m => m.delete({ timeout: 5000 }));
+    if (!alreadyHasRole) return message.reply('that user doesn\'t has that role!').then(m => m.delete({ timeout: 5000 }));
 
     const embed = new MessageEmbed()
-    .setDescription(`☑️ i have successfully given the role \`${role.name}\` to **${member.user.tag}**`)
+    .setDescription(`☑️ i have successfully removed the role \`${role.name}\` from **${member.user.tag}**`)
     .setColor('f3f3f3')
 
-    member.roles.add(role).then(() => message.channel.send(embed)).then(() => {
+    member.roles.remove(role).then(() => message.channel.send(embed)).then(() => {
         if (!logChannel) {
             return
         } else {
@@ -45,9 +45,9 @@ exports.run = async (client, message, args) => {
 
     const rolelog = new MessageEmbed()
     .setAuthor(client.user.username, client.user.displayAvatarURL())
-    .setDescription(`Role added to ${member.user.tag}`)
+    .setDescription(`Role removed from ${member.user.tag}`)
     .setThumbnail(member.user.avatarURL())
-    .addField('Role added', role.name)
+    .addField('Role removed', role.name)
     .addField('Username', member.user.username)
     .addField('User ID', member.id)
     .addField('Moderator', message.author)
@@ -55,17 +55,16 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
-    name: "addrole",
-    description: "give someone a role",
-    usage: ["addrole `<@user> <@role>`", "addrole `<@user> <role ID>`", "addrole `<user ID> <role ID>`", "addrole `<user ID> <@role>`", "addrole `<@user> <role name>`", "addrole `<user ID> <role name>"],
-    example: ["addrole `@bach @pvp`", "addrole `@kuru 584484488877`", "addrole `5575557852 Member`"]
+    name: "removerole",
+    description: "take away a role from someone",
+    usage: ["removerole `<@user> <@role>`", "removerole `<@user> <role ID>`", "removerole `<user ID> <role ID>`", "removerole `<user ID> <@role>`", "removerole `<@user> <role name>`", "removerole `<user ID> <role name>"],
+    example: ["removerole `@bach @pvp`", "removerole `@kuru 584484488877`", "removerole `5575557852 Member`"]
 };
   
 exports.conf = {
-    aliases: ["add-role", "give-role"],
+    aliases: ["deleterole", "delrole"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: ["MANAGE_ROLES"],
-	clientPerms: ["MANAGE_ROLES", "SEND_MESSAGES", "EMBED_LINKS"]
+    userPerms: [],
+	clientPerms: []
 };
-  

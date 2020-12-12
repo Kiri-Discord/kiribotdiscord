@@ -25,11 +25,13 @@ exports.help = {
   name: "wikipedia",
   description: "searches Wikipedia! right on Discord!",
   usage: ["wikipedia `<query>`"],
-  example: ["wikipedia One Piece"]
+  example: ["wikipedia `One Piece`"]
 }
 
 exports.conf = {
   aliases: ["wiki"],
-  cooldown: 10,
-  guildOnly: true
+  cooldown: 5,
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

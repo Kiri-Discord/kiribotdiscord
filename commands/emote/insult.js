@@ -23,13 +23,15 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "insult",
-	description: "Gives an evil insult or insults someone",
-	usage: "insult <@user>",
-	example: "insult @Bell"
+	description: "gives an evil insult or insults someone",
+	usage: ["insult `[@user]`", "insult"],
+	example: ["insult `@Bell`", "insult"]
 };
   
 exports.conf = {
 	aliases: ["burn", "roast"],
     cooldown: 3,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

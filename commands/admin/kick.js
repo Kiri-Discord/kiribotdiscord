@@ -70,12 +70,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "kick",
   description: "Kick someone out of the guild",
-  usage: `kick <mention | user ID> [reason]`,
-  example: `kick @Bell because it has to be`
+  usage: ["kick <mention | user ID> [reason]", "kick <mention | user ID>"],
+  example: ["kick @Bell because it has to be", "kick @kuru"]
 }
 
 exports.conf = {
   aliases: ["k"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+  clientPerms: []
 }

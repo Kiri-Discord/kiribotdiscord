@@ -88,7 +88,7 @@ exports.run = async (client, message, args) => {
     try {
         message.channel.startTyping(true);
         const id = await search(query);
-        if (!id) return message.channel.send(`i could not find any results with **${query}** :(`).then(() => message.channel.stopTyping(true));
+        if (!id) return message.channel.send(`i could not find any results with **${query}** :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`).then(() => message.channel.stopTyping(true));
         const anime = await fetchAnime(id);
         const malScore = await fetchMALScore(anime.idMal);
         const malURL = `https://myanimelist.net/anime/${anime.idMal}`;
@@ -158,11 +158,13 @@ exports.help = {
 	name: "anime",
 	description: "search for an anime.\nonly character from official release will be searched :)\n*tips: you can use my other command* `what-anime` *to find an anime using pictures!*",
 	usage: "anime `<name>`",
-	example: "anime kimi no na wa"
+	example: "anime `One Piece`"
 };
   
 exports.conf = {
 	aliases: ["ani"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

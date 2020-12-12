@@ -29,5 +29,7 @@ exports.help = {
 exports.conf = {
     aliases: ["qr-read", "readqr"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }

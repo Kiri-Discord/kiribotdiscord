@@ -37,12 +37,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "weather",
     description: "responds with weather information for a specific location.",
-    usage: "weather <city/zipcode>",
-    example: "weather Da Nang"
+    usage: "weather `<city/zipcode>`",
+    example: "weather `Da Nang`"
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 7.5,
-    guildOnly: true
+    cooldown: 5,
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }

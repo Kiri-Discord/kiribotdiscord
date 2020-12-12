@@ -36,12 +36,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "avatar",
   description: "Display a user avatar",
-  usage: "avatar [@user | user ID]",
-  example: "avatar @Sefy#6822"
+  usage: ["avatar [@user]", "avatar [user ID]"],
+  example: ["avatar `@Sefy#6822`", "avatar 84878844578778", "avatar"]
 }
 
 exports.conf = {
   aliases: ["icon", "pfp", "ava"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

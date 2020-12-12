@@ -223,12 +223,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "connect-four",
 	description: "challange a player to play Connect Four!",
-	usage: "connect-four <@mention>",
-	example: "connect-four @bell"
+	usage: "connect-four `<@mention>`",
+	example: "connect-four `@bell`"
 };
   
 exports.conf = {
 	aliases: ["c4", "connect4"],
     cooldown: 6,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

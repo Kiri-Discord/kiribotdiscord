@@ -58,12 +58,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "slap",
     description: "slap someone with your best",
-    usage: "slap",
-    example: "slap"
+    usage: "slap `<@mention>`",
+    example: "slap `@bell`"
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 4,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+    clientPerms: []
 }

@@ -83,12 +83,14 @@ async function search(file) {
 exports.help = {
     name: "what-anime",
     description: "detect the anime by just a screenshot or a gif :)",
-    usage: "what-anime <screenshot>",
-    example: "what-anime <random image>"
+    usage: "what-anime `<screenshot>`",
+    example: "what-anime"
 }
 
 exports.conf = {
     aliases: [],
     cooldown: 7,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }

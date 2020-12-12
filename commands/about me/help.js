@@ -61,8 +61,7 @@ exports.run = async (client, message, args) => {
       
       return message.channel.send(embed);
     } else {
-      // If the user type the wrong command.
-      return message.channel.send({embed: {color: "RED", description: "Unknown command."}});
+      return message.channel.send({embed: {color: "RED", description: "unknown command :("}});
     }
   }
 }
@@ -76,6 +75,8 @@ exports.help = {
 
 exports.conf = {
   aliases: ["?"],
-  cooldown: 5,
-  guildOnly: true
+  cooldown: 3,
+  guildOnly: true,
+  userPerms: [],
+  clientPerms: []
 }

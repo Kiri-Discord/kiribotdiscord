@@ -27,13 +27,15 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "setprefix",
-  description: "change my prefix\npretty self-explanatory huh :D",
-  usage: `setprefix <prefix>`,
-  example: `setprefix s!`
+  description: "change my prefix..pretty self-explanatory huh :D",
+  usage: "setprefix `<prefix>`",
+  example: "setprefix `s!`"
 }
 
 exports.conf = {
   aliases: ["prefix"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

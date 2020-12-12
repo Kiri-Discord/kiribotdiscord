@@ -46,5 +46,7 @@ exports.help = {
 exports.conf = {
   aliases: ["meme", "m"],
   cooldown: 3,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

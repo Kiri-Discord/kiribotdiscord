@@ -29,13 +29,15 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "setmodlogs",
 	description: "Set the logs channel where i will logs moderation action",
-	usage: "setmodlogs <#channel | channel id>",
-	example: "setmodlogs #logs"
+	usage: ["setmodlogs `<#channel>`", "setmodlogs `<channel id>`"],
+	example: ["setmodlogs `#logs`", "setmodlogs `4545455454644`"]
 };
   
 exports.conf = {
 	aliases: ["sml"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };
   

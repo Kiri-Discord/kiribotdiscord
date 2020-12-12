@@ -24,5 +24,7 @@ exports.help = {
 exports.conf = {
 	aliases: ["git"],
 	cooldown: 2,
-	guildOnly: false
+	guildOnly: false,
+	userPerms: [],
+	clientPerms: []
 };

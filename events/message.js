@@ -1,4 +1,5 @@
-const Discord = require("discord.js"), cooldowns = new Discord.Collection();
+const Discord = require("discord.js");
+const cooldowns = new Discord.Collection();
 
 module.exports = async (client, message) => {
 
@@ -14,6 +15,8 @@ module.exports = async (client, message) => {
     });
     prefix = setting.prefix
   }
+
+  
 
   const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
 
@@ -41,12 +44,40 @@ module.exports = async (client, message) => {
     message.flags.push(args.shift().slice(1)); 
   }
 
+
+  let perms = [];
+  let permsme = [];
+
   
   
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) return;
 
-  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${duh}`)
+  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${duh}`);
+
+  
+  if (commandFile.conf.userPerms && message.channel.type !== "dm") {
+    for (permission in commandFile.conf.userPerms) {
+      if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
+        perms.push(commandFile.conf.userPerms[permission])
+        return message.reply(`sorry, you don't have \`${perms.join(", ")}\` permission to do this command ${sed}`);
+      }
+    }
+  }
+  if (commandFile.conf.userPerms && message.channel.type !== "dm") {
+    for (permission in commandFile.conf.userPerms) {
+      if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
+        perms.push(commandFile.conf.userPerms[permission])
+        return message.reply(`sorry, i don't have \`${perms.join(", ")}\` permission to do this command ${sed}`);
+      }
+    }
+  }
+
+  if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
+    for (permission in commandFile.conf.clientPerms) {
+      if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) return;
+    }
+  }
   
 
   if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Discord.Collection());

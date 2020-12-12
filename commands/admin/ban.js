@@ -58,9 +58,6 @@ exports.run = async (client, message, args) => {
         member.ban({reason}) 
     }, 2000)
 
-
-
-
     if (!logChannel) {
         return
     } else {
@@ -76,12 +73,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "ban",
   description: "ban someone out of the guild",
-  usage: `ban <mention | user ID> [reason]`,
-  example: `ban @Bell because it has to be`
+  usage: ["ban <mention | user ID> [reason]", "ban <mention | user ID>"],
+  example: ["ban @Bell because it has to be", "ban @kuru"]
 }
 
 exports.conf = {
   aliases: ["b"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+  clientPerms: []
 }

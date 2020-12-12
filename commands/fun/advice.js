@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
         const {
           body
         } = await req.get('http://api.adviceslip.com/advice');
-        message.channel.send(JSON.parse(body.toString()).slip.advice);
+        message.channel.send(JSON.parse(body.toString()).slip.advice.toLowerCase());
     } catch (e) {
         console.log(e);
         message.channel.send(`i can't seem to be able to give you a fact :( here is a hug for now 🤗`);
@@ -22,5 +22,7 @@ exports.help = {
 exports.conf = {
 	aliases: [],
     cooldown: 3,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

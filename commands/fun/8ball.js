@@ -26,12 +26,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "8ball",
 	description: "Your life depends on this one.",
-	usage: "8ball <question>",
-	example: "8ball how to basic"
+	usage: "8ball `<question>`",
+	example: "8ball `do you love me?`"
 };
   
 exports.conf = {
 	aliases: ["8ball"],
     cooldown: 3,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

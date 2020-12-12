@@ -30,15 +30,17 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "fisheye",
-    description: "mess up the image real hard :) im bad at painting tho :v",
-    usage: "fisheye <image attachment>",
+    description: "*what is fisheyes?*",
+    usage: "fisheye `<image attachment>`",
     example: "fisheye"
 };
 
 exports.conf = {
     aliases: ["fish-eye"],
     cooldown: 6,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }
 
 async function fishEye(ctx, level, x, y, width, height) {

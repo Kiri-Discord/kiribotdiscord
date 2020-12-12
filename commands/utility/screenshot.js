@@ -15,7 +15,11 @@ exports.help = {
 exports.conf = {
     aliases: ["capture"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+    clientPerms: [],
+    userPerms: [],
+	clientPerms: []
 }
 
 

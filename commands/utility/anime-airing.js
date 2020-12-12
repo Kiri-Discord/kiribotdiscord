@@ -62,5 +62,7 @@ exports.help = {
 exports.conf = {
     aliases: ["airing-anime", "anichart", "aniair"],
     cooldown: 4,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }

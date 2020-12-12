@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "pay-respect",
-  description: "Pay respect to someone.",
+  description: "pay respect to someone or a reason",
   usage: ["pay-respect", "pay-respect `[reason]`", "pay-respect `[@user]`", "pay-respect `[@user]` `[reason]`"],
   example: ["pay-respect", "pay-respect `@coconut`", "pay-respect `@coconut :v`"]
 }
@@ -46,5 +46,7 @@ exports.help = {
 exports.conf = {
   aliases: ["f"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

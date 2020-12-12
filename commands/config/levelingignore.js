@@ -30,12 +30,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "levelingignore",
 	description: "ignore levelings from a message channel",
-	usage: "levelingignore [#channel | channel id]",
-	example: "levelingignore #spam"
+	usage: ["levelingignore [#channel]", "levelingignore [channel id]"],
+	example: ["levelingignore #spam", "levelingignore 84487884448848"]
 };
   
 exports.conf = {
 	aliases: ["ignorelevel", "iglevel"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

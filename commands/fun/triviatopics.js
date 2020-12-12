@@ -31,7 +31,9 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ['ts'],
+	aliases: ["quiztopics"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 };

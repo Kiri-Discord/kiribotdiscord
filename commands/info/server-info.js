@@ -59,5 +59,7 @@ exports.help = {
 exports.conf = {
   aliases: ["serverinfo", "guildinfo"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

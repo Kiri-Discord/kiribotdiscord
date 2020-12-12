@@ -90,5 +90,7 @@ exports.help = {
 exports.conf = {
 	aliases: ["anagram", "letters"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

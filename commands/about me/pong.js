@@ -4,7 +4,7 @@ exports.run = async (client, message, args) => {
 };
 exports.help = {
 	name: "pong",
-	description: "DONT DO THIS",
+	description: "DON'T DO THIS",
 	usage: "pong",
 	example: "pong"
 };
@@ -12,5 +12,7 @@ exports.help = {
 exports.conf = {
 	aliases: [],
 	cooldown: 2,
-	guildOnly: false
+	guildOnly: false,
+	userPerms: [],
+	clientPerms: []
 };

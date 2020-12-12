@@ -69,5 +69,7 @@ exports.help = {
 exports.conf = {
     aliases: ['wouldyourather', 'wyr'],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

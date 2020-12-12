@@ -20,5 +20,7 @@ exports.help = {
 exports.conf = {
 	aliases: ["praiseme", "freecompliment"],
     cooldown: 3,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

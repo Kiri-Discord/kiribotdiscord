@@ -37,12 +37,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "setverify",
 	description: "Set the verify channel where i *verify* people",
-	usage: ["setverify <#channel | id>", "setverify <role name || id>", "setverify [-off]"],
-	example: "setverify #verify @Verify"
+	usage: ["setverify `<#channel | id> <role name | id>`", "setverify `[-off]`"],
+	example: ["setverify `#verify @Verify`", "setverify `55879822272712 575475475474577`"]
 };
   
 exports.conf = {
 	aliases: ["verify"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

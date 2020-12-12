@@ -1,6 +1,6 @@
 
 const sefy = require("./handler/ClientBuilder.js");
-const client = new sefy();
+const client = new sefy(({ disableMentions: 'everyone' }));
 const mongo = require('./util/mongo.js');
 global.__basedir = __dirname;
 

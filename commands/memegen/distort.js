@@ -36,12 +36,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "distort",
   description: "make an image *high*",
-  usage: "distort <amount>",
+  usage: "distort `<amount>`",
   example: "distort 2"
 };
 
 exports.conf = {
   aliases: [],
   cooldown: 4,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

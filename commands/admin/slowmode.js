@@ -53,12 +53,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "slowmode",
   description: "slow down the channel.",
-  usage: "slowmode [channel] <time> [-off]",
-  example: "slowmode #general 5s \nslowmode 5.25 hrs"
+  usage: ["slowmode `<time>`", "slowmode `[channel] <time>`", "slowmode `[-off]`"],
+  example: ["slowmode `#general 5s`", "slowmode `5.25 hrs`"]
 }
 
 exports.conf = {
-  aliases: ["slow"],
-  cooldown: 10,
-  guildOnly: true
+  aliases: ["slowdown"],
+  cooldown: 5,
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 }

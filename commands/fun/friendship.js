@@ -42,12 +42,14 @@ function calculateLevelText(level, self) {
 exports.help = {
 	name: "friendship",
 	description: "determines how good you and a user are.",
-	usage: "friendship <@mention>",
-	example: "friendship @someone"
+	usage: "friendship `<@mention>`",
+	example: "friendship `@someone`"
 };
   
 exports.conf = {
-	aliases: ["friend"],
+	aliases: ["friendmeter", "ratefriendship"],
     cooldown: 3,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

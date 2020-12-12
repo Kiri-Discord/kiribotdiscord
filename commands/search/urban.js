@@ -32,11 +32,13 @@ exports.help = {
     name: "urban",
     description: "get the definition for a word\n*but in urban dictionary*😂",
     usage: "urban <word>",
-    example: "urban google"
+    example: "urban `google`"
 }
 
 exports.conf = {
     aliases: [],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }

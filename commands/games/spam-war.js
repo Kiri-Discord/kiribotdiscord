@@ -53,5 +53,7 @@ exports.help = {
 exports.conf = {
 	aliases: ["spam-battle", "spam"],
     cooldown: 5,
-    guildOnly: true
+	guildOnly: true,
+	userPerms: [],
+	clientPerms: []
 };

@@ -51,34 +51,33 @@ exports.run = async (client, message, args) => {
   });
   collector.on('end', () => {
     const answerEmbed = new MessageEmbed()
-      .setColor('#DAF7A6')
-      .setFooter(client.user.username, client.user.displayAvatarURL())
-      .setTitle('Trivia')
-      .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-      .setTimestamp()
-      .setColor(message.guild.me.displayHexColor);
+    .setColor('#DAF7A6')
+    .setFooter(client.user.username, client.user.displayAvatarURL())
+    .setTitle('Trivia')
+    .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+    .setTimestamp()
+    .setColor(message.guild.me.displayHexColor);
+
     if (winner) {
       message.channel.send(answerEmbed.setDescription(`Congratulations ${winner}, you gave the correct answer!`));
-      client.games.delete(message.channel.id);
     }
     else {
-      client.games.delete(message.channel.id);
-      message.channel.send(answerEmbed
-      .setDescription('Sorry, time\'s up! Better luck next time :(')
-      .addField('Correct answers', origAnswers.join('\n'))
-    );
+      message.channel.send(answerEmbed.setDescription('Sorry, time\'s up! Better luck next time :(').addField('Correct answers', origAnswers.join('\n')));
     }
+    client.games.delete(message.channel.id);
   });
 };
 exports.help = {
 	name: "trivia",
 	description: "compete against your friends in a game of trivia (anyone can answer)\nif no topic is given, a random one will be chosen :)\nthe question will expire after 15 seconds.",
-	usage: "trivia [topic]",
-	example: "trivia anime"
+	usage: ["trivia `[topic]`", "trivia"],
+	example: ["trivia anime", "trivia"]
 };
   
 exports.conf = {
-	aliases: ["t"],
+	aliases: ["quiz"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 };

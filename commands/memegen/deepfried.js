@@ -36,7 +36,9 @@ exports.help = {
 exports.conf = {
     aliases: ["deep-fried"],
     cooldown: 6,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }
 
 function contrast(ctx, x, y, width, height) {

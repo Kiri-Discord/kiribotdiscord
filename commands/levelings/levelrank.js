@@ -64,13 +64,15 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "levelrank",
-	description: "show the current leveling rank",
-	usage: "levelrank [@member]",
-	example: "levelrank @bell"
+	description: "show the current leveling rank of an user or yourself",
+	usage: "levelrank `[@member]`",
+	example: "levelrank `@bell`"
 };
   
 exports.conf = {
 	aliases: ["rank", "level"],
   cooldown: 5,
-  guildOnly: true
+  guildOnly: true,
+  userPerms: [],
+	clientPerms: []
 };

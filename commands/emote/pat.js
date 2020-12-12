@@ -56,12 +56,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "pat",
     description: "this is super duper self-explanatory",
-    usage: "pat <@mention>",
-    example: "pat @Somebody"
+    usage: "pat `<@mention>`",
+    example: "pat `@somebody`"
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 4,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+    clientPerms: []
 }

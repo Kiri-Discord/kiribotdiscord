@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 exports.run = async (client, message, args) => {
     fetch('https://uselessfacts.jsph.pl/random.json?language=en')
     .then(res => res.json())
-    .then(json => message.channel.send(json.text))
+    .then(json => message.channel.send(json.text.toLowerCase()))
     .catch(err => {
         message.channel.send("i can't seem to be able to give you a fact :( here is a hug for now 🤗");
         return console.error(err);
@@ -20,5 +20,7 @@ exports.help = {
 exports.conf = {
 	aliases: ["funfact"],
     cooldown: 3,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

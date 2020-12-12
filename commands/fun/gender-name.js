@@ -17,12 +17,14 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "gender-name",
     description: "give me a name and i will try to guess the gender 😄",
-    usage: "gender-name <name>",
-    example: "gender-name"
+    usage: "gender-name `<name>`",
+    example: "gender-name Sefy"
 };
 
 exports.conf = {
     aliases: ["gendername"],
     cooldown: 4,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 }

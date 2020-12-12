@@ -45,7 +45,10 @@ class Game {
 
     async win() {
         const answer = this.aki.answers[this.i];
-        if (!answer) return this.msg.edit(':confused: I don\'t know.');
+        if (!answer) {
+            this.client.games.delete(this.message.channel.id);
+            return this.msg.edit('I don\'t know. :confused: You win!');
+        }
         const embed = new MessageEmbed()
             .setTitle(`Akinator Guess ${this.i + 1}:`)
             .setColor('RANDOM')
@@ -53,7 +56,7 @@ class Game {
             .setTimestamp(new Date())
             .addField(`Name: ${answer.name}`, `Description: ${answer.description}`)
             .setImage(answer.absolute_picture_path)
-            .setDescription('Is this guess correct? Type y / n')
+            .setDescription('Is this guess correct? Type `y / n` to answer :)')
 
         this.msg.edit(embed);
         const filter = m => /^[yn]$/i.test(m.content) && m.author === this.message.author;
@@ -62,6 +65,7 @@ class Game {
             this.i++;
             this.win();
         } else {
+            this.client.games.delete(this.message.channel.id);
             this.msg.edit('I win again!');
         }
     }
@@ -73,6 +77,7 @@ class Game {
             time: 30000,
             errors: ['time'],
         }).catch(() => {
+            this.client.games.delete(this.message.channel.id);
             this.msg.edit('the game has timed out');
             response = 'exit';
         });
@@ -85,20 +90,25 @@ class Game {
 }
 
 exports.run = async (client, message, args) => {
+    const current = client.games.get(message.channel.id);
+	if (current) return message.reply(current.prompt);
     const game = new Game(client, message);
+    client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
     game.init();
 },
 
 
 exports.help = {
-	name: "aki",
+	name: "akinator",
 	description: "think about a real or fictional character.\ni will try to guess who it is 😄",
-	usage: "aki",
-	example: "aki"
+	usage: "akinator",
+	example: "akinator"
 };
   
 exports.conf = {
-	aliases: ["akinator"],
-    cooldown: 7,
-    guildOnly: true
+	aliases: ["aki"],
+    cooldown: 5,
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };

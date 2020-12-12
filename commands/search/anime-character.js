@@ -96,11 +96,13 @@ exports.help = {
 	name: "anime-character",
 	description: "search an anime character.\nonly character from official release will be searched :)",
 	usage: "anime-character `<name>`",
-	example: "anime-character Bell"
+	example: "anime-character `Bell`"
 };
   
 exports.conf = {
 	aliases: ["animecharacter"],
     cooldown: 5,
-    guildOnly: true
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: []
 };
