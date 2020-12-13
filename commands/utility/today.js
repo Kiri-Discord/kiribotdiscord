@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const request = require('node-superfetch');
-const { embedURL } = require('../../util/Util');
+const { embedURL } = require('../../util/util');
 
 exports.help = {
     name: "today",
