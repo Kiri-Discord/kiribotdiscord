@@ -1,4 +1,7 @@
 const Discord = require('discord.js');
+const { createCanvas, registerFont } = require('canvas');
+const path = require('path');
+registerFont(path.join(__dirname, '..', 'assets', 'fonts', 'Captcha.ttf'), { family: 'Captcha' });
 
 module.exports = async (client, message) => {
 	if (message.author.bot || message.author === client.user) return;
@@ -23,12 +26,24 @@ module.exports = async (client, message) => {
 				if (!verifydb) return;
 				let code = verifydb.code;
 				await message.delete();
+				const canvas = createCanvas(125, 32);
+				const ctx = canvas.getContext('2d');
+				const text = code;
+				ctx.fillStyle = 'white';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				ctx.beginPath();
+				ctx.strokeStyle = '#0088cc';
+				ctx.font = '26px Captcha';
+				ctx.rotate(-0.05);
+				ctx.strokeText(text, 15, 26);
 				let verifyChannel = message.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
 				const dm = new Discord.MessageEmbed()
-					.setColor(0x7289DA)
-					.setTitle(`Welcome to ${message.guild.name}!`)
-					.setDescription(`Hello! Before you get started, I just want you to verify yourself first.\nPut the below code into the channel ${verifyChannel} to verify yourself.`)
-					.addField('This is your code:', `||${code}||`);
+				.setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
+				.attachFiles({ attachment: canvas.toBuffer(), name: 'captcha.png' })
+				.setImage(`attachment://captcha.png`)
+				.setColor('RANDOM')
+				.setTitle(`Welcome to ${message.guild.name}! Wait, beep beep, boop boop?`)
+				.addField(`Hello! Before you get started, I just want you to verify yourself first.`, `Enter what you see in the captcha into the channel ${verifyChannel} to verify yourself.`)
 				await message.author.send(dm).catch(() => {
 					return message.reply('your DM is still locked. unlock your DM first :D')
 						.then(i => i.delete({ timeout: 10000 }));
