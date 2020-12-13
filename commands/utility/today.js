@@ -39,6 +39,6 @@ exports.run = async (client, message, args) => {
         return message.channel.send(embed);
     } catch (err) {
         if (err.status === 404 || err.status === 500) return message.reply('you give me an invaild date :(');
-        return message.reply(`Oh no, an error occurred: \`${err.message}\`. Try again later!`);
+        return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`);
     }
 }

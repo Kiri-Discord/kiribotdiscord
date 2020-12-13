@@ -46,7 +46,7 @@ module.exports = async (client, member) => {
     .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
     .addField(`Hello! Before you get started, I just want you to verify yourself first.`, `Enter what you see in the captcha into the channel ${verifyChannel} to verify yourself.`)
     await member.send(dm).catch(() => {
-      verifyChannel.send(`<@!${member.user.id}> Hey, I guess your DM is locked so i can't send you the verify code. How about you unlock it first and type \`resend\` here.`)
+      verifyChannel.send(`<@!${member.user.id}> hey, I guess your DM is locked so i can't send you the verify code. How about you unlock it first and type \`resend\` here.`)
       .then(i => i.delete({timeout: 10000}));
     })
   }
