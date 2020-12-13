@@ -2,8 +2,8 @@ const request = require('node-superfetch');
 
 exports.help = {
     name: "qr-gen",
-    description: "get the link from a qr code right on Discord!",
-    usage: "qr-gen `<image>`",
+    description: "generate a qr code!",
+    usage: "qr-gen `<text>`",
     example: "qr-gen `hello`"
 };
   
