@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
         const event = events[Math.floor(Math.random() * events.length)];
         const embed = new MessageEmbed()
         .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-        .setColor(0x9797FF)
+        .setColor('RANDOM')
         .setURL(body.url)
         .setAuthor(`On this day (${body.date})...`, client.user.displayAvatarURL())
         .setTimestamp()
