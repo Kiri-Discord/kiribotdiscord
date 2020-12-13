@@ -4,13 +4,18 @@ const Discord = require('discord.js');
 
 module.exports = async (client, guild) => {
 
+  const guildexist = await client.dbguilds.findOne({
+    guildID: guild.id
+  });
+
+  if (guildexist) return;
+
 
   const newGuild = new Guild({
     _id: mongoose.Types.ObjectId(),
     guildID: guild.id,
     guildName: guild.name,
     prefix: client.config.prefix,
-    logChannelID: null
   })
 
   newGuild.save();

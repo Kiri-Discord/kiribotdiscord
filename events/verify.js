@@ -50,13 +50,12 @@ module.exports = async (client, message) => {
 							guildID: message.guild.id,
 							userID: message.author.id,
 						});
-						message.member.roles.add(setting.verifyRole).then(() => {
-							message.author.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`)
-						}).catch(() => {
-							// eslint-disable-next-line no-useless-escape
+						await message.member.roles.add(setting.verifyRole).catch(() => {
 							message.reply('Oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
-						});
-
+						})
+						return message.author.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
+							return;
+						})
 					}
 				}
 			}
