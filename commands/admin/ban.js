@@ -11,9 +11,9 @@ exports.run = async (client, message, args) => {
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
 
-    if (!member) return message.reply('pls mention a member or user ID in this guild :)').then(m => m.delete({timeout: 5000}));
+    if (!member) return message.reply('pls mention a valid member or user ID in this guild :)').then(m => m.delete({timeout: 5000}));
 
-    if (!member.kickable) return message.reply('this user can\'t be kicked. it\'s either because they are a mod/admin, or their highest role is higher than mine 😔').then(m => m.delete({timeout: 5000}));
+    if (!member.kickable) return message.reply('this user can\'t be banned. it\'s either because they are a mod/admin, or their highest role is higher than mine 😔').then(m => m.delete({timeout: 5000}));
 
     if (message.member.roles.highest.position < member.roles.highest.position) return message.reply('you cannot kick someone with a higher role than you.').then(m => m.delete({timeout: 5000}));
 

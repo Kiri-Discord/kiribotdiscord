@@ -89,8 +89,8 @@ exports.help = {
 
 exports.conf = {
     aliases: [],
-    cooldown: 7,
+    cooldown: 5,
     guildOnly: true,
     userPerms: [],
-	clientPerms: []
+	clientPerms: ["SEND_MESSAGES", "ATTACH_FILES"]
 }

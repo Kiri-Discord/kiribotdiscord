@@ -9,10 +9,9 @@ exports.run = async (client, message, args) => {
     let text = args.slice(1).join(" ");
  
 
-    if (!text) return message.channel.send("p l e a s e input some text :D");
+    if (!text) return message.reply("p l e a s e input some text :D");
 
-    // Do this because more than that, the binary code wouldn't be fit anymore.
-    if (text.length > 1024) return message.channel.send("oww, that is way too much. the maximum character is 1,024.");
+    if (text.length > 1024) return message.reply("oww, that is way too much. the maximum character is 1,024.");
 
     function encode(char) {
         return char.split("").map(str => {
@@ -44,5 +43,5 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: [],
-	clientPerms: []
+	clientPerms: ["SEND_MESSAGES"]
 }

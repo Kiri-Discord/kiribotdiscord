@@ -12,7 +12,7 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: [],
-	clientPerms: []
+	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
 }
 exports.run = async (client, message, args) => {
     let text = args.join(" ");

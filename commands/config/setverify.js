@@ -1,5 +1,4 @@
 exports.run = async (client, message, args) => {
-    if (!message.member.hasPermission('MANAGE_GUILD')) return message.reply('you don\'t have the \`MANAGE_GUILD\` permission to use this command 😔').then(m => m.delete({timeout: 5000}));
 
     if (message.flags[0] === "off") {
         await client.dbguilds.findOneAndUpdate({
@@ -46,5 +45,5 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: ["MANAGE_GUILD"],
-	clientPerms: []
+	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
