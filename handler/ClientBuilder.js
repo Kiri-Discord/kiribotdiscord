@@ -2,7 +2,7 @@
 const { Client, Collection, Guild, GuildMember, Structures} = require("discord.js");
 const { readdir, readdirSync } = require('fs');
 const { join, resolve } = require('path');
-const PokemonStore = require('./pokemon/pokemonstore');
+const PokemonStore = require('../features/pokemon/pokemonstore');
 
 module.exports = class sefy extends Client {
   constructor(options) {
