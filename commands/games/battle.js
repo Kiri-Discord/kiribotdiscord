@@ -2,7 +2,7 @@ const Battle = require('../../features/battle/battle');
 const { randomRange, verify } = require('../../util/util');
 
 exports.run = async (client, message, args) => {
-    const opponent = message.mention.users.first();
+    const opponent = message.mentions.users.first();
     if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
     if (opponent !== client.user && opponent.bot) return message.reply('i am the only bot who can fight with you :) no, i am not looking at you, <@!270904126974590976>');
     const current = client.games.get(message.channel.id);
