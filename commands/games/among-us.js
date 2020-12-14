@@ -3,10 +3,6 @@ const { stripIndents, oneLine } = require('common-tags');
 const Collection = require('@discordjs/collection');
 const { delay, awaitPlayers, list } = require('../../util/util');
 
-
-
-
-
 exports.run = async (client, message, args) => {
     const setting = await client.dbguilds.findOne({
         guildID: message.guild.id

@@ -4,6 +4,9 @@ const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', '
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 
 module.exports = class Util {
+	static randomRange(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 	static today(timeZone) {
 		const now = new Date();
 		now.setHours(0);
