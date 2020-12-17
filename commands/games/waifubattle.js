@@ -33,7 +33,12 @@ exports.conf = {
 exports.run = async (client, message, args) => {
     let waifuname;
     const query = message.content.split(" ")
-    const command = query[1].toLowerCase()
+    const command = query[1].toLowerCase();
+    if (!command) return message.channel.send(
+        "that's not a valid command, use `" +
+            `${prefix}` +
+            "wb help` to see all waifu battle command :)"
+    )
     const author = message.author;
     const setting = await client.dbguilds.findOne({
         guildID: message.guild.id
@@ -83,7 +88,7 @@ exports.run = async (client, message, args) => {
             break
 
         case "waifu":
-            const responseWaifu = await commandWaifu(user, query, prefix, message)
+            const responseWaifu = await commandWaifu(user, query, prefix, client)
             message.channel.send(responseWaifu.query)
             break
 
@@ -104,7 +109,7 @@ exports.run = async (client, message, args) => {
 
         case "adventure":
             const responseAdventure = await commandAdventure(user, prefix)
-            message.channel.send(responseAdventure.query)
+            message.reply(responseAdventure.query)
             break
 
         case "store":
@@ -146,7 +151,7 @@ exports.run = async (client, message, args) => {
             message.channel.send(
                 "that's not a valid command, use `" +
                     `${prefix}` +
-                    " help` to see all waifu battle command :)"
+                    "wbhelp` to see all waifu battle command :)"
             )
             break
     }

@@ -127,7 +127,7 @@ const buyFromStore = async (user, itemPrice, query) => {
         const currentMoney = storage.money
 
         if (currentMoney < itemPrice) {
-            messageToSend = `${user.at}, you don't have enough money`
+            messageToSend = `${user.at}, you don't have enough money to buy it!`
         } else {
             storage.money -= itemPrice
             messageToSend = query

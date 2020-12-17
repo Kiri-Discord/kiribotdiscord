@@ -32,14 +32,13 @@ const commandAdventure = async (user, prefix) => {
             } else {
                 const cooldown = calculateCooldown(now, cooldownTime)
                 response.query =
-                    user.at +
-                    ", You need to wait `" +
+                    "you need to wait `" +
                     cooldown.hours +
                     "hours " +
                     cooldown.minutes +
                     "minutes " +
                     cooldown.seconds +
-                    "seconds` until you can use this command"
+                    "seconds` until you can use this command!"
             }
         } else {
             response.query = storageResponse.query
