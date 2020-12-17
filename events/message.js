@@ -13,7 +13,12 @@ module.exports = async (client, message) => {
     const setting = await client.dbguilds.findOne({
       guildID: message.guild.id
     });
-    prefix = setting.prefix
+    if (!setting) {
+      await client.emit('guildCreate', message.guild);
+      return message.channel.send('somehow your guild disappeared from my bookshelf.. this is not an error :) you can try using that command again.\n*this might be caused when you kick me and invite me again when i accidently went offline. all your guild setting has been reseted :(*').then(m => m.delete({ timeout: 5000 }))
+    } else {
+      prefix = setting.prefix
+    }
   }
 
   const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
