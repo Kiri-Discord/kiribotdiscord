@@ -32,13 +32,13 @@ exports.conf = {
 
 exports.run = async (client, message, args) => {
     let waifuname;
-    const query = message.content.split(" ")
-    const command = query[1].toLowerCase();
-    if (!command) return message.channel.send(
+    const query = message.content.split(" ");
+    if (!query[1]) return message.channel.send(
         "that's not a valid command, use `" +
             `${prefix}` +
             "wb help` to see all waifu battle command :)"
     )
+    const command = query[1].toLowerCase();
     const author = message.author;
     const setting = await client.dbguilds.findOne({
         guildID: message.guild.id

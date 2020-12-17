@@ -7,7 +7,7 @@ const commandHelp = async (client, prefix, message) => {
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setThumbnail(client.user.displayAvatarURL())
-    .setTitle('So you have found this place...')
+    .setTitle('Waifu? Battle?')
     .setColor('RANDOM')
     .addField('Adventure', "`" + prefix + " adventure` you and your waifu embark on an adventure on a mystical new world.")
     .addField('Buy', "`" + prefix + " buy <Name of item>` buy an item from the store.")
