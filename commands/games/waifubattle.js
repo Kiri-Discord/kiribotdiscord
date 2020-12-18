@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
     if (!query[1]) return message.channel.send(
         "that's not a valid command, use `" +
             `${prefix}` +
-            "wb help` to see all waifu battle command :)"
+            " wb help` to see all waifu battle command :)"
     )
     const command = query[1].toLowerCase();
     const author = message.author;
