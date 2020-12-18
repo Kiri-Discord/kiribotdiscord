@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
       .send(loadingEmbed)
       .then(m => m.delete({ timeout: 2000 }));
 
-      let random = ["Memes", "Meme", "Davie504", "Dankmemer", "funny", "wholesomememes", "dankmemes", "raimimemes", "historymemes", "okbuddyretard", "comedyheaven", "pewdiepiesubmissions"]
+      let random = ["Memes", "Meme", "Davie504", "Dankmemer", "funny", "wholesomememes", "dankmemes", "raimimemes", "historymemes", "okbuddyretard", "comedyheaven", "pewdiepiesubmissions", "Animemes"]
       let memes = random[Math.floor(Math.random() * random.length)]
       fetch(`https://www.reddit.com/r/${memes}/about.json`)
       .then(res => res.json())
