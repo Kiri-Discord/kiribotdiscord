@@ -31,7 +31,7 @@ const commandBuy = async (user, query, prefix) => {
                     break
 
                 case "defense":
-                    const queryDefense = `${user.at}, you have bought 1 point of defense for you waifu`
+                    const messageDefense = `${user.at}, you have bought 1 point of defense for you waifu`
                     response.query = await buyFromStore(
                         foundUser,
                         prices.defense,
