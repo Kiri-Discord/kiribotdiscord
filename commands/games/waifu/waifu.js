@@ -22,7 +22,7 @@ const commandWaifu = async (user, query, prefix, client) => {
                 })
                 //someone else's waifu
                 response.query = new discord.MessageEmbed()
-                
+                .setThumbnail(waifu.image)
                 .setAuthor(foundOtherUser.username + "'s waifu", client.user.displayAvatarURL())
                 .setColor("#eae267")
                 .addField("Waifu name", `${waifu.name}`, true)
@@ -41,15 +41,16 @@ const commandWaifu = async (user, query, prefix, client) => {
             })
             //My waifu
             response.query = new discord.MessageEmbed()
-                .setAuthor(foundUser.username + "'s waifu", client.user.displayAvatarURL())
-                .setColor("#DF77EC")
-                .addField("Waifu name", `${waifu.name}`, true)
-                .addField("Attack", waifu.attack, true)
-                .addField("Defense", waifu.defense, true)
-                .addField("Health", waifu.health, true)
-                .addField("Combats won", foundUser.combatsWon, true)
-                .addField("Weapon", `${formatEquipment(waifu.weapon)}`, true)
-                .addField("Armor", `${formatEquipment(waifu.armor)}`, true)
+            .setThumbnail(waifu.image)
+            .setAuthor(foundUser.username + "'s waifu", client.user.displayAvatarURL())
+            .setColor("#DF77EC")
+            .addField("Waifu name", `${waifu.name}`, true)
+            .addField("Attack", waifu.attack, true)
+            .addField("Defense", waifu.defense, true)
+            .addField("Health", waifu.health, true)
+            .addField("Combats won", foundUser.combatsWon, true)
+            .addField("Weapon", `${formatEquipment(waifu.weapon)}`, true)
+            .addField("Armor", `${formatEquipment(waifu.armor)}`, true)
         }
     }
 

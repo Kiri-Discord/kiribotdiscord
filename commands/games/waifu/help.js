@@ -22,6 +22,7 @@ const commandHelp = async (client, prefix, message) => {
     .addField('Storage', "`" + prefix + " storage` displays all of your items and money.")
     .addField('Store', "`" + prefix + " store` displays all items you can buy from the store.")
     .addField('Waifu', "`" + prefix + " waifu` Displays your waifu information.")
+    .addField('Set avatar', "`" + prefix + " pfp <image link>` Change your waifu's avatar.")
 
     return embedInfo
 }

@@ -11,6 +11,11 @@ const waifuSchema = new mongoose.Schema({
         default: "",
     },
 
+    image: {
+        type: String,
+        default: null,
+    },
+
     attack: {
         type: Number,
         default: 55,

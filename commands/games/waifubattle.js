@@ -10,7 +10,8 @@ const commandStorage = require("./waifu/storage")
 const commandStore = require("./waifu/store")
 const commandTimer = require("./waifu/timer")
 const commandTrain = require("./waifu/train")
-const commandWaifu = require("./waifu/waifu")
+const commandWaifu = require("./waifu/waifu");
+const commandAvatar = require("./waifu/pfp")
 const { User } = require("../../model/user");
 const { MessageCollector } = require('discord.js');
 
@@ -123,12 +124,17 @@ exports.run = async (client, message, args) => {
             break
 
         case "buy":
-            const responseBuy = await commandBuy(user, query, prefix, message)
+            const responseBuy = await commandBuy(user, query, prefix)
             message.channel.send(responseBuy.query)
             break
 
+        case "pfp":
+            const responseAvatar = await commandAvatar(user, query, prefix)
+            message.channel.send(responseAvatar.query)
+            break
+    
         case "timer":
-            const responseTimer = await commandTimer(user, prefix, message)
+            const responseTimer = await commandTimer(user, prefix)
             message.channel.send(responseTimer.query)
             break
 
