@@ -14,7 +14,7 @@ const prices = {
 
 const items = [
     {
-        name: 'Diamond Sword',
+        name: 'Diamond-Sword',
         type: 'Sword',
         price: prices.sword.price,
         bonusStats: {
@@ -39,7 +39,7 @@ const items = [
     },
 
     {
-        name: 'Iron Sword',
+        name: 'Iron-Sword',
         type: 'Sword',
         price: prices.sword.price,
         bonusStats: {
@@ -64,7 +64,7 @@ const items = [
     },
 
     {
-        name: 'Diamond Armor',
+        name: 'Diamond-Armor',
         type: 'Armor',
         price: prices.armor.price,
         bonusStats: {
@@ -92,7 +92,7 @@ const items = [
     },
 
     {
-        name: 'Iron Armor',
+        name: 'Iron-Armor',
         type: 'Armor',
         price: prices.armor.price,
         bonusStats: {
