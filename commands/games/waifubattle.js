@@ -32,7 +32,10 @@ exports.conf = {
 
 
 exports.run = async (client, message, args) => {
-    let waifuname;
+    const setting = await client.dbguilds.findOne({
+        guildID: message.guild.id
+    });
+    const prefix = setting.prefix;
     const query = message.content.split(" ");
     if (!query[1]) return message.channel.send(
         "that's not a valid command, use `" +
@@ -41,11 +44,7 @@ exports.run = async (client, message, args) => {
     )
     const command = query[1].toLowerCase();
     const author = message.author;
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    const prefix = setting.prefix;
-
+    let waifuname;
     const user = {
         discordId: author.id,
         username: author.username,
