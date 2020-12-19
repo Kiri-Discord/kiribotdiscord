@@ -156,7 +156,7 @@ exports.run = async (client, message, args) => {
             message.channel.send(
                 "that's not a valid command, use `" +
                     `${prefix}` +
-                    "wbhelp` to see all waifu battle command :)"
+                    "wb help` to see all waifu battle command :)"
             )
             break
     }
