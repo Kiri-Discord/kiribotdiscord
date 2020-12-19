@@ -4,9 +4,6 @@ const random = new Random();
 
 exports.run = async (client, message, args) => {
 	let data = await random.getAnimeImgURL("waifu")
-
-
-    const num = Math.floor(Math.random() * 100000);
 	const embed = new Discord.MessageEmbed()
 	.setColor('RANDOM')
 	.setDescription(`powered by bell's homework folder`)
