@@ -191,7 +191,7 @@ const canUserBuyItem = async (user, item) => {
                     storage.money -= equipment.price
 
                     await storage.save()
-                    response.query = `${user.at}, You have bought ${item}`
+                    response.query = `${user.at}, you have bought ${item}`
 
                 } catch (e) {
                     console.log(e)
@@ -200,7 +200,7 @@ const canUserBuyItem = async (user, item) => {
                 }
 
             } else {
-                response.query = `${user.at}, You cannot buy this item!`
+                response.query = `${user.at}, you cannot buy this item!`
             }
 
         } else {
