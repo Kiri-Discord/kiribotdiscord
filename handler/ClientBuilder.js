@@ -3,11 +3,13 @@ const { Client, Collection, Guild, GuildMember, Structures} = require("discord.j
 const { readdir, readdirSync } = require('fs');
 const { join, resolve } = require('path');
 const PokemonStore = require('../features/pokemon/pokemonstore');
+const Redis = require('../util/redis');
 
 module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
-    this.commands = new Collection(); 
+    this.commands = new Collection();
+    this.redis = Redis ? Redis.db : null;
     this.cooldowns = new Collection();
     this.aliases = new Collection();
     this.config = require('../config.json');
