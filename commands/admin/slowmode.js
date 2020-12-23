@@ -2,10 +2,6 @@ const ms = require("ms");
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
-  if (!message.member.permissions.any(["ADMINISTRATOR", "MANAGE_CHANNELS"])) {
-    return message.channel.send("you don\'t have the \`MANAGE_CHANNELS\` or the \`ADMINISTRATOR\` permission to use this command 😔");
-  }
-
     const guildDB = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
@@ -30,7 +26,7 @@ exports.run = async (client, message, args) => {
   
   if (!toSecond || toSecond == undefined) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
   
-  if (toSecond > 21600) return message.reply("the timer should be more than or equal to 1 second!");
+  if (toSecond > 21600) return message.reply("the timer should be more than or equal to 1 second or less than 6 hours!");
   const rolelog = new Discord.MessageEmbed()
   .setAuthor(client.user.username, client.user.displayAvatarURL())
   .setDescription(`Successfully set slowmode for <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)

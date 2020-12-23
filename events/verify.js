@@ -49,7 +49,7 @@ module.exports = async (client, message) => {
 						.then(i => i.delete({ timeout: 10000 }));
 				});
 
-				return message.reply('Check your DM.').then(i => i.delete({ timeout: 10000 }));
+				return message.reply('check your DM.').then(i => i.delete({ timeout: 10000 }));
 			}
 			if (!alreadyHasRole) {
 				if (!verifydb) return;
@@ -68,6 +68,7 @@ module.exports = async (client, message) => {
 						await message.member.roles.add(setting.verifyRole).catch(() => {
 							message.reply('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
 						})
+						await client.verifytimers.deleteTimer(message.guild.id, message.author.id);
 						return message.author.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
 							return;
 						})

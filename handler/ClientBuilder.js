@@ -1,15 +1,15 @@
 
-const { Client, Collection, Guild, GuildMember, Structures} = require("discord.js");
-const { readdir, readdirSync } = require('fs');
-const { join, resolve } = require('path');
+const { Client, Collection, Guild, GuildMember, Structures } = require("discord.js");
+const { readdir } = require('fs');
 const PokemonStore = require('../features/pokemon/pokemonstore');
-const Redis = require('../util/redis');
+const RedisClient = require('../util/redis');
+const VerifyTimer = require('../features/redis/verify')
 
 module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
     this.commands = new Collection();
-    this.redis = Redis ? Redis.db : null;
+    this.redis = RedisClient ? RedisClient.db : null;
     this.cooldowns = new Collection();
     this.aliases = new Collection();
     this.config = require('../config.json');
@@ -20,6 +20,7 @@ module.exports = class sefy extends Client {
     this.dbverify = require("../model/verify")
     this.games = new Collection();
     this.pokemon = new PokemonStore();
+    this.verifytimers = new VerifyTimer(this);
         /** 
      * 
      * @type {Array<string>}

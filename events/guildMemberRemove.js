@@ -47,4 +47,5 @@ module.exports = async (client, member) => {
     }, (err) => {
         if (err) console.error(err)
     });
+    await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
 }
