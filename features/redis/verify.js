@@ -20,10 +20,8 @@ module.exports = class VerifyTimer {
 		const data = { time: new Date(Date.now() + time).toISOString(), guildID, userID };
 		const timeout = setTimeout(async () => {
 
-  
 
-			try {
-
+	   try {
             let reason = 'Sefy verification timeout'
             const setting = await this.client.dbguilds.findOne({
                 guildID: guildID
@@ -51,15 +49,13 @@ module.exports = class VerifyTimer {
             .setDescription(`Failed while kicking ${member} for not verifying in **${ms(time, {long: true})}**.\nPossible problem: \`MISSING_PERMISSION\` You can manually kick them instead :)`)
             .setColor('RANDOM')
             .setThumbnail(member.user.avatarURL())
-
-          if (!member.kickable) {
+            if (!member.kickable) {
                 if (!logChannel) {
                     return;
                 } else {
                     return logChannel.send(logerror);
                 };
             }
-
                 if (!logChannel) {
                     void(0)
                 } else {
