@@ -19,9 +19,6 @@ module.exports = class VerifyTimer {
 	async setTimer(guildID, time, userID, updateRedis = true) {
 		const data = { time: new Date(Date.now() + time).toISOString(), guildID, userID };
 		const timeout = setTimeout(async () => {
-
-
-	   try {
             let reason = 'Sefy verification timeout'
             const setting = await this.client.dbguilds.findOne({
                 guildID: guildID
@@ -56,6 +53,8 @@ module.exports = class VerifyTimer {
                     return logChannel.send(logerror);
                 };
             }
+
+			try {
                 if (!logChannel) {
                     void(0)
                 } else {
