@@ -63,7 +63,7 @@ module.exports = class VerifyTimer {
                 await member.send(`I have kicked you from **${guild.name}** for not verifying in in **${ms(time, {long: true})}** :(`).catch(() => {
                     void(0)
                 });
-                await member.kick({reason});
+                await member.kick(reason);
             } finally {
                 await this.client.dbverify.findOneAndDelete({
                     guildID: guildID,
