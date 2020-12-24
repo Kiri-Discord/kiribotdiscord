@@ -24,7 +24,7 @@ module.exports = class VerifyTimer {
                 const setting = await this.client.dbguilds.findOne({
                     guildID: guildID
                 });
-                var guild = await this.client.guilds.cache.get(guildID);
+                const guild = await this.client.guilds.cache.get(guildID);
                 if (!guild) return;
                 const member = await guild.members.cache.get(userID);
                 if (!member) return;
