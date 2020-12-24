@@ -27,27 +27,7 @@ module.exports = async (client, member) => {
     } else {
       await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
     }
-    const userexist = await client.dbverify.findOne({
-      guildID: member.guild.id,
-      userID: member.user.id,
-    })
-    let text;
-    if (userexist) {
-      text = userexist.code;
-    } else {
-      text = randomText(5);
-      await client.dbverify.findOneAndUpdate({
-        guildID: member.guild.id,
-        userID: member.user.id,
-      }, {
-        guildID: member.guild.id,
-        userID: member.user.id,
-        code: text
-      }, {
-          upsert: true,
-          new: true
-      })
-    }
+    let text = randomText(5);
     const canvas = createCanvas(125, 32);
 		const ctx = canvas.getContext('2d');
 		ctx.fillStyle = 'white';
@@ -57,6 +37,17 @@ module.exports = async (client, member) => {
 		ctx.font = '26px Captcha';
 		ctx.rotate(-0.05);
     ctx.strokeText(text, 15, 26);
+    await client.dbverify.findOneAndUpdate({
+      guildID: member.guild.id,
+      userID: member.user.id,
+    }, {
+      guildID: member.guild.id,
+      userID: member.user.id,
+      code: text
+    }, {
+        upsert: true,
+        new: true
+    })
 
     const dm = new Discord.MessageEmbed()
     .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
