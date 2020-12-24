@@ -54,7 +54,7 @@ exports.run = async (client, message, args) => {
             throw error
         }
     })
-    .then(() => member.ban({reason}))
+    .then(() => member.ban(reason))
     .then(() => {
         if (!logChannel) {
             return
