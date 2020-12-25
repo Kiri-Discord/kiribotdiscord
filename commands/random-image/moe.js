@@ -36,14 +36,14 @@ exports.run = async (client, message, args) => {
 
 
 exports.help = {
-	name: "moe",
-	description: "get a random moe art",
-	usage: "moe",
-	example: "moe"
+	name: "animeart",
+	description: "get a random anime art online!",
+	usage: "animeart",
+	example: "animeart"
 };
   
 exports.conf = {
-	aliases: ["animeart", "moeart"],
+	aliases: ["moe", "moeart"],
 	cooldown: 3,
 	guildOnly: true,
 	userPerms: [],
