@@ -1,5 +1,3 @@
-const moment = require("moment");
-
 this.getLevel = (xp) => {
     return Math.floor(0.177 * Math.sqrt(xp)) + 1;
 }
