@@ -109,7 +109,7 @@ exports.run = async (client, message, args) => {
 
         case "adventure":
             const responseAdventure = await commandAdventure(user, prefix)
-            message.reply(responseAdventure.query)
+            message.channel.send(responseAdventure.query)
             break
 
         case "store":
