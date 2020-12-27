@@ -16,7 +16,7 @@
     "canvacord": "^5.0.8",
     "canvas": "^2.6.1",
     "canvas-constructor": "^4.1.0",
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.5",
     "common-tags": "^1.8.0",
     "dateformat": "^4.0.0",
     "discord-paginationembed": "^2.1.0",
