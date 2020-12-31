@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
-    if (!args[0]) return message.channel.send("Unknown parameter. Please choose the method first, either decode or encode it.");
+    if (!args[0]) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
 
     let choice = ["encode", "decode"];
-    if (!choice.includes(args[0].toLowerCase())) return message.channel.send("Unknown parameter. Please choose the method first, either decode or encode it.");
+    if (!choice.includes(args[0].toLowerCase())) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
 
     let text = args.slice(1).join(" ");
  
@@ -25,8 +25,12 @@ exports.run = async (client, message, args) => {
     };
 
     if (args[0].toLowerCase() === "encode") {
+        const result = encode(text);
+        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
         return message.channel.send(encode(text));
     } else if (args[0].toLowerCase() === "decode") {
+        const result = decode(text);
+        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
         return message.channel.send(decode(text));
     }
 };
