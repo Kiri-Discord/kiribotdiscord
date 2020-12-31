@@ -3,6 +3,7 @@ const { Client, Collection, Guild, GuildMember, Structures} = require("discord.j
 const { readdir, readdirSync } = require('fs');
 const { join, resolve } = require('path');
 const PokemonStore = require('../features/pokemon/pokemonstore');
+const VerifyTimer = require('../features/redis/verify');
 
 module.exports = class sefy extends Client {
   constructor(options) {
@@ -18,6 +19,7 @@ module.exports = class sefy extends Client {
     this.dbverify = require("../model/verify")
     this.games = new Collection();
     this.pokemon = new PokemonStore();
+    this.verifytimers = new VerifyTimer(this);
         /** 
      * 
      * @type {Array<string>}

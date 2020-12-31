@@ -140,6 +140,7 @@ module.exports = class Util {
 
 
 };
-
+const awaiting = [];
+module.exports.awaiting = awaiting;
 const inGame = [];
 module.exports.inGame = inGame;
