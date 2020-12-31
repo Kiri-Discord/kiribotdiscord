@@ -27,7 +27,8 @@ exports.run = async (client, message, args) => {
     let toMp3 = args.slice(1).join(' ');
     if (!act) return message.reply(`i don\'t understand what you want me to do :( use \`${prefix}help say\`to show the usage for this one :)`)
     if (!languages.includes(act)) return message.reply(`i don't recognize that language :( use \`${prefix}help say\`to show the list of langauge that i can speak!`)
-    if (!toMp3) message.reply(`you must tell me something to say! use \`${prefix}help say\`to show the usage for this one :)`)
+    if (!toMp3) message.reply(`you must tell me something to say! use \`${prefix}help say\`to show the usage for this one :)`);
+    if (toMp3.length > 200) message.reply(`your text is longer than 200 words, which makes me harder to upload my record :( try it again in a shorter text!`);
     try {
       const link = await tts.getAllAudioUrls(toMp3, {
         lang: act,
