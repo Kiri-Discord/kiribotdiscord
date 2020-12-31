@@ -5,7 +5,6 @@ token=
 youtubekey=
 FACEPLUSPLUS_KEY=
 FACEPLUSPLUS_SECRET=
-webster_key=
 redis_host=
 redis_pass=
-redis_port=
+redis_port
