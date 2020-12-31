@@ -17,15 +17,15 @@ module.exports = {
         mongoose.Promise = global.Promise;
 
         mongoose.connection.on('connected', () => {
-            console.log('Mongoose has successfully connected!');
+            console.log('[MONGO] Mongoose has successfully connected!');
         });
 
         mongoose.connection.on('err', err => {
-            console.error(`Mongoose connection error: \n${err.stack}`);
+            console.error(`[MONGO] Mongoose connection error: \n${err.stack}`);
         });
 
         mongoose.connection.on('disconnected', () => {
-            console.warn('Mongoose connection lost');
+            console.warn('[MONGO] Mongoose connection lost');
         });
     }
 }

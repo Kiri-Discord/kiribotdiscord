@@ -1,3 +1,5 @@
+//credit to my friend Crocodile#6300 for this command
+
 const randomanime = require("random-anime");
 const Discord = require("discord.js");
 const fetch = require("node-fetch");
@@ -26,8 +28,9 @@ exports.run = async (client, message, args) => {
 		fetch(`https://www.reddit.com/r/${subreddit}.json?sort=top&t=daily`)
 		.then(res => res.json())
 		.then(body => {
-        if (!body) return message.reply("ouch. i fell, try again please :(");
-        const post = body.data.children || body.data.over_18;
+        if (!body) return message.reply("ouch. i can't find any result. try again please :(");
+		const post = body.data.over_18 || body.data.children;
+		if (!post.length) return message.reply('hmm looks like an error happened to me... :( try again please!');
 		const randomnumber = Math.floor(Math.random() * post.length)
 		let url = `https://www.reddit.com${post[randomnumber].data.permalink}`
 		const embed = new Discord.MessageEmbed()
@@ -58,7 +61,7 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["anime-nsfw"],
+	aliases: ["anime-nsfw", "hentai", "ecchi"],
     cooldown: 3,
     guildOnly: true,
     userPerms: [],

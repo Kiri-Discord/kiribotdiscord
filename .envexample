@@ -8,3 +8,4 @@ FACEPLUSPLUS_SECRET=
 webster_key=
 redis_host=
 redis_pass=
+redis_port=

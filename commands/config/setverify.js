@@ -1,5 +1,10 @@
 exports.run = async (client, message, args) => {
 
+    const setting = await client.dbguilds.findOne({
+        guildID: message.guild.id
+      });
+      const prefix = setting.prefix;
+
     if (message.flags[0] === "off") {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
@@ -9,8 +14,7 @@ exports.run = async (client, message, args) => {
             verifyRole: null
         })
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ verify has been disabled`}});
-    }
-
+    };
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) return message.reply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
     const roleName = args.slice(1).join(' ');
@@ -29,7 +33,7 @@ exports.run = async (client, message, args) => {
         verifyRole: role.id
     })
     .catch(err => console.error(err));
-    return message.channel.send({embed: {color: "f3f3f3", description: `☑️ the verify channel has been set to ${channel}! with the verify role \`${role.name}\`!`}});
+    return message.channel.send({embed: {color: "f3f3f3", description: `☑️ the verify channel has been set to ${channel}! with the verify role \`${role.name}\`!\nunverified people will be kicked in **5 minutes** by default. use \`${prefix}setverifytimeout <time>\` to set your own duration!`}});
 
 }
         
@@ -39,7 +43,7 @@ exports.help = {
 	usage: ["setverify `<#channel | id> <role name | id>`", "setverify `[-off]`"],
 	example: ["setverify `#verify @Verify`", "setverify `55879822272712 575475475474577`"]
 };
-  
+
 exports.conf = {
 	aliases: ["verify"],
     cooldown: 5,
