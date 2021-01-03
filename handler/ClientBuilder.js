@@ -19,6 +19,7 @@ module.exports = class sefy extends Client {
     this.dbleveling = require("../model/leveling")
     this.dbverify = require("../model/verify")
     this.games = new Collection();
+    this.voicequeue = new Collection();
     this.pokemon = new PokemonStore();
     this.verifytimers = new VerifyTimer(this);
         /** 
