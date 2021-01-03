@@ -42,9 +42,14 @@ exports.run = async (client, message, args) => {
         });
         const connection = await message.member.voice.channel.join();
         const dispatcher = connection.play(link[0].url);
+        let msg;
+        dispatcher.on('start', async () => {
+          msg = await message.channel.send('hey i started talking')
+        });        
         dispatcher.on('finish', async () => {
           await client.voicequeue.delete(`${message.author.id}-${message.guild.id}`);
-          return connection.disconnect()
+          await connection.disconnect();
+          return msg.edit('done')
         });
       } else {
         return message.channel.send(`you have to join a voice channel first!`)
