@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
   if (!act) return message.reply(`i don\'t understand what you want me to do :( use \`${prefix}help say\` to show the usage for this one :)`)
   if (!languages.includes(act)) return message.reply(`i don't recognize that language :( use \`${prefix}help say\` to show the list of langauge that i can speak!`)
   if (!toMp3) message.reply(`you must tell me something to say! use \`${prefix}help say\` to show the usage for this one :)`);
-  if (toMp3.length > 200) message.reply(`your text is longer than 200 words, which makes me harder to upload my record :( im still saying it btw`);
+  if (toMp3.length > 200) message.reply(`your text is longer than 200 words, which makes me harder to say it :( i'm still saying it btw`);
   const current = client.voicequeue.get(message.guild.id);
 	if (current) return message.reply(current.prompt);
 
