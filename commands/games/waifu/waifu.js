@@ -22,7 +22,7 @@ const commandWaifu = async (user, query, prefix, client) => {
                 })
                 //someone else's waifu
                 response.query = new discord.MessageEmbed()
-                .setThumbnail(waifu.image)
+                .setImage(waifu.image)
                 .setAuthor(foundOtherUser.username + "'s waifu", client.user.displayAvatarURL())
                 .setColor("#eae267")
                 .addField("Waifu name", `${waifu.name}`, true)
@@ -41,7 +41,7 @@ const commandWaifu = async (user, query, prefix, client) => {
             })
             //My waifu
             response.query = new discord.MessageEmbed()
-            .setThumbnail(waifu.image)
+            .setImage(waifu.image)
             .setAuthor(foundUser.username + "'s waifu", client.user.displayAvatarURL())
             .setColor("#DF77EC")
             .addField("Waifu name", `${waifu.name}`, true)
