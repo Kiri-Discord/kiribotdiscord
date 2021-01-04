@@ -1,5 +1,4 @@
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
+const { decode: decodeHTML } = require('html-entities');
 const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', 'oui', 'はい', 'correct'];
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 
@@ -99,12 +98,12 @@ module.exports = class Util {
 		return arr;
 	}
 	static embedURL(title, url, display) {
-		return `[${title}](${url.replace(')', '%29')}${display ? ` "${display}"` : ''})`;
+		return `[${title}](${url.split(')').join('%29')}${display ? ` "${display}"` : ''})`;
 	}
 	static cleanAnilistHTML(html, removeLineBreaks = true) {
 		let clean = html;
 		if (removeLineBreaks) clean = clean.replace(/\r|\n|\f/g, '');
-		clean = entities.decode(clean);
+		clean = decodeHTML(clean);
 		clean = clean
 		.split('<br>').join('\n')
 		.replace(/<\/?i>/g, '*')
