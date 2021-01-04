@@ -14,5 +14,5 @@ exports.conf = {
 }
 
 exports.run = async (client, message, args) => {
-	message.channel.send('not like other bot that have enough stamina to work everywhere, i could only work here :(\n*you can still request to have me if you are already a partner of Sefiria!*\nhttps://i.ibb.co/1LhXvjL/private.gif');
+	message.channel.send('not like other bot that have enough stamina to work everywhere, i can only work here :(\n*you can still request to invite me if you are already a partner of Sefiria!*\nhttps://i.ibb.co/1LhXvjL/private.gif');
 };
