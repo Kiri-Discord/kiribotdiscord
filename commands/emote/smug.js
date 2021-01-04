@@ -7,9 +7,9 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> just smugged 😏`) 
+    .setAuthor(`${message.author.username} just smugged 😏`, message.author.displayAvatarURL()) 
     .setImage(data)
-    message.channel.send(embed)
+    return message.channel.send(embed)
 
 }
 

@@ -13,16 +13,11 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> cried :( someone pls use \`${prefix}hug\` to make them feel better :pensive:`) 
+    .setAuthor(`${message.author.username} cried :( someone pls use \`${prefix}hug\` to make them feel better :pensive:`, message.author.displayAvatarURL()) 
     .setImage(data)
-
-
-    message.channel.send(embed)
+    return message.channel.send(embed)
 
 }
-
-
-
 exports.help = {
     name: "cry",
     description: "just let it all out",

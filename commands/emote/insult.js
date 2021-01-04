@@ -8,8 +8,6 @@ exports.run = async (client, message, args) => {
     } else {
         tag = '';
     };
-
-    message.channel.startTyping()
     fetch('https://evilinsult.com/generate_insult.php?lang=en&type=json')
         .then(res => res.json())
         .then(json => message.channel.send(`${tag} :fire: ${json.insult}`))
@@ -17,8 +15,6 @@ exports.run = async (client, message, args) => {
             message.channel.send("i can't seem to be able to insult :v maybe that he/she isn't worth it ?");
             return console.error(err);
         });
-    message.channel.stopTyping()
-
 };
 
 exports.help = {

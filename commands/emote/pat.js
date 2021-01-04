@@ -11,8 +11,8 @@ exports.run = async (client, message, args) => {
     if (!target) {
       return message.reply("you can't just pat **air** :( please mention somebody to pat pls")
     }
-
-    if (target.bot) return message.reply("this isn't plastic memories so you can't pat that bot, sorry :(")
+    if (target === client.user) return message.reply('**pat pat pat pat pat**\nyes, you!')
+    if (target.bot) return message.reply("this isn't an simulator so you can't pat that bot, sorry :(")
 
     const { guild } = message
     const guildId = guild.id
@@ -47,7 +47,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed()
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> pat <@${targetId}>! They now have been pat ${amount} time(s)`) 
+    .setAuthor(`${message.author.username} pat ${target.username}! They now have been pat ${amount} time(s)`, message.author.displayAvatarURL()) 
     .setImage(data)
 
     message.channel.send(embed)

@@ -49,7 +49,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> hugged <@${targetId}>! They now have been hugged ${amount} time(s)`) 
+    .setAuthor(`${message.author.username} hugged ${target.username}! They now have been hugged ${amount} time(s)`, message.author.displayAvatarURL()) 
     .setImage(data)
 
     message.channel.send(embed)

@@ -3,17 +3,17 @@ const languages = require('../../assets/language')
 
 exports.help = {
     name: "say",
-    description: `i know a lot of languages. make me say something by doing this :D *don't do weird stuff*\nmy supported languages:\n${languages.map(x => `\`${x}\``).join(" | ")}`,
+    description: `i know a lot of languages. make me say something by doing this :D\nyou can check my supported languages [here](https://www.w3schools.com/tags/ref_language_codes.asp)\n*don't do weird stuff*`,
     usage: "say `<language> <word>`",
     example: "say `en hello`"
 };
   
 exports.conf = {
     aliases: ["tts", "text-to-speech"],
-    cooldown: 11,
+    cooldown: 7,
     guildOnly: true,
     userPerms: [],
-	  clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
+	  clientPerms: ["CONNECT", "SEND_MESSAGES", "SPEAK", "USE_VAD"]
 }
 
 
@@ -34,7 +34,7 @@ exports.run = async (client, message, args) => {
 
     try {
       if (message.member.voice.channel) {
-        await client.voicequeue.set(message.guild.id, { prompt: `please wait until i finish talking to **${message.author.username}** :(\n *i can only talk in one server at a time, in one server. just like real people*` });
+        await client.voicequeue.set(message.guild.id, { prompt: `please wait until i finish talking to **${message.author.username}** :(\n*i can only talk in one voice channel at a time, in one server. just like real people :)*` });
         const link = await tts.getAllAudioUrls(toMp3, {
           lang: act,
           slow: false,

@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
       message.reply("you can't just punch *air* :( please mention somebody to punch pls")
       return
     }
-
+    if (target === client.user) return message.reply('you truly are the lowest scum in history.')
     if (target.bot) return message.reply("you can't punch that bot, sorry :(")
 
     const { guild } = message
@@ -21,8 +21,8 @@ exports.run = async (client, message, args) => {
     const authorId = message.author.id
     const now = new Date()
 
-    if (targetId === client.user.id) {
-      message.reply('you truly are the lowest scum in history.')
+    if (targetId === message.author.id) {
+      message.reply('are you in pain?')
       return
     }
 
@@ -50,7 +50,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> punch <@${targetId}>! They now have been punched ${amount} time(s)`) 
+    .setAuthor(`${message.author.username} punch ${target.username}! They now have been punched ${amount} time(s)`, message.author.displayAvatarURL()) 
     .setImage(data)
 
     message.channel.send(embed)

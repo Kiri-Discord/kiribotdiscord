@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
       message.reply("you can't just slap *air* :( please mention somebody to slap pls")
       return
     }
-
+    if (target === client.user) return message.reply('what did you say?')
     if (target.bot) return message.reply("you can't slap that bot, sorry :(")
 
     const { guild } = message
@@ -21,13 +21,10 @@ exports.run = async (client, message, args) => {
     const authorId = message.author.id
     const now = new Date()
 
-    if (targetId === client.user.id) {
-      message.reply('what did you say?')
+    if (targetId === message.author.id) {
+      message.reply('are you in pain?')
       return
     }
-
-
-
     const result = await slapSchema.findOneAndUpdate(
       {
         userId: targetId,
@@ -50,7 +47,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setDescription(`<@${message.author.id}> slap <@${targetId}>! They now have been slapped ${amount} time(s)`) 
+    .setAuthor(`${message.author.username} slap ${target.username} They now have been slapped ${amount} time(s)`, message.author.displayAvatarURL()) 
     .setImage(data)
 
     message.channel.send(embed)
