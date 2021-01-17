@@ -9,12 +9,16 @@ const commandAvatar = async (user, query, prefix) => {
     if (foundUser) {
         response.query = "yee haw"
         if (query.length > 2) {
-            response.query = `${user.at}, your waifu was given a new avatar!`
-            await Waifu.findOneAndUpdate({ 
-                master: foundUser._id, 
-            }, {
-                image: query[2]
-            })
+            if (/^(https?:\/\/)/i.test(query[2])) {
+                response.query = `${user.at}, your waifu was given a new avatar!`
+                await Waifu.findOneAndUpdate({ 
+                    master: foundUser._id, 
+                }, {
+                    image: query[2]
+                })
+            } else {
+                response.query = `${user.at}, your link is invaild :( please provide me with an another one.`
+            }
 
         } else {
             response.query = `${user.at}, you need to give me your waifu image link!`

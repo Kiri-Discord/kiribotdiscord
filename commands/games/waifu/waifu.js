@@ -32,6 +32,7 @@ const commandWaifu = async (user, query, prefix, client) => {
                 .addField("Combats won", foundOtherUser.combatsWon, true)
                 .addField("Weapon", `${formatEquipment(waifu.weapon)}`, true)
                 .addField("Armor", `${formatEquipment(waifu.armor)}`, true)
+                .setFooter('if you can\'t see the waifu image, probably the waifu owner didn\'t set one or the image link is broken :(')
             } else {
                 response.query = `${user.at}, that user does not exist (or) does not have a waifu :(`
             }
@@ -51,6 +52,7 @@ const commandWaifu = async (user, query, prefix, client) => {
             .addField("Combats won", foundUser.combatsWon, true)
             .addField("Weapon", `${formatEquipment(waifu.weapon)}`, true)
             .addField("Armor", `${formatEquipment(waifu.armor)}`, true)
+            .setFooter('if you can\'t see the waifu image, set one yourself or the image link is broken :(')
         }
     }
 

@@ -14,13 +14,7 @@ exports.run = async (client, message, args) => {
     return message.channel.send(`Ouch. Jezzz you gave me a wrong mention or user ID 😔`).then(m => m.delete({ timeout: 5000 }));
   }
 
-  
-
-  
   let avatar = user.displayAvatarURL({size: 4096, dynamic: true});
-  // 4096 is the new biggest size of the avatar.
-  // Enabling the dynamic, when the user avatar was animated/GIF, it will result as a GIF format.
-  // If it's not animated, it will result as a normal image format.
   
   const embed = new Discord.MessageEmbed()
   .setTimestamp(new Date())

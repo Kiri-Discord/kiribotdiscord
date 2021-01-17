@@ -1,5 +1,9 @@
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
+});
+
 global.__basedir = __dirname;
-require('dotenv').config()
+require('dotenv').config();
 const mongo = require('./util/mongo.js');
 const RedisClient = require('./util/redis');
 mongo.init();
