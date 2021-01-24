@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
   const embed = new Discord.MessageEmbed()
   .setTimestamp(new Date())
   .setTitle(`${user.tag} avatar`)
-  .setDescription(`[**Avatar URL**](${avatar})`)
+  .setDescription(`[Avatar URL](${avatar})`)
   .setColor('#DAF7A6')
   .setImage(avatar)
   .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))

@@ -32,9 +32,13 @@ exports.run = async (client, message, args) => {
         .setColor('#ffe6cc')
         .setThumbnail(icon)
         .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
-        .setDescription('**Animated:**\n' + animated.join(' ') + '\n\n**Not animated:**\n' + notAnimated.join(' '))
-        if (embed.description.length >= 2048)
-        embed.description = `${embed.description.substr(0, 2045)}...`;
+        .addField('Animated:', animated.join(' '))
+        .addField('Not animated:', notAnimated.join(' '))
+        for (let counter = 0; counter < embed.fields.length; ++counter) {
+          if (embed.fields[counter].value.length >= 1024) {
+            embed.fields[counter].value = `${embed.fields[counter].value.substr(0, 1025)}...`
+          }
+        }
         return message.channel.send(embed)
     } catch (err) {
         return message.reply('there was an error while sending you all the emojis on this server, sorry about that :(');
