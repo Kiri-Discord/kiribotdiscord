@@ -34,7 +34,7 @@ exports.run = async (client, message, args) => {
         .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
         .addField('Animated:', animated.join(' '))
         .addField('Not animated:', notAnimated.join(' '))
-        for (let counter = 0; counter < embed.fields.length; ++counter) {
+        for (let counter = 0; counter < embed.fields.length + 1; ++counter) {
           if (embed.fields[counter].value.length >= 1024) {
             embed.fields[counter].value = `${embed.fields[counter].value.substr(0, 1025)}...`
           }
