@@ -31,7 +31,7 @@
     "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
-    "mongoose": "^5.11.11",
+    "mongoose": "^5.11.14",
     "mquery": "^3.2.3",
     "namemc": "^0.2.7",
     "node-pre-gyp": "^0.17.0",
