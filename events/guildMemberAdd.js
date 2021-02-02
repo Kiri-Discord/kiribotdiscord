@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const { createCanvas, registerFont } = require('canvas');
 const path = require('path');
-const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
 registerFont(path.join(__dirname, '..', 'assets', 'fonts', 'Captcha.ttf'), { family: 'Captcha' });
 const ms = require("ms");
 
@@ -27,7 +26,7 @@ module.exports = async (client, member) => {
     } else {
       await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
     }
-    let text = randomText(5);
+    let text = randomInteger(100000, 1000000);
     const canvas = createCanvas(125, 32);
 		const ctx = canvas.getContext('2d');
 		ctx.fillStyle = 'white';
@@ -63,8 +62,9 @@ module.exports = async (client, member) => {
   }
 }
 
-function randomText(len) {
-  const result = [];
-  for (let i = 0; i < len; i++) result.push(pool[Math.floor(Math.random() * pool.length)]);
-  return result.join('');
+
+function randomInteger(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

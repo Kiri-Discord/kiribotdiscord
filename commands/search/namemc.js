@@ -30,11 +30,11 @@ exports.run = async (client, message, args) => {
     let pastname = [];
     if (user.imageUrls.skins.length >= 15) {
         for (let counter = 0; counter < 15; ++counter) {
-            skinsurl.push(`[${counter}](${user.imageUrls.skins[counter]})`)
+            skinsurl.push(`[${counter + 1}](${user.imageUrls.skins[counter]})`)
         }
     } else {
         for (let counter = 0; counter < user.imageUrls.skins.length; ++counter) {
-            skinsurl.push(`[${counter}](${user.imageUrls.skins[counter]})`)
+            skinsurl.push(`[${counter + 1}](${user.imageUrls.skins[counter]})`)
         }
     };
     if (user.pastNames.length >= 10) {
