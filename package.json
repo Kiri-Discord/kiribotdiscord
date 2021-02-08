@@ -35,7 +35,7 @@
     "mquery": "^3.2.3",
     "namemc": "^0.3.7",
     "node-pre-gyp": "^0.17.0",
-    "node-superfetch": "^0.1.10",
+    "node-superfetch": "^0.1.11",
     "parse-ms": "^2.1.0",
     "random-anime": "^1.0.6",
     "random-js": "^2.1.0",
