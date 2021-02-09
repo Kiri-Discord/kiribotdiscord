@@ -27,7 +27,7 @@
     "google-tts-api": "^2.0.1",
     "html-entities": "^2.1.0",
     "ini": "^2.0.0",
-    "ioredis": "^4.19.4",
+    "ioredis": "^4.22.0",
     "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
