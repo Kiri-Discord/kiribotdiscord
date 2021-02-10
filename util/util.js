@@ -3,6 +3,14 @@ const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', '
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 
 module.exports = class Util {
+	static shortenText(text, maxLength) {
+        let shorten = false;
+        while (text.length > maxLength) {
+            if (!shorten) shorten = true;
+            text = text.substr(0, text.length - 1);
+        }
+        return shorten ? `${text}...` : text;
+    }
 	static randomRange(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}

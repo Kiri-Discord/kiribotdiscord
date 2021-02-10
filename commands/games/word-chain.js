@@ -41,7 +41,7 @@ exports.run = async (client, message, args) => {
 		const startWord = startWords[Math.floor(Math.random() * startWords.length)];
 		await message.channel.send(stripIndents`
 			the start word will be **${startWord}**! you must answer within **${time}** seconds!
-			if you think your opponent has played a word that doesn't exist, respond with **challenge** on your turn.
+			if you think your opponent has played a word that **doesn't exist**, respond with **challenge** on your turn.
 			words cannot contain anything but letters. no numbers, spaces, or hyphens may be used :(
 			the game will start in 5 seconds...
 		`);
@@ -107,6 +107,4 @@ async function verifyWord(word) {
 		return null;
 	}
 }
-
-
 

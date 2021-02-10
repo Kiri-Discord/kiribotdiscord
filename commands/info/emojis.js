@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { shortenText } = require('../../util/util');
 exports.help = {
   name: "emojis",
   description: "Display all emojis avaliable on the server",
@@ -29,12 +30,16 @@ exports.run = async (client, message, args) => {
         if (!animated[0]) animated = ['None']
         if (!notAnimated[0]) notAnimated = ['None'];
         const embed = new MessageEmbed()
+        .setTimestamp()
+        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
         .setColor('#ffe6cc')
         .setThumbnail(icon)
         .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
-        .setDescription('**Animated:**\n' + animated.join(' ') + '\n\n**Not animated:**\n' + notAnimated.join(' '))
-        if (embed.description.length >= 2048)
-        embed.description = `${embed.description.substr(0, 2045)}...`;
+        .addFields(
+          { name: '**Animated:**', value: shortenText(animated.join(' '), 1024) },
+          { name: '**Not animated:**', value:  shortenText(notAnimated.join(' '), 1024) },
+        )
+        .setDescription('*Due to Discord limitation, not all emojis will be shown, sorry about that :(*')
         return message.channel.send(embed)
     } catch (err) {
         return message.reply('there was an error while sending you all the emojis on this server, sorry about that :(');
