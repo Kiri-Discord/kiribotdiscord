@@ -36,8 +36,8 @@ exports.run = async (client, message, args) => {
         .setThumbnail(icon)
         .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
         .addFields(
-          { name: '**Animated:**', value: shortenText(animated.join(' '), 1024) },
-          { name: '**Not animated:**', value:  shortenText(notAnimated.join(' '), 1024) },
+          { name: '**Animated:**', value: shortenText(animated.join(' '), 1023) },
+          { name: '**Not animated:**', value:  shortenText(notAnimated.join(' '), 1023) },
         )
         .setDescription('*Due to Discord limitation, not all emojis will be shown, sorry about that :(*')
         return message.channel.send(embed)
