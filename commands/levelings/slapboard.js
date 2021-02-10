@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
         .setThumbnail(message.guild.iconURL())
         .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
         .setAuthor(`slap leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
-        .setDescription(`these are users with that received the most punch in this server.\ni will only show 5 people received the most slap :pensive:`)
+        .setDescription(`these are users with that received the most slap in this server.\ni will only show 5 people received the most slap :pensive:`)
         .setColor('RANDOM')
         .setTimestamp(new Date())
 
