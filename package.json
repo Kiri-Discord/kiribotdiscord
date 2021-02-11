@@ -30,6 +30,7 @@
     "ioredis": "^4.22.0",
     "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.33",
     "mongoose": "^5.11.14",
     "mquery": "^3.2.3",
