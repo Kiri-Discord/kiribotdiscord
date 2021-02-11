@@ -30,26 +30,23 @@ exports.run = async (client, message, args) => {
                 previousRange = khz;
             }
             if (age === 'all') {
-                await connection.disconnect(); 
                 return message.reply('everyone should be able to hear that. there might be a problem with your hearing :pensive"');
             }
             if (age === 'max') {
-                await connection.disconnect();
                 return message.reply(stripIndents`
                     you can hear any frequency of which a human is capable :)
                     the maximum frequency you were able to hear was **${range}000hz**.
                 `);
             }
-            await connection.disconnect();
             return message.reply(stripIndents`
                 you have the hearing of someone ${Number.parseInt(age, 10) + 1} years old or older :)
                 the maximum frequency you were able to hear was **${range}000hz**.
             `);
 
         } catch (error) {
-            await client.voicequeue.delete(message.guild.id);
             return message.reply('sorry, i got an error :( try again later!') 
         } finally {
+            await connection.disconnect();
             return client.voicequeue.delete(message.guild.id);
         }
     } else {
