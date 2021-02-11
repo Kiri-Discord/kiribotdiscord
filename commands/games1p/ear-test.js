@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
     if (message.member.voice.channel) {
         try {
             await client.voicequeue.set(message.guild.id, { prompt: `please wait until **${message.author.username}** finish their hearing test first :(\n*i can only talk in one voice channel at a time, in one server. just like real people :)*` });
-            const connection = await message.member.voice.channel.join();
+            var connection = await message.member.voice.channel.join();
             let age;
             let range;
             let previousAge = 'all';
@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
                 previousRange = khz;
             }
             if (age === 'all') {
-                return message.reply('everyone should be able to hear that. there might be a problem with your hearing :pensive"');
+                return message.reply('everyone should be able to hear that. there might be a problem with your hearing :pensive:');
             }
             if (age === 'max') {
                 return message.reply(stripIndents`
@@ -44,6 +44,8 @@ exports.run = async (client, message, args) => {
             `);
 
         } catch (error) {
+            await connection.disconnect();
+            await client.voicequeue.delete(message.guild.id);
             return message.reply('sorry, i got an error :( try again later!') 
         } finally {
             await connection.disconnect();
