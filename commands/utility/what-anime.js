@@ -58,7 +58,7 @@ async function fetchPreview(data) {
 async function fetchRateLimit() {
     try {
         const { body } = await request.get('https://trace.moe/api/me');
-        return { status: body.quota > 0, refresh: body.quota_ttl };
+        return { status: body.user_limit > 0, refresh: body.user_limit_ttl };
     } catch {
         return { status: false, refresh: Infinity };
     }
