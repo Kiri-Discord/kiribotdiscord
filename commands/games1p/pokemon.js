@@ -7,10 +7,10 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Pokemon Solid.
 const pokemonCount = 893;
 
 exports.run = async (client, message, args) => {
-	const pokemon = Math.floor(Math.random() * (pokemonCount + 1))
 	const current = client.games.get(message.channel.id);
 	if (current) return message.reply(current.prompt);
 	client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
+	const pokemon = Math.floor(Math.random() * (pokemonCount + 1))
 	try {
 		const data = await client.pokemon.fetch(pokemon.toString());
 		const names = data.names.map(name => name.name.toLowerCase());
