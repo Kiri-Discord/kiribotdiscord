@@ -20,6 +20,8 @@ exports.conf = {
 exports.run = async (client, message, args) => {
   const current = client.voicequeue.get(message.guild.id);
 	if (current) return message.reply(current.prompt);
+  const serverQueue = client.queue.get(message.guild.id);
+  if (serverQueue) return message.reply('someone in your server is playing music! please wait until they done first :smiley:')
   const setting = await client.dbguilds.findOne({
     guildID: message.guild.id
   });

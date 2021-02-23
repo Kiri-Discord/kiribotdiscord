@@ -26,6 +26,7 @@
     "ffmpeg-static": "^4.2.7",
     "google-tts-api": "^2.0.1",
     "html-entities": "^2.1.0",
+    "https": "^1.0.0",
     "ini": "^2.0.0",
     "ioredis": "^4.22.0",
     "lyrics-finder": "^21.7.0",
@@ -42,10 +43,14 @@
     "random-js": "^2.1.0",
     "relevant-urban": "^2.0.0",
     "semver": "^7.3.4",
+    "simple-youtube-api": "^5.2.1",
     "something-random-on-discord": "0.0.2",
+    "soundcloud-downloader": "^0.2.4",
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.4",
     "weather-js": "^2.0.0",
-    "yaml": "^1.10.0"
+    "yaml": "^1.10.0",
+    "ytdl-core": "^4.5.0",
+    "ytdl-core-discord": "^1.2.5"
   }
 }
