@@ -9,6 +9,10 @@ const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const ms = require("ms");
 
 exports.run = async (client, message, args) => {
+    const setting = await client.dbguilds.findOne({
+      guildID: message.guild.id
+    });
+    const prefix = setting.prefix;
     const current = client.voicequeue.get(message.guild.id);
     if (current) return message.reply(current.prompt);
     const { channel } = message.member.voice;
@@ -73,7 +77,7 @@ exports.run = async (client, message, args) => {
           author: songInfo.videoDetails.ownerChannelName,
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
-          duration: songInfo.videoDetails.lengthSeconds,
+          duration: ms(songInfo.videoDetails.lengthSeconds * 1000, { long: true }),
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
         };
@@ -106,7 +110,7 @@ exports.run = async (client, message, args) => {
           author: songInfo.videoDetails.ownerChannelName,
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
-          duration: songInfo.videoDetails.lengthSeconds,
+          duration: ms(songInfo.videoDetails.lengthSeconds * 1000, { long: true }),
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
         };
@@ -124,10 +128,11 @@ exports.run = async (client, message, args) => {
       .setTimestamp()
       .setThumbnail(song.thumbnail)
       .setColor('#ffe6cc')
-      .setAuthor('✅ Added to music queue!', message.author.displayAvatarURL({ dynamic: true }))
-      .addField('Duration', ms(song.duration * 100, {long: true}), true)
+      .setAuthor(`${song.requestedby.username} added a song to the queue ✅`, message.author.displayAvatarURL({ dynamic: true }))
+      .addField('Duration', song.duration, true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
-      .addField('Requested by', message.author.tag, true)
+      .addField('Requested by', song.requestedby, true)
+      .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
       return serverQueue.textChannel
         .send(embed)
         .catch(console.error);
