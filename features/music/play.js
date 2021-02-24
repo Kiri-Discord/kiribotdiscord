@@ -2,9 +2,11 @@ const ytdl = require("ytdl-core-discord");
 const scdl = require("soundcloud-downloader").default;
 const { MessageEmbed } = require('discord.js')
 const { canModifyQueue, STAY_TIME, PRUNING } = require("../../util/musicutil");
+const humanizeDuration = require("humanize-duration");
 
 module.exports = {
   async play(song, message, client) {
+    let duration;
     const { SOUNDCLOUD_CLIENT_ID } = require("../../util/musicutil");
 
     const queue = client.queue.get(message.guild.id);
@@ -25,11 +27,17 @@ module.exports = {
     try {
       if (song.url.includes("youtube.com")) {
         stream = await ytdl(song.url, { highWaterMark: 1 << 25 });
+        const info = await ytdl.getInfo(song.url)
+        duration = info.videoDetails.lengthSeconds * 1000;
       } else if (song.url.includes("soundcloud.com")) {
         try {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.OPUS, SOUNDCLOUD_CLIENT_ID);
+          const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID)
+          duration = info.duration;
         } catch (error) {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.MP3, SOUNDCLOUD_CLIENT_ID);
+          const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID)
+          duration = info.duration;
           streamType = "unknown";
         }
       }
@@ -73,7 +81,7 @@ module.exports = {
       .setTimestamp()
       .setThumbnail(song.thumbnail)
       .setColor('#ffe6cc')
-      .addField('Duration', song.duration, true)
+      .addField('Duration', humanizeDuration(duration), true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .setAuthor('Now playing 🎵', client.user.displayAvatarURL({ dynamic: true }))
       .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))

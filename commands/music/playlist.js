@@ -2,7 +2,6 @@ const { MessageEmbed } = require("discord.js");
 const { play } = require("../../features/music/play");
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
-const ms = require("ms");
 
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
@@ -45,11 +44,35 @@ exports.run = async (client, message, args) => {
 
     let playlist = null;
     let videos = [];
+    let newSongs;
 
     if (urlValid) {
       try {
         playlist = await youtube.getPlaylist(url, { part: "snippet" });
-        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" });
+        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" })
+        await videos.filter((video) => video.title != "Private video" && video.title != "Deleted video")
+        .map((video) => {
+          return (song = {
+            title: video.title,
+            url: `https://www.youtube.com/watch?v=${video.id}`,
+            requestedby: message.author,
+            thumbnail: video.thumbnails.high.url,
+            authorurl: `https://www.youtube.com/channel/${video.channel.id}`,
+            author: video.channel.title,
+          })
+        })
+        newSongs = videos
+        .filter((video) => video.title != "Private video" && video.title != "Deleted video")
+        .map((video) => {
+          return (song = {
+            title: video.title,
+            url: `https://www.youtube.com/watch?v=${video.id}`,
+            requestedby: message.author,
+            thumbnail: video.thumbnails.high.url,
+            authorurl: `https://www.youtube.com/channel/${video.channel.id}`,
+            author: video.channel.title,
+          })
+        })
       } catch (error) {
         console.error(error);
         return message.reply("i can't find the playlist from the URL you provided :(").catch(console.error);
@@ -58,22 +81,35 @@ exports.run = async (client, message, args) => {
       if (url.includes("/sets/")) {
         message.channel.send("i'm fetching the playlist info...wait a moment please :)");
         playlist = await scdl.getSetInfo(url, SOUNDCLOUD_CLIENT_ID);
-        videos = playlist.tracks.map((track) => ({
-          title: track.title,
-          url: track.permalink_url,
-          duration: ms(track.duration, {long: true}),
-          requestedby: message.author,
-          thumbnail: track.artwork_url,
-          authorurl: track.user.permalink_url,
-          author: track.user.full_name,
-        }));
+        videos = playlist.tracks.map((track) => {
+          return (song = {
+              title: track.title,
+              url: track.permalink_url,
+              requestedby: message.author,
+              thumbnail: track.artwork_url,
+              authorurl: track.user.permalink_url,
+              author: track.user.full_name,
+          })
+        });
         newSongs = videos;
       }
     } else {
       try {
         const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
         playlist = results[0];
-        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" });
+        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" })
+        newSongs = videos
+        .filter((video) => video.title != "Private video" && video.title != "Deleted video")
+        .map((video) => {
+          return (song = {
+            title: video.title,
+            url: `https://www.youtube.com/watch?v=${video.id}`,
+            requestedby: message.author,
+            thumbnail: video.thumbnails.high.url,
+            authorurl: `https://www.youtube.com/channel/${video.channel.id}`,
+            author: video.channel.title,
+          })
+        })
       } catch (error) {
         console.error(error);
         return message.reply('there was an error when i tried to get the info of that playlist, sorry :(').catch(console.error);

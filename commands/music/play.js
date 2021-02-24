@@ -6,9 +6,10 @@ const scdl = require("soundcloud-downloader").default
 const https = require("https");
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-const ms = require("ms");
+const humanizeDuration = require("humanize-duration");
 
 exports.run = async (client, message, args) => {
+
     const setting = await client.dbguilds.findOne({
       guildID: message.guild.id
     });
@@ -25,7 +26,7 @@ exports.run = async (client, message, args) => {
     }
 
     if (!args.length) return message.reply(`wrong usage :( use ${prefix}play <youtube URL | video name | soundcloud URL> to play some music!`).catch(console.error);
-
+    let duration;
     const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -72,12 +73,12 @@ exports.run = async (client, message, args) => {
     if (urlValid) {
       try {
         songInfo = await ytdl.getInfo(url);
+        duration = songInfo.videoDetails.lengthSeconds * 1000
         song = {
           authorurl: songInfo.videoDetails.ownerProfileUrl,
           author: songInfo.videoDetails.ownerChannelName,
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
-          duration: ms(songInfo.videoDetails.lengthSeconds * 1000, { long: true }),
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
         };
@@ -88,15 +89,16 @@ exports.run = async (client, message, args) => {
     } else if (scRegex.test(url)) {
       try {
         const trackInfo = await scdl.getInfo(url, SOUNDCLOUD_CLIENT_ID);
+        duration = trackInfo.duration;
         song = {
           authorurl: trackInfo.user.permalink_url,
           author: trackInfo.user.full_name,
           title: trackInfo.title,
           url: trackInfo.permalink_url,
-          duration: ms(trackInfo.duration, {long: true}),
           requestedby: message.author,
           thumbnail: trackInfo.artwork_url
         };
+
       } catch (error) {
         console.error(error);
         return message.reply('there was an error when i tried to get the info of that song, sorry :(').catch(console.error);
@@ -105,12 +107,12 @@ exports.run = async (client, message, args) => {
       try {
         const results = await youtube.searchVideos(search, 1, { part: "snippet" });
         songInfo = await ytdl.getInfo(results[0].url);
+        duration = songInfo.videoDetails.lengthSeconds * 1000
         song = {
           authorurl: songInfo.videoDetails.ownerProfileUrl,
           author: songInfo.videoDetails.ownerChannelName,
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
-          duration: ms(songInfo.videoDetails.lengthSeconds * 1000, { long: true }),
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
         };
@@ -128,13 +130,13 @@ exports.run = async (client, message, args) => {
       .setTimestamp()
       .setThumbnail(song.thumbnail)
       .setColor('#ffe6cc')
-      .setAuthor(`${song.requestedby.username} added a song to the queue ✅`, message.author.displayAvatarURL({ dynamic: true }))
-      .addField('Duration', song.duration, true)
+      .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
+      .addField('Duration', humanizeDuration(duration))
       .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
       return serverQueue.textChannel
-        .send(embed)
+        .send(`${song.requestedby.username} added a song to the queue ✅`, embed)
         .catch(console.error);
     }
 
