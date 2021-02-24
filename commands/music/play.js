@@ -7,6 +7,7 @@ const https = require("https");
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const humanizeDuration = require("humanize-duration");
+const Guild = require('../../model/music')
 
 exports.run = async (client, message, args) => {
 
@@ -24,9 +25,13 @@ exports.run = async (client, message, args) => {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music to someone in your server! join ${voicechannel} to listen :smiley:`).catch(console.error);
     }
+    const musicSettings = await Guild.findOne({
+      guildId: message.guild.id
+    });
 
     if (!args.length) return message.reply(`wrong usage :( use ${prefix}play <youtube URL | video name | soundcloud URL> to play some music!`).catch(console.error);
     let duration;
+    let volume;
     const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -56,6 +61,11 @@ exports.run = async (client, message, args) => {
       }
       return message.channel.send("following url redirection...").catch(console.error);
     }
+    if (musicSettings) {
+      volume = musicSettings.volume;
+    } else {
+      volume = DEFAULT_VOLUME;
+    }
 
     const queueConstruct = {
       textChannel: message.channel,
@@ -63,7 +73,7 @@ exports.run = async (client, message, args) => {
       connection: null,
       songs: [],
       loop: false,
-      volume: DEFAULT_VOLUME || 100,
+      volume: volume,
       playing: true
     };
 
@@ -81,6 +91,7 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
+          duration: songInfo.videoDetails.lengthSeconds * 1000
         };
       } catch (error) {
         console.error(error);
@@ -96,7 +107,8 @@ exports.run = async (client, message, args) => {
           title: trackInfo.title,
           url: trackInfo.permalink_url,
           requestedby: message.author,
-          thumbnail: trackInfo.artwork_url
+          thumbnail: trackInfo.artwork_url,
+          duration: trackInfo.duration,
         };
 
       } catch (error) {
@@ -115,6 +127,7 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
+          duration: songInfo.videoDetails.lengthSeconds * 1000
         };
       } catch (error) {
         console.error(error);
@@ -133,7 +146,7 @@ exports.run = async (client, message, args) => {
       .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
-      .addField('Duration', humanizeDuration(duration))
+      .addField('Duration', humanizeDuration(song.duration))
       .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
       return serverQueue.textChannel
         .send(`${song.requestedby.username} added a song to the queue ✅`, embed)
@@ -160,12 +173,12 @@ exports.help = {
   name: "play",
   description: "Plays audio from YouTube or Soundcloud",
   usage: ["play `<song name>`", "play `<youtube link>`", "play `<soundcloud link>`"],
-  example: ["play `https://www.youtube.com/watch?v=dQw4w9WgXcQ`", "play `https://soundcloud.com/thepopposse/never-gonna-give-you-up`"]
+  example: ["play [this](https://www.youtube.com/watch?v=dQw4w9WgXcQ)", "play [this](https://soundcloud.com/thepopposse/never-gonna-give-you-up)"]
 }
 
 exports.conf = {
   aliases: ["p"],
-  cooldown: 5,
+  cooldown: 3,
   guildOnly: true,
   userPerms: [],
   clientPerms: ["SEND_MESSAGES", "EMBED_LINKS", "CONNECT", "SPEAK"]

@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryzenix/sefydiscordbot.git"
+  },
   "author": "ryzenix",
   "license": "ISC",
   "dependencies": {
@@ -23,7 +27,6 @@
     "discord-paginationembed": "^2.1.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "emoji-from-text": "^1.1.12",
     "ffmpeg-static": "^4.2.7",
     "google-tts-api": "^2.0.1",
     "html-entities": "^2.1.0",
@@ -48,6 +51,7 @@
     "simple-youtube-api": "^5.2.1",
     "something-random-on-discord": "0.0.2",
     "soundcloud-downloader": "^0.2.4",
+    "string-progressbar": "^1.0.3",
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.4",
     "weather-js": "^2.0.0",

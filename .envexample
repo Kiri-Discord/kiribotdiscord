@@ -7,4 +7,6 @@ FACEPLUSPLUS_KEY=
 FACEPLUSPLUS_SECRET=
 redis_host=
 redis_pass=
-redis_port
+redis_port=
+webster_key=
+soundcloudkey=

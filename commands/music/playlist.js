@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { play } = require("../../features/music/play");
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
-
+const Guild = require('../../model/music');
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
@@ -22,14 +22,23 @@ exports.run = async (client, message, args) => {
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music to someone in your server! join ${voicechannel} to listen :smiley:`).catch(console.error);
-    }
-
+    };
     if (!args.length) return message.reply(`wrong usage :( use ${prefix}playlist <youtube playlist URL | soundcloud playlist URL> to play some music!`).catch(console.error);
 
+    const musicSettings = await Guild.findOne({
+      guildId: message.guild.id
+    });
+    let volume;
     const search = args.join(" ");
     const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
     const url = args[0];
     const urlValid = pattern.test(url);
+
+    if (musicSettings) {
+      volume = musicSettings.volume;
+    } else {
+      volume = DEFAULT_VOLUME;
+    }
     
 
     const queueConstruct = {
@@ -38,29 +47,21 @@ exports.run = async (client, message, args) => {
       connection: null,
       songs: [],
       loop: false,
-      volume: DEFAULT_VOLUME || 100,
+      volume: volume,
       playing: true
     };
 
     let playlist = null;
     let videos = [];
     let newSongs;
+    let thumbnail;
+    let playlisturl;
 
     if (urlValid) {
       try {
+        message.channel.send("i'm fetching the playlist info...wait a moment please :)");
         playlist = await youtube.getPlaylist(url, { part: "snippet" });
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" })
-        await videos.filter((video) => video.title != "Private video" && video.title != "Deleted video")
-        .map((video) => {
-          return (song = {
-            title: video.title,
-            url: `https://www.youtube.com/watch?v=${video.id}`,
-            requestedby: message.author,
-            thumbnail: video.thumbnails.high.url,
-            authorurl: `https://www.youtube.com/channel/${video.channel.id}`,
-            author: video.channel.title,
-          })
-        })
         newSongs = videos
         .filter((video) => video.title != "Private video" && video.title != "Deleted video")
         .map((video) => {
@@ -69,10 +70,12 @@ exports.run = async (client, message, args) => {
             url: `https://www.youtube.com/watch?v=${video.id}`,
             requestedby: message.author,
             thumbnail: video.thumbnails.high.url,
-            authorurl: `https://www.youtube.com/channel/${video.channel.id}`,
-            author: video.channel.title,
+            authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
+            author: video.raw.snippet.videoOwnerChannelTitle,
           })
         })
+        thumbnail = videos[0].thumbnails.high.url;
+        playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`
       } catch (error) {
         console.error(error);
         return message.reply("i can't find the playlist from the URL you provided :(").catch(console.error);
@@ -92,9 +95,12 @@ exports.run = async (client, message, args) => {
           })
         });
         newSongs = videos;
+        thumbnail = playlist.tracks[0].artwork_url;
+        playlisturl = url;
       }
     } else {
       try {
+        message.channel.send("i'm fetching the playlist info...wait a moment please :)");
         const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
         playlist = results[0];
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" })
@@ -106,10 +112,12 @@ exports.run = async (client, message, args) => {
             url: `https://www.youtube.com/watch?v=${video.id}`,
             requestedby: message.author,
             thumbnail: video.thumbnails.high.url,
-            authorurl: `https://www.youtube.com/channel/${video.channel.id}`,
-            author: video.channel.title,
+            authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
+            author: video.raw.snippet.videoOwnerChannelTitle,
           })
         })
+        thumbnail = videos[0].thumbnails.high.url;
+        playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
         return message.reply('there was an error when i tried to get the info of that playlist, sorry :(').catch(console.error);
@@ -120,11 +128,14 @@ exports.run = async (client, message, args) => {
     serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
 
     let playlistEmbed = new MessageEmbed()
-    .setTitle(`${playlist.title}`)
-    .setDescription(newSongs.map((song, index) => `${index + 1}. [${song.title}](${song.url})`))
-    .setURL(playlist.url)
-    .setColor("#F8AA2A")
-    .setTimestamp();
+    .setTitle(playlist.title)
+    .setColor('#ffe6cc')
+    .setDescription(newSongs.map((song, index) => `\`${index + 1}\` [${song.title}](${song.url})`))
+    .setURL(playlisturl)
+    .setTimestamp()
+    .setAuthor('Coming up! 🎵', message.author.displayAvatarURL({ dynamic: true }))
+    .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
+    .setThumbnail(thumbnail)
 
     if (playlistEmbed.description.length >= 2048)
       playlistEmbed.description =
@@ -152,12 +163,12 @@ exports.help = {
   name: "playlist",
   description: "Play a playlist YouTube or Soundcloud",
   usage: ["play `<youtube playlist link>`", "play `<soundcloud playlist link>`"],
-  example: ["play `[this](https://www.youtube.com/playlist?list=PLi9drqWffJ9FWBo7ZVOiaVy0UQQEm4IbP)`", "play `[this](https://soundcloud.com/puppermusic/sets/good-vibes)`"]
+  example: ["play [this](https://www.youtube.com/playlist?list=PLi9drqWffJ9FWBo7ZVOiaVy0UQQEm4IbP)", "play [this](https://soundcloud.com/puppermusic/sets/good-vibes)"]
 }
 
 exports.conf = {
   aliases: ["pl"],
-  cooldown: 5,
+  cooldown: 3,
   guildOnly: true,
   userPerms: [],
   clientPerms: ["SEND_MESSAGES", "EMBED_LINKS", "CONNECT", "SPEAK"]

@@ -47,7 +47,7 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: ["steamnp", "steam-now-playing", "np", "now-playing"],
+  aliases: ["steamnp", "steam-now-playing"],
   cooldown: 3,
   guildOnly: true,
   userPerms: [],
