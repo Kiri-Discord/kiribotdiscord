@@ -88,7 +88,7 @@ exports.run = async (client, message, args) => {
               requestedby: message.author,
               thumbnail: track.artwork_url,
               authorurl: track.user.permalink_url,
-              author: track.user.full_name,
+              author: track.user.username,
           })
         });
         newSongs = videos;
@@ -121,7 +121,7 @@ exports.run = async (client, message, args) => {
 
     let playlistEmbed = new MessageEmbed()
     .setTitle(`${playlist.title}`)
-    .setDescription(newSongs.map((song, index) => `${index + 1}. ${song.title}`))
+    .setDescription(newSongs.map((song, index) => `${index + 1}. [${song.title}](${song.url})`))
     .setURL(playlist.url)
     .setColor("#F8AA2A")
     .setTimestamp();
@@ -130,7 +130,7 @@ exports.run = async (client, message, args) => {
       playlistEmbed.description =
         playlistEmbed.description.substr(0, 2007) + "...";
 
-    message.channel.send(`now playing ${playlist.title}!`, playlistEmbed);
+    message.channel.send(`${message.author.username} successfully added playlist **${playlist.title}** to the queue ✅`, playlistEmbed);
 
     if (!serverQueue) {
       client.queue.set(message.guild.id, queueConstruct);

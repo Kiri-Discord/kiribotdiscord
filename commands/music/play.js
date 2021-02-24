@@ -92,7 +92,7 @@ exports.run = async (client, message, args) => {
         duration = trackInfo.duration;
         song = {
           authorurl: trackInfo.user.permalink_url,
-          author: trackInfo.user.full_name,
+          author: trackInfo.user.username,
           title: trackInfo.title,
           url: trackInfo.permalink_url,
           requestedby: message.author,

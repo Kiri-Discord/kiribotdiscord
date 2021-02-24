@@ -1,13 +1,13 @@
 {
   "name": "sefydiscordbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "duh",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
   },
-  "author": "r3zenix",
+  "author": "ryzenix",
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
@@ -23,6 +23,7 @@
     "discord-paginationembed": "^2.1.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
+    "emoji-from-text": "^1.1.12",
     "ffmpeg-static": "^4.2.7",
     "google-tts-api": "^2.0.1",
     "html-entities": "^2.1.0",
@@ -46,7 +47,7 @@
     "semver": "^7.3.4",
     "simple-youtube-api": "^5.2.1",
     "something-random-on-discord": "0.0.2",
-    "soundcloud-downloader": "git+https://github.com/zackradisic/node-soundcloud-downloader.git",
+    "soundcloud-downloader": "^0.2.4",
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.4",
     "weather-js": "^2.0.0",

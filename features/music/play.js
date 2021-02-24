@@ -84,7 +84,6 @@ module.exports = {
       .addField('Duration', humanizeDuration(duration), true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .setAuthor('Now playing 🎵', client.user.displayAvatarURL({ dynamic: true }))
-      .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
       .setThumbnail(song.thumbnail)
       .addField('Requested by', song.requestedby, true)
       var playingMessage = await queue.textChannel.send(embed);
@@ -170,7 +169,7 @@ module.exports = {
           reaction.users.remove(user).catch(console.error);
           if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           queue.loop = !queue.loop;
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `loop is now ${queue.loop ? "on" : "off"} 🔁`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
+          queue.textChannel.send({embed: {color: "f3f3f3", description: `loop is now ${queue.loop ? "on" : "off"} for the current song 🔁`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
           break;
 
         case "⏹":
