@@ -35,7 +35,7 @@ exports.run = async (client, message, args) => {
 
 
     if (duration / 1000 > 0) {
-        nowPlaying.addField("\u200b", `**${new Date(seek * 1000).toISOString().substr(11, 8)}**` + " " + "**[**" + `\`${createBar(duration == 0 ? seek : duration, seek, 6)[0]}\`` + "]" +  " " + `**${(duration == 0 ? " ◉ LIVE" : new Date(duration * 1000).toISOString().substr(11, 8))}**`, false);
+        nowPlaying.addField("\u200b", `**${new Date(seek * 1000).toISOString().substr(11, 8)}**` + " " + "**[**" + `\`${createBar(duration == 0 ? seek : duration, seek, 7)[0]}\`` + "]" +  " " + `**${(duration == 0 ? " ◉ LIVE" : new Date(duration * 1000).toISOString().substr(11, 8))}**`, false);
         nowPlaying.setFooter(`Queue remaining time: ${new Date(left * 1000).toISOString().substr(11, 8)}`);
     }
 

@@ -141,7 +141,7 @@ exports.run = async (client, message, args) => {
     if (serverQueue) {
       serverQueue.songs.push(song);
       const embed = new MessageEmbed()
-      .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+      .setAuthor('✔️ Upcoming',  message.author.displayAvatarURL({ dynamic: true }))
       .setURL(song.url)
       .setTitle(song.title)
       .setThumbnail(song.thumbnail)

@@ -20,6 +20,8 @@ exports.run = async (client, message, args) => {
     let removed = [];
     
     if (pattern.test(arguments)) {
+      if (songs.includes(1)) return message.channel.send({embed: {color: "f3f3f3", description: `you can't remove the song that is already been playing :pensive:`}});
+      if (songs.some(x => !isNaN(x)) || songs.some(x => x > queue.songs.length)) return message.channel.send({embed: {color: "f3f3f3", description: `that is not a number or a correct position in the queue :pensive:`}});
       queue.songs = queue.songs.filter((item, index) => {
         if (songs.find((songIndex) => songIndex - 1 === index)) removed.push(item);
         else return true;
@@ -30,7 +32,7 @@ exports.run = async (client, message, args) => {
       if (queue.textChannel.id !== message.channel.id) message.channel.send({embed: {color: "f3f3f3", description: `❌ you removed **${queue.songs.splice(args[0] - 1, 1)[0].title}** from the queue ❌`}});
       return queue.textChannel.send({embed: {color: "f3f3f3", description: `${message.author} removed **${queue.songs.splice(args[0] - 1, 1)[0].title}** from the queue ❌`}});
     } else {
-        return message.channel.send({embed: {color: "f3f3f3", description: `wrong usage! use \`${prefix}help remove\` to learn more :wink:`}});
+      return message.channel.send({embed: {color: "f3f3f3", description: `you must to tell me what song you want to remove! use \`${prefix}help remove\` to learn more :wink:`}});
     }
 
 }
