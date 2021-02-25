@@ -3,7 +3,7 @@ const scdl = require("soundcloud-downloader").default;
 const { MessageEmbed } = require('discord.js')
 const { canModifyQueue, STAY_TIME, PRUNING } = require("../../util/musicutil");
 const humanizeDuration = require("humanize-duration");
-const Guild = require('../../model/music')
+const Guild = require('../../model/music');
 
 module.exports = {
   async play(song, message, client) {
@@ -16,9 +16,9 @@ module.exports = {
       setTimeout(function () {
         if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
         queue.channel.leave();
-        queue.textChannel.send({embed: {color: "f3f3f3", description: `i'm leaving the voice channel...byebye 👋`}});
+        queue.textChannel.send({embed: {color: "f3f3f3", description: `**i'm leaving the voice channel...byebye** 👋`}});
       }, STAY_TIME * 1000);
-      queue.textChannel.send({embed: {color: "f3f3f3", description: `the music queue has ended :pensive:`}}).catch(console.error);
+      queue.textChannel.send({embed: {color: "f3f3f3", description: `**the music queue has ended** :pensive:`}}).catch(console.error);
       await Guild.findOneAndUpdate({
         guildId: message.guild.id
       }, {
@@ -37,18 +37,27 @@ module.exports = {
     try {
       if (song.url.includes("youtube.com")) {
         stream = await ytdl(song.url, { highWaterMark: 1 << 25 });
-        const info = await ytdl.getInfo(song.url)
+        const info = await ytdl.getInfo(song.url);
         duration = info.videoDetails.lengthSeconds * 1000;
+        song.duration = duration;
+        queue.songs.splice(0, 1, song);
+        client.queue.set(message.guild.id, queue);
       } else if (song.url.includes("soundcloud.com")) {
         try {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.OPUS, SOUNDCLOUD_CLIENT_ID);
           const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID)
           duration = info.duration;
+          song.duration = duration;
+          queue.songs.splice(0, 1, song);
+          client.queue.set(message.guild.id, queue);
         } catch (error) {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.MP3, SOUNDCLOUD_CLIENT_ID);
           streamType = "unknown";
           const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID)
           duration = info.duration;
+          song.duration = duration;
+          queue.songs.splice(0, 1, song);
+          client.queue.set(message.guild.id, queue);
         }
       }
     } catch (error) {
@@ -120,7 +129,7 @@ module.exports = {
         case "⏭":
           queue.playing = true;
           reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           queue.connection.dispatcher.end();
           queue.textChannel.send({embed: {color: "f3f3f3", description: `⏩ ${user} has skipped the current song.`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
           collector.stop();
@@ -128,7 +137,7 @@ module.exports = {
 
         case "⏯":
           reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           if (queue.playing) {
             queue.playing = !queue.playing;
             queue.connection.dispatcher.pause(true);
@@ -142,7 +151,7 @@ module.exports = {
 
         case "🔇":
           reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
           if (queue.volume <= 0) {
             queue.volume = 100;
             queue.connection.dispatcher.setVolumeLogarithmic(100 / 100);
@@ -157,7 +166,7 @@ module.exports = {
         case "🔉":
           reaction.users.remove(user).catch(console.error);
           if (queue.volume == 0) return;
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           if (queue.volume - 10 <= 0) queue.volume = 0;
           else queue.volume = queue.volume - 10;
           queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
@@ -167,7 +176,7 @@ module.exports = {
         case "🔊":
           reaction.users.remove(user).catch(console.error);
           if (queue.volume == 100) return;
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           if (queue.volume + 10 >= 100) queue.volume = 100;
           else queue.volume = queue.volume + 10;
           queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
@@ -176,16 +185,16 @@ module.exports = {
 
         case "🔁":
           reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           queue.loop = !queue.loop;
           queue.textChannel.send({embed: {color: "f3f3f3", description: `loop is now ${queue.loop ? "on" : "off"} for the current song 🔁`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
           break;
 
         case "⏹":
           reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join a voice channel first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
+          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
           queue.songs = [];
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} stopped the music! 🛑`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
+          queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} stopped the music! 🛑`}}).catch(console.error);
           try {
             queue.connection.dispatcher.end();
           } catch (error) {

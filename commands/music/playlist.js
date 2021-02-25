@@ -59,7 +59,7 @@ exports.run = async (client, message, args) => {
 
     if (urlValid) {
       try {
-        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: retrieving playlist data...`}})
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving playlist data...**`}})
         playlist = await youtube.getPlaylist(url, { part: "snippet" });
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE, { part: "snippet" })
         newSongs = videos
@@ -72,6 +72,7 @@ exports.run = async (client, message, args) => {
             thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
+            duration: null
           })
         })
         thumbnail = videos[0].thumbnails.high.url;
@@ -82,9 +83,9 @@ exports.run = async (client, message, args) => {
       }
     } else if (scdl.isValidUrl(url)) {
       if (url.includes("/sets/")) {
-        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: retrieving playlist data...`}})
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving playlist data...**`}})
         playlist = await scdl.getSetInfo(url, SOUNDCLOUD_CLIENT_ID);
-        videos = playlist.tracks.map((track) => {
+        videos = playlist.tracks.splice(0, MAX_PLAYLIST_SIZE - 1).map((track) => {
           return (song = {
               title: track.title,
               url: track.permalink_url,
@@ -92,6 +93,7 @@ exports.run = async (client, message, args) => {
               thumbnail: track.artwork_url,
               authorurl: track.user.permalink_url,
               author: track.user.username,
+              duration: null
           })
         });
         newSongs = videos;
@@ -100,7 +102,7 @@ exports.run = async (client, message, args) => {
       }
     } else {
       try {
-        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: retrieving playlist data...`}})
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving playlist data...**`}})
         const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
         playlist = results[0];
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE, { part: "snippet" })
@@ -114,6 +116,7 @@ exports.run = async (client, message, args) => {
             thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
+            duration: null
           })
         })
         thumbnail = videos[0].thumbnails.high.url;
@@ -127,18 +130,19 @@ exports.run = async (client, message, args) => {
     serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
 
     let playlistEmbed = new MessageEmbed()
+    .setAuthor(`✔️ Requested by ${message.author.username}`,  message.author.displayAvatarURL({ dynamic: true }))
     .setTitle(playlist.title)
     .setColor('RANDOM')
     .setURL(playlisturl)
     .setThumbnail(thumbnail)
 
-    if (newSongs.length > 5) {
-      playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).splice(0, 5).join("\n\n") + `\n\n*and ${newSongs.length - 5} more...*`);
+    if (newSongs.length > 6) {
+      playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).splice(0, 6).join("\n") + `\n\n*and ${newSongs.length - 6} more...*`);
     } else {
-      playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).join("\n\n"))
+      playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).join("\n"))
     }
 
-    message.channel.send(`${message.author.username} successfully added playlist **${playlist.title}** to the queue ✅`, playlistEmbed);
+    message.channel.send(`**${message.author.username}** successfully added playlist **${playlist.title}** to the queue ✅`, playlistEmbed);
 
     if (!serverQueue) {
       client.queue.set(message.guild.id, queueConstruct);

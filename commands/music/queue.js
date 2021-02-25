@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 
 exports.run = async (client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.channel.send('there is nothing to shuffle since i\'m not playing anything :grimacing:');
+    if (!queue) return message.channel.send('there is nothing to display since i\'m not playing anything :grimacing:');
 
     let currentPage = 0;
     const embeds = generateQueueEmbed(message, queue.songs, client);
@@ -70,7 +70,7 @@ function generateQueueEmbed(message, queue, client) {
 
         const embed = new MessageEmbed()
         .setThumbnail(queue[0].thumbnail)
-        .setAuthor('Current music queue 🎵', client.user.displayAvatarURL({ dynamic: true }))
+        .setAuthor('🎵 Current music queue', client.user.displayAvatarURL({ dynamic: true }))
         .setColor("RANDOM")
         .setDescription(`**Now playing - [${queue[0].title}](${queue[0].url})**\n\n${info}`)
         embeds.push(embed);

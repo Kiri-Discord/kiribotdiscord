@@ -11,7 +11,8 @@ exports.run = async (client, message, args) => {
     }
     queue.songs = songs;
     client.queue.set(message.guild.id, queue);
-    queue.textChannel.send({embed: {color: "f3f3f3", description: `${message.author} has shuffled the queue 🔀`}}).catch(console.error);
+    queue.textChannel.send({embed: {color: "f3f3f3", description: `${message.author} has shuffled the queue 🔀`}});
+    if (queue.textChannel.id !== message.channel.id) message.channel.send({embed: {color: "f3f3f3", description: `${message.author}, you has shuffled the queue 🔀`}}).catch(console.error);
 }
 
 exports.help = {

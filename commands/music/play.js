@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
     if (!channel) return message.reply('you are not in a voice channel!');
-    if (!channel.joinable) return message.reply("i can't join your voice channel :( check my perms pls")
+    if (!channel.joinable) return message.reply("i can't join your voice channel :( check my perms please")
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music to someone in your server! join ${voicechannel} to listen :smiley:`).catch(console.error);
@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
       guildId: message.guild.id
     });
 
-    if (!args.length) return message.reply(`you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:`).catch(console.error);
+    if (!args.length) return message.reply(`you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:`);
     let duration;
     let volume;
     const search = args.join(" ");
@@ -92,6 +92,7 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
+          duration: null
         };
       } catch (error) {
         console.error(error);
@@ -109,6 +110,7 @@ exports.run = async (client, message, args) => {
           url: trackInfo.permalink_url,
           requestedby: message.author,
           thumbnail: trackInfo.artwork_url,
+          duration: null
         };
 
       } catch (error) {
@@ -117,7 +119,7 @@ exports.run = async (client, message, args) => {
       }
     } else {
       try {
-        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **searching** \`${search}\` **on YouTube..**`}})
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **searching** \`${search}\` **on YouTube...**`}})
         const results = await youtube.searchVideos(search, 1, { part: "snippet" });
         songInfo = await ytdl.getInfo(results[0].url);
         duration = songInfo.videoDetails.lengthSeconds * 1000
@@ -128,6 +130,7 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
+          duration: null
         };
       } catch (error) {
         console.error(error);
@@ -138,13 +141,14 @@ exports.run = async (client, message, args) => {
     if (serverQueue) {
       serverQueue.songs.push(song);
       const embed = new MessageEmbed()
+      .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setURL(song.url)
       .setTitle(song.title)
       .setThumbnail(song.thumbnail)
       .setColor('RANDOM')
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
-      .addField('Duration', humanizeDuration(duration),)
+      .addField('Duration', humanizeDuration(duration), true)
       return serverQueue.textChannel
         .send(`**${song.requestedby.username}** added a song to the queue ✅`, embed)
         .catch(console.error);
@@ -155,7 +159,7 @@ exports.run = async (client, message, args) => {
 
     try {
         queueConstruct.connection = await channel.join();
-        message.channel.send({embed: {color: "f3f3f3", description: `**i have joined your voice channel :microphone2: ${channel} and bound all emojis music functions to this channel :page_facing_up: ${message.channel}!**`}})
+        message.channel.send({embed: {color: "f3f3f3", description: `**i have joined your voice channel :microphone2: \`#${channel.name}\` and bound to :page_facing_up: ${message.channel}!**`}})
         await queueConstruct.connection.voice.setSelfDeaf(true);
         play(queueConstruct.songs[0], message, client);
     } catch (error) {
