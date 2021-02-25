@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music to someone in your server! join ${voicechannel} to listen :smiley:`).catch(console.error);
     };
-    if (!args.length) return message.reply(`wrong usage :( use ${prefix}playlist <youtube playlist URL | soundcloud playlist URL> to play some music!`).catch(console.error);
+    if (!args.length) return message.reply(`you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:`).catch(console.error);
 
     const musicSettings = await Guild.findOne({
       guildId: message.guild.id
@@ -59,9 +59,9 @@ exports.run = async (client, message, args) => {
 
     if (urlValid) {
       try {
-        message.channel.send("i'm fetching the playlist info...wait a moment please :)");
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: retrieving playlist data...`}})
         playlist = await youtube.getPlaylist(url, { part: "snippet" });
-        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" })
+        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE, { part: "snippet" })
         newSongs = videos
         .filter((video) => video.title != "Private video" && video.title != "Deleted video")
         .map((video) => {
@@ -75,14 +75,14 @@ exports.run = async (client, message, args) => {
           })
         })
         thumbnail = videos[0].thumbnails.high.url;
-        playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`
+        playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
         return message.reply("i can't find the playlist from the URL you provided :(").catch(console.error);
       }
     } else if (scdl.isValidUrl(url)) {
       if (url.includes("/sets/")) {
-        message.channel.send("i'm fetching the playlist info...wait a moment please :)");
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: retrieving playlist data...`}})
         playlist = await scdl.getSetInfo(url, SOUNDCLOUD_CLIENT_ID);
         videos = playlist.tracks.map((track) => {
           return (song = {
@@ -100,10 +100,10 @@ exports.run = async (client, message, args) => {
       }
     } else {
       try {
-        message.channel.send("i'm fetching the playlist info...wait a moment please :)");
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: retrieving playlist data...`}})
         const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
         playlist = results[0];
-        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" })
+        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE, { part: "snippet" })
         newSongs = videos
         .filter((video) => video.title != "Private video" && video.title != "Deleted video")
         .map((video) => {
@@ -124,22 +124,19 @@ exports.run = async (client, message, args) => {
       }
     }
 
-
     serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
 
     let playlistEmbed = new MessageEmbed()
     .setTitle(playlist.title)
-    .setColor('#ffe6cc')
-    .setDescription(newSongs.map((song, index) => `\`${index + 1}\` [${song.title}](${song.url})`))
+    .setColor('RANDOM')
     .setURL(playlisturl)
-    .setTimestamp()
-    .setAuthor('Coming up! 🎵', message.author.displayAvatarURL({ dynamic: true }))
-    .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
     .setThumbnail(thumbnail)
 
-    if (playlistEmbed.description.length >= 2048)
-      playlistEmbed.description =
-        playlistEmbed.description.substr(0, 2007) + "...";
+    if (newSongs.length > 5) {
+      playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).splice(0, 5).join("\n\n") + `\n\n*and ${newSongs.length - 5} more...*`);
+    } else {
+      playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).join("\n\n"))
+    }
 
     message.channel.send(`${message.author.username} successfully added playlist **${playlist.title}** to the queue ✅`, playlistEmbed);
 

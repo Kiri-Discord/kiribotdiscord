@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
       guildId: message.guild.id
     });
 
-    if (!args.length) return message.reply(`wrong usage :( use ${prefix}play <youtube URL | video name | soundcloud URL> to play some music!`).catch(console.error);
+    if (!args.length) return message.reply(`you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:`).catch(console.error);
     let duration;
     let volume;
     const search = args.join(" ");
@@ -82,6 +82,7 @@ exports.run = async (client, message, args) => {
 
     if (urlValid) {
       try {
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving song data...**`}})
         songInfo = await ytdl.getInfo(url);
         duration = songInfo.videoDetails.lengthSeconds * 1000
         song = {
@@ -91,7 +92,6 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
-          duration: songInfo.videoDetails.lengthSeconds * 1000
         };
       } catch (error) {
         console.error(error);
@@ -99,6 +99,7 @@ exports.run = async (client, message, args) => {
       }
     } else if (scRegex.test(url)) {
       try {
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving song data...**`}})
         const trackInfo = await scdl.getInfo(url, SOUNDCLOUD_CLIENT_ID);
         duration = trackInfo.duration;
         song = {
@@ -108,7 +109,6 @@ exports.run = async (client, message, args) => {
           url: trackInfo.permalink_url,
           requestedby: message.author,
           thumbnail: trackInfo.artwork_url,
-          duration: trackInfo.duration,
         };
 
       } catch (error) {
@@ -117,6 +117,7 @@ exports.run = async (client, message, args) => {
       }
     } else {
       try {
+        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **searching** \`${search}\` **on YouTube..**`}})
         const results = await youtube.searchVideos(search, 1, { part: "snippet" });
         songInfo = await ytdl.getInfo(results[0].url);
         duration = songInfo.videoDetails.lengthSeconds * 1000
@@ -127,7 +128,6 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
-          duration: songInfo.videoDetails.lengthSeconds * 1000
         };
       } catch (error) {
         console.error(error);
@@ -140,16 +140,13 @@ exports.run = async (client, message, args) => {
       const embed = new MessageEmbed()
       .setURL(song.url)
       .setTitle(song.title)
-      .setTimestamp()
       .setThumbnail(song.thumbnail)
-      .setColor('#ffe6cc')
-      .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
+      .setColor('RANDOM')
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
-      .addField('Duration', humanizeDuration(song.duration))
-      .setFooter(client.user.username, client.user.displayAvatarURL({ dynamic: true }))
+      .addField('Duration', humanizeDuration(duration),)
       return serverQueue.textChannel
-        .send(`${song.requestedby.username} added a song to the queue ✅`, embed)
+        .send(`**${song.requestedby.username}** added a song to the queue ✅`, embed)
         .catch(console.error);
     }
 
@@ -158,6 +155,7 @@ exports.run = async (client, message, args) => {
 
     try {
         queueConstruct.connection = await channel.join();
+        message.channel.send({embed: {color: "f3f3f3", description: `**i have joined your voice channel :microphone2: ${channel} and bound all emojis music functions to this channel :page_facing_up: ${message.channel}!**`}})
         await queueConstruct.connection.voice.setSelfDeaf(true);
         play(queueConstruct.songs[0], message, client);
     } catch (error) {

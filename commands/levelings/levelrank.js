@@ -54,7 +54,7 @@ exports.run = async (client, message, args) => {
     .setDiscriminator(mention.user.discriminator)
     .setUsername(mention.user.username)
     .setProgressBar("#e6e6ff", "COLOR")
-    .setBackground("IMAGE", "https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg")
+    .setBackground("IMAGE", message.guild.iconURL({size: 4096}))
     
     rankboard.build().then(data => {
       message.channel.stopTyping(true);
