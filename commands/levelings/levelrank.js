@@ -43,6 +43,8 @@ exports.run = async (client, message, args) => {
       }
     }
     message.channel.startTyping(true);
+    const guildImage = message.guild.iconURL({size: 4096, dynamic: false, format: 'png'});
+    if (!guildImage) guildImage = 'https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg'
 
     const rankboard = new canvacord.Rank()
     .setAvatar(mention.user.displayAvatarURL({size: 1024, dynamic: false, format: 'png'}))
@@ -54,7 +56,7 @@ exports.run = async (client, message, args) => {
     .setDiscriminator(mention.user.discriminator)
     .setUsername(mention.user.username)
     .setProgressBar("#e6e6ff", "COLOR")
-    .setBackground("IMAGE", message.guild.iconURL({size: 4096}))
+    .setBackground("IMAGE", guildImage)
     
     rankboard.build().then(data => {
       message.channel.stopTyping(true);
