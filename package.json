@@ -1,17 +1,22 @@
 {
   "name": "sefydiscordbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "duh",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
   },
-  "author": "r3zenix",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryzenix/sefydiscordbot.git"
+  },
+  "author": "ryzenix",
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
     "aki-api": "^5.2.1",
+    "array-move": "^3.0.1",
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "canvacord": "^5.0.8",
@@ -26,6 +31,8 @@
     "ffmpeg-static": "^4.2.7",
     "google-tts-api": "^2.0.1",
     "html-entities": "^2.1.0",
+    "https": "^1.0.0",
+    "humanize-duration": "^3.25.1",
     "ini": "^2.0.0",
     "ioredis": "^4.22.0",
     "lyrics-finder": "^21.7.0",
@@ -42,10 +49,15 @@
     "random-js": "^2.1.0",
     "relevant-urban": "^2.0.0",
     "semver": "^7.3.4",
+    "simple-youtube-api": "^5.2.1",
     "something-random-on-discord": "0.0.2",
+    "soundcloud-downloader": "^0.2.4",
+    "string-progressbar": "^1.0.3",
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.4",
     "weather-js": "^2.0.0",
-    "yaml": "^1.10.0"
+    "yaml": "^1.10.0",
+    "ytdl-core": "^4.5.0",
+    "ytdl-core-discord": "^1.2.5"
   }
 }

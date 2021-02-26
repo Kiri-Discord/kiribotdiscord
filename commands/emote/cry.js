@@ -3,17 +3,11 @@ const { Random } = require("something-random-on-discord")
 const random = new Random();
 
 exports.run = async (client, message, args) => {
-
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    }); 
-    
-    const prefix = setting.prefix;
     let data = await random.getAnimeImgURL("cry")
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setAuthor(`${message.author.username} cried :( someone pls use \`${prefix}hug\` to make them feel better :pensive:`, message.author.displayAvatarURL()) 
+    .setAuthor(`${message.author.username} cried :(`, message.author.displayAvatarURL()) 
     .setImage(data)
     return message.channel.send(embed)
 

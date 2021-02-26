@@ -8,6 +8,7 @@ const VerifyTimer = require('../features/redis/verify')
 module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
+    this.queue = new Map();
     this.commands = new Collection();
     this.redis = RedisClient ? RedisClient.db : null;
     this.cooldowns = new Collection();
