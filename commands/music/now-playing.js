@@ -4,23 +4,9 @@ const { MessageEmbed } = require('discord.js');
 exports.run = async (client, message, args) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.channel.send('there is nothing to show since i\'m not playing anything :grimacing:').catch(console.error);
-
-    // let songduration;
     const song = queue.songs[0];
-    // if (song.url.includes("youtube.com")) {
-    //   const info = await ytdl.getInfo(song.url)
-    //   songduration = info.videoDetails.lengthSeconds * 1000;
-    // } else if (song.url.includes("soundcloud.com")) {
-    //   try {
-    //     const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID)
-    //     songduration = info.duration;
-    //   } catch (error) {
-    //     const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID)
-    //     songduration = info.duration;
-    //   }
-    // }
     const seek = (queue.connection.dispatcher.streamTime - queue.connection.dispatcher.pausedTime) / 1000;
-    const left = song.duration - seek;
+    const left = song.duration / 1000 - seek;
 
     const duration = song.duration / 1000;
 
