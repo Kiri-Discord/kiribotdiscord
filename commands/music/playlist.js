@@ -75,7 +75,7 @@ exports.run = async (client, message, args) => {
             duration: null
           })
         })
-        thumbnail = videos[0].thumbnails.high.url;
+        thumbnail = newSongs[0].thumbnail;
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
@@ -97,7 +97,7 @@ exports.run = async (client, message, args) => {
           })
         });
         newSongs = videos;
-        thumbnail = playlist.tracks[0].artwork_url;
+        thumbnail = newSongs[0].thumbnail;
         playlisturl = url;
       }
     } else {
@@ -119,7 +119,7 @@ exports.run = async (client, message, args) => {
             duration: null
           })
         })
-        thumbnail = videos[0].thumbnails.high.url;
+        thumbnail = newSongs[0].thumbnail;
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
