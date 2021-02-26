@@ -41,7 +41,6 @@ module.exports = {
         duration = info.videoDetails.lengthSeconds * 1000;
         song.duration = duration;
         queue.songs.splice(0, 1, song);
-        client.queue.set(message.guild.id, queue);
       } else if (song.url.includes("soundcloud.com")) {
         try {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.OPUS, SOUNDCLOUD_CLIENT_ID);
@@ -49,7 +48,6 @@ module.exports = {
           duration = info.duration;
           song.duration = duration;
           queue.songs.splice(0, 1, song);
-          client.queue.set(message.guild.id, queue);
         } catch (error) {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.MP3, SOUNDCLOUD_CLIENT_ID);
           streamType = "unknown";
@@ -57,7 +55,6 @@ module.exports = {
           duration = info.duration;
           song.duration = duration;
           queue.songs.splice(0, 1, song);
-          client.queue.set(message.guild.id, queue);
         }
       }
     } catch (error) {
