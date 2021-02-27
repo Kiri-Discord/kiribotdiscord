@@ -14,6 +14,9 @@ const hugSchema = mongoose.Schema({
     type: Number,
     default: 100,
   },
+  languageKaraoke: {
+    type: String,
+  }
 })
 
 module.exports = mongoose.model(

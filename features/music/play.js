@@ -208,7 +208,8 @@ module.exports = {
     });
     if (queue.karaoke) {
       const channel = await client.channels.cache.get(queue.karaoke);
-      sing(song, message, client, channel)
+      const lang = 'en';
+      sing(song, message, channel, lang)
     };
     collector.on("end", () => {
       playingMessage.reactions.removeAll().catch(console.error);
