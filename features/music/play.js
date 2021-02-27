@@ -1,9 +1,10 @@
 const ytdl = require("ytdl-core-discord");
 const scdl = require("soundcloud-downloader").default;
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js');
 const { canModifyQueue, STAY_TIME, PRUNING } = require("../../util/musicutil");
 const humanizeDuration = require("humanize-duration");
 const Guild = require('../../model/music');
+const { sing } = require("./karaoke");
 
 module.exports = {
   async play(song, message, client) {
@@ -89,7 +90,6 @@ module.exports = {
         module.exports.play(queue.songs[0], message, client);
       });
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
-
     try {
       const embed = new MessageEmbed()
       .setURL(song.url)
@@ -205,8 +205,11 @@ module.exports = {
           reaction.users.remove(user).catch(console.error);
           break;
       }
-    }); 
-
+    });
+    if (queue.karaoke) {
+      const channel = await client.channels.cache.get(queue.karaoke);
+      sing(song, message, client, channel)
+    };
     collector.on("end", () => {
       playingMessage.reactions.removeAll().catch(console.error);
       if (PRUNING && playingMessage && !playingMessage.deleted) {

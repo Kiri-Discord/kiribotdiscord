@@ -7,6 +7,9 @@ const reqString = {
 
 const hugSchema = mongoose.Schema({
   guildId: reqString,
+  KaraokeChannelID: {
+    type: String,
+  },
   volume: {
     type: Number,
     default: 100,

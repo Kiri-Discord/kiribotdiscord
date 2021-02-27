@@ -29,6 +29,7 @@ exports.run = async (client, message, args) => {
       guildId: message.guild.id
     });
     let volume;
+    let karaoke;
     const search = args.join(" ");
     const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
     const url = args[0];
@@ -36,8 +37,10 @@ exports.run = async (client, message, args) => {
 
     if (musicSettings) {
       volume = musicSettings.volume;
+      karaoke = musicSettings.KaraokeChannelID;
     } else {
       volume = DEFAULT_VOLUME;
+      karaoke = null;
     }
     
 
@@ -48,6 +51,7 @@ exports.run = async (client, message, args) => {
       songs: [],
       loop: false,
       volume: volume,
+      karaoke: karaoke,
       playing: true
     };
 
@@ -72,7 +76,8 @@ exports.run = async (client, message, args) => {
             thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
-            duration: null
+            duration: null,
+            type: 'yt'
           })
         })
         thumbnail = newSongs[0].thumbnail;
@@ -93,7 +98,8 @@ exports.run = async (client, message, args) => {
               thumbnail: track.artwork_url,
               authorurl: track.user.permalink_url,
               author: track.user.username,
-              duration: null
+              duration: null,
+              type: 'sc',
           })
         });
         newSongs = videos;
@@ -116,7 +122,8 @@ exports.run = async (client, message, args) => {
             thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
-            duration: null
+            duration: null,
+            type: 'yt'
           })
         })
         thumbnail = newSongs[0].thumbnail;

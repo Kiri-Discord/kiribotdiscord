@@ -7,7 +7,7 @@ const https = require("https");
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const humanizeDuration = require("humanize-duration");
-const Guild = require('../../model/music')
+const Guild = require('../../model/music');
 
 exports.run = async (client, message, args) => {
 
@@ -32,6 +32,7 @@ exports.run = async (client, message, args) => {
     if (!args.length) return message.reply(`you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:`);
     let duration;
     let volume;
+    let karaoke;
     const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -63,8 +64,10 @@ exports.run = async (client, message, args) => {
     }
     if (musicSettings) {
       volume = musicSettings.volume;
+      karaoke = musicSettings.KaraokeChannelID;
     } else {
       volume = DEFAULT_VOLUME;
+      karaoke = null;
     }
 
     const queueConstruct = {
@@ -74,6 +77,7 @@ exports.run = async (client, message, args) => {
       songs: [],
       loop: false,
       volume: volume,
+      karaoke: karaoke,
       playing: true
     };
 
@@ -92,7 +96,8 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
-          duration: null
+          duration: null,
+          type: 'yt'
         };
       } catch (error) {
         console.error(error);
@@ -130,7 +135,8 @@ exports.run = async (client, message, args) => {
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
           thumbnail: songInfo.videoDetails.thumbnails[0].url,
-          duration: null
+          duration: null,
+          type: 'yt'
         };
       } catch (error) {
         console.error(error);

@@ -1,9 +1,4 @@
 exports.run = async (client, message, args) => {
-
-    const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-
-    if (!channel) return message.reply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
-
     if (message.flags[0] === "off") {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
@@ -13,6 +8,10 @@ exports.run = async (client, message, args) => {
         })
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ mod logs has been disabled`}});
     }
+
+    const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
+
+    if (!channel) return message.reply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
 
     await client.dbguilds.findOneAndUpdate({
         guildID: message.guild.id,
