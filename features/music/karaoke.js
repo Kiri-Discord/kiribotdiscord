@@ -3,6 +3,8 @@ const lang = 'en';
 const { parseSync } = require('subtitle');
 const format = 'vtt';
 const request = require('node-superfetch');
+const { MessageEmbed } = require("discord.js");
+const lyricsFinder = require("lyrics-finder");
 
 
 module.exports = {
@@ -22,15 +24,22 @@ module.exports = {
                   await output.filter(x => x.type != 'header');
                   output.forEach(subtitle => {
                     setTimeout(() => {
-                        channel.send(subtitle.data.text)
+                        karaoke.send(subtitle.data.text)
                     }, subtitle.data.start);
                   });
-    
                 } else {
-                    karaoke.send();
+                    const lyrics = await lyricsFinder(song.title, song.author);
+                    if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?`}});
+                    let lyricsEmbed = new MessageEmbed()
+                    .setTitle(`Lyrics for ${song.title} by ${song.author}`)
+                    .setDescription(lyrics)
+                    .setColor('RANDOM')
+                    .setTimestamp()
+                    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+                    return karaoke.send(`sorry, there isn\'t any karaoke found for **${song.title}** :pensive:\n*showing you the lyric instead...`, lyricsEmbed);
                 }
               } else {
-                karaoke.send('No captions found for this video');
+
               }
         } else {
             
