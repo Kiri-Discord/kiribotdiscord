@@ -71,7 +71,7 @@ exports.help = {
 	name: "auto-lyrics",
 	description: "Setting for my auto scrolling lyrics features",
 	usage: ["auto-lyrics `-set <#channel>`", "auto-lyrics `-set <channel id>`", "auto-lyrics `-off`", "auto-lyrics `-lang <language code>`"],
-	example: ["auto-lyrics `#singing`", "auto-lyrics `4545455454644`", "auto-lyrics `-off`", "auto-lyrics `-lang english`"]
+	example: ["auto-lyrics `-set #singing`", "auto-lyrics `-set 4545455454644`", "auto-lyrics `-off`", "auto-lyrics `-lang english`"]
 };
   
 exports.conf = {
