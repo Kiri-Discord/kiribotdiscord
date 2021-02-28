@@ -8,6 +8,8 @@ const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, DEFAULT_VOLUME } = require("../..
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const humanizeDuration = require("humanize-duration");
 const Guild = require('../../model/music');
+const ISO6391 = require('iso-639-1');
+const { verify } = require('../../util/util');
 
 exports.run = async (client, message, args) => {
 
@@ -17,6 +19,7 @@ exports.run = async (client, message, args) => {
     const prefix = setting.prefix;
     const current = client.voicequeue.get(message.guild.id);
     if (current) return message.reply(current.prompt);
+    if (message.channel.activeCollector) return message.reply({embed: {color: "f3f3f3", description: `⚠️ please finish your answer first before beginning a new command :pensive:`}});
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
     if (!channel) return message.reply('you are not in a voice channel!');
@@ -24,15 +27,14 @@ exports.run = async (client, message, args) => {
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music to someone in your server! join ${voicechannel} to listen :smiley:`).catch(console.error);
-    }
+    };
+    
     const musicSettings = await Guild.findOne({
       guildId: message.guild.id
     });
 
     if (!args.length) return message.reply(`you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:`);
     let duration;
-    let volume;
-    let karaoke;
     const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -62,25 +64,53 @@ exports.run = async (client, message, args) => {
       }
       return message.channel.send("following url redirection...").catch(console.error);
     }
-    if (musicSettings) {
-      volume = musicSettings.volume;
-      karaoke = musicSettings.KaraokeChannelID;
-    } else {
-      volume = DEFAULT_VOLUME;
-      karaoke = null;
-    }
-
     const queueConstruct = {
       textChannel: message.channel,
       channel,
       connection: null,
       songs: [],
       loop: false,
-      volume: volume,
-      karaoke: karaoke,
-      playing: true
+      playing: true,
+      volume: null,
+      karaoke: [Object]
     };
-
+    if (musicSettings) {
+      queueConstruct.karaoke.isEnabled = false;
+      queueConstruct.volume = musicSettings.volume;
+      const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
+      if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
+        message.channel.activeCollector = true;
+        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too?\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}lyrics -off` }});
+        const verification = await verify(message.channel, message.author, { time: 10000 });
+        if (verification) {
+          function filter(msg) {
+            const code = ISO6391.getCode(msg.content.toLowerCase());
+            if (ISO6391.validate(code) && msg.author.id === message.author.id) return true;
+          }
+          message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second' }}});
+          const response = await message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] });
+          const reply = response.first().content;
+          if (reply) {
+            const code = ISO6391.getCode(reply);
+            message.channel.activeCollector = false;
+            queueConstruct.karaoke.languageCode = code;
+            queueConstruct.karaoke.channel = channel;
+            queueConstruct.karaoke.isEnabled = true;
+          } else {
+            message.channel.activeCollector = false;
+            queueConstruct.karaoke.isEnabled = false;
+            message.channel.send('you didn\'t answer anything! i will just play the song now...')
+          }
+        } else {
+          message.channel.activeCollector = false;
+          queueConstruct.karaoke.isEnabled = false;
+          message.channel.send('got it! i will just play the song now...')
+        }
+      }
+    } else {
+      queueConstruct.karaoke.isEnabled = false;
+      queueConstruct.volume = DEFAULT_VOLUME;
+    }
     let songInfo = null;
     let song = null;
 

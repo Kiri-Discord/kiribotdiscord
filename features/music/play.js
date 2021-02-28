@@ -90,6 +90,9 @@ module.exports = {
         module.exports.play(queue.songs[0], message, client);
       });
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
+    if (queue.karaoke.isEnabled) {
+      sing(song, message, queue.karaoke.channel, queue.karaoke.languageCode)
+    };
     try {
       const embed = new MessageEmbed()
       .setURL(song.url)
@@ -206,11 +209,6 @@ module.exports = {
           break;
       }
     });
-    if (queue.karaoke) {
-      const channel = await client.channels.cache.get(queue.karaoke);
-      const lang = 'en';
-      sing(song, message, channel, lang)
-    };
     collector.on("end", () => {
       playingMessage.reactions.removeAll().catch(console.error);
       if (PRUNING && playingMessage && !playingMessage.deleted) {

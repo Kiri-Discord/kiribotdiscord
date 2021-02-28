@@ -7,7 +7,7 @@ const lyricsFinder = require("lyrics-finder");
 
 
 module.exports = {
-    async sing(song, message, karaoke, lang) {
+    async sing(song, message, channel, lang) {
         if (song.type === 'yt') {
             const info = await ytdl.getInfo(song.url);
             const tracks = info
@@ -19,42 +19,45 @@ module.exports = {
                 if (track) {
                   const { body } = await request
                   .get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
-                  const output = parseSync(body.toString());
-                  await output.filter(x => x.type != 'header');
+                  const output = await parseSync(body.toString());
+                  const subtitles = output
+                  .filter(x => x.type = 'cue')
+                  .filter(x => x.data.text)
+                  .filter(x => x.data.text != '');
                   let embed = new MessageEmbed()
                   .setTitle('Now singing')
                   .setDescription(`[${song.title}](${song.url}) by [${song.author}](${song.authorurl}) [${song.requestedby}]`)
                   .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting :)`)
-                  karaoke.send(embed)
-                  output.forEach(subtitle => {
+                  channel.send(embed);
+                  subtitles.forEach(subtitle => {
                     setTimeout(() => {
-                        karaoke.send(subtitle.data.text)
+                      channel.send(subtitle.data.text.toLowerCase())
                     }, subtitle.data.start);
                   });
                 } else {
                     const lyrics = await lyricsFinder(song.title, song.author);
-                    if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`}});
+                    if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
                     let lyricsEmbed = new MessageEmbed()
                     .setTitle(`Lyrics for ${song.title} by ${song.author}`)
                     .setDescription(lyrics)
                     .setColor('RANDOM')
-                    .setTimestamp()
-                    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-                    return karaoke.send(`${song.requestedby} sorry, there isn\'t any lyric language of **${song.title}** found for your setting :pensive: showing you the lyric instead...\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
+                    if (lyrics.description.length >= 2048)
+                    lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
+                    return channel.send(`${song.requestedby} sorry, there isn\'t any lyric language of **${song.title}** found for your setting :pensive: showing you the lyric instead...\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
                 }
               } else {
                 const lyrics = await lyricsFinder(song.title, song.author);
-                if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`}});
+                if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
                 let lyricsEmbed = new MessageEmbed()
                 .setTitle(`Lyrics for ${song.title} by ${song.author}`)
                 .setDescription(lyrics)
                 .setColor('RANDOM')
-                .setTimestamp()
-                .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-                return karaoke.send(`sorry, i can't find any lyric of **${song.title}** :pensive:\n*showing you the lyric instead...\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
+                if (lyricsEmbed.description.length >= 2048)
+                lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
+                return channel.send(`sorry, i can't find any lyric of **${song.title}** :pensive:\n*showing you the lyric instead...\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
               }
         } else {
-          return karaoke.send({embed: {color: "f3f3f3", description: `i'm sorry but karaoke feature doesn't work yet with SoundCloud track :pensive:\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`}});
+          return channel.send({embed: {color: "f3f3f3", description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:\n\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`}});
         }
     }
 }
