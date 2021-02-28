@@ -64,7 +64,7 @@ exports.run = async (client, message, args) => {
       const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
       if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
         message.channel.activeCollector = true;
-        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too?\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}lyrics -off` }});
+        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}lyrics -off` }});
         const verification = await verify(message.channel, message.author, { time: 10000 });
         if (verification) {
           function filter(msg) {

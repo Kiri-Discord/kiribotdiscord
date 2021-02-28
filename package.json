@@ -29,7 +29,6 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
-    "genius-lyrics": "^4.2.1",
     "google-tts-api": "^2.0.1",
     "html-entities": "^2.1.0",
     "https": "^1.0.0",

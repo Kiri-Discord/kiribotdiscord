@@ -8,7 +8,14 @@ exports.run = async (client, message, args) => {
     const prefix = setting.prefix;
     const serverQueue = client.queue.get(message.guild.id);
     if (message.flags[0] === "off") {
-        if (serverQueue) serverQueue.karaoke.isEnabled = false;
+        if (serverQueue) {
+            serverQueue.karaoke.isEnabled = false;
+            if (serverQueue.karaoke.timeout) {
+                serverQueue.karaoke.timeout.forEach(x => {
+                    clearTimeout(x);
+                });
+            }
+        }
         await Guild.findOneAndUpdate({
             guildId: message.guild.id,
         },
@@ -44,7 +51,10 @@ exports.run = async (client, message, args) => {
     if (message.flags[0] === 'set') {
         const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
         if (!channel) return message.reply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
-        if (serverQueue) serverQueue.karaoke.channel = channel;
+        if (serverQueue) {
+            serverQueue.karaoke.channel = channel;
+            if (serverQueue.karaoke.timeout) clearTimeout(serverQueue.karaoke.timeout);
+        }
     
         await Guild.findOneAndUpdate({
             guildId: message.guild.id,

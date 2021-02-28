@@ -12,7 +12,11 @@ module.exports = {
     const { SOUNDCLOUD_CLIENT_ID } = require("../../util/musicutil");
 
     const queue = client.queue.get(message.guild.id);
-
+    if (queue.karaoke.timeout) {
+      queue.karaoke.timeout.forEach(x => {
+          clearTimeout(x);
+      });
+  }
     if (!song) {
       setTimeout(function () {
         if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
@@ -20,6 +24,11 @@ module.exports = {
         queue.textChannel.send({embed: {color: "f3f3f3", description: `**i'm leaving the voice channel...byebye** 👋`}});
       }, STAY_TIME * 1000);
       queue.textChannel.send({embed: {color: "f3f3f3", description: `**the music queue has ended** :pensive:`}}).catch(console.error);
+      if (queue.karaoke.timeout) {
+        queue.karaoke.timeout.forEach(x => {
+            clearTimeout(x);
+        });
+    }
       await Guild.findOneAndUpdate({
         guildId: message.guild.id
       }, {
@@ -91,7 +100,8 @@ module.exports = {
       });
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
     if (queue.karaoke.isEnabled) {
-      sing(song, message, queue.karaoke.channel, queue.karaoke.languageCode)
+      queue.karaoke.timeout = [];
+      sing(song, message, queue.karaoke.channel, queue.karaoke.languageCode, queue)
     };
     try {
       const embed = new MessageEmbed()
