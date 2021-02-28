@@ -77,7 +77,14 @@ module.exports = {
       return message.channel.send('there was an error while playing the music queue :pensive: skipping to next song in the queue...\n*tips: the music should be less than 3 hours and MUST not be a live stream*');
     }
 
-    queue.connection.on("disconnect", () => client.queue.delete(message.guild.id));
+    queue.connection.on("disconnect", () => {
+      if (queue.karaoke.timeout) {
+        queue.karaoke.timeout.forEach(x => {
+            clearTimeout(x);
+        });
+    }
+      client.queue.delete(message.guild.id);
+    });
 
     const dispatcher = queue.connection
       .play(stream, { type: streamType })
