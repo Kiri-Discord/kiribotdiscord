@@ -52,14 +52,14 @@ exports.run = async (client, message, args) => {
       const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
       if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
         message.channel.activeCollector = true;
-        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyric will be sent to ${channel} \`y/n\`\ndo you want me to enable this to your queue, too?\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}karaoke -off` }});
+        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyric will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}karaoke -off` }});
         const verification = await verify(message.channel, message.author, { time: 10000 });
         if (verification) {
           function filter(msg) {
             const code = ISO6391.getCode(msg.content.toLowerCase());
             if (ISO6391.validate(code) && msg.author.id === message.author.id) return true;
           }
-          message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second' }}});
+          message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:\n\n*remember to choose a YouTube song that is avaliable*`, footer: { text: 'this confirmation will timeout in 10 second' }}});
           const response = await message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] });
           const reply = response.first().content;
           if (reply) {
