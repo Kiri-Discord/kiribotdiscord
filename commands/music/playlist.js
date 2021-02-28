@@ -5,6 +5,8 @@ const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
+const { verify } = require('../../util/util');
+const ISO6391 = require('iso-639-1');
 
 exports.run = async (client, message, args) => {
     const setting = await client.dbguilds.findOne({
@@ -15,41 +17,72 @@ exports.run = async (client, message, args) => {
     const prefix = setting.prefix;
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
-
+    if (message.channel.activeCollector) return message.reply({embed: {color: "f3f3f3", description: `⚠️ please finish your answer first before beginning a new command :pensive:`}});
     if (!channel) return message.reply('you are not in a voice channel!');
     if (!channel.joinable) return message.reply("i can't join your voice channel :( check my perms pls");
 
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
-        return message.reply(`i have already been playing music to someone in your server! join ${voicechannel} to listen :smiley:`).catch(console.error);
+        return message.reply(`i have already been playing music to someone in your server! join \`#${voicechannel.name}\` to listen :smiley:`).catch(console.error);
     };
     if (!args.length) return message.reply(`you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:`).catch(console.error);
 
     const musicSettings = await Guild.findOne({
       guildId: message.guild.id
     });
-    let volume;
     const search = args.join(" ");
     const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
     const url = args[0];
     const urlValid = pattern.test(url);
-
-    if (musicSettings) {
-      volume = musicSettings.volume;
-    } else {
-      volume = DEFAULT_VOLUME;
-    }
-    
-
     const queueConstruct = {
       textChannel: message.channel,
       channel,
       connection: null,
       songs: [],
       loop: false,
-      volume: volume,
+      volume: null,
+      karaoke: [Object],
       playing: true
     };
+
+
+    if (musicSettings) {
+      queueConstruct.karaoke.isEnabled = false;
+      queueConstruct.volume = musicSettings.volume;
+      const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
+      if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
+        message.channel.activeCollector = true;
+        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyric will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}karaoke -off` }});
+        const verification = await verify(message.channel, message.author, { time: 10000 });
+        if (verification) {
+          function filter(msg) {
+            const code = ISO6391.getCode(msg.content.toLowerCase());
+            if (ISO6391.validate(code) && msg.author.id === message.author.id) return true;
+          }
+          message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:\n\n*remember to choose a YouTube song that is avaliable*`, footer: { text: 'this confirmation will timeout in 10 second' }}});
+          const response = await message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] });
+          const reply = response.first().content;
+          if (reply) {
+            const code = ISO6391.getCode(reply);
+            message.channel.activeCollector = false;
+            queueConstruct.karaoke.languageCode = code;
+            queueConstruct.karaoke.channel = channel;
+            queueConstruct.karaoke.isEnabled = true;
+          } else {
+            message.channel.activeCollector = false;
+            queueConstruct.karaoke.isEnabled = false;
+            message.channel.send('you didn\'t answer anything! i will just play the song now...')
+          }
+        } else {
+          message.channel.activeCollector = false;
+          queueConstruct.karaoke.isEnabled = false;
+          message.channel.send('got it! i will just play the song now...')
+        }
+      }
+    } else {
+      queueConstruct.karaoke.isEnabled = false;
+      queueConstruct.volume = DEFAULT_VOLUME;
+    }
 
     let playlist = null;
     let videos = [];
@@ -72,7 +105,8 @@ exports.run = async (client, message, args) => {
             thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
-            duration: null
+            duration: null,
+            type: 'yt'
           })
         })
         thumbnail = newSongs[0].thumbnail;
@@ -93,7 +127,8 @@ exports.run = async (client, message, args) => {
               thumbnail: track.artwork_url,
               authorurl: track.user.permalink_url,
               author: track.user.username,
-              duration: null
+              duration: null,
+              type: 'sc',
           })
         });
         newSongs = videos;
@@ -116,7 +151,8 @@ exports.run = async (client, message, args) => {
             thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
-            duration: null
+            duration: null,
+            type: 'yt'
           })
         })
         thumbnail = newSongs[0].thumbnail;
