@@ -4,6 +4,7 @@ const format = 'vtt';
 const request = require('node-superfetch');
 const { MessageEmbed } = require("discord.js");
 const lyricsFinder = require("lyrics-finder");
+const ISO6391 = require('iso-639-1');
 
 
 module.exports = {
@@ -36,25 +37,25 @@ module.exports = {
                   });
                 } else {
                     const lyrics = await lyricsFinder(song.title, song.author);
-                    if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
+                    if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
                     let lyricsEmbed = new MessageEmbed()
                     .setTitle(`Lyrics for ${song.title} by ${song.author}`)
                     .setDescription(lyrics)
                     .setColor('RANDOM')
-                    if (lyrics.description.length >= 2048)
+                    if (lyricsEmbed.description.length >= 2048)
                     lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-                    return channel.send(`${song.requestedby} sorry, there isn\'t any lyric language of **${song.title}** found for your setting :pensive: showing you the lyric instead...\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
+                    return channel.send(`${song.requestedby} sorry, there isn\'t any lyric language of **${song.title}** found in your language \`${ISO6391.getName(lang)}\` :pensive: showing you the lyric that i found on internet instead...\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
                 }
               } else {
                 const lyrics = await lyricsFinder(song.title, song.author);
-                if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
+                if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)} :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
                 let lyricsEmbed = new MessageEmbed()
                 .setTitle(`Lyrics for ${song.title} by ${song.author}`)
                 .setDescription(lyrics)
                 .setColor('RANDOM')
                 if (lyricsEmbed.description.length >= 2048)
                 lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-                return channel.send(`sorry, i can't find any lyric of **${song.title}** :pensive:\n*showing you the lyric instead...\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
+                return channel.send(`sorry, i can't find any lyric of **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\`\n*showing you the lyric that i found on internet instead...\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
               }
         } else {
           return channel.send({embed: {color: "f3f3f3", description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:\n\n*don't know what is this about? karaoke mode is currently set to \`ON\` in your guild setting :)*`}});

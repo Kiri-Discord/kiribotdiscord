@@ -48,22 +48,6 @@ exports.run = async (client, message, args) => {
     } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
       return client.commands.get("playlist").run(client, message, args);
     }
-
-    if (mobileScRegex.test(url)) {
-      try {
-        https.get(url, function (res) {
-          if (res.statusCode == "302") {
-            return message.client.commands.get("play").run(client, message, [res.headers.location]);
-          } else {
-            return message.reply("no content could be found at that url :pensive:").catch(console.error);
-          }
-        });
-      } catch (error) {
-        console.error(error);
-        return message.reply('there was an error when i tried to get the song from that link :pensive:').catch(console.error);
-      }
-      return message.channel.send("following url redirection...").catch(console.error);
-    }
     const queueConstruct = {
       textChannel: message.channel,
       channel,
@@ -113,7 +97,22 @@ exports.run = async (client, message, args) => {
     }
     let songInfo = null;
     let song = null;
-
+    
+    if (mobileScRegex.test(url)) {
+      try {
+        https.get(url, function (res) {
+          if (res.statusCode == "302") {
+            return message.client.commands.get("play").run(client, message, [res.headers.location]);
+          } else {
+            return message.reply("no content could be found at that url :pensive:").catch(console.error);
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        return message.reply('there was an error when i tried to get the song from that link :pensive:').catch(console.error);
+      }
+      return message.channel.send("following url redirection...").catch(console.error);
+    }
     if (urlValid) {
       try {
         message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving song data...**`}})
