@@ -33,12 +33,12 @@ module.exports = {
                   channel.send(embed);
                   subtitles.forEach(subtitle => {
                     const each = setTimeout(() => {
-                      channel.send(subtitle.data.text.replace("\n", "").toLowerCase())
-                    }, subtitle.data.start);
+                      channel.send(subtitle.data.text.toLowerCase())
+                    }, subtitle.data.start - 720);
                     queue.karaoke.timeout.push(each);
                   });
                 } else {
-                    const lyrics = await lyricsFinder(song.author, song.title);
+                    const lyrics = await lyricsFinder(song.title, '');
                     if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
                     let lyricsEmbed = new MessageEmbed()
                     .setTitle(`Lyrics for ${song.title} by ${song.author}`)
@@ -49,7 +49,7 @@ module.exports = {
                     return channel.send(`${song.requestedby} sorry, there isn\'t any lyric language of **${song.title}** found in your language \`${ISO6391.getName(lang)}\` :pensive: showing you the lyric that i found on internet instead...\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`, lyricsEmbed);
                 }
               } else {
-                const lyrics = await lyricsFinder(song.author, song.title);
+                const lyrics = await lyricsFinder(song.title, '');
                 if (!lyrics) return message.reply({embed: {color: "f3f3f3", description: `i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)} :pensive:\nmay be the link you requested from YouTube isn't a song?\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
                 let lyricsEmbed = new MessageEmbed()
                 .setTitle(`Lyrics for ${song.title} by ${song.author}`)

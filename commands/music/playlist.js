@@ -17,7 +17,6 @@ exports.run = async (client, message, args) => {
     const prefix = setting.prefix;
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
-    if (message.channel.activeCollector) return message.reply({embed: {color: "f3f3f3", description: `⚠️ please finish your answer first before beginning a new command :pensive:`}});
     if (!channel) return message.reply('you are not in a voice channel!');
     if (!channel.joinable) return message.reply("i can't join your voice channel :( check my perms pls");
 
@@ -51,7 +50,7 @@ exports.run = async (client, message, args) => {
       queueConstruct.volume = musicSettings.volume;
       const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
       if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-        message.channel.activeCollector = true;
+        
         message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyric will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}karaoke -off` }});
         const verification = await verify(message.channel, message.author, { time: 10000 });
         if (verification) {
@@ -64,17 +63,17 @@ exports.run = async (client, message, args) => {
           const reply = response.first().content;
           if (reply) {
             const code = ISO6391.getCode(reply);
-            message.channel.activeCollector = false;
+            
             queueConstruct.karaoke.languageCode = code;
             queueConstruct.karaoke.channel = channel;
             queueConstruct.karaoke.isEnabled = true;
           } else {
-            message.channel.activeCollector = false;
+            
             queueConstruct.karaoke.isEnabled = false;
             message.channel.send('you didn\'t answer anything! i will just play the song now...')
           }
         } else {
-          message.channel.activeCollector = false;
+          
           queueConstruct.karaoke.isEnabled = false;
           message.channel.send('got it! i will just play the song now...')
         }
