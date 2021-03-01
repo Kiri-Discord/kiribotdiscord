@@ -31,7 +31,7 @@ module.exports = {
                   channel.send(embed);
                   subtitles.forEach(subtitle => {
                     const each = setTimeout(() => {
-                      channel.send(subtitle.data.text.toLowerCase())
+                      channel.send(subtitle.data.text.toLowerCase().replace("\n", " "))
                     }, subtitle.data.start - 720);
                     queue.karaoke.timeout.push(each);
                   });
