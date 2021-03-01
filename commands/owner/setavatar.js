@@ -1,4 +1,4 @@
-const { MessageCollector } = require('discord.js')
+const { MessageCollector } = require('discord.js');
 exports.run = async (client, message, args) => {
     if (!client.config.owners.includes(message.author.id)) return message.message.reply('only coco or bell can execute this command!');
     const yes = "y";
@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
     message.reply('this action is irreversible :( do you want to continue? \`y/n\`')
 
     const collector = new MessageCollector(message.channel, msg => {
-        if (!msg.author.bot) return true;
+        if (msg.author.id === message.author.id) return true;
     }, { time: 15000 });
 
     collector.on('collect', async msg => {

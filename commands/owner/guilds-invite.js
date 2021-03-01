@@ -1,5 +1,12 @@
 exports.run = async (client, message, args) => {
   if (!client.config.owners.includes(message.author.id)) return message.channel.send('only coco or bell can execute this command!');
+  if (!args[0]) {
+    let listGuild = [];
+    client.guilds.cache.forEach(guild => {
+      listGuild.push(`${guild.name} - ${guild.id}`)
+    });
+    return message.channel.send(`these are all guilds being connected to me. use this command with it's id to generate an invite:\n${listGuild.join('\n')}`)
+  }
   const guild = client.guilds.cache.get(args[0]);
   if (!guild) return message.channel.send('guild not found.');
   const channels = guild.channels.cache.find(channel => channel.type === 'text');
@@ -17,7 +24,7 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: [],
+  aliases: ["guilds"],
   cooldown: 2,
   guildOnly: true,
   userPerms: [],
