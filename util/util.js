@@ -1,6 +1,7 @@
 const { decode: decodeHTML } = require('html-entities');
 const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', 'oui', 'はい', 'correct'];
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
+const ISO6391 = require('iso-639-1');
 
 module.exports = class Util {
 	static shortenText(text, maxLength) {
@@ -143,6 +144,22 @@ module.exports = class Util {
 		if (yes.includes(choice) || extraYes.includes(choice)) return true;
 		if (no.includes(choice) || extraNo.includes(choice)) return false;
 		return false;
+	}
+	static async verifyLanguage(channel, user, { time = 30000 } = {}) {
+		const filter = res => {
+			const value = res.content.toLowerCase();
+			const code = ISO6391.getCode(value);
+			if (res.author.id === user.id && ISO6391.validate(code)) return true;
+		};
+		const verify = await channel.awaitMessages(filter, {
+			max: 1,
+			time
+		});
+		if (!verify.size) return { isVerify: false };
+		const choice = verify.first().content.toLowerCase();
+		if (choice === 'cancel') return { isVerify: false };
+		const code = ISO6391.getCode(choice)
+		return { isVerify: true, choice: code };
 	}
 	static shuffle(array) {
 		const arr = array.slice(0);

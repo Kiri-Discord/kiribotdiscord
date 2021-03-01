@@ -5,8 +5,7 @@ const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-const { verify } = require('../../util/util');
-const ISO6391 = require('iso-639-1');
+const { verify, verifyLanguage } = require('../../util/util');
 
 exports.run = async (client, message, args) => {
     const setting = await client.dbguilds.findOne({
@@ -43,46 +42,30 @@ exports.run = async (client, message, args) => {
       karaoke: [Object],
       playing: true
     };
-
-
     if (musicSettings) {
       queueConstruct.karaoke.isEnabled = false;
       queueConstruct.volume = musicSettings.volume;
       const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
       if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-        
-        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyric will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue:wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}karaoke -off` }});
+        message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue :wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}lyrics -off` }});
         const verification = await verify(message.channel, message.author, { time: 10000 });
         if (verification) {
-          function filter(msg) {
-            const code = ISO6391.getCode(msg.content.toLowerCase());
-            if (ISO6391.validate(code) && msg.author.id === message.author.id) return true;
-          }
-          message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:\n\n*remember to choose a YouTube song that is avaliable*`, footer: { text: 'this confirmation will timeout in 10 second' }}});
-          const response = await message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] });
-          const reply = response.first().content;
-          if (reply) {
-            const code = ISO6391.getCode(reply);
-            
-            queueConstruct.karaoke.languageCode = code;
+          await message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' }}});
+          const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
+          if (response.isVerify) {
+            queueConstruct.karaoke.languageCode = response.choice;
             queueConstruct.karaoke.channel = channel;
             queueConstruct.karaoke.isEnabled = true;
           } else {
-            
             queueConstruct.karaoke.isEnabled = false;
             message.channel.send('you didn\'t answer anything! i will just play the song now...')
           }
-        } else {
-          
-          queueConstruct.karaoke.isEnabled = false;
-          message.channel.send('got it! i will just play the song now...')
         }
       }
     } else {
       queueConstruct.karaoke.isEnabled = false;
       queueConstruct.volume = DEFAULT_VOLUME;
     }
-
     let playlist = null;
     let videos = [];
     let newSongs;
@@ -184,6 +167,10 @@ exports.run = async (client, message, args) => {
 
       try {
         queueConstruct.connection = await channel.join();
+        if (!queueConstruct.connection) {
+          client.queue.delete(message.guild.id);
+          return message.channel.send('there was an error when i tried to join your voice channel :pensive:').catch(console.error);
+        } 
         await queueConstruct.connection.voice.setSelfDeaf(true);
         play(queueConstruct.songs[0], message, client);
       } catch (error) {

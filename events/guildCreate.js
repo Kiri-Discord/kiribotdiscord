@@ -33,12 +33,12 @@ module.exports = async (client, guild) => {
 
 
   const log1 = client.channels.cache.get('768448397786349578');
-  const log2 = client.channels.cache.get('774476096409436170');
+  if (log1) log1.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  const log2 = client.channels.cache.get('774476096409436170')
+  if (log2) log2.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     
   guild.owner.send(embed);
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   client.users.cache.get('617777631257034783').send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  log1.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  log2.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 
 };

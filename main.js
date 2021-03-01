@@ -9,7 +9,7 @@ const RedisClient = require('./util/redis');
 mongo.init();
 RedisClient.start();
 const sefy = require("./handler/ClientBuilder.js");
-const client = new sefy(({ disableMentions: 'everyone' }));
+const client = new sefy(({ disableMentions: 'everyone' }), { ws: { properties: { $browser: "Discord Android" }} });
 
 
 require("./handler/module.js")(client);
