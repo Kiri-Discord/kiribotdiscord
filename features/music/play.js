@@ -83,6 +83,9 @@ module.exports = {
             clearTimeout(x);
         });
     }
+    if (playingMessage) {
+      playingMessage.reactions.removeAll().catch(console.error)
+    }
       client.queue.delete(message.guild.id);
     });
 
@@ -231,7 +234,6 @@ module.exports = {
       if (PRUNING && playingMessage && !playingMessage.deleted) {
         playingMessage.delete({ timeout: 3000 }).catch(console.error);
       }
-      client.voicequeue.delete(message.guild.id);
     });
   }
 };
