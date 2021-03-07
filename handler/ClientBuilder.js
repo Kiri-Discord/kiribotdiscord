@@ -1,13 +1,15 @@
-
+const express = require('express');
 const { Client, Collection, Guild, GuildMember, Structures } = require("discord.js");
 const { readdir } = require('fs');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const RedisClient = require('../util/redis');
-const VerifyTimer = require('../features/redis/verify')
+const VerifyTimer = require('../features/redis/verify');
+const app = express();
 
 module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
+    this.webapp = app;
     this.queue = new Map();
     this.commands = new Collection();
     this.redis = RedisClient ? RedisClient.db : null;
