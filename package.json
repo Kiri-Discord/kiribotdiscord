@@ -20,7 +20,7 @@
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "canvacord": "^5.1.0",
-    "canvas": "^2.6.1",
+    "canvas": "^2.7.0",
     "canvas-constructor": "^4.1.0",
     "cheerio": "^1.0.0-rc.5",
     "common-tags": "^1.8.0",
