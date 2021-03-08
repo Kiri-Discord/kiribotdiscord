@@ -16,9 +16,8 @@ client.webapp.use(express.json());
 
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
-
+client.webapp.get('/', (_, res) => res.sendFile(__dirname + '/html/landing.html'));
 client.package = require("./package.json");
 client.on("warn", console.warn); 
 client.on("error", console.error);
 client.login(process.env.token).catch(console.error);
-client.webapp.get('/', (_, res) => res.sendFile(__dirname + '/html/home.html'));
