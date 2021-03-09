@@ -4,6 +4,7 @@ process.on('unhandledRejection', error => {
 
 global.__basedir = __dirname;
 require('dotenv').config();
+const port = process.env.PORT || 80;
 const express = require('express');
 const mongo = require('./util/mongo.js');
 const RedisClient = require('./util/redis');
@@ -21,4 +22,5 @@ client.package = require("./package.json");
 client.on("warn", console.warn); 
 client.on("error", console.error);
 client.login(process.env.token).catch(console.error);
-client.webapp.listen(80);
+client.webapp.listen(port);
+console.log(`[WEB] Listening at port ${port}`)
