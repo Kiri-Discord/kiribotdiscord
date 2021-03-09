@@ -3,6 +3,7 @@ process.on('unhandledRejection', error => {
 });
 
 global.__basedir = __dirname;
+const port = 80;
 require('dotenv').config();
 const mongo = require('./util/mongo.js');
 const RedisClient = require('./util/redis');
