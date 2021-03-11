@@ -4,23 +4,19 @@ process.on('unhandledRejection', error => {
 
 global.__basedir = __dirname;
 require('dotenv').config();
-const port = process.env.PORT || 80;
-const express = require('express');
+global._port = process.env.PORT || 80;
 const mongo = require('./util/mongo.js');
+const web = require('./util/web.js');
 const RedisClient = require('./util/redis');
 mongo.init();
 RedisClient.start();
 const sefy = require("./handler/ClientBuilder.js");
 const client = new sefy(({ disableMentions: 'everyone' }), { ws: { properties: { $browser: "Discord Android" }} });
 client.loadTopics('./assets/trivia/');
-client.webapp.use(express.json());
-
+web.init(client);
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
-client.webapp.get('/', (_, res) => res.sendFile(__dirname + '/html/landing.html'));
 client.package = require("./package.json");
 client.on("warn", console.warn); 
 client.on("error", console.error);
 client.login(process.env.token).catch(console.error);
-client.webapp.listen(port);
-console.log(`[WEB] Listening at port ${port}`)
