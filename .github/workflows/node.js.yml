@@ -15,26 +15,27 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Create env file
-      run: |
-        touch .env
-        echo csx_key=${{ secrets.CSX_KEY }} >> .env
-        echo FACEPLUSPLUS_KEY=${{ secrets.FACEPLUSPLUS_KEY }} >> .env
-        echo FACEPLUSPLUS_SECRET=${{ secrets.FACEPLUSPLUS_SECRET }} >> .env
-        echo mongourl=${{ secrets.MONGOURL }} >> .env
-        echo token=${{ secrets.TOKEN }} >> .env
-        echo youtubekey=${{ secrets.YOUTUBEKEY }} >> .env
-        echo webster_key=${{ secrets.WEBSTER_KEY }} >> .env
-        echo redis_host=${{ secrets.REDIS_HOST }} >> .env
-        echo redis_pass=${{ secrets.REDIS_PASS }} >> .env
-        echo redis_port=${{ secrets.REDIS_PORT }} >> .env
-        echo soundcloudkey=${{ secrets.SOUNDCLOUDKEY }} >> .env
-        echo gg_key=${{ secrets.GG_KEY }} >> .env
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: pm2 kill
-    - run: npm i
-    - run: pm2 start main.js --name "Sefy"
+    - name: Kill process
+      run: pm2 kill
+    - name: Install dependency
+      run: mpm i
+    - name: Start app
+      env:
+        csx_key: ${{ secrets.CSX_KEY }}
+        FACEPLUSPLUS_KEY: ${{ secrets.FACEPLUSPLUS_KEY }}
+        FACEPLUSPLUS_SECRET: ${{ secrets.FACEPLUSPLUS_SECRET }}
+        mongourl: ${{ secrets.MONGOURL }}
+        token: ${{ secrets.TOKEN }}
+        youtubekey: ${{ secrets.YOUTUBEKEY }}
+        webster_key: ${{ secrets.WEBSTER_KEY }}
+        redis_host: ${{ secrets.REDIS_HOST }}
+        redis_pass: ${{ secrets.REDIS_PASS }}
+        redis_port: ${{ secrets.REDIS_PORT }}
+        soundcloudkey: ${{ secrets.SOUNDCLOUDKEY }}
+        gg_key: ${{ secrets.GG_KEY }}
+      run: pm2 start main.js --name "Sefy"
