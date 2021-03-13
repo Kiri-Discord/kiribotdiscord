@@ -18,6 +18,19 @@ jobs:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
+      env:
+        csx_key: ${{ secrets.CSX_KEY }}
+        FACEPLUSPLUS_KEY: ${{ secrets.FACEPLUSPLUS_KEY }}
+        FACEPLUSPLUS_SECRET: ${{ secrets.FACEPLUSPLUS_SECRET }}
+        mongourl: ${{ secrets.MONGOURL }}
+        token: ${{ secrets.TOKEN }}
+        youtubekey: ${{ secrets.YOUTUBEKEY }}
+        webster_key: ${{ secrets.WEBSTER_KEY }}
+        redis_host: ${{ secrets.REDIS_HOST }}
+        redis_pass: ${{ secrets.REDIS_PASS }}
+        redis_port: ${{ secrets.REDIS_PORT }}
+        soundcloudkey: ${{ secrets.SOUNDCLOUDKEY }}
+        gg_key: ${{ secrets.GG_KEY }}
       with:
         node-version: ${{ matrix.node-version }}
     - run: pm2 stop Sefy
