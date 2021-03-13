@@ -25,6 +25,7 @@ jobs:
     - name: Install dependency
       run: npm i
     - name: Start app
+      run: pm2 start main.js --name "Sefy"
       env:
         csx_key: ${{ secrets.CSX_KEY }}
         FACEPLUSPLUS_KEY: ${{ secrets.FACEPLUSPLUS_KEY }}
@@ -38,4 +39,3 @@ jobs:
         redis_port: ${{ secrets.REDIS_PORT }}
         soundcloudkey: ${{ secrets.SOUNDCLOUDKEY }}
         gg_key: ${{ secrets.GG_KEY }}
-      run: pm2 start main.js --name "Sefy"
