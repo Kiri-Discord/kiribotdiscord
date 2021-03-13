@@ -18,18 +18,18 @@ jobs:
     - name: Create env file
       run: |
         touch .env
-        echo csx_key =${{ secrets.CSX_KEY }} >> .env
-        echo FACEPLUSPLUS_KEY =${{ secrets.FACEPLUSPLUS_KEY }} >> .env
-        echo FACEPLUSPLUS_SECRET =${{ secrets.FACEPLUSPLUS_SECRET }} >> .env
-        echo mongourl =${{ secrets.MONGOURL }} >> .env
-        echo token =${{ secrets.TOKEN }} >> .env
-        echo youtubekey =${{ secrets.YOUTUBEKEY }} >> .env
-        echo webster_key =${{ secrets.WEBSTER_KEY }} >> .env
-        echo redis_host =${{ secrets.REDIS_HOST }} >> .env
-        echo redis_pass =${{ secrets.REDIS_PASS }} >> .env
-        echo redis_port =${{ secrets.REDIS_PORT }} >> .env
-        echo soundcloudkey =${{ secrets.SOUNDCLOUDKEY }} >> .env
-        echo gg_key =${{ secrets.GG_KEY }} >> .env
+        echo csx_key=${{ secrets.CSX_KEY }} >> .env
+        echo FACEPLUSPLUS_KEY=${{ secrets.FACEPLUSPLUS_KEY }} >> .env
+        echo FACEPLUSPLUS_SECRET=${{ secrets.FACEPLUSPLUS_SECRET }} >> .env
+        echo mongourl=${{ secrets.MONGOURL }} >> .env
+        echo token=${{ secrets.TOKEN }} >> .env
+        echo youtubekey=${{ secrets.YOUTUBEKEY }} >> .env
+        echo webster_key=${{ secrets.WEBSTER_KEY }} >> .env
+        echo redis_host=${{ secrets.REDIS_HOST }} >> .env
+        echo redis_pass=${{ secrets.REDIS_PASS }} >> .env
+        echo redis_port=${{ secrets.REDIS_PORT }} >> .env
+        echo soundcloudkey=${{ secrets.SOUNDCLOUDKEY }} >> .env
+        echo gg_key=${{ secrets.GG_KEY }} >> .env
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
