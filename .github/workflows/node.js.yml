@@ -23,7 +23,7 @@ jobs:
     - name: Kill process
       run: pm2 kill
     - name: Install dependency
-      run: mpm i
+      run: npm i
     - name: Start app
       env:
         csx_key: ${{ secrets.CSX_KEY }}
