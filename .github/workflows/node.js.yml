@@ -21,4 +21,4 @@ jobs:
       run: |
         curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
     - name: Start app
-      run: pm2 restart ecosystem.config.js
+      run: pm2 restart "/home/sefy/actions-runner/sefybotdiscord/sefybotdiscord/sefybotdiscord/ecosystem.config.js"
