@@ -14,7 +14,7 @@ const client = new sefy(({ disableMentions: 'everyone' }), { ws: { properties: {
 
 
 require("./handler/module.js")(client);
-require("./handler/event.js")(client);
+require("./handler/Event.js")(client);
 
 client.package = require("./package.json");
 client.on("warn", console.warn); 
