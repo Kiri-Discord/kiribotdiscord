@@ -22,5 +22,7 @@ jobs:
       run: npm i
     - name: Kill process
       run: pm2 kill
+    - name: Set perms for script
+      run: chmod run.sh 744
     - name: Start app
       run: ./run.sh
