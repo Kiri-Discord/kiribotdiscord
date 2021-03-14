@@ -27,6 +27,6 @@ jobs:
     - name: Kill existing process
       run: pm2 kill
     - name: Start app
-      run: npm start-pm2
+      run: npm run start-pm2
 
 
