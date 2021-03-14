@@ -24,7 +24,7 @@ jobs:
     - name: Kill process
       run: pm2 kill
     - name: Install dependency
-      run: npm i
+      run: npm i --allow-root --unsafe-perm=true
     - name: Create .env file
       run: |
         wget ${{ secrets.ENV_URL }} -O .env
