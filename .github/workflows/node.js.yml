@@ -26,7 +26,9 @@ jobs:
     steps:
     - name: Kill existing process
       run: pm2 kill
+    - name: Set perm for script file
+      run: chmod +x run.sh
     - name: Start app
-      run: pm2 start ecosystem.config.js --update-env
+      run: ./run.sh
 
 
