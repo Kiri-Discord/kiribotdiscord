@@ -23,4 +23,4 @@ jobs:
     - name: Install dependency
       run: npm i
     - name: Start app
-      run: pm2 start ecosystem.config.js --update-env
+      run: pm2 start ecosystem.config.js
