@@ -4,7 +4,7 @@ process.on('unhandledRejection', error => {
 
 global.__basedir = __dirname;
 const port = 80;
-// require('dotenv').config(); uncomment if you dont deploy the app through pm2
+require('dotenv').config();
 const mongo = require('./util/mongo.js');
 const RedisClient = require('./util/redis');
 mongo.init();
