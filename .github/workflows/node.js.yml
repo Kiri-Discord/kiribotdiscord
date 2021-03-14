@@ -26,8 +26,6 @@ jobs:
     steps:
     - name: Kill existing process
       run: pm2 kill
-    - name: Set perm for script file
-      run: chmod +x run.sh
     - name: Start app
       run: npm start-pm2
 
