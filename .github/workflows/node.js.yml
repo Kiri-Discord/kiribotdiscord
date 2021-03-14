@@ -16,12 +16,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Kill process
-      run: pm2 kill
     - name: Install dependency
-      run: npm i --allow-root --unsafe-perm=true
+      run: npm i
     - name: Create .env file
       run: |
         curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
     - name: Start app
-      run: pm2 start main.js --name "Sefy"
+      run: pm2 restart ecosystem.config.js
