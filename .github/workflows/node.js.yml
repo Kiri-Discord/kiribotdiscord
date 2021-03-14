@@ -29,6 +29,6 @@ jobs:
     - name: Set perm for script file
       run: chmod +x run.sh
     - name: Start app
-      run: ./run.sh
+      run: npm start-pm2
 
 
