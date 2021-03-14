@@ -4,7 +4,7 @@
   "description": "duh",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-pm2": "pm2 restart ecosystem.config.js --update-env",
     "start": "node ."
   },
   "repository": {
