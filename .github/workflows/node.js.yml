@@ -16,7 +16,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependency
-      run: npm i
+      run: npm i --allow-root --unsafe-perm=true
     - name: Create .env file
       run: |
         curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
