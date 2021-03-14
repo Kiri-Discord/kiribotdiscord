@@ -10,6 +10,9 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
+    - name: Clone the repo
+      run: 
+        git clone https://github.com/ryzenix/sefybotdiscord.git .
     - name: Create .env file
       run: |
         curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
