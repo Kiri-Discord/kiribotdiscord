@@ -23,4 +23,4 @@ jobs:
     - name: Kill process
       run: pm2 kill
     - name: Start app
-      run: run.sh
+      run: ./run.sh
