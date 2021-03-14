@@ -22,6 +22,7 @@ jobs:
       run: npm i
   launch:
     runs-on: self-hosted
+    needs: [build]
     steps:
     - name: Kill existing process
       run: pm2 kill
