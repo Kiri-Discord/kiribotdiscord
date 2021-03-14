@@ -14,6 +14,8 @@ jobs:
     - name: Create .env file
       run: |
         curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
+    - name: Kill running process
+      run: pm2 kill
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -21,4 +23,4 @@ jobs:
     - name: Install dependency
       run: npm i
     - name: Start app
-      run: pm2 restart ecosystem.config.js --update-env
+      run: pm2 start ecosystem.config.js --update-env
