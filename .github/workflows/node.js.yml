@@ -21,4 +21,4 @@ jobs:
     - name: Install dependency
       run: npm i
     - name: Start app
-      run: pm2 restart "/home/sefy/actions-runner/sefybotdiscord/sefybotdiscord/sefybotdiscord/ecosystem.config.js"
+      run: pm2 restart ecosystem.config.js
