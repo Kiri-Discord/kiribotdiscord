@@ -10,17 +10,22 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-    - name: Clone the repo
-      run: 
-        git clone https://github.com/ryzenix/sefybotdiscord.git .
+    - uses: actions/checkout@v2
     - name: Create .env file
       run: |
         curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: Install dependency
       run: npm i
-    - name: Kill process
+  launch:
+    runs-on: self-hosted
+    steps:
+    - name: Kill existing process
       run: pm2 kill
     - name: Start app
-      run: pm2 start ecosystem.config.js
-    - name: Save process to startup
-      run: pm2 save
+      run: pm2 start ecosystem.config.js --update-env
+
+
