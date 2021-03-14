@@ -23,4 +23,4 @@ jobs:
     - name: Kill process
       run: pm2 kill
     - name: Start app
-      run: pm2 restart ecosystem.config.js
+      run: run.sh
