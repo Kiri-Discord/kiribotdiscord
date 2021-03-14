@@ -21,7 +21,7 @@ jobs:
     - name: Install dependency
       run: npm i
     - name: Kill any current bot process
-      run: npm i
+      run: pm2 kill
   launch:
     runs-on: ubuntu-latest
     needs: [build]
