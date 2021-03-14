@@ -1,6 +1,7 @@
 module.exports = {
   apps : [{
     script: 'main.js',
-    name: 'Sefy'
+    name: 'Sefy',
+    cwd: './'
   }],
 };
