@@ -20,13 +20,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install dependency
       run: npm i
+    - name: Kill any current bot process
+      run: npm i
   launch:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: [build]
     steps:
-    - name: Kill existing process
-      run: pm2 kill
-    - name: Start app
-      run: npm run start-pm2
+    - name: SSH and deploy bot
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_SSH_HOST }}
+        username: ${{ secrets.EC2_SSH_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: ${{ secrets.EC2_SSH_PORT }}
+        script: |
+          cd ${{ secrets.SSH_PATH }}
+          pm2 restart ecosystem.config.js --update-env
 
 
