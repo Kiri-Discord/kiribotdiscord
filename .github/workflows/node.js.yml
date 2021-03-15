@@ -4,27 +4,8 @@ on:
   push:
     branches: [ master ]
 jobs:
-  build:
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        node-version: [14.x]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Create .env file
-      run: |
-        curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install dependency
-      run: npm i
-    - name: Kill any current bot process
-      run: pm2 kill
-  launch:
+  launch-bot:
     runs-on: ubuntu-latest
-    needs: [build]
     steps:
     - name: SSH and deploy bot
       uses: appleboy/ssh-action@master
@@ -34,8 +15,12 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: ${{ secrets.EC2_SSH_PORT }}
         script: |
-          sudo su - sefy
           cd "${{ secrets.EC2_SSH_PATH }}"
+          pm2 kill
+          git pull
+          npm i
+          curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
           pm2 restart ecosystem.config.js --update-env
+          pm2 save
 
 
