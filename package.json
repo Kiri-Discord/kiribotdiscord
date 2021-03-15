@@ -62,7 +62,7 @@
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.4",
     "weather-js": "^2.0.0",
-    "yaml": "^1.10.0",
+    "yaml": "^1.10.2",
     "ytdl-core": "^4.5.0",
     "ytdl-core-discord": "^1.2.5"
   }
