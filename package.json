@@ -4,7 +4,7 @@
   "description": "duh",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-pm2": "pm2 restart ecosystem.config.js --update-env",
     "start": "node ."
   },
   "repository": {
@@ -20,7 +20,7 @@
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "canvacord": "^5.1.0",
-    "canvas": "^2.6.1",
+    "canvas": "^2.7.0",
     "canvas-constructor": "^4.1.0",
     "cheerio": "^1.0.0-rc.5",
     "common-tags": "^1.8.0",
@@ -42,9 +42,9 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.33",
-    "mongoose": "^5.11.17",
+    "mongoose": "^5.11.19",
     "mquery": "^3.2.4",
-    "namemc": "^0.3.8",
+    "namemc": "^1.4.0",
     "node-gyp": "^7.1.2",
     "node-pre-gyp": "^0.17.0",
     "node-superfetch": "^0.1.11",

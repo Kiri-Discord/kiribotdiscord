@@ -1,0 +1,26 @@
+# this file is for me deploying the bot myself. if you are deploying the bot to heroku, simply ignore this
+name: Deploying bot
+on:
+  push:
+    branches: [ master ]
+jobs:
+  launch-bot:
+    runs-on: ubuntu-latest
+    steps:
+    - name: SSH and deploy bot
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_SSH_HOST }}
+        username: ${{ secrets.EC2_SSH_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: ${{ secrets.EC2_SSH_PORT }}
+        script: |
+          cd "${{ secrets.EC2_SSH_PATH }}"
+          pm2 kill
+          git pull
+          npm i
+          curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
+          pm2 restart ecosystem.config.js --update-env
+          pm2 save
+
+
