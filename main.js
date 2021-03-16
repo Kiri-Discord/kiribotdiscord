@@ -3,7 +3,6 @@ process.on('unhandledRejection', error => {
 });
 
 global.__basedir = __dirname;
-const port = 80;
 require('dotenv').config();
 global._port = process.env.PORT || 80;
 const mongo = require('./util/mongo.js');
