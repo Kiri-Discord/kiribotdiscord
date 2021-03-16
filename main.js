@@ -1,7 +1,7 @@
 process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
-
+global.__baseURL = 'localhost/'
 global.__basedir = __dirname;
 require('dotenv').config();
 global._port = process.env.PORT || 80;
