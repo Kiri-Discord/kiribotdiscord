@@ -1,7 +1,4 @@
 const Discord = require('discord.js');
-const { createCanvas, registerFont } = require('canvas');
-const path = require('path');
-registerFont(path.join(__dirname, '..', 'assets', 'fonts', 'Captcha.ttf'), { family: 'Captcha' });
 
 module.exports = async (client, message) => {
 	if (message.author.bot || message.author === client.user) return;
@@ -43,37 +40,13 @@ module.exports = async (client, message) => {
 				.setImage(`attachment://captcha.png`)
 				.setColor('RANDOM')
 				.setTitle(`Welcome to ${message.guild.name}! Wait, beep beep, boop boop?`)
-				.addField(`Hello! Before you get started, I just want you to verify yourself first.`, `Enter what you see in the captcha into the channel ${verifyChannel} to verify yourself.`)
+				.addField(`Hello! Before you get started, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself.`, ``)
 				await message.author.send(dm).catch(() => {
 					return message.reply('your DM is still locked. unlock your DM first :D')
 						.then(i => i.delete({ timeout: 10000 }));
 				});
 
 				return message.reply('check your DM.').then(i => i.delete({ timeout: 10000 }));
-			}
-			if (!alreadyHasRole) {
-				if (!verifydb) return;
-				if (!message.author.bot) {
-					let code = verifydb.code;
-					if (message.content !== `${code}`) {
-						await message.delete();
-						message.reply('are you sure that it is the right code?').then(i => i.delete({ timeout: 10000 }));
-					}
-					if (message.content === `${code}`) {
-						await message.delete();
-						await client.dbverify.findOneAndDelete({
-							guildID: message.guild.id,
-							userID: message.author.id,
-						});
-						await message.member.roles.add(setting.verifyRole).catch(() => {
-							message.reply('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
-						})
-						await client.verifytimers.deleteTimer(message.guild.id, message.author.id);
-						return message.author.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
-							return;
-						})
-					}
-				}
 			}
 		}
 	}
