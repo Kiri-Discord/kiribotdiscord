@@ -11,20 +11,20 @@ module.exports = {
         client.webapp.get("/val", async (req, res) => {
             if ("token" in req.query && "valID" in req.query) {
               const body = new URLSearchParams()
-              body.append("secret", process.env.reCaptchaToken)
+              body.append("secret", process.env.reCaptchaToken);
               body.append("response", req.query.token);
-              return console.log('https://www.google.com/recaptcha/api/siteverify/' + body)
               const apiCall = await fetch("https://www.google.com/recaptcha/api/siteverify", {
                 method: "post",
                 body,
               });
-              const apiRes = apiCall.json();
+              const apiRes = await apiCall.json();
               if (apiRes.success === true) {
                 const index = client.dbverify.findOne({
                     valID: req.query.valID
                 });
                 if (index) {
                     try {
+                        res.sendFile(__basedir + '/html/success.html');
                         const setting = await client.dbguilds.findOne({
                             guildID: index.guildID
                         });
@@ -39,7 +39,6 @@ module.exports = {
                           guildID: index.guildID,
                           userID: index.userID
                         });
-                        await res.sendFile(__basedir + '/html/success.html');
                         await member.roles.add(setting.verifyRole).catch(() => {
                         member.send('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
                         })
