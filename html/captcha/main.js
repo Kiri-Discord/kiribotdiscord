@@ -12,6 +12,7 @@ var onloadCallback = async function() {
 }
 
 const verifyCallback = (res) => {
+  console.log(res);
   const currentUrl = new URL(window.location.href)
   const valID = currentUrl.searchParams.get("valID")
 
