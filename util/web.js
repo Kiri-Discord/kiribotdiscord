@@ -17,7 +17,7 @@ module.exports = {
                 method: "post",
                 body,
               })
-              const apiRes = await apiCall.json()
+              const apiRes = apiCall.json();
               if (apiRes.success === true) {
                 const index = client.dbverify.findOne({
                     valID: req.query.valID
