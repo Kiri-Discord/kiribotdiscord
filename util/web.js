@@ -12,13 +12,13 @@ module.exports = {
             if ("token" in req.query && "valID" in req.query) {
               const body = new URLSearchParams()
               body.append("secret", process.env.reCaptchaToken)
-              body.append("response", req.query.token)
+              body.append("response", req.query.token);
+              return console.log('https://www.google.com/recaptcha/api/siteverify/' + body)
               const apiCall = await fetch("https://www.google.com/recaptcha/api/siteverify", {
                 method: "post",
                 body,
-              })
+              });
               const apiRes = apiCall.json();
-              console.log(apiRes)
               if (apiRes.success === true) {
                 const index = client.dbverify.findOne({
                     valID: req.query.valID
