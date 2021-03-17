@@ -1,9 +1,10 @@
+require('dotenv').config();
 process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
-global.__basedir = __dirname;
-require('dotenv').config();
 global._port = process.env.PORT || 80;
+global.__basedir = __dirname;
+global.__baseURL = process.env.baseURL || 'https://sefy.daztopia.xyz/';
 const mongo = require('./util/mongo.js');
 const web = require('./util/web.js');
 const RedisClient = require('./util/redis');

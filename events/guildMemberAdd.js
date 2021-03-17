@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
-const { createCanvas, registerFont } = require('canvas');
-const path = require('path');
-registerFont(path.join(__dirname, '..', 'assets', 'fonts', 'Captcha.ttf'), { family: 'Captcha' });
+const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
 const ms = require("ms");
 
 module.exports = async (client, member) => {
@@ -26,23 +24,14 @@ module.exports = async (client, member) => {
     } else {
       await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
     }
-    let text = randomInteger(100000, 1000000);
-    const canvas = createCanvas(125, 32);
-		const ctx = canvas.getContext('2d');
-		ctx.fillStyle = 'white';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.beginPath();
-		ctx.strokeStyle = '#0088cc';
-		ctx.font = '26px Captcha';
-		ctx.rotate(-0.05);
-    ctx.strokeText(text, 15, 26);
+    let valID = randomText(7);
     await client.dbverify.findOneAndUpdate({
       guildID: member.guild.id,
       userID: member.user.id,
     }, {
       guildID: member.guild.id,
       userID: member.user.id,
-      code: text
+      valID: valID
     }, {
         upsert: true,
         new: true
@@ -50,11 +39,10 @@ module.exports = async (client, member) => {
 
     const dm = new Discord.MessageEmbed()
     .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
-    .attachFiles({ attachment: canvas.toBuffer(), name: 'captcha.png' })
-    .setImage(`attachment://captcha.png`)
     .setColor('RANDOM')
     .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
-    .addField(`Hello! Before you get started, I just want you to verify yourself first.`, `Enter what you see in the captcha into the channel ${verifyChannel} to verify yourself.\nYou have **${ms(timeMs, {long: true})}** before i will kick you :(`)
+    .setDescription(`Hello! Before you get started, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in **${ms(timeMs, {long: true})}**\n*sorry, this is the only way to prevent bots from joining the server :pensive:*`)
+    .addField(`\u200b`, `||${__baseURL}/verify?valID=${valID}||`)
     await member.send(dm).catch(() => {
       verifyChannel.send(`<@!${member.user.id}> hey, I guess your DM is locked so i can't send you the verify code. How about you unlock it first and type \`resend\` here.`)
       .then(i => i.delete({timeout: 10000}));
@@ -63,8 +51,8 @@ module.exports = async (client, member) => {
 }
 
 
-function randomInteger(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function randomText(len) {
+  const result = [];
+  for (let i = 0; i < len; i++) result.push(pool[Math.floor(Math.random() * pool.length)]);
+  return result.join('');
 }

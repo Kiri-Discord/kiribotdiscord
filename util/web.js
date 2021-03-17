@@ -1,15 +1,15 @@
 const express = require('express');
-
+const fetch = require('node-fetch');
+const { URLSearchParams } = require('url');
 module.exports = {
     init: (client) => {
         client.webapp.use(express.json());
-        client.webapp.use("/verify", express.static(__basedir + "/html/"))
+        client.webapp.get("/key", (req, res) => res.json({ key: process.env.reCaptchaKey }))
+        client.webapp.use("/verify", express.static(__basedir + "/html/captcha/"))
         client.webapp.use(`/assets`, express.static(__basedir + '/html/assets/'));
         client.webapp.get('/', (_, res) => res.sendFile(__basedir + '/html/landing.html'));
-        client.webapp.get("/key", (req, res) => res.json({ key: process.env.reCaptchaKey }))
         client.webapp.get("/val", async (req, res) => {
             if ("token" in req.query && "valID" in req.query) {
-              // Make the request to google recaptcha to verify if the catcha is solved correctly
               const body = new URLSearchParams()
               body.append("secret", process.env.reCaptchaToken)
               body.append("response", req.query.token)
@@ -18,7 +18,6 @@ module.exports = {
                 body,
               })
               const apiRes = await apiCall.json()
-          
               if (apiRes.success === true) {
                 const index = client.dbverify.findOne({
                     valID: req.query.valID
@@ -36,17 +35,17 @@ module.exports = {
                         const verifyRole = member._roles.includes(setting.verifyRole);
                         if (verifyRole || !roleExist) return;
                         await client.dbverify.findOneAndDelete({
-							guildID: index.guildID,
-							userID: index.userID
-						});
+                          guildID: index.guildID,
+                          userID: index.userID
+                        });
                         await res.sendFile(__basedir + '/html/success.html');
                         await member.roles.add(setting.verifyRole).catch(() => {
-							member.send('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
-						})
-						await client.verifytimers.deleteTimer(message.guild.id, message.author.id);
-						return member.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
-							return;
-						})
+                        member.send('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
+                        })
+                        await client.verifytimers.deleteTimer(index.guildID, index.userID);
+                        return member.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
+                          return;
+                        })
                     } catch (error) {
                         return;
                     }
