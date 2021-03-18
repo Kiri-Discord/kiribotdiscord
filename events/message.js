@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
     });
     if (!setting) {
       await client.emit('guildCreate', message.guild);
-      return message.channel.send('somehow your guild disappeared from my bookshelf.. this is not an error :) you can try using that command again.\n*this might be caused when you kick me and invite me again when i accidently went offline. all your guild setting has been reseted :(*').then(m => m.delete({ timeout: 5000 }))
+      return message.channel.send(`somehow your guild disappeared from my bookshelf.. this is not an error :) you can continue with your convo.\n*this might be caused when you kick me and invite me again when i accidently went offline. all your guild setting has been reseted :(\nthe default prefix for me is* \`${client.config.prefix}\``).then(m => m.delete({ timeout: 7000 }))
     } else {
       prefix = setting.prefix
     }

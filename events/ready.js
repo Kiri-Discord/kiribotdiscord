@@ -1,3 +1,5 @@
+const web = require('../util/web.js');
+
 module.exports = async client => {
   console.log('[DISCORD] Fetching server...')
   const allServer = await client.dbguilds.find({})
@@ -15,5 +17,6 @@ module.exports = async client => {
   });
   await client.verifytimers.fetchAll();
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
-  client.user.setPresence({ activity: { name: 'with the clouds', type: "PLAYING" }})
+  client.user.setPresence({ activity: { name: 'with the clouds', type: "PLAYING" }});
+  web.init(client);
 }
