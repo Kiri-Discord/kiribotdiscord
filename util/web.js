@@ -19,12 +19,10 @@ module.exports = {
               });
               const apiRes = await apiCall.json();
               if (apiRes.success === true) {
-                console.log(apiRes)
-                const index = client.dbverify.findOne({
+                const index = await client.dbverify.findOne({
                     valID: req.query.valID
                 });
                 if (index) {
-                  console.log(index);
                   onSuccess(client, index);
                   res.sendFile(__basedir + '/html/success.html');
 
@@ -50,10 +48,8 @@ async function onSuccess(client, index) {
       guildID: index.guildID
   });
   const guild = await client.guilds.cache.get(index.guildID);
-  console.log(guild.toString())
   if (!guild) return;
   const member = await guild.members.cache.get(index.userID);
-  console.log(member.toString())
   if (!member) return;
   const VerifyRole = guild.roles.cache.get(setting.verifyRole);
   const roleExist = member._roles.includes(setting.verifyRole);
@@ -63,7 +59,7 @@ async function onSuccess(client, index) {
     userID: index.userID
   });
   await member.roles.add(VerifyRole).catch(() => {
-  member.send('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
+  member.send('oof, so mod from ${guild.name} forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?\n*you will not be kicked after this message*').then(i => i.delete({ timeout: 7500 }));
   })
   await client.verifytimers.deleteTimer(index.guildID, index.userID);
   return member.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
