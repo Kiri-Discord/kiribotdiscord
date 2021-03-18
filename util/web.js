@@ -23,7 +23,6 @@ module.exports = {
                     valID: req.query.valID
                 });
                 if (index) {
-                  console.log(index);
                   onSuccess(client, index);
                   res.sendFile(__basedir + '/html/success.html');
 
