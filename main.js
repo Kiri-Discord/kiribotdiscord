@@ -11,7 +11,7 @@ const RedisClient = require('./util/redis');
 mongo.init();
 RedisClient.start();
 const sefy = require("./handler/ClientBuilder.js");
-const client = new sefy(({ disableMentions: 'everyone' }), { ws: { properties: { $browser: "Discord Android" }} });
+const client = new sefy(({ disableMentions: 'everyone',  ws: { properties: { $browser: "Discord Android" }} }));
 client.loadTopics('./assets/trivia/');
 
 require("./handler/module.js")(client);
