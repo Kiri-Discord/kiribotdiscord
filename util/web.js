@@ -19,36 +19,15 @@ module.exports = {
               });
               const apiRes = await apiCall.json();
               if (apiRes.success === true) {
+                console.log(apiRes)
                 const index = client.dbverify.findOne({
                     valID: req.query.valID
                 });
                 if (index) {
-                    try {
-                        res.sendFile(__basedir + '/html/success.html');
-                        const setting = await client.dbguilds.findOne({
-                            guildID: index.guildID
-                        });
-                        const guild = await client.guilds.cache.get(index.guildID);
-                        if (!guild) return;
-                        const member = await guild.members.cache.get(index.userID);
-                        if (!member) return;
-                        const roleExist = guild.roles.cache.get(setting.verifyRole);
-                        const verifyRole = member._roles.includes(setting.verifyRole);
-                        if (verifyRole || !roleExist) return;
-                        await client.dbverify.findOneAndDelete({
-                          guildID: index.guildID,
-                          userID: index.userID
-                        });
-                        await member.roles.add(setting.verifyRole).catch(() => {
-                        member.send('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
-                        })
-                        await client.verifytimers.deleteTimer(index.guildID, index.userID);
-                        return member.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
-                          return;
-                        })
-                    } catch (error) {
-                        return;
-                    }
+                  console.log(index);
+                  onSuccess(client, index);
+                  res.sendFile(__basedir + '/html/success.html');
+
                 } else {
                     res.sendFile(__basedir + '/html/wrong-id.html');
                 }
@@ -65,4 +44,29 @@ module.exports = {
         client.webapp.listen(_port);
         console.log(`[WEB] Listening at port ${_port}`);
     }
+}
+async function onSuccess(client, index) {
+  const setting = await client.dbguilds.findOne({
+      guildID: index.guildID
+  });
+  const guild = await client.guilds.cache.get(index.guildID);
+  console.log(guild.toString())
+  if (!guild) return;
+  const member = await guild.members.cache.get(index.userID);
+  console.log(member.toString())
+  if (!member) return;
+  const VerifyRole = guild.roles.cache.get(setting.verifyRole);
+  const roleExist = member._roles.includes(setting.verifyRole);
+  if (roleExist || !VerifyRole) return;
+  await client.dbverify.findOneAndDelete({
+    guildID: index.guildID,
+    userID: index.userID
+  });
+  await member.roles.add(VerifyRole).catch(() => {
+  member.send('oof, so this guild\'s mod forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?').then(i => i.delete({ timeout: 7500 }));
+  })
+  await client.verifytimers.deleteTimer(index.guildID, index.userID);
+  return member.send(`${message.author}, you have passed my verification! Welcome to ${message.guild.name}!`).catch(() => {
+    return;
+  })
 }

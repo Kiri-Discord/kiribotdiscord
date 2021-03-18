@@ -6,14 +6,14 @@ global._port = process.env.PORT || 80;
 global.__basedir = __dirname;
 global.__baseURL = process.env.baseURL || 'https://sefy.daztopia.xyz/';
 const mongo = require('./util/mongo.js');
-const web = require('./util/web.js');
 const RedisClient = require('./util/redis');
+
 mongo.init();
 RedisClient.start();
 const sefy = require("./handler/ClientBuilder.js");
 const client = new sefy(({ disableMentions: 'everyone' }), { ws: { properties: { $browser: "Discord Android" }} });
 client.loadTopics('./assets/trivia/');
-web.init(client);
+
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 client.package = require("./package.json");
