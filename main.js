@@ -2,6 +2,7 @@ require('dotenv').config();
 process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
+
 global._port = process.env.PORT || 80;
 global.__basedir = __dirname;
 global.__baseURL = process.env.baseURL || 'https://sefy.daztopia.xyz/';
@@ -11,7 +12,7 @@ const RedisClient = require('./util/redis');
 mongo.init();
 RedisClient.start();
 const sefy = require("./handler/ClientBuilder.js");
-const client = new sefy(({ disableMentions: 'everyone' }), { ws: { properties: { $browser: "Discord Android" }} });
+const client = new sefy(({ disableMentions: 'everyone',  ws: { properties: { $browser: "Discord Android" }} }));
 client.loadTopics('./assets/trivia/');
 
 require("./handler/module.js")(client);

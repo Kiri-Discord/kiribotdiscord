@@ -1,6 +1,6 @@
 {
   "name": "sefydiscordbot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "duh",
   "main": "main.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/ryzenix/sefydiscordbot.git"
   },
   "author": "ryzenix",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
     "aki-api": "^5.2.1",
