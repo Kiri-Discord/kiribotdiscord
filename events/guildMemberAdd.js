@@ -38,7 +38,7 @@ module.exports = async (client, member) => {
     })
 
     const dm = new Discord.MessageEmbed()
-    .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
+    .setAuthor(client.user.username, client.user.displayAvatarURL())
     .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
     .setColor('RANDOM')
     .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
