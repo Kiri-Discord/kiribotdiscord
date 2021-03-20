@@ -2,7 +2,9 @@ const pageUrl = `${window.location.protocol}//${window.location.host}/`
 
 
 var onloadCallback = async function() {
-  const res = await fetch(`${pageUrl}key`);
+  const res = await fetch(`${pageUrl}key`, {
+    method: 'POST',
+  });
   const { key } = await res.json();
 
   grecaptcha.render("root", {

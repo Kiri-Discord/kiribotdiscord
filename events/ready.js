@@ -17,6 +17,6 @@ module.exports = async client => {
   });
   await client.verifytimers.fetchAll();
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
-  client.user.setPresence({ activity: { name: 'with the clouds', type: "PLAYING" }});
+  client.user.setPresence({ activity: { name: 'for any ping', type: "LISTENING" }});
   web.init(client);
 }
