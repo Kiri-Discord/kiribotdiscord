@@ -6,8 +6,8 @@ exports.run = async (client, message, args) => {
     let degreetype = "C";
 
     await weather.find({search: city, degreeType: degreetype}, function(err, result) {
-        if (!city) return message.channel.send("Please insert the city.");
-        if (err || result === undefined || result.length === 0) return message.channel.send("Unknown city. Please try again.");
+        if (!city) return message.channel.send("what city do you want to get the weather for?");
+        if (err || result === undefined || result.length === 0) return message.channel.send("seems like that city doesn't exist :pensive: try again please!");
 
         let current = result[0].current;
         let location = result[0].location;
