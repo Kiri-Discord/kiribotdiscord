@@ -64,6 +64,6 @@
     "weather-js": "^2.0.0",
     "yaml": "^1.10.2",
     "ytdl-core": "^4.5.0",
-    "ytdl-core-discord": "^1.2.5"
+    "ytdl-core-discord": "^1.3.0"
   }
 }
