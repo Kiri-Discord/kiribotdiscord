@@ -35,7 +35,7 @@
     "https": "^1.0.0",
     "humanize-duration": "^3.25.1",
     "ini": "^2.0.0",
-    "ioredis": "^4.24.2",
+    "ioredis": "^4.24.3",
     "iso-639-1": "^2.1.8",
     "libsodium-wrappers": "^0.7.9",
     "lyrics-finder": "^21.7.0",
