@@ -37,7 +37,7 @@ module.exports = {
                   });
                 } else {
                     const lyrics = await lyricsFinder(song.title, '');
-                    if (!lyrics) return message.channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.`}});
+                    if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.`}});
                     let lyricsEmbed = new MessageEmbed()
                     .setTitle(`Lyrics for ${song.title} by ${song.author}`)
                     .setDescription(lyrics)
@@ -48,7 +48,7 @@ module.exports = {
                 }
               } else {
                 const lyrics = await lyricsFinder(song.title, '');
-                if (!lyrics) return message.channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.`}});
+                if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.`}});
                 let lyricsEmbed = new MessageEmbed()
                 .setTitle(`Lyrics for ${song.title} by ${song.author}`)
                 .setDescription(lyrics)
@@ -59,7 +59,7 @@ module.exports = {
               }
             } else {
               const lyrics = await lyricsFinder(song.title, '');
-              if (!lyrics) return message.channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive:\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
+              if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive:\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
               let lyricsEmbed = new MessageEmbed()
               .setTitle(`Lyrics for ${song.title} by ${song.author}`)
               .setDescription(lyrics)

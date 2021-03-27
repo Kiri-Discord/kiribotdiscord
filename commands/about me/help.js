@@ -44,6 +44,8 @@ exports.run = async (client, message, args) => {
       let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
       let usage = command.help.usage ? command.help.usage : "no usage provided.";
       let example = command.help.example ? command.help.example : "no example provided.";
+      let userperms = command.conf.userPerms ? command.conf.userPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
+      let botperms = command.conf.clientPerms ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
       
       let embed = new Discord.MessageEmbed()
       .setColor('#ffe6cc')
@@ -57,6 +59,8 @@ exports.run = async (client, message, args) => {
       .addField("aliases", aliases, true)
       .addField("usage", usage, true)
       .addField("example", example, true)
+      .addField("user permission(s)", userperms, true)
+      .addField("bot permission(s)", botperms, true)
       
       return message.channel.send(embed);
     } else {

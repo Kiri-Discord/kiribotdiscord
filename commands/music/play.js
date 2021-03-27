@@ -109,7 +109,7 @@ exports.run = async (client, message, args) => {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
-          thumbnail: songInfo.videoDetails.thumbnails[0].url,
+          thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
           duration: null,
           type: 'yt'
         };
@@ -148,7 +148,7 @@ exports.run = async (client, message, args) => {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
-          thumbnail: songInfo.videoDetails.thumbnails[0].url,
+          thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
           duration: null,
           type: 'yt'
         };
