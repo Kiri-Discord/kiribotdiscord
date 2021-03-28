@@ -1,18 +1,15 @@
 const { MessageEmbed } = require("discord.js");
-const { oneLine } = require('common-tags');
 const humanizeDuration = require("humanize-duration");
 exports.run = async (client, message, args) => {
     let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
     let mention = message.guild.members.cache.get(user.id);
     if (mention.user.id === client.user.id) return message.channel.send("that's me :( you think i have any money :pensive:");
     if (mention.user.bot) return message.channel.send("duh you can't ask money out of a bot. we are broke enough :pensive:");
-    let balance;
     let cooldown = 8.64e+7;
     let storage = await client.money.findOne({
         userId: mention.user.id,
         guildId: message.guild.id
     });
-    let msLastDaily;
     let lastDaily;
     if (!storage) {
         const model = client.money
@@ -21,23 +18,23 @@ exports.run = async (client, message, args) => {
             guildId: message.guild.id
         });
         await newUser.save();
-        balance = newUser.balance;
-    } else {
-        msLastDaily = storage.lastDaily;
-        balance = storage.balance;
-    } 
+        storage = newUser;
+    };
+    let msLastDaily = storage.lastDaily;
+    let balance = storage.balance;
     if (msLastDaily && cooldown - (Date.now() - msLastDaily) > 0) {
-        lastDaily = humanizeDuration(cooldown - (Date.now() - msLastDaily))
+        lastDaily = `\`${humanizeDuration(cooldown - (Date.now() - msLastDaily))}\` left`
     } else {
         lastDaily = 'ready to collect';
     }
     const embed = new MessageEmbed()
-    .setAuthor(`${mention.user.username}'s balance`, mention.user.displayAvatarURL({size: 1024, dynamic: true}))
+    .setThumbnail(mention.user.displayAvatarURL({size: 1024, dynamic: true}))
+    .setTitle(`${mention.user.username}'s balance`)
     .setDescription(`
     💵 **balance**: ⏣ **${balance}** token(s)
 
     ⏲️ **time until next daily collect:**
-    \`${lastDaily}\` left
+    ${lastDaily}
     `)
     .setTimestamp()
     return message.channel.send(embed);

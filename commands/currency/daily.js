@@ -13,6 +13,7 @@ exports.run = async (client, message, args) => {
             guildId: message.guild.id
         });
         await newUser.save();
+        storage = newUser;
     }
     let lastDaily = storage.lastDaily;
     try {
@@ -26,7 +27,8 @@ exports.run = async (client, message, args) => {
             your next collect is ready in:
             \`${finalTime}\`
             `)
-            .setAuthor(`${message.member.displayName}, you've already claimed your daily today!`,  message.author.displayAvatarURL({ dynamic: true }))
+            .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
+            .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
             return message.channel.send(embed);
         } else {
@@ -51,8 +53,9 @@ exports.run = async (client, message, args) => {
 
             current balance: **${storageAfter.balance}**
             `)
-            .setAuthor(`here are your daily token, ${message.member.displayName}!`,  message.author.displayAvatarURL({ dynamic: true }))
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
+            .setTitle(`here are your daily token, ${message.member.displayName}!`)
+            .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
             return message.channel.send(embed);
         }
     } catch (error) {

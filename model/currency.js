@@ -12,7 +12,8 @@ const moneySchema = mongoose.Schema({
     type: Number,
     default: 10,
   },
-  lastDaily: Date
+  lastDaily: Date,
+  lastGamble: Date
 })
 
 module.exports = mongoose.model(
