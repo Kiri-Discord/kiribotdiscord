@@ -1,5 +1,5 @@
-const Discord = require("discord.js"),
-      fs = require("fs");
+const Discord = require("discord.js");
+const fs = require("fs");
 
 module.exports = client => {
   client.commands = new Discord.Collection();
