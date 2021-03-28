@@ -24,7 +24,7 @@ exports.run = async (client, message, args) => {
     .setPage(1)
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
-    .setDescription(`hi, i'm Sefy, Sefiria's exclusive assistant :D\nyou can use \`${prefix}help [command]\` to get more specific information about a command 😄\n\n*btw you can navigate thru my commands using the emojis below*`)
+    .setDescription(`hi, i'm Sefy, [Sefiria](https://discord.gg/D6rWrvS)'s exclusive assistant :D\nyou can use \`${prefix}help [command]\` to get more specific information about a command 😄\n\n*btw you can navigate thru my commands using the emojis below*`)
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setColor('#ffe6cc')

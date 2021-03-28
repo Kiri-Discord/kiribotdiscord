@@ -5,17 +5,19 @@ const reqString = {
   required: true,
 }
 
-const patSchema = mongoose.Schema({
+const moneySchema = mongoose.Schema({
   userId: reqString,
   guildId: reqString,
-  received: {
+  balance: {
     type: Number,
-    default: 0,
+    default: 10,
   },
+  lastDaily: Date,
+  lastGamble: Date
 })
 
 module.exports = mongoose.model(
-  'pat-sefy',
-  patSchema,
-  'pat-sefy'
+  'money',
+  moneySchema,
+  'money'
 )

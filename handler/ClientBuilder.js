@@ -17,6 +17,7 @@ module.exports = class sefy extends Client {
     this.aliases = new Collection();
     this.config = require('../config.json');
     this.recent = new Set();
+    this.money = require('../model/currency')
     this.dbguilds = require('../model/guild');
     this.leveling = require("../util/LevelingUtil.js");
     this.dbleveling = require("../model/leveling")

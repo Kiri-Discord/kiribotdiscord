@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <style>
-            body {
+body {
     font-family: 'Roboto', sans-serif;
     background-color: #d8d4b8;
     -webkit-font-smoothing: antialiased;
@@ -16,16 +13,6 @@
         align-items: center;
         text-align: center;
     }
-    .g-captcha {
-           margin: 15px auto !important;
-           width: auto !important;
-           height: auto !important;
-           text-align: -webkit-center;
-           text-align: -moz-center;
-           text-align: -o-center;
-           text-align: -ms-center;
-    }
-
     .footer {
         display: flex
 
@@ -90,35 +77,3 @@
     src: url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
-    </style>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>verification</title>
-        <meta property="og:title" content="sefy verification">
-        <meta property="og:description" content="sefy verification site">
-        <meta property="og:image" content="/assets/logo.png">
-        <link rel="icon" type="image/png" href="/assets/logo.png"/>
-    </head>
-  <body>
-    <div class="content">
-      <div class="main">
-        <h2>beep beep, boop boop?</h2>
-        <h2>the verification is almost done! complete the captcha to get verified in the server!</h2>
-        <br>
-        <br>
-        <div class="g-captcha">
-          <form>
-            <div id="root"></div>
-            <br>
-            <input type="submit" value="Submit"/>
-          </form>
-          <script src="main.js"></script>
-          <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-        </div>
-        <p><b>can't join the server after verifying? i might have been kicked by a mod in the server, or you was kicked from the server.</b></p>
-        <p>want to have me in your own server?<br>if you are already Sefiria's partnered server you can request to have the add link, or download me from the <a href="https://github.com/ryzenix/sefybotdiscord">GitHub repository</a></p>
-      </div>
-    </div>
-  </body>
-</html>
