@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 exports.run = async (client, message, args) => {
     const amount = args[0];
     if (!amount) return message.inlineReply("how much token do you want to contribute?");
-    if (isNaN(amount)) return message.inlineReply("that amount was not a number.");
+    if (isNaN(amount)) return message.inlineReply("that amount was not a number :frowning:");
     let storage = await client.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
