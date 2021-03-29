@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
-const { Random } = require("something-random-on-discord")
-const random = new Random();
+const random = require("something-random-on-discord").Random;
 
 exports.run = async (client, message, args) => {
 	let data = await random.getAnimeImgURL("waifu")
