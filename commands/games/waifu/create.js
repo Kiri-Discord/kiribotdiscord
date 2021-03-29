@@ -11,10 +11,10 @@ const commandCreate = async (user, waifuname, prefix) => {
 
         newWaifu.name = waifuname
 
-        await newUser.save()
-        await newWaifu.save()
+        await newUser.save();
+        await newWaifu.save();
 
-        response.query = `${user.at}, your waifu was created!`
+        response.query = `${user.at}, your waifu was created!`;
     } catch (e) {
         console.log(e)
         response.query = `${user.at}, i got an error :( please try again later!`
