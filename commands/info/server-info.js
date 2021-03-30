@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js')
 
 exports.run = async (client, message, args) => {
     let icon = message.guild.iconURL({size: 4096, dynamic: true});
+
     let region = {
       "brazil": "Brazil",
       "eu-central": "Central Europe",
@@ -34,10 +35,10 @@ exports.run = async (client, message, args) => {
     let x = Date.now() - message.guild.createdAt;
     let h = Math.floor(x / 86400000) 
     let created = dateformat(message.guild.createdAt); 
-    
+
     const embed = new MessageEmbed()
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    .setColor('#ffe6cc')
+    .setColor("#ffe6cc")
     .setTimestamp(new Date())
     .setThumbnail(icon)
     .setAuthor(`Information for ${message.guild.name}:`, client.user.displayAvatarURL())

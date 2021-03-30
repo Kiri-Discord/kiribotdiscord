@@ -12,9 +12,13 @@ const moneySchema = mongoose.Schema({
     type: Number,
     default: 10,
   },
+  inventory: {
+    type: [Object],
+    default: []
+  },
   lastDaily: Date,
   lastGamble: Date
-})
+});
 
 module.exports = mongoose.model(
   'money',
