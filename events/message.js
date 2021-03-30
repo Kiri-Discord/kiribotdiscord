@@ -15,27 +15,34 @@ module.exports = async (client, message) => {
     });
     if (!setting) {
       await client.emit('guildCreate', message.guild);
-      return message.channel.send(`somehow your guild disappeared from my bookshelf.. this is not an error :) you can continue with your convo.\n*this might be caused when you kick me and invite me again when i accidently went offline. all your guild setting has been reseted :(\nthe default prefix for me is* \`${client.config.prefix}\``).then(m => m.delete({ timeout: 7000 }))
+      return message.channel.send(`somehow your guild disappeared from my bookshelf.. this is not an error :) you can continue with your convo.\n*this might be caused when you kick me and invite me again when i accidently went offline. all your guild setting has been reseted :(\nthe default prefix for me is* \`${client.config.prefix}\``).then(m => m.delete({ timeout: 7000 }));
     } else {
-      prefix = setting.prefix
+      prefix = setting.prefix;
+      const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
+      if (message.channel.id === setting.verifyChannelID) {
+        if (alreadyHasVerifyRole) {
+          return message.reply(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or either \`${prefix}setverify <#channel | id> <role name | id>\``).then(async m => {
+            await message.delete();
+            m.delete({ timeout: 4000 });
+          })
+        } else {
+          return client.emit('verify', message);
+        }
+      };
     }
   }
-
+  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
+  if (message.content.match(prefixMention)) {
+    return message.channel.send(`huh? oh btw my prefix on this guild is \`${prefix}\`, cya ${duh}`);
+  }
   const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
 
   const duh = staffsv.emojis.cache.find(emoji => emoji.name === 'duh');
   const sed = staffsv.emojis.cache.find(emoji => emoji.name === 'sed');
 
-
-  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
-  if (message.content.match(prefixMention)) {
-    return message.channel.send(`huh? oh btw my prefix on this guild is \`${prefix}\`, cya ${duh}`);
-  }
-
-  client.emit('verify', message);
   client.emit('experience', message);
   
-  if (!message.content.toLowerCase().startsWith(prefix))return;
+  if (!message.content.toLowerCase().startsWith(prefix)) return;
   
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   let msg = message.content.toLowerCase();

@@ -45,7 +45,7 @@ module.exports = async (client, member) => {
     .setDescription(`Hello! Before you join ${member.guild.name}, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in **${ms(timeMs, {long: true})}**\n*sorry, this is the only way to prevent bots from joining the server :pensive:*`)
     .addField(`\u200b`, `||${__baseURL}verify?valID=${code}||`)
     await member.send(dm).catch(() => {
-      verifyChannel.send(`<@!${member.user.id}> hey, I guess your DM is locked so i can't send you the verify code. How about you unlock it first and type \`resend\` here.`)
+      verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify code. can you unlock it first and type \`resend\` here?`)
       .then(i => i.delete({timeout: 10000}));
     })
   }

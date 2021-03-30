@@ -26,11 +26,11 @@ exports.run = async (client, message, args) => {
     if (self) {
         level = 100;
     } else {
-        const calculated = -Math.abs(Number.parseInt(BigInt(first.id) - BigInt(second.id), 10));
-        const random = MersenneTwister19937.seed(calculated);
-        level = integer(0, 100)(random);
+		const calculated = Math.abs(Number.parseInt(BigInt(first.id) - BigInt(second.id), 10));
+		const random = MersenneTwister19937.seed(calculated);
+		level = integer(0, 100)(random);
     }
-    return message.channel.send(`there is ${level}% friendship between **${first.username}** and **${second.username}**, ${calculateLevelText(level, self)}`);
+    return message.channel.send(`there is ${level}% love between **${first.username}** and **${second.username}**, ${calculateLevelText(level, self)}`);
 }
 
 function calculateLevelText(level, self) {
@@ -49,20 +49,20 @@ function calculateLevelText(level, self) {
     if (level > 69 && level < 80) return 'which is good :)';
     if (level > 79 && level < 90) return 'which is great :)';
     if (level > 89 && level < 100) return 'which is amazing :D';
-    if (level === 100) return 'which means that they are besties';
+    if (level === 100) return 'which means that they are for each other!';
     return '???';
 }
 
 
 exports.help = {
-	name: "friendship",
-	description: "determines how good you and a user are.",
-	usage: ["friendship `<@mention>`", "friendship `<@mention> [@mention]`"],
+	name: "ship",
+	description: "ship two user together with their love meter ^^",
+	usage: ["ship `<@mention>`", "ship `<@mention> [@mention]`"],
 	example: ["friendship `@someone`", "friendship `@someone @anotherone`"]
 };
   
 exports.conf = {
-	aliases: ["friendmeter", "ratefriendship"],
+	aliases: ["love-test", "rateship"],
     cooldown: 3,
     guildOnly: true,
     userPerms: [],
