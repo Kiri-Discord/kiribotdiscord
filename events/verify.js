@@ -38,7 +38,7 @@ module.exports = async (client, message) => {
 
 				return message.reply('check your DM.').then(i => i.delete({ timeout: 10000 }));
 			} else {
-				await message.delete();
+				return message.delete();
 			}
 		}
 	}
