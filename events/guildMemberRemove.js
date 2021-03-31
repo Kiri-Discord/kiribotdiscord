@@ -19,6 +19,19 @@ module.exports = async (client, member) => {
     }, (err) => {
         if (err) console.error(err)
     });
+    await client.money.findOneAndDelete({
+        guildId: member.guild.id,
+        userId: member.user.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await client.love.findOneAndDelete({
+        guildID: member.guild.id,
+        userID: member.user.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
 
     await hugSchema.findOneAndDelete({
         userId: member.user.id,

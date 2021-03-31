@@ -65,4 +65,4 @@ exports.conf = {
     guildOnly: true,
     userPerms: [],
     clientPerms: ["EMBED_LINKS", "SEND_MESSAGES"]
-}
+};

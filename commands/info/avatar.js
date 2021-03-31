@@ -1,5 +1,4 @@
-const Discord = require("discord.js");
-const { getAverageColor } = require('fast-average-color-node');
+const { MessageEmbed } = require("discord.js");
 
 exports.run = async (client, message, args) => {  
   let user;
@@ -16,13 +15,12 @@ exports.run = async (client, message, args) => {
   }
 
   const avatar = user.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
-  const color = await getAverageColor(avatar, { algorithm: 'simple' });
   
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
   .setTimestamp(new Date())
   .setTitle(`${user.tag} avatar`)
   .setDescription(`[Avatar URL](${avatar})`)
-  .setColor(color.hex)
+  .setColor('#DAF7A6')
   .setImage(avatar)
   .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
   

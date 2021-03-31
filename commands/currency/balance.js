@@ -3,8 +3,8 @@ const humanizeDuration = require("humanize-duration");
 exports.run = async (client, message, args) => {
     let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
     let mention = message.guild.members.cache.get(user.id);
-    if (mention.user.id === client.user.id) return message.channel.send("that's me :( you think i have any money :pensive:");
-    if (mention.user.bot) return message.channel.send("duh you can't ask money out of a bot. we are broke enough :pensive:");
+    if (mention.user.id === client.user.id) return message.inlineReply("that's me :( you think i have any money :pensive:");
+    if (mention.user.bot) return message.inlineReply("duh you can't ask money out of a bot. we are broke enough :pensive:");
     let cooldown = 8.64e+7;
     let storage = await client.money.findOne({
         userId: mention.user.id,
@@ -45,7 +45,7 @@ exports.help = {
     description: "check yours, or other members money.",
     usage: ["balance \`[@user]\`", "balance \`[user id]\`", "balance"],
     example: ["balance `@eftw`", "balance `484988949488494`", "balance"]
-}
+};
   
 exports.conf = {
     aliases: ["bal", "coin", "money", "credit"],
@@ -53,4 +53,4 @@ exports.conf = {
     guildOnly: true,
     userPerms: [],
     clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
-}
+};

@@ -13,11 +13,11 @@ exports.run = async (client, message, args) => {
         if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id) return true;
       }, { time: 15000 });
       collector.on('collect', async msg => {
+        vote = vote + 1;
         if (vote = leftMembers) {
           await collector.stop();
           return skip(queue, message);
         }
-        vote = vote + 1;
         message.channel.send(`**${vote}** member voted to skip the current song ⏭ only **${leftMembers - vote}** member left!`)
       });
       collector.on('end', async () => {

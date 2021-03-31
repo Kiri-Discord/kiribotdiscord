@@ -1,5 +1,5 @@
 const express = require('express');
-const { Client, Collection, Guild, GuildMember, Structures } = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const { readdir } = require('fs');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const RedisClient = require('../util/redis');
@@ -17,7 +17,8 @@ module.exports = class sefy extends Client {
     this.aliases = new Collection();
     this.config = require('../config.json');
     this.recent = new Set();
-    this.money = require('../model/currency')
+    this.money = require('../model/currency');
+    this.love = require('../model/love');
     this.dbguilds = require('../model/guild');
     this.leveling = require("../util/LevelingUtil.js");
     this.dbleveling = require("../model/leveling")

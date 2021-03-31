@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
 
     if (!user) return message.inlineReply("who do you want to send token to?");
     if (user.id === client.user.id) return message.inlineReply("wow you are so generous but.. that's me.");
-    if (user.bot) return message.inlineReply("that user is a bot,");
+    if (user.bot) return message.inlineReply("that user is a bot.");
     if (user.id === message.author.id) return message.inlineReply("why do you want to transfer a credit to yourself?");
 
     let amount = parseInt(args[1]);
