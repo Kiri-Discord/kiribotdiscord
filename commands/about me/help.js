@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const Pagination = require('discord-paginationembed');
 exports.run = async (client, message, args) => {
 
@@ -44,10 +44,10 @@ exports.run = async (client, message, args) => {
       let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
       let usage = command.help.usage ? command.help.usage : "no usage provided.";
       let example = command.help.example ? command.help.example : "no example provided.";
-      let userperms = command.conf.userPerms ? command.conf.userPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
-      let botperms = command.conf.clientPerms ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
+      let userperms = command.conf.userPerms.map(x => `\`${x}\``).join(", ") ? command.conf.userPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
+      let botperms = command.conf.clientPerms.map(x => `\`${x}\``).join(", ") ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
       
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
       .setColor('#ffe6cc')
       .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setFooter(client.user.username, client.user.displayAvatarURL())
