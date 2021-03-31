@@ -1,24 +1,19 @@
 module.exports = async (client, message) => {
-    if (message.author.bot || message.author === client.user) return;
-
     if (message.channel.type === "dm") return;
-
     const setting = await client.dbguilds.findOne({
         guildID: message.guild.id
-    }); 
-    
-    const prefix = setting.prefix;
+    });
+    let prefix = setting.prefix;
+    const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
     const ignorechannel = setting.ignoreLevelingsChannelID;
     const verifychannel = setting.verifyChannelID
 
-    let recent = client.recent; 
-
-    
-    // Ignore cmd with prefix
-    if(message.content.toLowerCase().startsWith(prefix)) return;
-    //ignore ignore channel
+    let recent = client.recent;
+    if (prefixRegex.test(message.content)) return;
     if (ignorechannel && message.channel.id === ignorechannel) return;
     if (verifychannel && message.channel.id === verifychannel) return;
+    if (message.content.match(prefixRegex)) return;
     
 
     // If the user has an exp. cooldown, ignore it.

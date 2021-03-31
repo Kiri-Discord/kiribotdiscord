@@ -31,20 +31,21 @@ module.exports = async (client, message) => {
       };
     }
   }
-  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
-  if (message.content.match(prefixMention)) {
-    return message.channel.send(`huh? oh btw my prefix on this guild is \`${prefix}\`, cya ${duh}`);
-  }
+  client.emit('experience', message);
+  const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
+  
   const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
 
   const duh = staffsv.emojis.cache.find(emoji => emoji.name === 'duh');
   const sed = staffsv.emojis.cache.find(emoji => emoji.name === 'sed');
 
-  client.emit('experience', message);
-  
-  if (!message.content.toLowerCase().startsWith(prefix)) return;
-  
-  let args = message.content.slice(prefix.length).trim().split(/ +/g);
+
+  if (!prefixRegex.test(message.content)) return;
+  const [, matchedPrefix] = message.content.match(prefixRegex);
+  let execute = message.content.slice(matchedPrefix.length).trim();
+  if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${duh}`);
+  let args = execute.trim().split(/ +/g);
   let msg = message.content.toLowerCase();
   let cmd = args.shift().toLowerCase();
   let sender = message.author;
