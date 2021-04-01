@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
     if (!client.config.owners.includes(message.author.id)) module = client.helps.array().filter(x => !x.hide);
 
     const embeds = [];
-    for (const mod of module) embeds.push(new Discord.MessageEmbed().addField(`${mod.name}`, mod.cmds.map(x => `\`${x}\``).join(" | ")));
+    for (const mod of module) embeds.push(new MessageEmbed().addField(`${mod.name}`, mod.cmds.map(x => `\`${x}\``).join(" | ")));
 
     new Pagination.Embeds()
     .setArray(embeds)
