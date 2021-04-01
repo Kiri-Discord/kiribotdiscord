@@ -7,6 +7,7 @@ exports.run = async (client, message, args) => {
     });
     const prefix = setting.prefix;
     const serverQueue = client.queue.get(message.guild.id);
+    if (!message.flags[0]) return message.channel.send(`wrong usage :( use \`${prefix}help auto-lyrics\` to learn more!`)
     if (message.flags[0] === "off") {
         if (serverQueue) {
             serverQueue.karaoke.isEnabled = false;
