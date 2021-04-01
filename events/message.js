@@ -46,7 +46,15 @@ module.exports = async (client, message) => {
   let execute = message.content.slice(matchedPrefix.length).trim();
   if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${duh}`);
   let args = execute.trim().split(/ +/g);
-  let msg = message.content.toLowerCase();
+  let toID = matchedPrefix.replace(/[<>@!]/g, "");
+  if (toID === client.user.id) {
+    const content = args.join(" ");
+    const prefixMention = new RegExp(`<@!?${client.user.id}>( |)$`);
+    if (!prefixMention.test(content)) {
+      message.mentions.users.sweep(user => user.id === client.user.id);
+    }
+  }
+
   let cmd = args.shift().toLowerCase();
   let sender = message.author;
   
