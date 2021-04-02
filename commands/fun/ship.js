@@ -3,18 +3,12 @@ const { MersenneTwister19937, integer } = require('random-js');
 exports.run = async (client, message, args) => {
     let first;
     let second;
-    if (args.length >= 2) {
-		if (message.mentions.users.size >= 2) {
-			const userArray = message.mentions.users.array();
-			first = userArray[0];
-			second = userArray[1];
-		} else {
-			first = message.mentions.users.first();
-			second = message.mentions.users.first();
-		}
+    if (args[1]) {
+        first = await getUserfromMention(args[0]);
+        second = await getUserfromMention(args[1]);
     } else {
         first = message.author;
-        second = message.mentions.users.first();
+        second = await getUserfromMention(args[0]);
     }
     if (!second) return message.reply('you must to mention someone!');
     if (first.id === client.user.id) return message.channel.send('well you decide it yourself tho');

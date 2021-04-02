@@ -17,6 +17,7 @@ const client = new sefy(({ disableMentions: 'everyone',  ws: { properties: { $br
 client.loadTopics('./assets/trivia/');
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
+require("./handler/getUserfromMention.js")(client);
 client.package = require("./package.json");
 client.on("warn", console.warn); 
 client.on("error", console.error);

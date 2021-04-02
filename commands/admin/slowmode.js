@@ -12,7 +12,6 @@ exports.run = async (client, message, args) => {
       time = args.slice(1).join(" ");
   
   if (!channel) time = args.join(" "), channel = message.channel;
-  // If the user doesn't includes the channel.
   
   if (message.flags[0] === "off") {
     channel.setRateLimitPerUser(0);
