@@ -54,10 +54,10 @@ module.exports = async (client, message) => {
     const prefixMention = new RegExp(`<@!?${client.user.id}>( |)$`);
     if (!prefixMention.test(content)) {
       message.mentions.users.sweep(user => user.id === client.user.id);
+      message.mentions.members.sweep(user => user.id === client.user.id);
     }
   }
 
-  
   message.flags = []
   while (args[0] && args[0][0] === "-") {
     message.flags.push(args.shift().slice(1)); 
