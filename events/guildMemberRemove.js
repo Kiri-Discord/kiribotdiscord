@@ -1,7 +1,7 @@
-const hugSchema = require('../model/hug')
-const punchSchema = require('../model/punch')
-const slapSchema = require('../model/slap')
-const patSchema = require('../model/pat')
+const hugSchema = require('../model/hug');
+const punchSchema = require('../model/punch');
+const slapSchema = require('../model/slap');
+const patSchema = require('../model/pat');
 
 module.exports = async (client, member) => {
 
