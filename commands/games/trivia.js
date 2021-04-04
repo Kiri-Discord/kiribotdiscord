@@ -1,4 +1,3 @@
-
 const { MessageEmbed, MessageCollector } = require('discord.js');
 const fs = require('fs');
 const YAML = require('yaml');

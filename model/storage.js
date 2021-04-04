@@ -46,7 +46,7 @@ const getStorage = async (user) => {
     } catch (e) {
         console.log(e)
         response.error = true
-        response.query = `There's been an error, please try again later`
+        response.query = `there was an error, please try again later :pensive:`
 
     }
 

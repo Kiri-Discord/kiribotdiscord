@@ -1,10 +1,6 @@
-const Discord = require("discord.js");
 const fs = require("fs");
 
 module.exports = client => {
-  client.commands = new Discord.Collection();
-  client.aliases = new Discord.Collection();
-  client.helps = new Discord.Collection();
   
   fs.readdir("./commands/", (err, categories) => {
     if (err) console.log(err)
@@ -25,12 +21,14 @@ module.exports = client => {
         files.forEach(file => {
           if (!file.endsWith(".js")) return;
           let prop = require(`../commands/${category}/${file}`);
-          let cmdName = file.split(".")[0];
           
-          client.commands.set(prop.help.name, prop)
+          client.commands.set(prop.help.name, prop);
+          
+          client.allNameCmds.push(prop.help.name);
           
           prop.conf.aliases.forEach(alias => {
             client.aliases.set(alias, prop.help.name);
+            client.allNameCmds.push(alias);
           })
           
           client.helps.get(category).cmds.push(prop.help.name);

@@ -55,9 +55,10 @@ module.exports = async (client, guild) => {
     }, (err) => {
         if (err) console.error(err)
     });
-    
-
-  console.log(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  client.users.cache.get('617777631257034783').send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  client.channels.cache.get('774476096409436170').send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    console.log(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    client.users.cache.get('617777631257034783').send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    const logChannel1 = client.channels.cache.get('774476096409436170');
+    const logChannel2 = client.channels.cache.get('827954468779327489');
+    if (logChannel1) logChannel1.send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    if (logChannel2) logChannel2.send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 };

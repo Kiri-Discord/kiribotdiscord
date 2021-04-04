@@ -1,13 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const Pagination = require('discord-paginationembed');
-exports.run = async (client, message, args) => {
-
-  const setting = await client.dbguilds.findOne({
-    guildID: message.guild.id
-  });
-
-  const prefix = setting.prefix;
-  
+exports.run = async (client, message, args, prefix) => {  
   if (!args[0]) {
     let module = client.helps.array();
 
@@ -24,13 +17,17 @@ exports.run = async (client, message, args) => {
     .setPage(1)
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
-    .setDescription(`hi, i'm Sefy, [Sefiria](https://discord.gg/D6rWrvS)'s exclusive assistant :D\nyou can use \`${prefix}help [command]\` to get more specific information about a command 😄\n\n*btw you can navigate thru my commands using the emojis below*`)
+    .setDescription(`
+    hi, i'm Sefy, a bot from [Sefiria](https://discord.gg/D6rWrvS) community ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}
+    you can use \`${prefix}help [command]\` to get more specific information about a command 😄
+    
+    *btw you can navigate thru my commands using the emojis below*
+    `)
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    .setFooter(client.user.username, client.user.displayAvatarURL())
+    .setFooter(`all of our command is community based, so consider joining Sefiria or our support server to suggest some!`)
     .setColor('#ffe6cc')
-    .setTimestamp(new Date())
     .setDeleteOnTimeout(true)
-    .setImage('https://i.ibb.co/h9jQkk0/christmas3.jpg')
+    .setImage('https://blackmirrorland.files.wordpress.com/2014/09/gloomy-anime-future-wallpaper-1920x1080.jpg')
     .build();
 
   } else {

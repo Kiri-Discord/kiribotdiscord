@@ -1,5 +1,6 @@
-const Discord = require("discord.js");
-const cooldowns = new Discord.Collection();
+const { findBestMatch } = require("string-similarity");
+const { Collection } = require("discord.js");
+const cooldowns = new Collection();
 
 module.exports = async (client, message) => {
 
@@ -34,17 +35,12 @@ module.exports = async (client, message) => {
   client.emit('experience', message);
   const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
-  
-  const staffsv = client.guilds.cache.get('774245101043187712') || client.guilds.cache.get('639028608417136651');
-
-  const duh = staffsv.emojis.cache.find(emoji => emoji.name === 'duh');
-  const sed = staffsv.emojis.cache.find(emoji => emoji.name === 'sed');
 
 
   if (!prefixRegex.test(message.content)) return;
   const [, matchedPrefix] = message.content.match(prefixRegex);
   let execute = message.content.slice(matchedPrefix.length).trim();
-  if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${duh}`);
+  if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
   let args = execute.split(/ +/g);
   let cmd = args.shift().toLowerCase();
   let sender = message.author;
@@ -62,23 +58,21 @@ module.exports = async (client, message) => {
   while (args[0] && args[0][0] === "-") {
     message.flags.push(args.shift().slice(1)); 
   }
-
-
-  let perms = [];
-  let permsme = [];
-
   
   
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-  if (!commandFile) return;
+  if (!commandFile) {
+    const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
+    return message.channel.send(`i don't remember having that commmand installed ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:'} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+  }
 
-  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${duh}`);
+  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 
   
   if (commandFile.conf.userPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.userPerms) {
       if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-        return message.reply(`sorry, you don't have ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission, so i can't do that ${sed}`);
+        return message.reply(`sorry, you don't have ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission, so i can't do that ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`);
       }
     }
   }
@@ -86,8 +80,8 @@ module.exports = async (client, message) => {
   if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.clientPerms) {
       if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-        return message.reply(`sorry, i don't have ${permsme.join(", ")} permission to do this for you ${sed}`).catch(() => {
-          message.author.send(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission in **${message.guild.name}** to do that for you ${sed}`).catch(() => {
+        return message.reply(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission to do this for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
+          message.author.send(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission in **${message.guild.name}** to do that for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
             return;
           })
         });
@@ -96,7 +90,7 @@ module.exports = async (client, message) => {
   }
   
 
-  if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Discord.Collection());
+  if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
   let member;
   
@@ -120,7 +114,7 @@ module.exports = async (client, message) => {
     
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
-      return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${sed}`).then(m => m.delete({ timeout: 5000 }));
+      return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).then(m => m.delete({ timeout: 5000 }));
     }
     
     timestamps.set(member.id, now);
@@ -129,7 +123,7 @@ module.exports = async (client, message) => {
 
   try {
     if (!commandFile) return;
-    commandFile.run(client, message, args, staffsv);
+    commandFile.run(client, message, args, prefix);
     console.log(`${sender.tag} (${sender.id}) ran a command: ${cmd}`);
   } catch (error) {
     console.error(error);
