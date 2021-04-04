@@ -62,11 +62,10 @@ exports.run = async (client, message, args, prefix) => {
       let amount = getRandomInt(5, 20);
       const storageAfter = await client.money.findOneAndUpdate({
           guildId: message.guild.id,
-          userId: message.author.id
+          userId: winner.id
       }, {
           guildId: message.guild.id,
-          userId: message.author.id,
-          lastDaily: Date.now(),
+          userId: winner.id,
           $inc: {
               balance: amount,
           }, 
@@ -86,8 +85,8 @@ exports.run = async (client, message, args, prefix) => {
     else {
       answerEmbed
       .setFooter('better luck next time :(')
-      .setTitle(`sorry, time\'s up! ${sadEmoji}`)
-      .setDescription(`the correct answer was: \`${correct}\``)
+      .setTitle(`sorry, time\'s up!`)
+      .setDescription(`the correct answer was: \`${correct}\` ${sadEmoji}`)
       message.channel.send(answerEmbed);
     }
     return client.games.delete(message.channel.id);
