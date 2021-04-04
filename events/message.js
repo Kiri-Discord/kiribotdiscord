@@ -7,11 +7,12 @@ module.exports = async (client, message) => {
   if (message.author.bot || message.author === client.user) return;
 
   let prefix;
+  let setting;
 
   if (message.channel.type === "dm") {
     prefix = client.config.prefix
   } else {
-    const setting = await client.dbguilds.findOne({
+    setting = await client.dbguilds.findOne({
       guildID: message.guild.id
     });
     if (!setting) {
@@ -32,7 +33,9 @@ module.exports = async (client, message) => {
       };
     }
   }
-  client.emit('experience', message);
+  if (setting.enableLevelings && message.channel.type === "text") {
+    client.emit('experience', message, setting);
+  }
   const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 
@@ -44,10 +47,9 @@ module.exports = async (client, message) => {
   let args = execute.split(/ +/g);
   let cmd = args.shift().toLowerCase();
   let sender = message.author;
-  let toID = matchedPrefix.replace(/[<>@!]/g, "");
-  if (toID === client.user.id) {
+  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
+  if (prefixMention.test(matchedPrefix)) {
     const content = args.join(" ");
-    const prefixMention = new RegExp(`<@!?${client.user.id}>( |)$`);
     if (!prefixMention.test(content) && message.channel.type !== "dm") {
       message.mentions.users.sweep(user => user.id === client.user.id);
       message.mentions.members.sweep(user => user.id === client.user.id);

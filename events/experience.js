@@ -1,22 +1,22 @@
-module.exports = async (client, message) => {
+module.exports = async (client, message, setting) => {
     if (message.channel.type === "dm") return;
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
+
     let prefix = setting.prefix;
+
     const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
+
     const ignorechannel = setting.ignoreLevelingsChannelID;
     const verifychannel = setting.verifyChannelID
 
     let recent = client.recent;
+
     if (prefixRegex.test(message.content)) return;
     if (ignorechannel && message.channel.id === ignorechannel) return;
     if (verifychannel && message.channel.id === verifychannel) return;
     if (message.content.match(prefixRegex)) return;
     
 
-    // If the user has an exp. cooldown, ignore it.
     if (recent.has(message.author.id)) return;
 
     let userprof = await client.dbleveling.findOneAndUpdate({
@@ -34,7 +34,6 @@ module.exports = async (client, message) => {
     })
 
 
-    // Notice them if the user has leveled/ranked up.
     if (client.leveling.getLevel(userprof.xp) > userprof.level) {
         await client.dbleveling.findOneAndUpdate({
             guildId: message.guild.id,

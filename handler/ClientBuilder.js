@@ -1,6 +1,5 @@
 const express = require('express');
 const { Client, Collection } = require("discord.js");
-const { readdir } = require('fs');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const RedisClient = require('../util/redis');
 const VerifyTimer = require('../features/redis/verify');
@@ -30,30 +29,5 @@ module.exports = class sefy extends Client {
     this.voicequeue = new Collection();
     this.pokemon = new PokemonStore();
     this.verifytimers = new VerifyTimer(this);
-        /** 
-     * 
-     * @type {Array<string>}
-     */
-    this.topics = [];
-    
-    
-  }
-    /**
-   * 
-   * @param {string} path 
-   */
-  loadTopics(path) {
-    readdir(path, (err, files) => {
-      if (err) console.error(err);
-      files = files.filter(f => f.split('.').pop() === 'yml');
-      if (files.length === 0) return console.log('No topics found');
-      console.log(`${files.length} topic(s) found...`);
-      files.forEach(f => {
-        const topic = f.substring(0, f.indexOf('.'));
-        this.topics.push(topic);
-        console.log(`Loading topic: ${topic}`);
-      });
-    });
-    return this;
   }
 }

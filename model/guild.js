@@ -9,6 +9,7 @@ const guildSchema = mongoose.Schema({
     verifyChannelID: String,
     verifyRole: String,
     ignoreLevelingsChannelID: String,
+    enableLevelings: Boolean,
     verifyTimeout: Number,
 });
 

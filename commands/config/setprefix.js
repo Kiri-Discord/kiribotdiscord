@@ -1,10 +1,7 @@
-exports.run = async (client, message, args) => {
-  const settings = await client.dbguilds.findOne({
-    guildID: message.guild.id
-  });
+exports.run = async (client, message, args, prefix) => {
 
   if (args.length < 1) {
-      return message.channel.send({embed: {color: "f3f3f3", description: `ℹ️ my current guild prefix here is \`${settings.prefix}\` you could use \`${settings.prefix}setprefix <prefix>\` to change it :D`}}).then(m => m.delete({timeout: 10000}));
+      return message.channel.send({embed: {color: "f3f3f3", description: `ℹ️ my current guild prefix here is \`${prefix}\` you could use \`${prefix}setprefix <prefix>\` to change it :D`}}).then(m => m.delete({timeout: 10000}));
   };
 
   await client.dbguilds.findOneAndUpdate({

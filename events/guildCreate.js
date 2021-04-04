@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Guild = require('../model/guild');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (client, guild) => {
 
@@ -10,19 +10,18 @@ module.exports = async (client, guild) => {
 
   if (guildexist) return;
 
-
   const newGuild = new Guild({
     _id: mongoose.Types.ObjectId(),
     guildID: guild.id,
-    guildName: guild.name,
     prefix: client.config.prefix,
+    enableLevelings: false
   })
 
   newGuild.save();
 
   const prefix = client.config.prefix;
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
   .setTitle('Thanks for inviting me :D')
   .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + `${prefix}` + `\n\nType ${prefix}help to see a full list of commands. Have fun!`)
   .setColor('#DAF7A6')

@@ -1,11 +1,7 @@
 const Guild = require('../../model/music');
 const ISO6391 = require('iso-639-1');
 
-exports.run = async (client, message, args) => {
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    const prefix = setting.prefix;
+exports.run = async (client, message, args, prefix) => {
     const serverQueue = client.queue.get(message.guild.id);
     if (!message.flags[0]) return message.channel.send(`wrong usage :( use \`${prefix}help auto-lyrics\` to learn more!`)
     if (message.flags[0] === "off") {
