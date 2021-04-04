@@ -31,10 +31,10 @@ module.exports = async (client, message) => {
           return client.emit('verify', message);
         }
       };
+      if (setting.enableLevelings && message.channel.type === "text") {
+        client.emit('experience', message, setting);
+      }
     }
-  }
-  if (setting.enableLevelings && message.channel.type === "text") {
-    client.emit('experience', message, setting);
   }
   const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
