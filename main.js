@@ -17,8 +17,9 @@ const sefy = require("./handler/ClientBuilder.js");
 
 const client = new sefy(({ 
 	disableMentions: 'everyone', 
-	messageCacheLifetime: 300,
-	messageSweepInterval: 120,
+	messageCacheLifetime: 120,
+	messageSweepInterval: 45,
+	messageCacheMaxSize: 100,
 	ws: { 
 		properties: { 
 			$browser: "Discord Android" 
