@@ -56,7 +56,7 @@
     "semver": "^7.3.5",
     "simple-youtube-api": "^5.2.1",
     "something-random-on-discord": "1.0.0",
-    "soundcloud-downloader": "^0.2.4",
+    "soundcloud-downloader": "^1.0.0",
     "string-progressbar": "^1.0.3",
     "string-similarity": "^4.0.4",
     "subtitle": "^4.1.0",
