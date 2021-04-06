@@ -42,7 +42,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.33",
-    "mongoose": "^5.12.2",
+    "mongoose": "^5.12.3",
     "mquery": "^3.2.4",
     "namemc": "^1.7.0",
     "node-gyp": "^7.1.2",
