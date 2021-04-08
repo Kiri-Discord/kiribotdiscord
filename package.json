@@ -47,7 +47,7 @@
     "namemc": "^1.7.4",
     "node-gyp": "^8.0.0",
     "node-pre-gyp": "^0.17.0",
-    "node-superfetch": "^0.1.11",
+    "node-superfetch": "^0.2.2",
     "parse-ms": "^2.1.0",
     "querystring": "^0.2.1",
     "random-anime": "^1.0.6",
