@@ -44,7 +44,7 @@
     "moment-timezone": "^0.5.33",
     "mongoose": "^5.12.3",
     "mquery": "^3.2.5",
-    "namemc": "^1.7.0",
+    "namemc": "^1.7.4",
     "node-gyp": "^8.0.0",
     "node-pre-gyp": "^0.17.0",
     "node-superfetch": "^0.1.11",
