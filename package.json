@@ -45,7 +45,7 @@
     "mongoose": "^5.12.3",
     "mquery": "^3.2.5",
     "namemc": "^1.7.0",
-    "node-gyp": "^7.1.2",
+    "node-gyp": "^8.0.0",
     "node-pre-gyp": "^0.17.0",
     "node-superfetch": "^0.1.11",
     "parse-ms": "^2.1.0",
