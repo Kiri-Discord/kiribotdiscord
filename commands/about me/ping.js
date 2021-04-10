@@ -1,6 +1,5 @@
 exports.run = async (client, message, args) => {
-	message.channel.send('pong!');
-	
+	return message.channel.send(`🏓 **pong!** took me roughly **${- (Date.now() - message.createdTimestamp)}ms** to hit back, and the Discord API has a latency of **${Math.round(client.ws.ping)}ms**!`);
 };
 exports.help = {
 	name: "ping",

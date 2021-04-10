@@ -1,9 +1,7 @@
 exports.run = async (client, message, args) => {
-	message.channel.send('boop!');
-	
+  const blessEmoji = client.customEmojis.get('bless') ? client.customEmojis.get('bless') : '✔️' ;
+	return message.channel.send(`${blessEmoji} **boop!** took me **${- (Date.now() - message.createdTimestamp)}ms** to reply, and the Discord API has a latency of **${Math.round(client.ws.ping)}ms**!`);
 };
-
-
 
 exports.help = {
   name: "beep",
