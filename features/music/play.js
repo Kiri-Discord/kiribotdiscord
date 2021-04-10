@@ -72,7 +72,6 @@ module.exports = {
         queue.songs.shift();
         module.exports.play(queue.songs[0], message, client);
       }
-
       console.error(error);
       return message.channel.send('there was an error while playing the music queue :pensive: skipping to next song in the queue...\n*tips: the music should be less than 3 hours and MUST not be a live stream*');
     }
@@ -83,17 +82,12 @@ module.exports = {
             clearTimeout(x);
         });
     }
-    if (playingMessage) {
-      playingMessage.reactions.removeAll().catch(console.error)
-    }
       client.queue.delete(message.guild.id);
     });
 
     const dispatcher = queue.connection
       .play(stream, { type: streamType })
       .on("finish", () => {
-        if (collector && !collector.ended) collector.stop();
-
         if (queue.loop) {
           let lastSong = queue.songs.shift();
           queue.songs.push(lastSong);
@@ -121,119 +115,12 @@ module.exports = {
       .setColor('RANDOM')
       .addField('Duration', humanizeDuration(duration), true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
-      .setAuthor('▶️ Now playing', client.user.displayAvatarURL())
+      .setAuthor('Now playing', song.requestedby.displayAvatarURL())
       .setThumbnail(song.thumbnail)
       .addField('Requested by', song.requestedby, true)
-      var playingMessage = await queue.textChannel.send(embed);
-      await playingMessage.react("⏭");
-      await playingMessage.react("⏯");
-      await playingMessage.react("🔇");
-      await playingMessage.react("🔉");
-      await playingMessage.react("🔊");
-      await playingMessage.react("🔁");
-      await playingMessage.react("⏹");
+      await queue.textChannel.send(embed);
     } catch (error) {
       console.error(error);
     }
-
-    const filter = (reaction, user) => user.id !== client.user.id;
-    var collector = playingMessage.createReactionCollector(filter, {
-      time: song.duration > 0 ? song.duration * 1000 : 600000
-    });
-
-    collector.on("collect", (reaction, user) => {
-      if (!queue) return;
-      const member = message.guild.member(user);
-
-      switch (reaction.emoji.name) {
-        case "⏭":
-          queue.playing = true;
-          reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
-          queue.connection.dispatcher.end();
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `⏩ ${user} has skipped the current song.`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          collector.stop();
-          break;
-
-        case "⏯":
-          reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
-          if (queue.playing) {
-            queue.playing = !queue.playing;
-            queue.connection.dispatcher.pause(true);
-            queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} has paused the music ⏸`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          } else {
-            queue.playing = !queue.playing;
-            queue.connection.dispatcher.resume();
-            queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} resumed the music! ▶`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          }
-          break;
-
-        case "🔇":
-          reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          if (queue.volume <= 0) {
-            queue.volume = 100;
-            queue.connection.dispatcher.setVolumeLogarithmic(100 / 100);
-            queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} unmuted the music! 🔊`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          } else {
-            queue.volume = 0;
-            queue.connection.dispatcher.setVolumeLogarithmic(0);
-            queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} muted the music! 🔇`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          }
-          break;
-
-        case "🔉":
-          reaction.users.remove(user).catch(console.error);
-          if (queue.volume == 0) return;
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
-          if (queue.volume - 10 <= 0) queue.volume = 0;
-          else queue.volume = queue.volume - 10;
-          queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} decreased the volume, the volume is now ${queue.volume}% 🔉`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          break;
-
-        case "🔊":
-          reaction.users.remove(user).catch(console.error);
-          if (queue.volume == 100) return;
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
-          if (queue.volume + 10 >= 100) queue.volume = 100;
-          else queue.volume = queue.volume + 10;
-          queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} increased the volume, the volume is now ${queue.volume}% 🔊`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          break;
-
-        case "🔁":
-          reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
-          queue.loop = !queue.loop;
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `loop is now ${queue.loop ? "on" : "off"} for the current song 🔁`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);
-          break;
-
-        case "⏹":
-          reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return queue.textChannel.send({embed: {color: "f3f3f3", description: `${user}, you must to join ${queue.channel} where i am playing music first!`}}).then(m => m.delete({ timeout: 4000 })).catch(console.error);;
-          queue.songs = [];
-          queue.textChannel.send({embed: {color: "f3f3f3", description: `${user} stopped the music! 🛑`}}).catch(console.error);
-          try {
-            queue.connection.dispatcher.end();
-          } catch (error) {
-            console.error(error);
-            queue.connection.disconnect();
-          }
-          collector.stop();
-          break;
-
-        default:
-          reaction.users.remove(user).catch(console.error);
-          break;
-      }
-    });
-    collector.on("end", () => {
-      playingMessage.reactions.removeAll().catch(console.error);
-      if (PRUNING && playingMessage && !playingMessage.deleted) {
-        playingMessage.delete({ timeout: 3000 }).catch(console.error);
-      }
-    });
   }
 };

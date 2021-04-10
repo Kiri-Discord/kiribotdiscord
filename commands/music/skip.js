@@ -4,17 +4,17 @@ exports.run = async (client, message, args) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.reply('there is nothing to skip since there isn\'t anything in the queue :grimacing:');
     if (!canModifyQueue(message.member)) return message.reply(`you are not in the voice channel where i\'m *playing* music! join ${queue.channel} to listen :wink:`);
-    let collector;
     if (queue.channel.members.size > 2) {
-      let leftMembers = queue.channel.members.size - 2;
+      let listening = queue.channel.members.size;
+      let leftMembers = listening - 2;
       let vote = 0;
-      await message.channel.send(`there are **${queue.channel.members.size - 2}** people listening as well! to skip, type \`skip\` ⏭`);
-      collector = new MessageCollector(message.channel, msg => {
-        if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id) return true;
+      await message.channel.send(`there are **${leftMembers}** people listening as well! to skip, type \`skip\` ⏭`);
+      const collector = new MessageCollector(message.channel, msg => {
+        if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id && !msg.author.bot) return true;
       }, { time: 15000 });
       collector.on('collect', async msg => {
         vote = vote + 1;
-        if (vote = leftMembers) {
+        if (vote === leftMembers) {
           await collector.stop();
           return skip(queue, message);
         }
