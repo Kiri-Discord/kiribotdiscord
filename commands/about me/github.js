@@ -9,10 +9,7 @@ exports.run = async (client, message, args) => {
 	.setColor('#7E7D7C')
 	.setAuthor('GitHub', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
 	.setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-
-
-	message.channel.send(embed);
-	
+	return message.channel.send(embed);
 };
 exports.help = {
 	name: "github",
