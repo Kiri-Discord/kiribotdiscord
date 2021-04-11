@@ -1,6 +1,5 @@
 const web = require('../util/web.js');
-const moment = require('moment');
-require('moment-duration-format');
+const { randomStatus } = require('../util/util')
 
 module.exports = async client => {
   if (client.user.id !== '769411215855190026') {
@@ -32,15 +31,10 @@ module.exports = async client => {
   await client.verifytimers.fetchAll();
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
   web.init(client);
+  const activity = randomStatus(client);
+  client.user.setActivity(activity.text, { type: activity.type });
   client.setInterval(() => {
-    let activities = [];
-    activities.push(
-      { text: () => `stayed awake for ${moment.duration(client.uptime).format('m [mins]')}`, type: 'PLAYING' },
-      { text: () => `@Sefy`, type: 'LISTENING' },
-      { text: () => `to your heart`, type: 'LISTENING' },
-    );
-		const activity = activities[Math.floor(Math.random() * activities.length)];
-		const text = typeof activity.text === 'function' ? activity.text() : activity.text;
-		client.user.setActivity(text, { type: activity.type });
+    const activity = randomStatus(client);
+		client.user.setActivity(activity.text, { type: activity.type });
 	}, 180000);
 };
