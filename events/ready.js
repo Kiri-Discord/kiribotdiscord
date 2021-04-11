@@ -27,18 +27,19 @@ module.exports = async client => {
     });
     console.log(`[DISCORD] Added ${client.customEmojis.size} custom emojis`)
   };
-  
+
   console.log(`[DISCORD] Fetching all unverified members..`);
   await client.verifytimers.fetchAll();
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
   web.init(client);
-  client.activities.push(
-    { text: () => `stayed awake for ${moment.duration(client.uptime).format('H [hrs]')}`, type: 'PLAYING' },
-    { text: () => `@Sefy`, type: 'LISTENING' },
-    { text: () => `to your heart`, type: 'LISTENING' },
-	);
   client.setInterval(() => {
-		const activity = client.activities[Math.floor(Math.random() * client.activities.length)];
+    let activities = [];
+    activities.push(
+      { text: () => `stayed awake for ${moment.duration(client.uptime).format('H [hrs]')}`, type: 'PLAYING' },
+      { text: () => `@Sefy`, type: 'LISTENING' },
+      { text: () => `to your heart`, type: 'LISTENING' },
+    );
+		const activity = activities[Math.floor(Math.random() * activities.length)];
 		const text = typeof activity.text === 'function' ? activity.text() : activity.text;
 		client.user.setActivity(text, { type: activity.type });
 	}, 180000);

@@ -10,7 +10,6 @@ module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
     this.webapp = app;
-    this.activities = [];
     this.queue = new Map();
     this.commands = new Collection();
     this.redis = RedisClient ? RedisClient.db : null;
