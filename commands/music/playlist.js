@@ -7,13 +7,9 @@ const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID, MAX_PLAYLIST_SIZE, DEFAULT_VOLUME
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 
-exports.run = async (client, message, args) => {
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
+exports.run = async (client, message, args, prefix) => {
     const current = client.voicequeue.get(message.guild.id);
     if (current) return message.inlineReply(current.prompt);
-    const prefix = setting.prefix;
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
     if (!channel) return message.inlineReply('you are not in a voice channel!');
@@ -94,33 +90,37 @@ exports.run = async (client, message, args) => {
         thumbnail = newSongs[0].thumbnail;
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
-        console.error(error);
         return message.inlineReply("i can't find the playlist from the URL you provided :(").catch(console.error);
       }
     } else if (scdl.isValidUrl(url)) {
-      if (url.includes("/sets/")) {
-        message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving playlist data...**`}})
-        playlist = await scdl.getSetInfo(url, SOUNDCLOUD_CLIENT_ID);
-        videos = playlist.tracks.splice(0, MAX_PLAYLIST_SIZE - 1).map((track) => {
-          return (song = {
-              title: track.title,
-              url: track.permalink_url,
-              requestedby: message.author,
-              thumbnail: track.artwork_url,
-              authorurl: track.user.permalink_url,
-              author: track.user.username,
-              duration: null,
-              type: 'sc',
-          })
-        });
-        newSongs = videos;
-        thumbnail = newSongs[0].thumbnail;
-        playlisturl = url;
+      try {
+        if (url.includes("/sets/")) {
+          message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving playlist data...**`}})
+          playlist = await scdl.getSetInfo(url, SOUNDCLOUD_CLIENT_ID);
+          videos = playlist.tracks.splice(0, MAX_PLAYLIST_SIZE - 1).map((track) => {
+            return (song = {
+                title: track.title,
+                url: track.permalink_url,
+                requestedby: message.author,
+                thumbnail: track.artwork_url,
+                authorurl: track.user.permalink_url,
+                author: track.user.username,
+                duration: null,
+                type: 'sc',
+            })
+          });
+          newSongs = videos;
+          thumbnail = newSongs[0].thumbnail;
+          playlisturl = url;
+        }
+      } catch (error) {
+        return message.inlineReply("i can't find any playlist with that URL :pensive:").catch(console.error);
       }
     } else {
       try {
         message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving playlist data...**`}})
         const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
+        if (!results[0]) return message.inlineReply("i can't find any playlist with that search query :pensive:").catch(console.error);
         playlist = results[0];
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE, { part: "snippet" })
         newSongs = videos

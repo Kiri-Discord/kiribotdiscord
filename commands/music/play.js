@@ -10,12 +10,7 @@ const humanizeDuration = require("humanize-duration");
 const Guild = require('../../model/music');
 const { verify, verifyLanguage } = require('../../util/util');
 
-exports.run = async (client, message, args) => {
-
-    const setting = await client.dbguilds.findOne({
-      guildID: message.guild.id
-    });
-    const prefix = setting.prefix;
+exports.run = async (client, message, args, prefix) => {
     const current = client.voicequeue.get(message.guild.id);
     if (current) return message.inlineReply(current.prompt);
     const { channel } = message.member.voice;
@@ -80,7 +75,6 @@ exports.run = async (client, message, args) => {
       queueConstruct.karaoke.isEnabled = false;
       queueConstruct.volume = DEFAULT_VOLUME;
     }
-    let songInfo = null;
     let song = null;
     
     if (mobileScRegex.test(url)) {
@@ -93,7 +87,6 @@ exports.run = async (client, message, args) => {
           }
         });
       } catch (error) {
-        console.error(error);
         return message.inlineReply('there was an error when i tried to get the song from that link :pensive:').catch(console.error);
       }
       return message.channel.send("following url redirection...").catch(console.error);
@@ -101,7 +94,7 @@ exports.run = async (client, message, args) => {
     if (urlValid) {
       try {
         message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **retrieving song data...**`}})
-        songInfo = await ytdl.getInfo(url);
+        const songInfo = await ytdl.getInfo(url);
         duration = songInfo.videoDetails.lengthSeconds * 1000
         song = {
           authorurl: songInfo.videoDetails.ownerProfileUrl,
@@ -114,8 +107,7 @@ exports.run = async (client, message, args) => {
           type: 'yt'
         };
       } catch (error) {
-        console.error(error);
-        return message.inlineReply('there was an error when i tried to get the info of that song, sorry :(').catch(console.error);
+        return message.inlineReply("i can't find any song with that URL :pensive:").catch(console.error);
       }
     } else if (scRegex.test(url)) {
       try {
@@ -131,16 +123,15 @@ exports.run = async (client, message, args) => {
           thumbnail: trackInfo.artwork_url,
           duration: null
         };
-
       } catch (error) {
-        console.error(error);
-        return message.inlineReply('there was an error when i tried to get the info of that song, sorry :(').catch(console.error);
+        return message.inlineReply("i can't find any song with that URL :pensive:").catch(console.error);
       }
     } else {
       try {
         message.channel.send({embed: {color: "f3f3f3", description: `:mag_right: **searching** \`${search}\` **on YouTube...**`}})
         const results = await youtube.searchVideos(search, 1, { part: "snippet" });
-        songInfo = await ytdl.getInfo(results[0].url);
+        if (!results[0]) return message.inlineReply("i can't find any song with that search query :pensive:").catch(console.error);
+        const songInfo = await ytdl.getInfo(results[0].url);
         duration = songInfo.videoDetails.lengthSeconds * 1000
         song = {
           authorurl: songInfo.videoDetails.ownerProfileUrl,
@@ -153,7 +144,6 @@ exports.run = async (client, message, args) => {
           type: 'yt'
         };
       } catch (error) {
-        console.error(error);
         return message.inlineReply('there was an error when i tried to get the info of that song, sorry :(').catch(console.error);
       }
     }
