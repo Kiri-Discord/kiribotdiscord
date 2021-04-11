@@ -35,7 +35,7 @@ module.exports = async client => {
   client.setInterval(() => {
     let activities = [];
     activities.push(
-      { text: () => `stayed awake for ${moment.duration(client.uptime).format('H [hrs]')}`, type: 'PLAYING' },
+      { text: () => `stayed awake for ${moment.duration(client.uptime).format('m [mins]')}`, type: 'PLAYING' },
       { text: () => `@Sefy`, type: 'LISTENING' },
       { text: () => `to your heart`, type: 'LISTENING' },
     );
