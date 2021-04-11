@@ -1,48 +1,42 @@
 const { MessageEmbed, Util } = require('discord.js');
 
 exports.run = async (client, message, args) => {
-    try {
-        const icon = message.guild.iconURL({size: 4096, dynamic: true});
-        let notAnimated = []
-        let animated = []
+  const icon = message.guild.iconURL({size: 4096, dynamic: true});
+  let notAnimated = []
+  let animated = []
 
-        await message.guild.emojis.cache.forEach(async emoji => {
-            if (emoji.animated) animated.push(emoji.toString())
-            else notAnimated.push(emoji.toString())
-        })
+  await message.guild.emojis.cache.forEach(async emoji => {
+      if (emoji.animated) animated.push(emoji.toString())
+      else notAnimated.push(emoji.toString())
+  })
 
-        if (!animated[0]) animated = ['None']
-        if (!notAnimated[0]) notAnimated = ['None'];
-        const allEmojis = `
-        **Animated:**
-        ${animated.join(' ')}
+  if (!animated[0]) animated = ['None']
+  if (!notAnimated[0]) notAnimated = ['None'];
+  const allEmojis = `
+  **Animated:**
+  ${animated.join(' ')}
 
-        **Not animated:**
-        ${notAnimated.join(' ')}
-        `;
-        const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2048 });
-        const embed = new MessageEmbed()
-        .setDescription(first)
-        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-        .setColor('#ffe6cc')
-        .setThumbnail(icon)
-        .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
-        if (rest.length) {
-          const embed1 = new MessageEmbed()
-          .setTimestamp()
-          .setColor('#ffe6cc')
-          await message.channel.send(embed);
-          for (const text of rest) {
-            embed1.setDescription(text)
-            await message.channel.send(embed1)
-          }
-        } else {
-          embed.setTimestamp()
-          return message.channel.send(embed);
-        }
-    } catch (err) {
-        return message.reply('there was an error while sending you all the emojis on this server, sorry about that :(');
+  **Not animated:**
+  ${notAnimated.join(' ')}
+  `;
+  const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2048 });
+  const embed = new MessageEmbed()
+  .setDescription(first)
+  .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+  .setColor('#ffe6cc')
+  .setThumbnail(icon)
+  .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
+  if (rest.length) {
+    const embed1 = new MessageEmbed()
+    .setColor('#ffe6cc')
+    await message.channel.send(embed);
+    for (const text of rest) {
+      embed1.setDescription(text)
+      await message.channel.send(embed1)
     }
+  } else {
+    return message.channel.send(embed);
+  }
 }
 exports.help = {
   name: "emojis",
