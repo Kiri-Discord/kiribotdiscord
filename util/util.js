@@ -2,8 +2,7 @@ const { decode: decodeHTML } = require('html-entities');
 const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', 'oui', 'はい', 'correct'];
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 const ISO6391 = require('iso-639-1');
-const moment = require('moment');
-require('moment-duration-format');
+const ms = require('ms');
 
 module.exports = class util {
 	static shortenText(text, maxLength) {
@@ -176,7 +175,7 @@ module.exports = class util {
 	static randomStatus(client) {
 		const activities = [
 			{
-				text: `awake for ${moment.duration(client.uptime).format('m [mins]')}`,
+				text: `awake for ${ms(client.uptime)}`,
 				type: 'PLAYING'
 			},
 			{

@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
     let createdate = moment.utc(mention.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); 
     let joindate = moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); 
     let status = mention.user.presence.status;
-    let avatar = mention.user.avatarURL({size: 4096, dynamic: true}); 
+    let avatar = mention.user.displayAvatarURL({size: 4096, dynamic: true}); 
     
     const embed = new MessageEmbed()
     .setAuthor(mention.user.tag, avatar)

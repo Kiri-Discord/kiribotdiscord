@@ -18,13 +18,13 @@ exports.run = async (client, message, args, prefix) => {
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
     .setDescription(`
-    hi, i'm Sefy, a bot from [Sefiria](https://discord.gg/D6rWrvS) community ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}
+    hi, i'm Sefy, just an another wandering bot ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}
     you can use \`${prefix}help [command]\` to get more specific information about a command 😄
     
     *btw you can navigate thru my commands using the emojis below*
     `)
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    .setFooter(`all of our command is community based, so consider joining Sefiria or our support server to suggest some!`)
+    .setFooter(`all of our command is community based, so consider joining our server with ${prefix}invite!`)
     .setColor('#ffe6cc')
     .setDeleteOnTimeout(true)
     .setImage('https://blackmirrorland.files.wordpress.com/2014/09/gloomy-anime-future-wallpaper-1920x1080.jpg')
