@@ -88,7 +88,6 @@ exports.run = async (client, message, args) => {
     if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
-
     const game = new Game(message, challenged, args);
     game.run();
 }

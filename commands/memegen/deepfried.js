@@ -25,22 +25,6 @@ exports.run = async (client, message, args) => {
     }
 
 }
-
-exports.help = {
-    name: "deepfried",
-    description: "fry something on Discord!\nno clickbait",
-    usage: "deepfried <image attachment>",
-    example: "deepfried"
-};
-
-exports.conf = {
-    aliases: ["deep-fried"],
-    cooldown: 6,
-    guildOnly: true,
-    userPerms: [],
-	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
-}
-
 function contrast(ctx, x, y, width, height) {
     const data = ctx.getImageData(x, y, width, height);
     const factor = (259 / 100) + 1;
@@ -52,7 +36,7 @@ function contrast(ctx, x, y, width, height) {
     }
     ctx.putImageData(data, x, y);
     return ctx;
-}
+};
 
 function desaturate(ctx, level, x, y, width, height) {
     const data = ctx.getImageData(x, y, width, height);
@@ -67,4 +51,18 @@ function desaturate(ctx, level, x, y, width, height) {
     }
     ctx.putImageData(data, x, y);
     return ctx
-}
+};
+exports.help = {
+    name: "deepfried",
+    description: "fry something on Discord!\nno clickbait",
+    usage: "deepfried <image attachment>",
+    example: "deepfried"
+};
+
+exports.conf = {
+    aliases: ["deep-fried"],
+    cooldown: 6,
+    guildOnly: true,
+    userPerms: [],
+	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
+};
