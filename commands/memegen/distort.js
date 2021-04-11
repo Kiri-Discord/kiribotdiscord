@@ -11,13 +11,13 @@ exports.run = async (client, message, args) => {
   const prefix = setting.prefix;
 
   let attachments = message.attachments.array();
-  if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-  else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+  if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+  else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
   
 	try {
         message.channel.startTyping(true); 
         let distort_level = args[0];
-        if (isNaN(distort_level)) return message.reply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``).then(() => message.channel.stopTyping(true)).then(m => m.delete({ timeout: 5000 }));
+        if (isNaN(distort_level)) return message.inlineReply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``).then(() => message.channel.stopTyping(true)).then(m => m.delete({ timeout: 5000 }));
         const { body } = await request.get(attachments[0].url);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send({ files: [{ attachment, name: 'greyscale.png' }] });
     } catch (err) {
         await message.channel.stopTyping(true);
-        return message.reply(`sorry :( i got an error. try again later! can you check the image files?`);
+        return message.inlineReply(`sorry :( i got an error. try again later! can you check the image files?`);
     }
 };
 

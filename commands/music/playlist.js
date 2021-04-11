@@ -12,18 +12,18 @@ exports.run = async (client, message, args) => {
         guildID: message.guild.id
     });
     const current = client.voicequeue.get(message.guild.id);
-    if (current) return message.reply(current.prompt);
+    if (current) return message.inlineReply(current.prompt);
     const prefix = setting.prefix;
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
-    if (!channel) return message.reply('you are not in a voice channel!');
-    if (!channel.joinable) return message.reply("i can't join your voice channel :( check my perms pls");
+    if (!channel) return message.inlineReply('you are not in a voice channel!');
+    if (!channel.joinable) return message.inlineReply("i can't join your voice channel :( check my perms pls");
 
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
-        return message.reply(`i have already been playing music to someone in your server! join \`#${voicechannel.name}\` to listen :smiley:`).catch(console.error);
+        return message.inlineReply(`i have already been playing music to someone in your server! join \`#${voicechannel.name}\` to listen :smiley:`).catch(console.error);
     };
-    if (!args.length) return message.reply(`you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:`).catch(console.error);
+    if (!args.length) return message.inlineReply(`you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:`).catch(console.error);
 
     const musicSettings = await Guild.findOne({
       guildId: message.guild.id
@@ -45,12 +45,12 @@ exports.run = async (client, message, args) => {
     if (musicSettings) {
       queueConstruct.karaoke.isEnabled = false;
       queueConstruct.volume = musicSettings.volume;
-      const channel = client.channels.cache.get(musicSettings.KaraokeChannelID);
+      const channel = message.guild.channels.cache.get(musicSettings.KaraokeChannelID);
       if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
         message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue :wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}lyrics -off` }});
         const verification = await verify(message.channel, message.author, { time: 10000 });
         if (verification) {
-          await message.reply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' }}});
+          await message.inlineReply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' }}});
           const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
           if (response.isVerify) {
             queueConstruct.karaoke.languageCode = response.choice;
@@ -95,7 +95,7 @@ exports.run = async (client, message, args) => {
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
-        return message.reply("i can't find the playlist from the URL you provided :(").catch(console.error);
+        return message.inlineReply("i can't find the playlist from the URL you provided :(").catch(console.error);
       }
     } else if (scdl.isValidUrl(url)) {
       if (url.includes("/sets/")) {
@@ -141,7 +141,7 @@ exports.run = async (client, message, args) => {
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
-        return message.reply('there was an error when i tried to get the info of that playlist, sorry :(').catch(console.error);
+        return message.inlineReply('there was an error when i tried to get the info of that playlist, sorry :(').catch(console.error);
       }
     }
 

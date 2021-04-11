@@ -22,13 +22,13 @@ exports.conf = {
 
 exports.run = async (client, message, args) => {
 	const current = client.games.get(message.channel.id);
-	if (current) return message.reply(current.prompt);
+	if (current) return message.inlineReply(current.prompt);
 	const opponent = message.mentions.users.first();
 	const time = args[1] || 10;
-	if (isNaN(time) || time > 15 || time < 3 ) return message.reply('the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(')
-	if (!opponent) return message.reply('you should tag someone to play :(')
-	if (opponent.bot) return message.reply('since bots are too smart, i couldn\'t allow that :(');
-	if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
+	if (isNaN(time) || time > 15 || time < 3 ) return message.inlineReply('the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(')
+	if (!opponent) return message.inlineReply('you should tag someone to play :(')
+	if (opponent.bot) return message.inlineReply('since bots are too smart, i couldn\'t allow that :(');
+	if (opponent.id === message.author.id) return message.inlineReply('you can\'t play against yourself :(');
 	client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finished playing :(` });
 
 	try {
@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
 		const verification = await verify(message.channel, opponent);
 		if (!verification) {
 			client.games.delete(message.channel.id);
-			return message.reply('looks like they declined...');
+			return message.inlineReply('looks like they declined...');
 		}
 		const startWord = startWords[Math.floor(Math.random() * startWords.length)];
 		await message.channel.send(stripIndents`

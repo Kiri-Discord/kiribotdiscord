@@ -20,11 +20,11 @@ module.exports = async (client, message) => {
 			.setDescription(`Hello! Before you join ${message.guild.name}, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server.\n*sorry, this is the only way to prevent bots from joining the server :pensive:*`)
 			.addField(`\u200b`, `||${__baseURL}verify?valID=${valID}||`)
 			await message.author.send(dm).catch(() => {
-				return message.reply('your DM is still locked. unlock your DM first then type \`resend\` here :D')
+				return message.inlineReply('your DM is still locked. unlock your DM first then type \`resend\` here :D')
 					.then(i => i.delete({ timeout: 10000 }));
 			});
 
-			return message.reply('check your DM.').then(i => i.delete({ timeout: 10000 }));
+			return message.inlineReply('check your DM.').then(i => i.delete({ timeout: 10000 }));
 		} else {
 			return message.delete();
 		}

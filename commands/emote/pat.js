@@ -8,10 +8,10 @@ exports.run = async (client, message, args) => {
 
     const target = message.mentions.users.first()
     if (!target) {
-      return message.reply("you can't just pat **air** :( please mention somebody to pat pls")
+      return message.inlineReply("you can't just pat **air** :( please mention somebody to pat pls")
     }
-    if (target === client.user) return message.reply('**pat pat pat pat pat**\nyes, you!')
-    if (target.bot) return message.reply("this isn't an simulator so you can't pat that bot, sorry :(")
+    if (target === client.user) return message.inlineReply('**pat pat pat pat pat**\nyes, you!')
+    if (target.bot) return message.inlineReply("this isn't an simulator so you can't pat that bot, sorry :(")
 
     const { guild } = message
     const guildId = guild.id
@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === authorId) {
-      message.reply('**pat pat pat pat pat**\nyes, you!')
+      message.inlineReply('**pat pat pat pat pat**\nyes, you!')
       return
     }
 

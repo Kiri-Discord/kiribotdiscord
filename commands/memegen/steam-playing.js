@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
         ctx.fillText(shortenText(ctx, game, 200), 80, 70);
         return message.channel.send({ files: [{ attachment: canvas.toBuffer(), name: 'steam-now-playing.png' }] });
     } catch (err) {
-        return message.reply(`sorry :( i got an error. try again later!`);
+        return message.inlineReply(`sorry :( i got an error. try again later!`);
     }
 }
 exports.help = {

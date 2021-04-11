@@ -5,21 +5,21 @@ const { base64 } = require('../../util/util');
 exports.run = async (client, message, args) => {
 
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
     try {
         
         const status = await fetchRateLimit();
         if (!status.status) {
-            return message.reply(`oh no, i'm out of requests! please wait ${status.refresh} seconds and try again.`);
+            return message.inlineReply(`oh no, i'm out of requests! please wait ${status.refresh} seconds and try again.`);
         }
         message.channel.startTyping(true);
         let { body } = await request.get(attachments[0].url);
         if (attachments[0].url.endsWith('.gif')) body = await convertGIF(body);
         const result = await search(body, message.channel.nsfw);
-        if (result === 'size') return message.reply('the file is way too big for me to handle lmao. remember not to upload any image or gif larger than 10mb.');
+        if (result === 'size') return message.inlineReply('the file is way too big for me to handle lmao. remember not to upload any image or gif larger than 10mb.');
         if (result.nsfw && !msg.channel.nsfw) {
-            return message.reply('this is from a ||hentai||, and this isn\'t an NSFW channel lmao.');
+            return message.inlineReply('this is from a ||hentai||, and this isn\'t an NSFW channel lmao.');
         }
         const title = `${result.title}${result.episode ? ` episode ${result.episode}` : ''}`;
         await message.channel.stopTyping(true);
@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
         `, result.preview ? { files: [{ attachment: result.preview, name: 'preview.mp4' }] } : {});
     } catch (err) {
         await message.channel.stopTyping(true);
-        return message.reply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
+        return message.inlineReply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
     }
 }
 

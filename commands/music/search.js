@@ -7,9 +7,9 @@ exports.run = async (client, message, args) => {
     const setting = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
-    if (!args.length) return message.reply({embed: {color: "f3f3f3", description: `you must to provide me a song to search for! use \`${settiingprefix}help search\` to learn more :wink:`}}).catch(console.error);
-    if (message.channel.activeCollector) return message.reply({embed: {color: "f3f3f3", description: `⚠️ there is already a search existing in this channel. please finish that first :pensive:`}});
-    if (!message.member.voice.channel) return message.reply({embed: {color: "f3f3f3", description: `⚠️ you are not in a voice channel!`}});
+    if (!args.length) return message.inlineReply({embed: {color: "f3f3f3", description: `you must to provide me a song to search for! use \`${settiingprefix}help search\` to learn more :wink:`}}).catch(console.error);
+    if (message.channel.activeCollector) return message.inlineReply({embed: {color: "f3f3f3", description: `⚠️ there is already a search existing in this channel. please finish that first :pensive:`}});
+    if (!message.member.voice.channel) return message.inlineReply({embed: {color: "f3f3f3", description: `⚠️ you are not in a voice channel!`}});
 
     const search = args.join(" ");
 
@@ -59,7 +59,7 @@ exports.run = async (client, message, args) => {
     } catch (error) {
       console.error(error);
       message.channel.activeCollector = false;
-      message.reply('there was an error while processing your search, sorry :pensive:').catch(console.error);
+      message.inlineReply('there was an error while processing your search, sorry :pensive:').catch(console.error);
     }
 }
 

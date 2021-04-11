@@ -18,11 +18,11 @@ exports.conf = {
 
 exports.run = async (client, message, args) => {
     const player_two = message.mentions.users.first();
-    if (!player_two || player_two == message.author || player_two.bot) return message.reply('you should mention a valid user to play with :(');
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    if (utils.inGame.includes(player_two.id)) return message.reply('that user is already in a game. try again in a minute.');
+    if (!player_two || player_two == message.author || player_two.bot) return message.inlineReply('you should mention a valid user to play with :(');
+    if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
+    if (utils.inGame.includes(player_two.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
     const current = client.games.get(message.channel.id);
-    if (current) return message.reply(current.prompt);
+    if (current) return message.inlineReply(current.prompt);
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${player_two.username}** finish playing tic-tac-toe :(` });
     utils.inGame.push(player_two.id, message.author.id);
     class Game {

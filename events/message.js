@@ -23,7 +23,7 @@ module.exports = async (client, message) => {
       const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
       if (message.channel.id === setting.verifyChannelID) {
         if (alreadyHasVerifyRole) {
-          return message.reply(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or either \`${prefix}setverify <#channel | id> <role name | id>\``).then(async m => {
+          return message.inlineReply(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or either \`${prefix}setverify <#channel | id> <role name | id>\``).then(async m => {
             await message.delete();
             m.delete({ timeout: 4000 });
           })
@@ -68,13 +68,13 @@ module.exports = async (client, message) => {
     return message.channel.send(`i don't remember having that commmand installed ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:'} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
   }
 
-  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
+  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 
   
   if (commandFile.conf.userPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.userPerms) {
       if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-        return message.reply(`sorry, you don't have ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission, so i can't do that ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`);
+        return message.inlineReply(`sorry, you don't have ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission, so i can't do that ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`);
       }
     }
   }
@@ -82,7 +82,7 @@ module.exports = async (client, message) => {
   if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.clientPerms) {
       if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-        return message.reply(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission to do this for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
+        return message.inlineReply(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission to do this for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
           message.author.send(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission in **${message.guild.name}** to do that for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
             return;
           })

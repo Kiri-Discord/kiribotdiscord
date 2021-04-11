@@ -19,7 +19,7 @@ class Game {
             p2Message = await this.challenged.send('you have been challenged to a game of rps. please choose \`r, p, s\`');
         } catch (error) {
             await this.endGame();
-            return this.message.reply("your DM or your opponent's DM is still locked so i can't get the choice from you :( enable your both DMs.").then(i => i.delete({ timeout: 10000 }))
+            return this.message.inlineReply("your DM or your opponent's DM is still locked so i can't get the choice from you :( enable your both DMs.").then(i => i.delete({ timeout: 10000 }))
         }
         // sending both messages and storing the dm channel
         // awaiting a response from p1 and timing out if none is given
@@ -84,9 +84,9 @@ class Game {
 
 exports.run = async (client, message, args) => {
     const challenged = message.mentions.users.first();
-    if (!challenged || challenged === message.member || challenged.bot) return message.reply('you should mention a valid user to play with :(');
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    if (utils.inGame.includes(challenged.id)) return message.reply('that user is already in a game. try again in a minute.');
+    if (!challenged || challenged === message.member || challenged.bot) return message.inlineReply('you should mention a valid user to play with :(');
+    if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
+    if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
 
     const game = new Game(message, challenged, args);

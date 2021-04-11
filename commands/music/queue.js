@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
       await queueEmbed.react("➡️");
     } catch (error) {
       console.error(error);
-      message.reply('there was an error while sending you the queue, sorry :pensive:').catch(console.error);
+      message.inlineReply('there was an error while sending you the queue, sorry :pensive:').catch(console.error);
     }
 
     const filter = (reaction, user) =>
@@ -50,7 +50,7 @@ exports.run = async (client, message, args) => {
         await reaction.users.remove(message.author.id);
       } catch (error) {
         console.error(error);
-        return message.reply('there was an error while showing you the queue, sorry :pensive:').then(m => m.delete({ timeout: 4000 })).catch(console.error);
+        return message.inlineReply('there was an error while showing you the queue, sorry :pensive:').then(m => m.delete({ timeout: 4000 })).catch(console.error);
       }
     });
 

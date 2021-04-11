@@ -6,7 +6,7 @@ exports.run = async (client, message, args) => {
     let csx = process.env.csx_key;
     let safesearch;
     let query = args.join(" ");
-    if (!query) return message.reply("pls enter something so i can search 👀");
+    if (!query) return message.inlineReply("pls enter something so i can search 👀");
 
     if (message.channel.nsfw) {
         safesearch = "off"
@@ -16,9 +16,9 @@ exports.run = async (client, message, args) => {
     const href = await search(googleKey, csx, query, safesearch);
     if (!href) {
         if (safesearch === "active") {
-            return message.reply("i can't find any result for that :pensive: try searching it again it a NSFW channel if you are looking for more darker result.\n*or Google is probably high*")
+            return message.inlineReply("i can't find any result for that :pensive: try searching it again it a NSFW channel if you are looking for more darker result.\n*or Google is probably high*")
         } else {
-            return message.reply("i can't find any result for that :pensive:\n*Google is probably high*")
+            return message.inlineReply("i can't find any result for that :pensive:\n*Google is probably high*")
         }
     };
 

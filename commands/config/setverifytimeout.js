@@ -7,14 +7,14 @@ exports.run = async (client, message, args) => {
       const prefix = setting.prefix;
   let time = args.join(" ");
   
-  if (!time) return message.reply("please includes the time format. all valid time format are \`s, m, hrs\`!");
+  if (!time) return message.inlineReply("please includes the time format. all valid time format are \`s, m, hrs\`!");
   
   let convert = ms(time); // This will results the milliseconds.
   let toSecond = Math.floor(convert / 1000); // This will convert the ms to s. (seconds)
   
-  if (!toSecond || toSecond == undefined) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
+  if (!toSecond || toSecond == undefined) return message.inlineReply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
   
-  if (toSecond > 21600 || toSecond < 1) return message.reply("the timer should be more than or equal to 1 second or less than 6 hours!");
+  if (toSecond > 21600 || toSecond < 1) return message.inlineReply("the timer should be more than or equal to 1 second or less than 6 hours!");
   await client.dbguilds.findOneAndUpdate({
     guildID: message.guild.id,
   },

@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
 
   
   let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
-  if (!user) return message.reply("p l e a s e mention the user properly or provide me with a valid ID :V");
+  if (!user) return message.inlineReply("p l e a s e mention the user properly or provide me with a valid ID :V");
   let member = message.guild.members.cache.get(user.id);
   
   let nick = args.slice(1).join(" ");
@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
         return logChannel.send(rolelog);
     }
   }).catch(err => {
-    return message.reply("ouch, i bumped by an error :( can you check my perms? that user also might have a higher role than me btw");
+    return message.inlineReply("ouch, i bumped by an error :( can you check my perms? that user also might have a higher role than me btw");
   });
 
   const rolelog = new Discord.MessageEmbed()

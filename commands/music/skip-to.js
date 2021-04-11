@@ -6,8 +6,8 @@ exports.run = async (client, message, args) => {
     });
     if (!args.length || isNaN(args[0])) return message.channel.send({embed: {color: "f3f3f3", description: `❌ wrong usage! use \`${setting.prefix}help skip-to\` to learn more :wink:`}});
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.reply('there is nothing to skip since there isn\'t anything in the queue :grimacing:');
-    if (!canModifyQueue(message.member)) return message.reply(`you are not in the voice channel where i\'m *playing* music! join ${queue.channel} to listen :wink:`);
+    if (!queue) return message.inlineReply('there is nothing to skip since there isn\'t anything in the queue :grimacing:');
+    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m *playing* music! join ${queue.channel} to listen :wink:`);
     if (args[0] > queue.songs.length) return message.channel.send({embed: {color: "f3f3f3", description: `invaild queue position :pensive: the queue is only **${queue.songs.length}** songs long!`}});
     queue.playing = true;
     if (queue.loop) {

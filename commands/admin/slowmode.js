@@ -18,14 +18,14 @@ exports.run = async (client, message, args) => {
     return message.channel.send(`<#${channel.id}> slowmode has been deactivated.`);
   }
   
-  if (!time) return message.reply("please includes the time format. all valid time format are \`s, m, hrs\`!");
+  if (!time) return message.inlineReply("please includes the time format. all valid time format are \`s, m, hrs\`!");
   
   let convert = ms(time); // This will results the milliseconds.
   let toSecond = Math.floor(convert / 1000); // This will convert the ms to s. (seconds)
   
-  if (!toSecond || toSecond == undefined) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
+  if (!toSecond || toSecond == undefined) return message.inlineReply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
   
-  if (toSecond > 21600) return message.reply("the timer should be more than or equal to 1 second or less than 6 hours!");
+  if (toSecond > 21600) return message.inlineReply("the timer should be more than or equal to 1 second or less than 6 hours!");
   const rolelog = new Discord.MessageEmbed()
   .setAuthor(client.user.username, client.user.displayAvatarURL())
   .setDescription(`Successfully set slowmode for <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)
@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
         return logChannel.send(rolelog);
     }
   }).catch(err => {
-    return message.reply("ouch, i bumped by an error :( can you check my perms?");
+    return message.inlineReply("ouch, i bumped by an error :( can you check my perms?");
   });
 }
 

@@ -208,11 +208,11 @@ class Game { // Creating a game class so there is support for multiple games at 
 exports.run = async (client, message, args) => {
     const challenged = message.mentions.users.first();
     const current = client.games.get(message.channel.id);
-    if (current) return message.reply(current.prompt);
+    if (current) return message.inlineReply(current.prompt);
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${challenged.username}** finish playing :(` });
-    if (!challenged || challenged === message.member || challenged.bot) return message.reply('you should mention a valid user to play with :(');
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    if (utils.inGame.includes(challenged.id)) return message.reply('that user is already in a game. try again in a minute.');
+    if (!challenged || challenged === message.member || challenged.bot) return message.inlineReply('you should mention a valid user to play with :(');
+    if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
+    if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
 
     const game = new Game(client, message, challenged);

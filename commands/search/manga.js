@@ -55,10 +55,10 @@ const statuses = {
 
 exports.run = async (client, message, args) => {
     let query = args.join(" ");
-    if (!query) return message.reply("pls enter something so i can search 👀");
+    if (!query) return message.inlineReply("pls enter something so i can search 👀");
     try {
         const id = await search(query);
-        if (!id) return message.reply(`i couldn\'t find any results with **${query}** :(`);
+        if (!id) return message.inlineReply(`i couldn\'t find any results with **${query}** :(`);
         const manga = await fetchManga(id);
         const malScore = await fetchMALScore(manga.idMal);
         const malURL = `https://myanimelist.net/manga/${manga.idMal}`;
@@ -81,7 +81,7 @@ exports.run = async (client, message, args) => {
             : 'None');
         return message.channel.send(embed);
     } catch (err) {
-        return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`);
+        return message.inlineReply(`sorry :( i got an error. try again later! the server might be down tho.`);
     }
 }
 

@@ -6,7 +6,7 @@ const choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
 
 exports.run = async (client, message, args) => {
     const current = client.games.get(message.channel.id);
-	if (current) return message.reply(current.prompt);
+	if (current) return message.inlineReply(current.prompt);
 	client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
     try {
         const points = {

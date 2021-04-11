@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
           .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
         message.channel.send(embed).catch(console.error);
       } catch (err) {
-        if (err.status === 404) return message.reply('i cant find any results for that video :(');
+        if (err.status === 404) return message.inlineReply('i cant find any results for that video :(');
         console.log(err);
         return message.channel.send(`sorry :( i got an error while trying to get you a result. try again later!`);
     }

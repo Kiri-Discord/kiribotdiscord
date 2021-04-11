@@ -14,18 +14,18 @@ exports.run = async (client, message, args) => {
 
     const roleName = args.slice(1).join(' ');
 
-    if (!member || !roleName) return message.reply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
+    if (!member || !roleName) return message.inlineReply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
     
-    if (!role) return message.reply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (!role) return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
 
-    if (role.name === "@everyone") return message.reply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
-    if (role.name === "@here") return message.reply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (role.name === "@everyone") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (role.name === "@here") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
 
     const alreadyHasRole = member._roles.includes(role.id);
 
-    if (alreadyHasRole) return message.reply('that user already has that role!').then(m => m.delete({ timeout: 5000 }));
+    if (alreadyHasRole) return message.inlineReply('that user already has that role!').then(m => m.delete({ timeout: 5000 }));
 
     const embed = new MessageEmbed()
     .setDescription(`☑️ i have successfully given the role \`${role.name}\` to **${member.user.tag}**`)
@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
             return logChannel.send(rolelog);
         }
     }).catch(err => {
-        message.reply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
+        message.inlineReply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
     });
 
     const rolelog = new MessageEmbed()

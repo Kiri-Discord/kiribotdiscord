@@ -4,12 +4,12 @@ const { MessageEmbed } = require('discord.js')
 exports.run = async (client, message, args) => {
     let result;
     let query = args.join(" ");
-    if (!query) return message.reply("pls enter something so i can search 👀");
+    if (!query) return message.inlineReply("pls enter something so i can search 👀");
 
     try {
         result = await urban(query)
     } catch (error) {
-        return message.reply(`i can't find definition for word phrase of **${query}**, please try again pls :(`);
+        return message.inlineReply(`i can't find definition for word phrase of **${query}**, please try again pls :(`);
     }
 
     const embed = new MessageEmbed()

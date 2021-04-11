@@ -9,9 +9,9 @@ exports.run = async (client, message, args) => {
     let text = args.slice(1).join(" ");
  
 
-    if (!text) return message.reply("p l e a s e input some text :D");
+    if (!text) return message.inlineReply("p l e a s e input some text :D");
 
-    if (text.length > 1024) return message.reply("oww, that is way too much. the maximum character is 1,024.");
+    if (text.length > 1024) return message.inlineReply("oww, that is way too much. the maximum character is 1,024.");
 
     function encode(char) {
         return char.split("").map(str => {
@@ -26,11 +26,11 @@ exports.run = async (client, message, args) => {
 
     if (args[0].toLowerCase() === "encode") {
         const result = encode(text);
-        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
+        if (result.length > 1024) return message.inlineReply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
         return message.channel.send(encode(text));
     } else if (args[0].toLowerCase() === "decode") {
         const result = decode(text);
-        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
+        if (result.length > 1024) return message.inlineReply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
         return message.channel.send(decode(text));
     }
 };

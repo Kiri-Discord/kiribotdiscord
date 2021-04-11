@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
     let players = args[0];
     if (!players || isNaN(players) || players < 2 || players > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 2 and 20 by using \`${prefix}lie-detector <number of player>\``)
     const current = client.games.get(message.channel.id);
-    if (current) return message.reply(current.prompt);
+    if (current) return message.inlineReply(current.prompt);
 	client.games.set(message.channel.id, { prompt: `please wait until players in this channel has finished their game :(` });
 	try {
 		const awaitedPlayers = await awaitPlayers(message, players, 2);

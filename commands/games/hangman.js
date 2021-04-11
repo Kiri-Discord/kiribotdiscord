@@ -23,7 +23,7 @@ class Game {
             this.dmChannel = await this.message.author.send('please enter the word to be guessed :D')
         } catch (error) {
             this.end();
-            return this.message.reply("your DM is still locked so i can't get the word from you :( enable your DM.").then(i => i.delete({ timeout: 10000 }))
+            return this.message.inlineReply("your DM is still locked so i can't get the word from you :( enable your DM.").then(i => i.delete({ timeout: 10000 }))
         }
         this.msg = await this.message.channel.send(`${this.stages[0]}\nwaiting for <@${this.message.author.id}> to enter a word`);
         
@@ -100,11 +100,11 @@ class Game {
 exports.run = async (client, message, args) => {
     const challenged = message.mentions.users.first();
     const current = client.games.get(message.channel.id);
-    if (current) return message.reply(current.prompt);
+    if (current) return message.inlineReply(current.prompt);
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${challenged.username}** finish playing hangman :(` });
-    if (!challenged || challenged === message.author || challenged.bot) return message.reply('you should mention a valid user to play with :(');
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
-    if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
+    if (!challenged || challenged === message.author || challenged.bot) return message.inlineReply('you should mention a valid user to play with :(');
+    if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are allready in a game. please finish that first.');
+    if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is allready in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);
 
     const game = new Game(client, message, challenged);

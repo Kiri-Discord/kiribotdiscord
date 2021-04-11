@@ -1,5 +1,6 @@
 const express = require('express');
-const { Client, Collection } = require("discord.js");
+const { Collection } = require("discord.js");
+const { Client } = require('discord.js-light');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const RedisClient = require('../util/redis');
 const VerifyTimer = require('../features/redis/verify');

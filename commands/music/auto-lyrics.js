@@ -47,7 +47,7 @@ exports.run = async (client, message, args, prefix) => {
     };
     if (message.flags[0] === 'set') {
         const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-        if (!channel) return message.reply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
+        if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
         if (serverQueue) {
             serverQueue.karaoke.channel = channel;
             if (serverQueue.karaoke.timeout) clearTimeout(serverQueue.karaoke.timeout);

@@ -16,13 +16,13 @@ exports.conf = {
 }
 exports.run = async (client, message, args) => {
     let text = args.join(" ");
-    if (!text) return message.reply('enter something for me to generate the qr :)')
+    if (!text) return message.inlineReply('enter something for me to generate the qr :)')
     try {
         const { body } = await request
             .get('https://api.qrserver.com/v1/create-qr-code/')
             .query({ data: text });
         return message.channel.send({ files: [{ attachment: body, name: 'qr.png' }] });
     } catch (err) {
-        return message.reply(`sorry :( i got an error. try again later!`);
+        return message.inlineReply(`sorry :( i got an error. try again later!`);
     }
 }

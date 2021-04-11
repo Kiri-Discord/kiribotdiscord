@@ -67,7 +67,7 @@ exports.run = async (client, message, args) => {
             if (userExist) {
                 return message.channel.send(`${user.at}, you already have a waifu!`)
             } else {
-                await message.reply('name your waifu :D you have 15 second...');
+                await message.inlineReply('name your waifu :D you have 15 second...');
                 const collector = new MessageCollector(message.channel, msg => {
                     if (!msg.author.bot && msg.author == message.author) return true;
                 }, { time: 15000 });

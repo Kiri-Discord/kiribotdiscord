@@ -4,7 +4,7 @@ const { shuffle } = require('../../util/util');
 exports.run = async (client, message, args) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.channel.send('there is nothing to shuffle since i\'m not playing anything :grimacing:').catch(console.error);
-    if (!canModifyQueue(message.member)) return message.reply(`you are not in the voice channel where i\'m playing music! join ${queue.channel} to listen :wink:`);
+    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m playing music! join ${queue.channel} to listen :wink:`);
     const songs = queue.songs;
     const shuffled = shuffle(songs);
     queue.songs = shuffled;

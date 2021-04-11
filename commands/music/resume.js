@@ -2,8 +2,8 @@ const { canModifyQueue } = require("../../util/musicutil");
 
 exports.run = async (client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.reply('there is nothing to resume since there isn\'t anything in the queue :grimacing:').catch(console.error);
-    if (!canModifyQueue(message.member)) return message.reply(`you are not in the voice channel where i\'m *playing* music! join ${queue.channel} to listen :wink:`);
+    if (!queue) return message.inlineReply('there is nothing to resume since there isn\'t anything in the queue :grimacing:').catch(console.error);
+    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m *playing* music! join ${queue.channel} to listen :wink:`);
 
     
     if (!queue.playing) {

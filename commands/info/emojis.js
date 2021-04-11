@@ -20,7 +20,6 @@ exports.run = async (client, message, args) => {
   ${(notAnimated.join(' ') + ' ')}
   `;
   const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2047, char: ' ' });
-  console.log(rest)
   const embed = new MessageEmbed()
   .setDescription(first)
   .setColor('#ffe6cc')

@@ -8,11 +8,11 @@ exports.run = async (client, message, args) => {
 
     const target = message.mentions.users.first()
     if (!target) {
-      message.reply("you can't just punch *air* :( please mention somebody to punch pls")
+      message.inlineReply("you can't just punch *air* :( please mention somebody to punch pls")
       return
     }
-    if (target === client.user) return message.reply('you truly are the lowest scum in history.')
-    if (target.bot) return message.reply("you can't punch that bot, sorry :(")
+    if (target === client.user) return message.inlineReply('you truly are the lowest scum in history.')
+    if (target.bot) return message.inlineReply("you can't punch that bot, sorry :(")
 
     const { guild } = message
     const guildId = guild.id
@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === message.author.id) {
-      message.reply('are you in pain?')
+      message.inlineReply('are you in pain?')
       return
     }
 

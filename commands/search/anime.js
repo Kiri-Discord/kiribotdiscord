@@ -84,7 +84,7 @@ exports.run = async (client, message, args) => {
     const prefix = setting.prefix;
       
     let query = args.join(" ");
-    if (!query) return message.reply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
+    if (!query) return message.inlineReply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
     try {
         message.channel.startTyping(true);
         const id = await search(query);
@@ -113,7 +113,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send(embed);
     } catch (err) {
         await message.channel.stopTyping(true);
-        return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`)
+        return message.inlineReply(`sorry :( i got an error. try again later! the server might be down tho.`)
     }
 }
 async function search(query) {

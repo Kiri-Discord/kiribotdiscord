@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
         .addField(':arrow_right: More event:', event.links.map(link => embedURL(link.title, link.link)).join('\n'));
         return message.channel.send(embed);
     } catch (err) {
-        if (err.status === 404 || err.status === 500) return message.reply('you give me an invaild date :(');
-        return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`);
+        if (err.status === 404 || err.status === 500) return message.inlineReply('you give me an invaild date :(');
+        return message.inlineReply(`sorry :( i got an error. try again later! the server might be down tho.`);
     }
 }

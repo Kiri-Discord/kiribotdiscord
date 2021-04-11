@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-	message.reply('are you in pain?');
+	message.inlineReply('are you in pain?');
 	
 };
 exports.help = {

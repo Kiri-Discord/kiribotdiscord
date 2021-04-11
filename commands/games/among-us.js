@@ -11,8 +11,8 @@ exports.run = async (client, message, args) => {
     let playersCount = args[0];
     if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
     const current = client.games.get(message.channel.id);
-    if (current) return message.reply(current.prompt);
-    client.games.set(message.channel.id, { prompt: `please wait until players here finish playing **Among Us** :(` });
+    if (current) return message.inlineReply(current.prompt);
+    client.games.set(message.channel.id, { prompt: `please wait until players here finish playing **among us** :(` });
     try {
         const awaitedPlayers = await awaitPlayers(message, playersCount, 3);
         if (!awaitedPlayers) {
@@ -24,8 +24,11 @@ exports.run = async (client, message, args) => {
         const players = new Collection();
         const imposter = awaitedPlayers[Math.floor(Math.random() * awaitedPlayers.length)];
         await message.channel.send(oneLine`
-            welcome to **among us**! in this game, you will have to figure out who the imposter is!
-            all you have to do is watch what other players say in 4 minutes. there's a special word called a kill word, which is sent to your DM!
+            welcome to **among us**! 
+            
+            in this game, you will have to figure out who the imposter is!
+            all you have to do is watch what other players say in 4 minutes. 
+            there's a special word called a **kill word**, which is sent to the imposter's DM!
             only the imposter can say it, and if anyone else does, they die! to win, figure out what the kill
             word is, and try to catch the imposter saying it. as for the imposter, you know the word, try to get
             everyone to say it!

@@ -8,10 +8,10 @@ exports.run = async (client, message, args) => {
 
     const target = message.mentions.users.first()
     if (!target) {
-      return message.reply("you can't just hug **air** :( please mention somebody to hug pls")
+      return message.inlineReply("you can't just hug **air** :( please mention somebody to hug pls")
     }
 
-    if (target.bot) return message.reply("this isn't plastic memories so you can't hug that bot, sorry :(")
+    if (target.bot) return message.inlineReply("this isn't plastic memories so you can't hug that bot, sorry :(")
 
     const { guild } = message
     const guildId = guild.id
@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === authorId) {
-      message.reply('you hug yourself :( here, take my hug instead 🤗')
+      message.inlineReply('you hug yourself :( here, take my hug instead 🤗')
       return
     }
 

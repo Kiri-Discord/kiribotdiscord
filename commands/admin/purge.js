@@ -4,14 +4,14 @@ exports.run = async (client, message, args) => {
     const guildDB = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
-    if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) return message.reply(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
+    if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) return message.inlineReply(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const amount = parseInt(args[0]) + 1;
     if (isNaN(amount)) {
-        return message.reply('that doesn\'t seem to be a valid number.');
+        return message.inlineReply('that doesn\'t seem to be a valid number.');
     } else if (amount <= 1 || amount > 100) {
-        return message.reply('you need to input a number between 1 and 99.');
+        return message.inlineReply('you need to input a number between 1 and 99.');
     }
 
     const logembed = new MessageEmbed()

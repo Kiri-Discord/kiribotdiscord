@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
 
     if (!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send(`You do not have \`MANAGE_ROLES\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
 
-    if (!args[0] || !args[1]) return message.reply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
+    if (!args[0] || !args[1]) return message.inlineReply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
 
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
@@ -20,14 +20,14 @@ exports.run = async (client, message, args) => {
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
     
-    if (!role) return message.reply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (!role) return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
 
-    if (role.name === "@everyone") return message.reply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
-    if (role.name === "@here") return message.reply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (role.name === "@everyone") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (role.name === "@here") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
 
     const alreadyHasRole = member._roles.includes(role.id);
 
-    if (!alreadyHasRole) return message.reply('that user doesn\'t has that role!').then(m => m.delete({ timeout: 5000 }));
+    if (!alreadyHasRole) return message.inlineReply('that user doesn\'t has that role!').then(m => m.delete({ timeout: 5000 }));
 
     const embed = new MessageEmbed()
     .setDescription(`☑️ i have successfully removed the role \`${role.name}\` from **${member.user.tag}**`)
@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
             return logChannel.send(rolelog);
         }
     }).catch(err => {
-        message.reply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
+        message.inlineReply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
     });
 
     const rolelog = new MessageEmbed()

@@ -15,11 +15,14 @@ RedisClient.start();
 require('./handler/inlineReply');
 const sefy = require("./handler/ClientBuilder.js");
 
-const client = new sefy(({ 
+const client = new sefy(({
+	cacheGuilds: true,
+    cacheChannels: true,
+    cacheOverwrites: true,
+    cacheRoles: true,
+    cacheEmojis: true,
+    cachePresences: true,
 	disableMentions: 'everyone', 
-	messageCacheLifetime: 120,
-	messageSweepInterval: 45,
-	messageCacheMaxSize: 100,
 	ws: { 
 		properties: { 
 			$browser: "Discord Android" 

@@ -8,7 +8,7 @@ exports.run = async (client, message, args) => {
     }).sort([["received", "descending"]]).exec((err, res) => {
         if (err) {
             console.log(err)
-            return message.reply("sorry, there was an error while executing this command :(");
+            return message.inlineReply("sorry, there was an error while executing this command :(");
         }
         let embed = new MessageEmbed()
         .setThumbnail(message.guild.iconURL())

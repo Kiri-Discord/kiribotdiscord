@@ -2,7 +2,7 @@ const request = require('node-superfetch');
 
 exports.run = async (client, message, args) => {
     let name = args.join(" ");
-    if (!name) return message.reply('you have to provide a name for me to guess :confused:').then(m => m.delete({ timeout: 5000 }));
+    if (!name) return message.inlineReply('you have to provide a name for me to guess :confused:').then(m => m.delete({ timeout: 5000 }));
     try {
         const { body } = await request
             .get(`https://api.genderize.io/`)

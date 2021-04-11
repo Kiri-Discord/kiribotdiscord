@@ -6,15 +6,15 @@ exports.run = async (client, message, args) => {
 
     let songs = args.join(" ");
 
-    if (!songs) return message.reply(`you have to provide me a song to get the lyric of :(`)
+    if (!songs) return message.inlineReply(`you have to provide me a song to get the lyric of :(`)
     
     let lyrics;
 
     try {
       lyrics = await lyricsFinder(songs, "");
-      if (!lyrics) return message.reply(`i found no lyrics for **${songs}** :(`);
+      if (!lyrics) return message.inlineReply(`i found no lyrics for **${songs}** :(`);
     } catch (error) {
-        return message.reply(`i found no lyrics for **${songs}** :(`);
+        return message.inlineReply(`i found no lyrics for **${songs}** :(`);
     }
 
     let each = lyrics.slice().trim().split(/ +/g);

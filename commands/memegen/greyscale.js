@@ -3,8 +3,8 @@ const { createCanvas, loadImage } = require('canvas');
 const canvasFuncs = require('../../util/canvas.js');
 exports.run = async (client, message, args) => {
   let attachments = message.attachments.array();
-  if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-  else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+  if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+  else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
 	try {
 
         message.channel.startTyping(true); 

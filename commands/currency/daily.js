@@ -60,7 +60,7 @@ exports.run = async (client, message, args) => {
         }
     } catch (error) {
         console.log(error);
-        return message.reply(`sorry :( i got an error. try again later!`);
+        return message.inlineReply(`sorry :( i got an error. try again later!`);
     }
 }
 

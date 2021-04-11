@@ -16,7 +16,7 @@ module.exports = async (client, member) => {
 
   if (roleExist && verifyChannel) {
     if (alreadyHasRole) return;
-    const timeMs = setting.verifyTimeout || ms('5m')
+    const timeMs = setting.verifyTimeout || ms('5m');
     const exists = await client.verifytimers.exists(member.guild.id, member.user.id);
     if (exists) {
       await client.verifytimers.deleteTimer(member.guild.id, member.user.id);

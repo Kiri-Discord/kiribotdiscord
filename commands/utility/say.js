@@ -19,9 +19,9 @@ exports.conf = {
 
 exports.run = async (client, message, args) => {
   const current = client.voicequeue.get(message.guild.id);
-	if (current) return message.reply(current.prompt);
+	if (current) return message.inlineReply(current.prompt);
   const serverQueue = client.queue.get(message.guild.id);
-  if (serverQueue) return message.reply('someone in your server is playing music! please wait until they done first :smiley:')
+  if (serverQueue) return message.inlineReply('someone in your server is playing music! please wait until they done first :smiley:')
   const setting = await client.dbguilds.findOne({
     guildID: message.guild.id
   });
@@ -29,10 +29,10 @@ exports.run = async (client, message, args) => {
   const prefix = setting.prefix;
   let act = args[0];
   let toMp3 = args.slice(1).join(' ');
-  if (!act) return message.reply(`i don\'t understand what you want me to do :( use \`${prefix}help say\` to show the usage for this one :)`)
-  if (!languages.includes(act)) return message.reply(`i don't recognize that language :( use \`${prefix}help say\` to show the list of langauge that i can speak!`)
-  if (!toMp3) message.reply(`you must tell me something to say! use \`${prefix}help say\` to show the usage for this one :)`);
-  if (toMp3.length > 200) message.reply(`your text is longer than 200 words, which makes me harder to say it :( i'm still saying it btw`);
+  if (!act) return message.inlineReply(`i don\'t understand what you want me to do :( use \`${prefix}help say\` to show the usage for this one :)`)
+  if (!languages.includes(act)) return message.inlineReply(`i don't recognize that language :( use \`${prefix}help say\` to show the list of langauge that i can speak!`)
+  if (!toMp3) message.inlineReply(`you must tell me something to say! use \`${prefix}help say\` to show the usage for this one :)`);
+  if (toMp3.length > 200) message.inlineReply(`your text is longer than 200 words, which makes me harder to say it :( i'm still saying it btw`);
   if (message.member.voice.channel) {
     if (message.member.voice.channel.joinable) {
       try {
@@ -55,13 +55,13 @@ exports.run = async (client, message, args) => {
         });
       } catch {
         await client.voicequeue.delete(message.guild.id);
-        return message.reply('sorry, i got an error while sending you my voice record :( try again later!') 
+        return message.inlineReply('sorry, i got an error while sending you my voice record :( try again later!') 
       }
     } else {
-      return message.reply(`i can't join your voice channel. can you check my perms?`)
+      return message.inlineReply(`i can't join your voice channel. can you check my perms?`)
     }
   } else {
-    return message.reply(`you have to join a voice channel first!`)
+    return message.inlineReply(`you have to join a voice channel first!`)
   }
 }
 

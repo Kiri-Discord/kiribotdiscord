@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
         userId: mention.user.id
     });
 
-    if (!target) return message.reply("you or that user doesn't have any leveling data yet. chat more to show yours :)");
+    if (!target) return message.inlineReply("you or that user doesn't have any leveling data yet. chat more to show yours :)");
 
     const res = client.leveling.getLevelBounds(target.level + 1)
 
@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
       xp: -1
     })
 
-    if (!result) return message.reply("this guild doesn't have any leveling data yet. chat more to show yours :)");
+    if (!result) return message.inlineReply("this guild doesn't have any leveling data yet. chat more to show yours :)");
 
     for (let counter = 0; counter < result.length; ++counter) {
 

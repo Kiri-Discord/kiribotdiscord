@@ -3,8 +3,8 @@ const request = require('node-superfetch');
 
 exports.run = async (client, message, args) => {
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
 
     try {
         message.channel.startTyping(true);
@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send({files: [{attachment, name: "deep-fried.png"}] });
     } catch (error) {
         await message.channel.stopTyping(true);
-        return message.reply(`sorry :( i got an error. try again later! can you check the image files?`)
+        return message.inlineReply(`sorry :( i got an error. try again later! can you check the image files?`)
     }
 
 }

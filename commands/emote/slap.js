@@ -8,11 +8,11 @@ exports.run = async (client, message, args) => {
 
     const target = message.mentions.users.first()
     if (!target) {
-      message.reply("you can't just slap *air* :( please mention somebody to slap pls")
+      message.inlineReply("you can't just slap *air* :( please mention somebody to slap pls")
       return
     }
-    if (target === client.user) return message.reply('what did you say?')
-    if (target.bot) return message.reply("you can't slap that bot, sorry :(")
+    if (target === client.user) return message.inlineReply('what did you say?')
+    if (target.bot) return message.inlineReply("you can't slap that bot, sorry :(")
 
     const { guild } = message
     const guildId = guild.id
@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
     const now = new Date()
 
     if (targetId === message.author.id) {
-      message.reply('are you in pain?')
+      message.inlineReply('are you in pain?')
       return
     }
     const result = await slapSchema.findOneAndUpdate(

@@ -1,10 +1,10 @@
 const { MessageCollector } = require('discord.js');
 exports.run = async (client, message, args) => {
-    if (!client.config.owners.includes(message.author.id)) return message.message.reply('only coco or bell can execute this command!');
+    if (!client.config.owners.includes(message.author.id)) return message.message.inlineReply('only coco or bell can execute this command!');
     const yes = "y";
     let attachments = message.attachments.array()
-    if (attachments.length === 0) return message.reply("please upload some images!");
-    message.reply('this action is irreversible :( do you want to continue? \`y/n\`')
+    if (attachments.length === 0) return message.inlineReply("please upload some images!");
+    message.inlineReply('this action is irreversible :( do you want to continue? \`y/n\`')
 
     const collector = new MessageCollector(message.channel, msg => {
         if (msg.author.id === message.author.id) return true;

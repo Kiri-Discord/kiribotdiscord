@@ -10,11 +10,11 @@ exports.run = async (client, message, args) => {
         first = message.author;
         second = await getUserfromMention(args[0]);
     }
-    if (!second) return message.reply('you must to mention someone!');
+    if (!second) return message.inlineReply('you must to mention someone!');
     if (first.id === client.user.id) return message.channel.send('well you decide it yourself tho');
     if (second.id === client.user.id) return message.channel.send('well you decide it yourself tho');
-    if (first.bot) return message.reply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
-    if (second.bot) return message.reply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
+    if (first.bot) return message.inlineReply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
+    if (second.bot) return message.inlineReply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
     let level;
     const self = first.id === second.id;
     if (self) {

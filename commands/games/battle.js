@@ -3,10 +3,10 @@ const { randomRange, verify } = require('../../util/util');
 
 exports.run = async (client, message, args) => {
     const opponent = message.mentions.users.first() || client.user;
-    if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
-    if (opponent !== client.user && opponent.bot) return message.reply('i am the only bot who can fight with you :) no, i am not looking at you, <@!270904126974590976>');
+    if (opponent.id === message.author.id) return message.inlineReply('you can\'t play against yourself :(');
+    if (opponent !== client.user && opponent.bot) return message.inlineReply('i am the only bot who can fight with you :) no, i am not looking at you, <@!270904126974590976>');
     const current = client.games.get(message.channel.id);
-    if (current) return message.reply(current.prompt);
+    if (current) return message.inlineReply(current.prompt);
     client.games.set(message.channel.id, { name: this.name, data: new Battle(message.author, opponent), prompt: `you should wait until **${message.author.username}** and **${opponent.username}** finish fighting :)` });
     const battle = client.games.get(message.channel.id).data;
     try {
@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
             const verification = await verify(message.channel, opponent);
             if (!verification) {
                 client.games.delete(message.channel.id);
-                return message.reply('looks like they declined :(');
+                return message.inlineReply('looks like they declined :(');
             }
         }
         while (!battle.winner) {

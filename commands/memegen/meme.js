@@ -24,9 +24,9 @@ exports.run = async (client, message, args) => {
       fetch(`https://www.reddit.com/r/${memes}.json?sort=top&t=daily`)
       .then(res => res.json())
       .then(body => {
-        if (!body) return message.reply("ouch. i fell, try again please.");
+        if (!body) return message.inlineReply("ouch. i fell, try again please.");
       const allowed = message.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-      if (!allowed.length) return message.reply('hmm looks like an error to me... :(');
+      if (!allowed.length) return message.inlineReply('hmm looks like an error to me... :(');
       const randomnumber = Math.floor(Math.random() * allowed.length)
     let url = `https://www.reddit.com${allowed[randomnumber].data.permalink}`
     let embed = new Discord.MessageEmbed()

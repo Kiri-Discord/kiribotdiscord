@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
     }
     let pollChannel = message.mentions.channels.first();
-    if (!pollChannel) return message.reply("please mention a channel!");
+    if (!pollChannel) return message.inlineReply("please mention a channel!");
 
     let pollDescription = args.slice(1).join(' ');
 

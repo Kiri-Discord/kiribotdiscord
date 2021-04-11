@@ -34,7 +34,7 @@ exports.run = async (client, message, args) => {
             ${mapped.join('\n')}
         `);
     } catch (err) {
-        return message.reply(`oh no, an error occurred while i was trying to get the showtime :( try again later!`);
+        return message.inlineReply(`oh no, an error occurred while i was trying to get the showtime :( try again later!`);
     }
 }
 

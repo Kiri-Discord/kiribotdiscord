@@ -7,8 +7,8 @@ const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 's
 
 exports.run = async (client, message, args) => {
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.reply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
     let image = attachments[0].url
     try {
         message.channel.startTyping(true);
@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
         const smile = face.smile.value > face.smile.threshold;
         const beautyScore = face.gender.value === 'Male' ? face.beauty.female_score : face.beauty.male_score;
         await message.channel.stopTyping(true);
-        return message.reply(oneLine`
+        return message.inlineReply(oneLine`
             i think this is a photo of a ${face.age.value} year old ${face.gender.value.toLowerCase()}.
             ${pronoun.toLowerCase()} appears to be ${emotion}, and is ${smile ? 'smiling' : 'not smiling'}. i give this
             face a ${Math.round(beautyScore)} on the 1-100 beauty scale.
@@ -32,7 +32,7 @@ exports.run = async (client, message, args) => {
         await message.channel.stopTyping(true);
         if (err.status === 400) return message.channel.send("wait a sec...there isn't any face in this image :frowning:");
         if (err.status === 403) return message.channel.send('hang on! the command is overloaded! try again later pls :(');
-        else return message.reply(`sorry :( i got an error. try again later! can you check the image files?`)
+        else return message.inlineReply(`sorry :( i got an error. try again later! can you check the image files?`)
     }
 }
 

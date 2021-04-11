@@ -28,9 +28,9 @@ exports.run = async (client, message, args) => {
 		fetch(`https://www.reddit.com/r/${subreddit}.json?sort=top&t=daily`)
 		.then(res => res.json())
 		.then(body => {
-        if (!body) return message.reply("ouch. i can't find any result. try again please :(");
+        if (!body) return message.inlineReply("ouch. i can't find any result. try again please :(");
 		const post = body.data.over_18 || body.data.children;
-		if (!post.length) return message.reply('hmm looks like an error happened to me... :( try again please!');
+		if (!post.length) return message.inlineReply('hmm looks like an error happened to me... :( try again please!');
 		const randomnumber = Math.floor(Math.random() * post.length)
 		let url = `https://www.reddit.com${post[randomnumber].data.permalink}`
 		const embed = new Discord.MessageEmbed()
