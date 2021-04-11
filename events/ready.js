@@ -36,5 +36,5 @@ module.exports = async client => {
   client.setInterval(() => {
     const activity = randomStatus(client);
 		client.user.setActivity(activity.text, { type: activity.type });
-	}, 180000);
+	}, 100000);
 };

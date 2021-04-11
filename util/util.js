@@ -176,7 +176,7 @@ module.exports = class util {
 	static randomStatus(client) {
 		const activities = [
 			{
-				text: `stayed awake for ${moment.duration(client.uptime).format('m [mins]')}`,
+				text: `awake for ${moment.duration(client.uptime).format('m [mins]')}`,
 				type: 'PLAYING'
 			},
 			{
@@ -186,6 +186,10 @@ module.exports = class util {
 			{
 				text: '@Sefy',
 				type: 'LISTENING'
+			},
+			{
+				text: `life in ${client.ws.ping}ms`,
+				type: 'WATCHING'
 			}
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];
