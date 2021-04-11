@@ -3,11 +3,8 @@ const YouTubeAPI = require("simple-youtube-api");
 const { YOUTUBE_API_KEY } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
-exports.run = async (client, message, args) => {
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    if (!args.length) return message.inlineReply({embed: {color: "f3f3f3", description: `you must to provide me a song to search for! use \`${settiingprefix}help search\` to learn more :wink:`}}).catch(console.error);
+exports.run = async (client, message, args, prefix) => {
+    if (!args.length) return message.inlineReply({embed: {color: "f3f3f3", description: `you must to provide me a song to search for! use \`${prefix}help search\` to learn more :wink:`}}).catch(console.error);
     if (message.channel.activeCollector) return message.inlineReply({embed: {color: "f3f3f3", description: `⚠️ there is already a search existing in this channel. please finish that first :pensive:`}});
     if (!message.member.voice.channel) return message.inlineReply({embed: {color: "f3f3f3", description: `⚠️ you are not in a voice channel!`}});
 
@@ -18,7 +15,7 @@ exports.run = async (client, message, args) => {
     .setTitle(`Here is your search result for "${search}"`)
     .setColor("RANDOM")
     .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-    .setFooter('this search will timeout in 30 seconds')
+    .setFooter('this search will timeout in 15 seconds')
     .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
 
     try {
@@ -33,7 +30,7 @@ exports.run = async (client, message, args) => {
         }
 
         message.channel.activeCollector = true;
-        const response = await message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
+        const response = await message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ["time"] });
         response.on('collect', async msg => {
             
             if (msg.content.includes(",")) {

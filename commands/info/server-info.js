@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
     let text = channels.cache.filter(r => r.type === "text").size,
         vc = channels.cache.filter(r => r.type === "voice").size,
         category = channels.cache.filter(r => r.type === "category").size,
-        totalchan = channels.cache.size;
+        totalchan = text + vc;
     let location = region[message.guild.region];
     let x = Date.now() - message.guild.createdAt;
     let h = Math.floor(x / 86400000) 

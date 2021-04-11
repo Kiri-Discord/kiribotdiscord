@@ -25,9 +25,9 @@ exports.run = async (client, message, args) => {
       return game; 
     }
     
-    let x = Date.now() - mention.user.createdAt; // 
+    let x = Date.now() - mention.user.createdAt;
     let y = Date.now() - mention.joinedAt; 
-    let created = Math.floor(x / 86400000); // 5 digits-zero.
+    let created = Math.floor(x / 86400000);
     let joined = Math.floor(y / 86400000);
     
     const member = message.guild.member(user);

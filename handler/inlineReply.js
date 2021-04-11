@@ -1,4 +1,4 @@
-const { APIMessage, Structures } = require('discord.js-light');
+const { APIMessage, Structures } = require('discord.js');
 
 class Message extends Structures.get('Message') {
     async inlineReply(content, options) {

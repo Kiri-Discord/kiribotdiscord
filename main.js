@@ -16,13 +16,10 @@ require('./handler/inlineReply');
 const sefy = require("./handler/ClientBuilder.js");
 
 const client = new sefy(({
-	cacheGuilds: true,
-    cacheChannels: true,
-    cacheOverwrites: true,
-    cacheRoles: true,
-    cacheEmojis: true,
-    cachePresences: true,
-	disableMentions: 'everyone', 
+	disableMentions: 'everyone',
+	messageCacheMaxSize: 150,
+    messageCacheLifetime: 240,
+    messageSweepInterval: 300,
 	ws: { 
 		properties: { 
 			$browser: "Discord Android" 
