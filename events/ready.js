@@ -27,6 +27,7 @@ module.exports = async client => {
     });
     console.log(`[DISCORD] Added ${client.customEmojis.size} custom emojis`)
   };
+  
   console.log(`[DISCORD] Fetching all unverified members..`);
   await client.verifytimers.fetchAll();
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
