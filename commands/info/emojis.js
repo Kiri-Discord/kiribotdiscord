@@ -14,15 +14,15 @@ exports.run = async (client, message, args) => {
   if (!notAnimated[0]) notAnimated = ['None'];
   const allEmojis = `
   **Animated:**
-  ${animated.join(' ')}
+  ${(animated.join(' ') + ' ')}
 
   **Not animated:**
-  ${notAnimated.join(' ')}
+  ${(notAnimated.join(' ') + ' ')}
   `;
-  const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2048 });
+  const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2047, char: ' ' });
+  console.log(rest)
   const embed = new MessageEmbed()
   .setDescription(first)
-  .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
   .setColor('#ffe6cc')
   .setThumbnail(icon)
   .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
