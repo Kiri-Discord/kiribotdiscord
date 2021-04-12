@@ -10,15 +10,17 @@ const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=(
 const pieces = ['pawn', 'rook', 'knight', 'king', 'queen', 'bishop'];
 const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 exports.run = async (client, message, args, prefix) => {
-    let images = null;
-    if (args[0].toLowerCase() === 'delete') {
-        const data = await client.redis.exists(`chess-${message.author.id}`);
-		if (!data) return message.inlineReply('you don\'t have any saved chess game.');
-		await client.redis.del(`chess-${message.author.id}`);
-		return message.inlineReply('your saved game has been deleted :pensive:');
-    };
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
+    let images = null;
+    if (args[0]) {
+        if (args[0].toLowerCase() === 'delete') {
+                const data = await client.redis.exists(`chess-${message.author.id}`);
+                if (!data) return message.inlineReply('you don\'t have any saved chess game.');
+		await client.redis.del(`chess-${message.author.id}`);
+		return message.inlineReply('your saved game has been deleted :pensive:');
+        };
+    };
     const opponent = message.mentions.users.first();
     if (!opponent) return message.inlineReply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
     if (opponent.id === message.author.id) return message.inlineReply("you can't play with yourself!");
