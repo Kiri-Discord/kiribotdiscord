@@ -92,7 +92,7 @@ exports.run = async (client, message, args, prefix) => {
                 const displayTime = userTime === Infinity ? 'Infinite' : moment.duration(userTime).format();
                 await message.channel.send(stripIndents`
                 **${user.username}**, what move do you want to make? (ex. A1A2 or NC3)? type \`end\` to forfeit.
-                you can save your game by typing \`save\`. can't think of a move? Use \`play for me\` *coward*
+                you can save your game by typing \`save\`. can't think of a move? use \`play for me\` *coward*
 
                 _you are ${gameState.check ? '**in check!**' : 'not in check.'}_
                 **time remaining: ${displayTime}** (max 10 minutes per turn)
