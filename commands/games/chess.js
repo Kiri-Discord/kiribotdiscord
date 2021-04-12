@@ -67,7 +67,7 @@ exports.run = async (client, message, args, prefix) => {
                 } catch {
                     client.games.delete(message.channel.id);
                     await client.redis.del(`chess-${message.author.id}`);
-                    return message.reply('An error occurred reading your saved game. Please try again.');
+                    return message.inlineReply('there was an error while reading your saved game :pensive: try again please.');
                 }
             } else {
                 game = new jsChess.Game(fen || undefined);
@@ -172,8 +172,8 @@ exports.run = async (client, message, args, prefix) => {
         client.games.delete(message.channel.id);
         if (saved) {
             return message.channel.send(stripIndents`
-            game was saved! Use \`${prefix}chess ${opponent.tag}\` to resume it.
-            you do not have to use the same opponent to resume the game.
+            game was saved! Use \`${prefix}chess ${opponent.tag} ${time}\` to resume it.
+            you do not have to use the same opponent and duration to resume the game :)
             if you want to delete your saved game, use \`${prefix}chess delete\`
             `);
         }
@@ -181,12 +181,12 @@ exports.run = async (client, message, args, prefix) => {
         if (gameState.halfMove > 50) return message.channel.send('due to the 50 moves rule, this game is a draw.');
         if (!gameState.isFinished) return message.channel.send('game was ended due to forfeit :pensive:');
         if (!gameState.checkMate && gameState.isFinished) {
-            return message.channel.send('stalemate! This game is a draw.', {
+            return message.channel.send('stalemate! this game is a draw!', {
                 files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }]
             });
         }
         const winner = gameState.turn === 'black' ? whitePlayer : blackPlayer;
-        return message.channel.send(`Checkmate! Congrats, ${winner}!`, {
+        return message.channel.send(`checkmate! congratulations, ${winner}!`, {
             files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }]
         });
     } catch (err) {
@@ -362,7 +362,7 @@ exports.run = async (client, message, args, prefix) => {
 exports.help = {
     name: "chess",
     description: "play chess with other people or against me! [FEN string](http://www.netreal.de/Forsyth-Edwards-Notation/index.php) is supported!",
-    usage: ["chess `<@opponent> <timers duration>`", "chess `<@opponent> <timers duration> <FEN>`", "chess `delete`"],
+    usage: ["chess `<@opponent> <timers duration>`", "chess `<@opponent> <timers duration> [FEN]`", "chess `delete`"],
     example: ["chess `@Bell 1`", "chess `@Bell 1 rnbqkbnr/pppppppp/3P4/4P3/6P1/8/P1P1P1PP/RNBQKBNR`", "chess `delete`"]
 };
 
