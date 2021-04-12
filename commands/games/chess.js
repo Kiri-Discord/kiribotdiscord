@@ -25,7 +25,7 @@ exports.run = async (client, message, args, prefix) => {
     if (!opponent) return message.inlineReply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
     if (opponent.id === message.author.id) return message.inlineReply("you can't play with yourself!");
     if (opponent.bot && opponent.id !== client.user.id) return message.inlineReply("those bot are busy doing their jobs anyway. wanna play with me instead?");
-    let time = args[1];
+    let time = parseInt(args[1]);
     if (!time || isNaN(time) || time < 0 || time > 120) return message.inlineReply(`how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`);
     let fen = args[2];
     if (fen) {
