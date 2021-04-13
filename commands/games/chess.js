@@ -6,6 +6,7 @@ const path = require('path');
 const { stripIndents } = require('common-tags');
 const { verify, reactIfAble } = require('../../util/util');
 const { centerImagePart } = require('../../util/canvas');
+const { MessageEmbed } = require('discord.js');
 const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=([QRNB]))?)|(?:0-0(?:-0)?)$/;
 const pieces = ['pawn', 'rook', 'knight', 'king', 'queen', 'bishop'];
 const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -13,7 +14,6 @@ const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 exports.run = async (client, message, args, prefix) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
-    let images = null;
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
             const data = await client.redis.exists(`chess-${message.author.id}`);
@@ -30,11 +30,11 @@ exports.run = async (client, message, args, prefix) => {
     let time = parseInt(args[1]);
     let fen = args[2];
     if (fen) {
-        return console.log(fen);
         const valid = validateFEN(fen);
         if (!valid) return message.inlineReply("invalid FEN for the start board :pensive: try it again!");
     }
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${opponent.username}** finish playing chess :(` });
+    let images = null;
     if (!images) await loadImages();
     try {
         if (!opponent.bot) {
@@ -92,13 +92,20 @@ exports.run = async (client, message, args, prefix) => {
                 if (gameState.turn === 'white') whiteTime -= timeTaken - 5000;
             } else {
                 const displayTime = userTime === Infinity ? 'infinite' : moment.duration(userTime).format();
-                await message.channel.send(stripIndents`
+                const embed = new MessageEmbed()
+                .setDescription(stripIndents`
                 **${user.username}**, what move do you want to make? (ex. A1A2 or NC3)? type \`end\` to forfeit.
                 you can save your game by typing \`save\`. can't think of a move? use \`play for me\` *coward*
 
                 _you are ${gameState.check ? '**in check!**' : 'not in check.'}_
-                time remaining: \`${displayTime}\` (max 10 minutes per turn)
-                `, { files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }] });
+                `)
+                .setTitle(`${message.author.username} vs ${opponent.username}`)
+                .setFooter(`time remaining: \`${displayTime}\` (max 10 minutes per turn)`)
+                .setColor('RANDOM')
+                await embed
+                .attachFiles(displayBoard(gameState, prevPieces))
+                .setImage(`attachment://chess.png`)
+                await message.channel.send(embed);
                 prevPieces = Object.assign({}, game.exportJson().pieces);
                 const moves = game.moves();
                 const pickFilter = res => {
@@ -130,7 +137,7 @@ exports.run = async (client, message, args, prefix) => {
                     } else {
                         return message.channel.send(`the game was ended, **${user.username}**! you cannot take more than 10 minutes.`);
                     }
-                }
+                };
                 if (turn.first().content.toLowerCase() === 'end') break;
                 if (turn.first().content.toLowerCase() === 'save') {
                     const { author } = turn.first();
@@ -164,7 +171,7 @@ exports.run = async (client, message, args, prefix) => {
                         game.board.configuration.pieces[choice[1]] = gameState.turn === 'white'
                             ? choice[2]
                             : choice[2].toLowerCase();
-                    }
+                    };
                 }
                 const timeTaken = new Date() - now;
                 if (gameState.turn === 'black') blackTime -= timeTaken - 5000;
@@ -373,5 +380,5 @@ exports.conf = {
     cooldown: 4,
     guildOnly: true,
     userPerms: [],
-	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
+	clientPerms: ["EMBED_LINKS", "SEND_MESSAGES"]
 };
