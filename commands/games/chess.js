@@ -54,7 +54,8 @@ exports.run = async (client, message, args, prefix) => {
         if (resumeGame) {
             await message.channel.send(stripIndents`
             you already have a saved game, do you want to resume it?
-            **this will delete your currently saved game.**
+
+            *this will delete your currently saved game*
             `);
             const verification = await verify(message.channel, message.author);
             if (verification) {
@@ -100,10 +101,9 @@ exports.run = async (client, message, args, prefix) => {
                 _you are ${gameState.check ? '**in check!**' : 'not in check.'}_
                 `)
                 .setTitle(`${message.author.username} vs ${opponent.username}`)
-                .setFooter(`time remaining: \`${displayTime}\` (max 10 minutes per turn)`)
+                .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
                 .setColor('RANDOM')
-                await embed
-                .attachFiles(displayBoard(gameState, prevPieces))
+                .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
                 .setImage(`attachment://chess.png`)
                 await message.channel.send(embed);
                 prevPieces = Object.assign({}, game.exportJson().pieces);
