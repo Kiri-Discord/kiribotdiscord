@@ -9,16 +9,17 @@ const { centerImagePart } = require('../../util/canvas');
 const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=([QRNB]))?)|(?:0-0(?:-0)?)$/;
 const pieces = ['pawn', 'rook', 'knight', 'king', 'queen', 'bishop'];
 const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
 exports.run = async (client, message, args, prefix) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
     let images = null;
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
-                const data = await client.redis.exists(`chess-${message.author.id}`);
-                if (!data) return message.inlineReply('you don\'t have any saved chess game.');
-		await client.redis.del(`chess-${message.author.id}`);
-		return message.inlineReply('your saved game has been deleted :pensive:');
+            const data = await client.redis.exists(`chess-${message.author.id}`);
+            if (!data) return message.inlineReply('you don\'t have any saved chess game.');
+            await client.redis.del(`chess-${message.author.id}`);
+            return message.inlineReply('your saved game has been deleted :pensive:');
         };
     };
     const opponent = message.mentions.users.first();
@@ -29,6 +30,7 @@ exports.run = async (client, message, args, prefix) => {
     let time = parseInt(args[1]);
     let fen = args[2];
     if (fen) {
+        return console.log(fen);
         const valid = validateFEN(fen);
         if (!valid) return message.inlineReply("invalid FEN for the start board :pensive: try it again!");
     }
@@ -126,7 +128,7 @@ exports.run = async (client, message, args, prefix) => {
                     if (userTime - timeTaken <= 0) {
                         return message.channel.send(`${user.id === message.author.id ? opponent : message.author} wins from timeout!`);
                     } else {
-                        return message.channel.send(`${user}, the game was ended. you cannot take more than 10 minutes.`);
+                        return message.channel.send(`the game was ended, **${user.username}**! you cannot take more than 10 minutes.`);
                     }
                 }
                 if (turn.first().content.toLowerCase() === 'end') break;
@@ -134,7 +136,7 @@ exports.run = async (client, message, args, prefix) => {
                     const { author } = turn.first();
                     const alreadySaved = await client.redis.get(`chess-${author.id}`);
                     if (alreadySaved) {
-                        await message.channel.send('you already have a saved game, do you want to overwrite it?');
+                        await message.channel.send('you already have a saved game, do you want to overwrite it? \`y/n\`');
                         const verification = await verify(message.channel, author);
                         if (!verification) continue;
                     }
@@ -173,7 +175,7 @@ exports.run = async (client, message, args, prefix) => {
         if (saved) {
             return message.channel.send(stripIndents`
             game was saved! Use \`${prefix}chess ${opponent.tag} ${time}\` to resume it.
-            you do not have to use the same opponent and duration to resume the game :)
+            the same opponent is not required to resume the game :)
             if you want to delete your saved game, use \`${prefix}chess delete\`
             `);
         }
@@ -186,7 +188,7 @@ exports.run = async (client, message, args, prefix) => {
             });
         }
         const winner = gameState.turn === 'black' ? whitePlayer : blackPlayer;
-        return message.channel.send(`checkmate! congratulations, ${winner}!`, {
+        return message.channel.send(`checkmate! congratulations, **${winner.username}**!`, {
             files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }]
         });
     } catch (err) {
