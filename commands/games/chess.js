@@ -91,13 +91,13 @@ exports.run = async (client, message, args, prefix) => {
                 if (gameState.turn === 'black') blackTime -= timeTaken - 5000;
                 if (gameState.turn === 'white') whiteTime -= timeTaken - 5000;
             } else {
-                const displayTime = userTime === Infinity ? 'Infinite' : moment.duration(userTime).format();
+                const displayTime = userTime === Infinity ? 'infinite' : moment.duration(userTime).format();
                 await message.channel.send(stripIndents`
                 **${user.username}**, what move do you want to make? (ex. A1A2 or NC3)? type \`end\` to forfeit.
                 you can save your game by typing \`save\`. can't think of a move? use \`play for me\` *coward*
 
                 _you are ${gameState.check ? '**in check!**' : 'not in check.'}_
-                **time remaining: ${displayTime}** (max 10 minutes per turn)
+                time remaining: \`${displayTime}\` (max 10 minutes per turn)
                 `, { files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }] });
                 prevPieces = Object.assign({}, game.exportJson().pieces);
                 const moves = game.moves();
