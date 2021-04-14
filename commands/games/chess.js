@@ -53,7 +53,7 @@ exports.run = async (client, message, args, prefix) => {
         let blackPlayer = opponent;
         if (resumeGame) {
             await message.channel.send(stripIndents`
-            you already have a saved game, do you want to resume it?
+            you already have a saved game, do you want to resume it? \`y/n\`
 
             *this will delete your currently saved game*
             `);
@@ -102,7 +102,7 @@ exports.run = async (client, message, args, prefix) => {
                 `)
                 .setTitle(`${message.author.username} vs ${opponent.username}`)
                 .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
-                .setColor('RANDOM')
+                .setColor('#80FF4')
                 .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
                 .setImage(`attachment://chess.png`)
                 await message.channel.send(embed);
@@ -181,9 +181,10 @@ exports.run = async (client, message, args, prefix) => {
         client.games.delete(message.channel.id);
         if (saved) {
             return message.channel.send(stripIndents`
-            game was saved! Use \`${prefix}chess ${opponent.tag} ${time}\` to resume it.
+            game was saved! use \`${prefix}chess ${opponent.tag} ${time}\` to resume anywhere!
             the same opponent is not required to resume the game :)
-            if you want to delete your saved game, use \`${prefix}chess delete\`
+
+            *if you want to delete your saved game, use \`${prefix}chess delete\`*
             `);
         }
         const gameState = game.exportJson();
