@@ -1,20 +1,17 @@
 const { MessageEmbed } = require('discord.js');
 
 
-exports.run = async (client, message, args) => {
-
-
+exports.run = async (client, message, args, prefix) => {
     const guildDB = await client.dbguilds.findOne({
         guildID: message.guild.id
     });
-
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
     const roleName = args.slice(1).join(' ');
 
-    if (!member || !roleName) return message.inlineReply("incorrect usage bruh, it's \`<username || user id> <role name || id>\`").then(m => m.delete({ timeout: 5000 }))
+    if (!member || !roleName) return message.inlineReply(`incorrect usage bruh, it's \`${prefix} addrole <username || user id> <role name || id>\``).then(m => m.delete({ timeout: 5000 }))
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
     

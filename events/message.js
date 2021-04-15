@@ -49,8 +49,9 @@ module.exports = async (client, message) => {
   let sender = message.author;
   const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
   if (prefixMention.test(matchedPrefix)) {
+    const prefixinMessage = new RegExp(`<@!?${client.user.id}>( |)$`);
     const content = args.join(" ");
-    if (!prefixMention.test(content)) {
+    if (!prefixinMessage.test(content)) {
       message.mentions.users.sweep(user => user.id === client.user.id);
       if (message.channel.type !== "dm") {
         message.mentions.members.sweep(user => user.id === client.user.id);
