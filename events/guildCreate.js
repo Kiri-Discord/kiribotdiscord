@@ -1,4 +1,5 @@
 const Guild = require('../model/guild');
+const mongoose = require('mongoose');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (client, guild) => {
@@ -10,6 +11,7 @@ module.exports = async (client, guild) => {
   if (guildexist) return;
 
   const newGuild = new Guild({
+    _id: mongoose.Types.ObjectId(),
     guildID: guild.id,
     prefix: client.config.prefix,
     enableLevelings: false
