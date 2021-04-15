@@ -24,7 +24,7 @@ module.exports = async (client, guild) => {
 
   const embed = new MessageEmbed()
   .setTitle('Thanks for inviting me :D')
-  .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + prefix + `\n\nType ${prefix}help get started! Have fun!`)
+  .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + prefix + `\n\nType \`${prefix}help\` to get started! Have fun!`)
   .setColor('#DAF7A6')
   .setTimestamp(new Date())
   .setAuthor(client.user.username, client.user.displayAvatarURL())
