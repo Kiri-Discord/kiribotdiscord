@@ -54,29 +54,27 @@ const statuses = {
 };
 
 exports.run = async (client, message, args) => {
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
     let query = args.join(" ");
-    if (!query) return message.inlineReply("pls enter something so i can search 👀");
+    if (!query) return message.inlineReply(`pls enter something so i can search ${sedEmoji}`);
     try {
         const id = await search(query);
-        if (!id) return message.inlineReply(`i couldn\'t find any results with **${query}** :(`);
+        if (!id) return message.inlineReply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
         const manga = await fetchManga(id);
         const malScore = await fetchMALScore(manga.idMal);
         const malURL = `https://myanimelist.net/manga/${manga.idMal}`;
         const embed = new MessageEmbed()
-        .setTimestamp()
-        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-        .setColor('RANDOM')
-        .setAuthor('AniList', 'https://i.imgur.com/iUIRC7v.png', 'https://anilist.co/')
+        .setColor(message.member.displayHexColor)
         .setURL(manga.siteUrl)
         .setThumbnail(manga.coverImage.large || manga.coverImage.medium || null)
         .setTitle(manga.title.english || manga.title.romaji)
         .setDescription(manga.description ? cleanAnilistHTML(manga.description) : 'No description.')
-        .addField(':arrow_right: Status', statuses[manga.status], true)
-        .addField(':arrow_right: Chapters / Volumes', `${manga.chapters || '???'}/${manga.volumes || '???'}`, true)
-        .addField(':arrow_right: Year', manga.startDate.year || '???', true)
-        .addField(':arrow_right: Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
-        .addField(`:arrow_right: MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
-        .addField(':arrow_right: External links', manga.externalLinks.length
+        .addField('📜 Status', statuses[manga.status], true)
+        .addField('📚 Chapters / volumes', `${manga.chapters || '???'}/${manga.volumes || '???'}`, true)
+        .addField('🧨 Year', manga.startDate.year || '???', true)
+        .addField('💯 Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
+        .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
+        .addField('ℹ️ Links', manga.externalLinks.length
             ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ')
             : 'None');
         return message.channel.send(embed);
@@ -110,8 +108,7 @@ async function fetchManga(id) {
             query: resultGraphQL
         });
     return body.data.Media;
-}
-
+};
 async function fetchMALScore(id) {
     try {
         const { text } = await request.get(`https://myanimelist.net/manga/${id}`);
@@ -120,11 +117,7 @@ async function fetchMALScore(id) {
     } catch {
         return null;
     }
-}
-
-
-
-
+};
 exports.help = {
 	name: "manga",
 	description: "search for a manga.\nonly official release will be searched :)",

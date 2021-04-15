@@ -74,15 +74,7 @@ const statuses = {
 	CANCELLED: 'Cancelled'
 };
 
-
-
-exports.run = async (client, message, args) => {
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    
-    const prefix = setting.prefix;
-      
+exports.run = async (client, message, args, prefix) => {      
     let query = args.join(" ");
     if (!query) return message.inlineReply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
     try {
@@ -93,22 +85,18 @@ exports.run = async (client, message, args) => {
         const malScore = await fetchMALScore(anime.idMal);
         const malURL = `https://myanimelist.net/anime/${anime.idMal}`;
         const embed = new MessageEmbed()
-            .setColor('RANDOM')
-            .setTimestamp()
-            .setAuthor('AniList', 'https://i.imgur.com/iUIRC7v.png', 'https://anilist.co/')
-            .setURL(anime.siteUrl)
-            .setThumbnail(anime.coverImage.large || anime.coverImage.medium || null)
-            .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-            .setTitle(anime.title.english || anime.title.romaji)
-            .setDescription(anime.description ? cleanAnilistHTML(anime.description) : 'No description.')
-            .addField(':arrow_right: Status', statuses[anime.status], true)
-            .addField(':arrow_right: Episodes', anime.episodes || '???', true)
-            .addField(':arrow_right: Season', anime.season ? `${seasons[anime.season]} ${anime.startDate.year}` : '???', true)
-            .addField(':arrow_right: Average Score', anime.averageScore ? `${anime.averageScore}%` : '???', true)
-            .addField(`:arrow_right: MAL Score`, malScore ? embedURL(malScore, malURL) : '???', true)
-            .addField(':arrow_right: External Links', anime.externalLinks.length
-                ? anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ')
-                : 'None');
+        .setColor(message.member.displayHexColor)
+        .setThumbnail(anime.coverImage.large || anime.coverImage.medium || null)
+        .setTitle(anime.title.english || anime.title.romaji)
+        .setDescription(anime.description ? cleanAnilistHTML(anime.description) : '*No description found???*')
+        .addField('📜 Status', statuses[anime.status], true)
+        .addField('📺 Episodes', anime.episodes || '*not found???*', true)
+        .addField('🍁 Season', anime.season ? `${seasons[anime.season]} ${anime.startDate.year}` : '???', true)
+        .addField('💯 Average score', anime.averageScore ? `${anime.averageScore}%` : '???', true)
+        .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
+        .addField('ℹ️ Links', anime.externalLinks.length
+            ? anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ')
+            : 'None');
         await message.channel.stopTyping(true);
         return message.channel.send(embed);
     } catch (err) {
@@ -140,7 +128,7 @@ async function fetchAnime(id) {
             query: resultGraphQL
         });
     return body.data.Media;
-}
+};
 
 async function fetchMALScore(id) {
     try {
@@ -150,9 +138,7 @@ async function fetchMALScore(id) {
     } catch {
         return null;
     }
-}
-
-
+};
 
 exports.help = {
 	name: "anime",

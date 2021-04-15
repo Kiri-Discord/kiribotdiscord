@@ -16,10 +16,20 @@ exports.run = async (client, message, args, prefix) => {
     if (current) return message.inlineReply(current.prompt);
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
-            const data = await client.redis.exists(`chess-${message.author.id}`);
-            if (!data) return message.inlineReply('you don\'t have any saved chess game.');
-            await client.redis.del(`chess-${message.author.id}`);
-            return message.inlineReply('your saved game has been deleted :pensive:');
+            const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+            const data = await client.gameStorage.findOne({
+                guildId: message.guild.id,
+                userId: message.author.id
+            });
+            if (data) {
+                const foundGameSave = data.storage.find(storage => storage.type === 'chess');
+                if (!foundGameSave) return message.inlineReply(`you don\'t have any saved chess game ${sedEmoji}`);
+                data.storage.splice(data.storage.indexOf(x => x.type === 'chess'), 1);
+                await data.save();
+                return message.inlineReply(`your saved game has been deleted ${sedEmoji}`);
+            } else {
+                return message.inlineReply(`you don\'t have any saved chess game ${sedEmoji}`);
+            }
         };
     };
     const opponent = message.mentions.users.first();
@@ -28,7 +38,7 @@ exports.run = async (client, message, args, prefix) => {
     if (opponent.bot && opponent.id !== client.user.id) return message.inlineReply("those bot are busy doing their jobs anyway. wanna play with me instead?");
     if (!args[1] || isNaN(args[1]) || args[1] < 0 || args[1] > 120) return message.inlineReply(`how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`);
     let time = parseInt(args[1]);
-    let fen = args[2];
+    let fen = args.slice(2).join(' ');
     if (fen) {
         const valid = validateFEN(fen);
         if (!valid) return message.inlineReply("invalid FEN for the start board :pensive: try it again!");
@@ -42,16 +52,25 @@ exports.run = async (client, message, args, prefix) => {
             const verification = await verify(message.channel, opponent);
             if (!verification) {
                 client.games.delete(message.channel.id);
-                return message.channel.send('looks like they declined... :pensive:');
+                return message.channel.send(`looks like they declined... ${sedEmoji}`);
             }
-        }
-        const resumeGame = await client.redis.get(`chess-${message.author.id}`);
+        };
+        let gameStorage = client.gameStorage;
+        let resumeGame = await gameStorage.findOne({
+            guildId: message.guild.id,
+            userId: message.author.id
+        });
+        if (!resumeGame) resumeGame = new gameStorage({
+            guildId: message.guild.id,
+            userId: message.author.id
+        });
         let game;
         let whiteTime = time === 0 ? Infinity : time * 60000;
         let blackTime = time === 0 ? Infinity : time * 60000;
         let whitePlayer = message.author;
         let blackPlayer = opponent;
-        if (resumeGame) {
+        let foundGameSave = resumeGame.storage.find(storage => storage.type === 'chess');
+        if (foundGameSave) {
             await message.channel.send(stripIndents`
             you already have a saved game, do you want to resume it? \`y/n\`
 
@@ -60,17 +79,19 @@ exports.run = async (client, message, args, prefix) => {
             const verification = await verify(message.channel, message.author);
             if (verification) {
                 try {
-                    const data = JSON.parse(resumeGame);
+                    const data = foundGameSave;
                     game = new jsChess.Game(data.fen);
                     whiteTime = data.whiteTime === -1 ? Infinity : data.whiteTime;
                     blackTime = data.blackTime === -1 ? Infinity : data.blackTime;
                     whitePlayer = data.color === 'white' ? message.author : opponent;
                     blackPlayer = data.color === 'black' ? message.author : opponent;
-                    await client.redis.del(`chess-${message.author.id}`);
+                    resumeGame.storage.splice(resumeGame.storage.indexOf(x => x.type === 'chess'), 1);
+                    await resumeGame.save();
                 } catch {
                     client.games.delete(message.channel.id);
-                    await client.redis.del(`chess-${message.author.id}`);
-                    return message.inlineReply('there was an error while reading your saved game :pensive: try again please.');
+                    resumeGame.storage.splice(resumeGame.storage.indexOf(x => x.type === 'chess'), 1);
+                    await resumeGame.save();
+                    return message.inlineReply(`there was an error while reading your saved game... try again please ${sedEmoji}`);
                 }
             } else {
                 game = new jsChess.Game(fen || undefined);
@@ -95,17 +116,17 @@ exports.run = async (client, message, args, prefix) => {
                 const displayTime = userTime === Infinity ? 'infinite' : moment.duration(userTime).format();
                 const embed = new MessageEmbed()
                 .setDescription(stripIndents`
-                **${user.username}**, what move do you want to make? (ex. A1A2 or NC3)? type \`end\` to forfeit.
-                you can save your game by typing \`save\`. can't think of a move? use \`play for me\` *coward*
+                type \`end\` to forfeit.
 
-                _you are ${gameState.check ? '**in check!**' : 'not in check.'}_
+                save your game by typing \`save\`.
+                can't think of a move? use \`play for me\` *coward*
                 `)
                 .setTitle(`${message.author.username} vs ${opponent.username}`)
                 .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
-                .setColor('#80FF4')
+                .setColor('#34e363')
                 .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
                 .setImage(`attachment://chess.png`)
-                await message.channel.send(embed);
+                await message.channel.send(`**${user.username}**, what move do you want to make? (ex. A1A2 or NC3)?\n_you are ${gameState.check ? '**in check!**' : 'not in check.'}_`, embed);
                 prevPieces = Object.assign({}, game.exportJson().pieces);
                 const moves = game.moves();
                 const pickFilter = res => {
@@ -141,23 +162,22 @@ exports.run = async (client, message, args, prefix) => {
                 if (turn.first().content.toLowerCase() === 'end') break;
                 if (turn.first().content.toLowerCase() === 'save') {
                     const { author } = turn.first();
-                    const alreadySaved = await client.redis.get(`chess-${author.id}`);
+                    const alreadySaved = resumeGame.storage.find(storage => storage.type === 'chess');
                     if (alreadySaved) {
                         await message.channel.send('you already have a saved game, do you want to overwrite it? \`y/n\`');
                         const verification = await verify(message.channel, author);
                         if (!verification) continue;
-                    }
+                    };
+                    resumeGame.storage.splice(resumeGame.storage.indexOf(x => x.type === 'chess'), 1);
                     if (gameState.turn === 'black') blackTime -= new Date() - now;
                     if (gameState.turn === 'white') whiteTime -= new Date() - now;
-                    await client.redis.set(
-                        `chess-${author.id}`,
-                        exportGame(
-                            game,
-                            blackTime,
-                            whiteTime,
-                            whitePlayer.id === author.id ? 'white' : 'black'
-                        )
-                    );
+                    resumeGame.storage.push(exportGame(
+                        game,
+                        blackTime,
+                        whiteTime,
+                        whitePlayer.id === author.id ? 'white' : 'black'
+                    ))
+                    await resumeGame.save();
                     saved = true;
                     break;
                 }
@@ -360,12 +380,13 @@ exports.run = async (client, message, args, prefix) => {
     };
 
     function exportGame(game, blackTime, whiteTime, playerColor) {
-        return JSON.stringify({
+        return {
+            type: 'chess',
             fen: game.exportFEN(),
             blackTime: blackTime === Infinity ? -1 : blackTime,
             whiteTime: whiteTime === Infinity ? -1 : whiteTime,
             color: playerColor
-        });
+        };
     }
 };
 

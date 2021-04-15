@@ -51,15 +51,12 @@ exports.run = async (client, message, args) => {
         if (!id) return message.inlineReply('i couldn\'t find any result for that character :(');
         const character = await fetchCharacter(id);
         const embed = new MessageEmbed()
-            .setTimestamp(new Date())
-            .setAuthor('AniList', 'https://i.imgur.com/iUIRC7v.png', 'https://anilist.co/')
-            .setColor('RANDOM')
-            .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
+            .setColor(message.member.displayHexColor)
             .setURL(character.siteUrl)
             .setThumbnail(character.image.large || character.image.medium || null)
             .setTitle(`${character.name.first || ''}${character.name.last ? ` ${character.name.last}` : ''}`)
             .setDescription(character.description ? cleanAnilistHTML(character.description, false) : 'No description found :(')
-            .addField(':arrow_right: Appearances', trimArray(character.media.edges.map(edge => {
+            .addField('😀 Appearances', trimArray(character.media.edges.map(edge => {
                 const title = edge.node.title.english || edge.node.title.romaji;
                 return embedURL(`${title} (${types[edge.node.type]})`, edge.node.siteUrl);
             }), 5).join(', '));

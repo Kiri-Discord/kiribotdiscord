@@ -2,12 +2,7 @@ const request = require('node-superfetch');
 const { MessageEmbed } = require('discord.js');
 const { formatNumber } = require('../../util/util');
 
-exports.run = async (client, message, args) => {
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    
-    const prefix = setting.prefix;
+exports.run = async (client, message, args, prefix) => {
     let query = args.join(" ") || 'all'
     let country = encodeURIComponent(query)
     try {
@@ -23,17 +18,19 @@ exports.run = async (client, message, args) => {
         .setThumbnail(country === 'all' ? null : data.countryInfo.flag || null)
         .setFooter('I updated this data in', client.user.displayAvatarURL())
         .setTimestamp(data.updated)
-        .addField(':arrow_right: Total cases', `${formatNumber(data.cases)} (${formatNumber(data.todayCases)} Today)`, true)
-        .addField(':arrow_right: Total deaths', `${formatNumber(data.deaths)} (${formatNumber(data.todayDeaths)} Today)`, true)
-        .addField(':arrow_right: Total recoveries',
+        .addField('🧍 Total cases', `${formatNumber(data.cases)} (${formatNumber(data.todayCases)} Today)`, true)
+        .addField('💀 Total deaths', `${formatNumber(data.deaths)} (${formatNumber(data.todayDeaths)} Today)`, true)
+        .addField('❤️‍🩹 Total recoveries',
             `${formatNumber(data.recovered)} (${formatNumber(data.todayRecovered)} Today)`, true)
-        .addField(':arrow_right: Active cases', formatNumber(data.active), true)
-        .addField(':arrow_right: Active critical cases', formatNumber(data.critical), true)
-        .addField(':arrow_right: Tests', formatNumber(data.tests), true);
+        .addField('🤒 Active cases', formatNumber(data.active), true)
+        .addField('🤢 Active critical cases', formatNumber(data.critical), true)
+        .addField('💉 Tests', formatNumber(data.tests), true);
     return message.channel.send(embed);
     } catch (err) {
-        if (err.status === 404) return message.channel.send('you gave me an invaild country or that country doesn\'t have any cases :)')
-        return message.channel.send('sorry :( i got no result. the server might be down tho.')
+        const blessEmoji = client.customEmojis.get('bless') ? client.customEmojis.get('bless') : ':slight_smile:' ;
+        const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+        if (err.status === 404) return message.inlineReply(`you just gave me an invaild country or that country doesn\'t have any cases ${blessEmoji}`)
+        return message.inlineReply(`sorry, i got no result. the server might be down tho ${sedEmoji}`)
     }
 }
 

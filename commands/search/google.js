@@ -1,18 +1,13 @@
-const Discord = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 const request = require("node-superfetch")
 
 exports.run = async (client, message, args) => {
     let googleKey = process.env.gg_key;
     let csx = process.env.csx_key;
-    let safesearch;
     let query = args.join(" ");
     if (!query) return message.inlineReply("pls enter something so i can search 👀");
+    let safesearch = message.channel.nsfw ? "active" : "off";
 
-    if (message.channel.nsfw) {
-        safesearch = "off"
-    } else {
-        safesearch = "active"
-    }
     const href = await search(googleKey, csx, query, safesearch);
     if (!href) {
         if (safesearch === "active") {
@@ -22,7 +17,7 @@ exports.run = async (client, message, args) => {
         }
     };
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTimestamp(new Date())
     .setTitle(href.title)
     .setDescription(href.snippet)
@@ -53,9 +48,9 @@ async function search(googleKey, csx, query, safesearch) {
 
 exports.help = {
 	name: "google",
-	description: "Google sth for ya",
-	usage: "google <query>",
-	example: "google discord"
+	description: "Google sth for ya 👀",
+	usage: "google `<query>`",
+	example: "google `discord`"
 };
   
 exports.conf = {

@@ -8,9 +8,9 @@ const reqString = {
 const moneySchema = mongoose.Schema({
   guildId: reqString,
   userId: reqString,
-  gameId: reqString,
   storage: {
-    type: [JSON],
+    type: [Object],
+    default: []
   },
 });
 

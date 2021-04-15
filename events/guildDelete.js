@@ -22,12 +22,19 @@ module.exports = async (client, guild) => {
         if (err) console.error(err)
     });
     await client.money.deleteMany({
-        guildId: guild.id,
+        guildId: guild.id
     }, (err) => {
         if (err) console.error(err)
     });
+
     await client.love.deleteMany({
-        guildID: guild.id,
+        guildID: guild.id
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await client.gameStorage.deleteMany({
+        guildId: guild.id
     }, (err) => {
         if (err) console.error(err)
     });

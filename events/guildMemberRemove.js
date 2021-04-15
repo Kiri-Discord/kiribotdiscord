@@ -33,6 +33,13 @@ module.exports = async (client, member) => {
         if (err) console.error(err)
     });
 
+    await client.gameStorage.findOneAndDelete({
+        guildId: member.guild.id,
+        userId: member.user.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
     await hugSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
