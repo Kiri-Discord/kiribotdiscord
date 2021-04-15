@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Guild = require('../model/guild');
 const { MessageEmbed } = require('discord.js');
 
@@ -11,7 +10,6 @@ module.exports = async (client, guild) => {
   if (guildexist) return;
 
   const newGuild = new Guild({
-    _id: mongoose.Types.ObjectId(),
     guildID: guild.id,
     prefix: client.config.prefix,
     enableLevelings: false
@@ -20,10 +18,11 @@ module.exports = async (client, guild) => {
   newGuild.save();
 
   const prefix = client.config.prefix;
+  const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
 
   const embed = new MessageEmbed()
   .setTitle('Thanks for inviting me :D')
-  .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + `${prefix}` + `\n\nType ${prefix}help to see a full list of commands. Have fun!`)
+  .setDescription(`Thanks for adding me to your server **${guild.name}** ^^\nMy default prefix is ` + prefix + `\n\nType ${prefix}help get started! Have fun!`)
   .setColor('#DAF7A6')
   .setTimestamp(new Date())
   .setAuthor(client.user.username, client.user.displayAvatarURL())
@@ -35,7 +34,8 @@ module.exports = async (client, guild) => {
   const log2 = client.channels.cache.get('774476096409436170')
   if (log2) log2.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     
-  guild.owner.send(embed);
+  await guild.owner.send(embed);
+  guild.owner.send(`**some of my suggestion for you to get started:** ${blush}\n\`${prefix}invite\` - check out our community server and support server!\n\`${prefix}help\` - check out my command list!\n\`${prefix}levelings\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!\n*and many more to come...*`)
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   client.users.cache.get('617777631257034783').send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 

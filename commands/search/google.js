@@ -6,8 +6,12 @@ exports.run = async (client, message, args) => {
     let csx = process.env.csx_key;
     let query = args.join(" ");
     if (!query) return message.inlineReply("pls enter something so i can search 👀");
-    let safesearch = message.channel.nsfw ? "active" : "off";
-
+    let safesearch;
+    if (message.channel.nsfw) {
+        safesearch = "off"
+    } else {
+        safesearch = "active"
+    }
     const href = await search(googleKey, csx, query, safesearch);
     if (!href) {
         if (safesearch === "active") {
@@ -18,13 +22,11 @@ exports.run = async (client, message, args) => {
     };
 
     const embed = new MessageEmbed()
-    .setTimestamp(new Date())
     .setTitle(href.title)
     .setDescription(href.snippet)
     .setURL(href.link)
-    .setColor('RANDOM')
+    .setColor(message.member.displayHexColor)
     .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png', 'https://google.com')
-    .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     if (href.pagemap.cse_image) {
         embed.setImage(href.pagemap.cse_image[0].src)
     }

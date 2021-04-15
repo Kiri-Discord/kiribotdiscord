@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ ignore levelings has been disabled`}});
     }
     
-    let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0])
+    let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) channel = message.channel;
     
     await client.dbguilds.findOneAndUpdate({
