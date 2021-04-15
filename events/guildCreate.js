@@ -17,7 +17,7 @@ module.exports = async (client, guild) => {
     enableLevelings: false
   })
 
-  newGuild.save();
+  await newGuild.save();
 
   const prefix = client.config.prefix;
   const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
