@@ -4,7 +4,7 @@ exports.run = async (client, message, args) => {
             guildID: message.guild.id,
         },
         {
-            logChannelID: null
+            logChannelID: undefined
         })
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ mod logs has been disabled`}});
     }

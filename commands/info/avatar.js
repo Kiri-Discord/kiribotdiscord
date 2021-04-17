@@ -1,27 +1,17 @@
 const { MessageEmbed } = require("discord.js");
 
-exports.run = async (client, message, args) => {  
-  let user;
-  try {
-    if (message.mentions.users.first()) {
-      user = message.mentions.users.first();
-    } else if (args[0]) {
-      user = message.guild.members.cache.get(args[0]).user;
-    } else {
-      user = message.author;
-    }
-  } catch (error) {
-    return message.channel.send(`Ouch. Jezzz you gave me a wrong mention or user ID 😔`).then(m => m.delete({ timeout: 5000 }));
-  }
+exports.run = async (client, message, args) => {
+  let member = await getMemberfromMention(args[0], message.guild) || message.member;
+  let user = member.user;
 
   const avatar = user.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
   
   const embed = new MessageEmbed()
-  .setTimestamp(new Date())
   .setTitle(`${user.tag} avatar`)
   .setDescription(`[Avatar URL](${avatar})`)
-  .setColor('#DAF7A6')
+  .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
   .setImage(avatar)
+  .setTimestamp(new Date())
   .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
   
   return message.channel.send(embed);

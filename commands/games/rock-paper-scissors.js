@@ -83,8 +83,12 @@ class Game {
 }
 
 exports.run = async (client, message, args) => {
-    const challenged = message.mentions.users.first();
-    if (!challenged || challenged === message.member || challenged.bot) return message.inlineReply('you should mention a valid user to play with :(');
+    const member = await getMemberfromMention(args[0], message.guild);
+    if (!member) return message.inlineReply('who do you want to play with ?');
+    const challenged = member.user;
+    if (challenged.id === message.author.id) return message.inlineReply("you can't play against yourself!");
+    if (challenged.id === client.user.id) return message.inlineReply("you can't play against me!");
+    if (challenged.bot) return message.inlineReply("you can't play against bots!");
     if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
     utils.inGame.push(challenged.id, message.author.id);

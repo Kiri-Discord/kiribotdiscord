@@ -1,16 +1,11 @@
 const ms = require("ms");
-exports.run = async (client, message, args) => {
-    
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-      });
-      const prefix = setting.prefix;
+exports.run = async (client, message, args, prefix) => {
   let time = args.join(" ");
   
   if (!time) return message.inlineReply("please includes the time format. all valid time format are \`s, m, hrs\`!");
   
-  let convert = ms(time); // This will results the milliseconds.
-  let toSecond = Math.floor(convert / 1000); // This will convert the ms to s. (seconds)
+  let convert = ms(time);
+  let toSecond = Math.floor(convert / 1000);
   
   if (!toSecond || toSecond == undefined) return message.inlineReply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
   
@@ -33,9 +28,8 @@ exports.help = {
 
 exports.conf = {
 	aliases: ["verifytimeout"],
-    cooldown: 5,
-    guildOnly: true,
-    userPerms: ["MANAGE_GUILD"],
+  cooldown: 5,
+  guildOnly: true,
+  userPerms: ["MANAGE_GUILD"],
 	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
-

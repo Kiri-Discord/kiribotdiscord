@@ -5,13 +5,16 @@ const hugSchema = require('../../model/hug')
 
 exports.run = async (client, message, args) => {
     let data = await random.getAnimeImgURL("hug")
+    const member = await getMemberfromMention(args[0], message.guild);
 
-    const target = message.mentions.users.first()
-    if (!target) {
-      return message.inlineReply("you can't just hug **air** :( please mention somebody to hug pls")
-    }
+    if (!member) {
+      const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
+      return message.inlineReply(`you can't just hug at the air ${sedEmoji} please mention somebody to hug pls`)
+    };
+    const target = member.user;
 
-    if (target.bot) return message.inlineReply("this isn't plastic memories so you can't hug that bot, sorry :(")
+    if (target.id === client.user.id) return message.inlineReply('you need a hug? :hugging:')
+    if (target.bot) return message.inlineReply("you can't hug that bot, sorry :(")
 
     const { guild } = message
     const guildId = guild.id

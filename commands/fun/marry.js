@@ -11,8 +11,7 @@ exports.run = async (client, message, args) => {
         }
     }
     if (!args[0]) return message.inlineReply('who do you want to propose to?');
-    const mention = message.guild.members.cache.get(args[0]) || message.mentions.members.first();
-    const member = message.guild.members.cache.get(mention.id);
+    const member = await getMemberfromMention(args[0], message.guild);
     if (!member) return message.inlineReply("i couldn't find that user in this server :pensive:");
     if (member.user.id === message.author.id) return message.inlineReply('WHY DO YOU WANT TO MARRY YOURSELF?');
     if (member.user.id === client.user.id) return message.inlineReply('aww i apreciated that but.. i am just a bot :(');
@@ -46,7 +45,6 @@ exports.run = async (client, message, args) => {
     ${member}, it seems like ${message.author} is interested in taking you as their loved one...
     
     do you accept this proposal? please react with ✅ for yes, and ❌ for no.
-
     *i will be going in a minute.*
     `}});
     await msg.react('✅');

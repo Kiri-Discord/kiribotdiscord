@@ -6,12 +6,16 @@ const punchSchema = require('../../model/punch')
 exports.run = async (client, message, args) => {
     let data = await random.getAnimeImgURL("punch")
 
-    const target = message.mentions.users.first()
-    if (!target) {
-      message.inlineReply("you can't just punch *air* :( please mention somebody to punch pls")
-      return
-    }
-    if (target === client.user) return message.inlineReply('you truly are the lowest scum in history.')
+    const member = await getMemberfromMention(args[0], message.guild);
+
+    if (!member) {
+      const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
+      return message.inlineReply(`you can't just punch at the air ${sedEmoji} please mention somebody to punch pls`)
+    };
+
+    const target = member.user;
+
+    if (target.id === client.user.id) return message.inlineReply('you truly are the lowest scum in history.')
     if (target.bot) return message.inlineReply("you can't punch that bot, sorry :(")
 
     const { guild } = message

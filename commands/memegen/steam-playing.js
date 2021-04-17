@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
     } else {
         game = query;
     }
-    const user = message.mentions.users.first() || message.author;
+    const user = await getUserfromMention(args[0]) || message.author;
     const avatarURL = user.displayAvatarURL({ format: 'png', size: 64 });
     try {
         const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'steam-now-playing.png'));

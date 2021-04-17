@@ -23,12 +23,14 @@ exports.conf = {
 exports.run = async (client, message, args) => {
 	const current = client.games.get(message.channel.id);
 	if (current) return message.inlineReply(current.prompt);
-	const opponent = message.mentions.users.first();
+	const member = await getMemberfromMention(args[0], message.guild);
+    if (!member) return message.inlineReply('you should tag someone to play with :(');
+	const opponent = member.user;
 	const time = args[1] || 10;
-	if (isNaN(time) || time > 15 || time < 3 ) return message.inlineReply('the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(')
-	if (!opponent) return message.inlineReply('you should tag someone to play :(')
-	if (opponent.bot) return message.inlineReply('since bots are too smart, i couldn\'t allow that :(');
 	if (opponent.id === message.author.id) return message.inlineReply('you can\'t play against yourself :(');
+	if (opponent.id === client.user.id) return message.inlineReply('i really want to but i\'m busy :pensive:');
+	if (opponent.bot) return message.inlineReply('since bots are too smart, i can\'t allow that :(');
+	if (isNaN(time) || time > 15 || time < 3) return message.inlineReply('the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(');
 	client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finished playing :(` });
 
 	try {
@@ -41,6 +43,7 @@ exports.run = async (client, message, args) => {
 		const startWord = startWords[Math.floor(Math.random() * startWords.length)];
 		await message.channel.send(stripIndents`
 			the start word will be **${startWord}**! you must answer within **${time}** seconds!
+			
 			if you think your opponent has played a word that **doesn't exist**, respond with **challenge** on your turn.
 			words cannot contain anything but letters. no numbers, spaces, or hyphens may be used :(
 			the game will start in 5 seconds...

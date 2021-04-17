@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 exports.run = async (client, message, args) => {
     fetch('https://complimentr.com/api')
     .then(res => res.json())
-    .then(json => message.inlineReply(json.compliment))
+    .then(json => message.inlineReply(json.compliment.toLowerCase()))
     .catch(err => {
         message.inlineReply("i can't seem to be able to praise you :( here is a hug for now 🤗");
         return console.error(err);

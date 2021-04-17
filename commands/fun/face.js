@@ -1,7 +1,7 @@
 const request = require('node-superfetch');
 const { oneLine } = require('common-tags');
 const { base64 } = require('../../util/util');
-const { FACEPLUSPLUS_KEY, FACEPLUSPLUS_SECRET } = process.env;
+const { face_key, face_secret } = process.env;
 const emotions = ['anger', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise'];
 const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 'sad', 'surprised'];
 
@@ -21,9 +21,11 @@ exports.run = async (client, message, args) => {
         )];
         const smile = face.smile.value > face.smile.threshold;
         const beautyScore = face.gender.value === 'Male' ? face.beauty.female_score : face.beauty.male_score;
+        const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':grimacing:';
         await message.channel.stopTyping(true);
         return message.inlineReply(oneLine`
-            i think this is a photo of a ${face.age.value} year old ${face.gender.value.toLowerCase()}.
+            i think this is a photo of a ${face.age.value} year old ${face.gender.value.toLowerCase()} ${stareEmoji}
+            
             ${pronoun.toLowerCase()} appears to be ${emotion}, and is ${smile ? 'smiling' : 'not smiling'}. i give this
             face a ${Math.round(beautyScore)} on the 1-100 beauty scale.
             ${beautyScore > 50 ? beautyScore > 70 ? beautyScore > 90 ? 'nice' : 'not bad' : 'not _too_ bad.' : 'nice'}
@@ -43,8 +45,8 @@ async function detect(image) {
         .post('https://api-us.faceplusplus.com/facepp/v3/detect')
         .attach('image_base64', base64(imgData.body))
         .query({
-            api_key: FACEPLUSPLUS_KEY,
-            api_secret: FACEPLUSPLUS_SECRET,
+            api_key: face_key,
+            api_secret: face_secret,
             return_attributes: 'gender,age,smiling,emotion,ethnicity,beauty'
         });
     if (!body.faces || !body.faces.length) return null;

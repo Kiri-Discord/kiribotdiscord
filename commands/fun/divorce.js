@@ -119,7 +119,7 @@ async function divorce(client, message, member) {
 }
 exports.help = {
     name: "divorce",
-    description: "propose somebody and marry them *(if they ever accept)*",
+    description: "divorce with somebody after marry them :pensive:",
     usage: "divorce `<@mention>`",
     example: "divorce `@somebody`"
 };

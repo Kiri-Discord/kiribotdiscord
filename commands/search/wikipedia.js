@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
     const article = res.data;
     
     const wikipedia = new Discord.MessageEmbed()
-    .setColor('RANDOM')
+    .setColor('#FFFFFF')
     .setTitle(`**${article.title}**`)
     .setURL(article.content_urls.desktop.page)
     .setDescription(`> ${article.extract}`)

@@ -2,9 +2,10 @@ const Battle = require('../../features/battle/battle');
 const { randomRange, verify } = require('../../util/util');
 
 exports.run = async (client, message, args) => {
-    const opponent = message.mentions.users.first() || client.user;
+    const member = await getMemberfromMention(args[0], message.guild) || message.guild.me;
+    const opponent = member.user;
     if (opponent.id === message.author.id) return message.inlineReply('you can\'t play against yourself :(');
-    if (opponent !== client.user && opponent.bot) return message.inlineReply('i am the only bot who can fight with you :) no, i am not looking at you, <@!270904126974590976>');
+    if (opponent !== client.user && opponent.bot) return message.inlineReply('i am the only bot who can fight with you :) no, i am not looking at you, Dank Memer!');
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
     client.games.set(message.channel.id, { name: this.name, data: new Battle(message.author, opponent), prompt: `you should wait until **${message.author.username}** and **${opponent.username}** finish fighting :)` });

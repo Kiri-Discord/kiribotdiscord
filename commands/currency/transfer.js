@@ -1,6 +1,15 @@
 exports.run = async (client, message, args) => {
-    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
-    let mention = message.guild.members.cache.get(user.id);
+    const member = await getMemberfromMention(args[0], message.guild);
+    if (!member) return message.inlineReply("who do you want to send token to?");
+    const user = member.user;
+    if (user.id === client.user.id) return message.inlineReply("wow you are so generous but.. that's me.");
+    if (user.bot) return message.inlineReply("that user is a bot.");
+    if (user.id === message.author.id) return message.inlineReply("why do you want to transfer a credit to yourself?");
+
+    let amount = parseInt(args[1]);
+    if (!amount) return message.inlineReply("please input the amount of credits that you want to transfer!");
+    if (isNaN(amount)) return message.inlineReply("that was not a valid number!");
+
     let storage = await client.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
@@ -16,15 +25,6 @@ exports.run = async (client, message, args) => {
     };
     let balance = storage.balance;
 
-    if (!user) return message.inlineReply("who do you want to send token to?");
-    if (user.id === client.user.id) return message.inlineReply("wow you are so generous but.. that's me.");
-    if (user.bot) return message.inlineReply("that user is a bot.");
-    if (user.id === message.author.id) return message.inlineReply("why do you want to transfer a credit to yourself?");
-
-    let amount = parseInt(args[1]);
-    if (!amount) return message.inlineReply("please input the amount of credits that you want to transfer!");
-    if (isNaN(amount)) return message.inlineReply("that was not a valid number!");
-
     if (!balance || balance == 0) return message.inlineReply("your wallet is empty. broke. nothing is there :anguished:");
     if (amount > balance) return message.inlineReply("you don't have that enough credits to transfer!");
     if (amount === 0) return message.inlineReply("why did you transfer nothing?");
@@ -39,10 +39,10 @@ exports.run = async (client, message, args) => {
         }, 
     });
     await client.money.findOneAndUpdate({
-        userId: mention.user.id,
+        userId: user.id,
         guildId: message.guild.id
     }, {
-        userId: mention.user.id,
+        userId: user.id,
         guildId: message.guild.id,
         $inc: {
             balance: amount,

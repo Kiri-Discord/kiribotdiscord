@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const Pagination = require('discord-paginationembed');
+
 exports.run = async (client, message, args, prefix) => {  
   if (!args[0]) {
     let module = client.helps.array();
@@ -25,7 +26,7 @@ exports.run = async (client, message, args, prefix) => {
     `)
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(`all of our command is community based, so consider joining our server with ${prefix}invite!`)
-    .setColor('#ffe6cc')
+    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setDeleteOnTimeout(true)
     .setImage('https://blackmirrorland.files.wordpress.com/2014/09/gloomy-anime-future-wallpaper-1920x1080.jpg')
     .build();
@@ -45,7 +46,7 @@ exports.run = async (client, message, args, prefix) => {
       let botperms = command.conf.clientPerms.map(x => `\`${x}\``).join(", ") ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
       
       let embed = new MessageEmbed()
-      .setColor('#ffe6cc')
+      .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
       .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setFooter(client.user.username, client.user.displayAvatarURL())
       .setTitle(`${prefix}${name}`)

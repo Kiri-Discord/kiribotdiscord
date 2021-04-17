@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
     client.guilds.cache.forEach(guild => {
       listGuild.push(`${guild.name} - ${guild.id}`)
     });
-    return message.channel.send(`these are all guilds being connected to me. use this command with it's id to generate an invite:\n${listGuild.join('\n')}`)
+    return message.channel.send(`these are all guilds being connected to me. use this command with it's id to generate an invite:\n${listGuild.join('\n')}`, { split: true })
   }
   const guild = client.guilds.cache.get(args[0]);
   if (!guild) return message.channel.send('guild not found.');

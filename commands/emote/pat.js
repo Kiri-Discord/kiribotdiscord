@@ -4,13 +4,17 @@ const patSchema = require('../../model/pat')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("pat")
+    let data = await random.getAnimeImgURL("pat");
+    const member = await getMemberfromMention(args[0], message.guild);
 
-    const target = message.mentions.users.first()
-    if (!target) {
-      return message.inlineReply("you can't just pat **air** :( please mention somebody to pat pls")
-    }
-    if (target === client.user) return message.inlineReply('**pat pat pat pat pat**\nyes, you!')
+    if (!member) {
+      const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
+      return message.inlineReply(`you can't just pat at the air ${sedEmoji} please mention somebody to pat pls`)
+    };
+
+    const target = member.user;
+
+    if (target.id === client.user.id) return message.inlineReply('**pat pat pat pat pat**\nyes, you!')
     if (target.bot) return message.inlineReply("this isn't an simulator so you can't pat that bot, sorry :(")
 
     const { guild } = message
@@ -42,14 +46,14 @@ exports.run = async (client, message, args) => {
       }
     )
 
-    const amount = result.received
+    const amount = result.received;
 
     const embed = new Discord.MessageEmbed()
     .setColor("RANDOM") 
     .setAuthor(`${message.author.username} pat ${target.username}! They now have been pat ${amount} time(s)`, message.author.displayAvatarURL()) 
     .setImage(data)
 
-    message.channel.send(embed)
+    return message.channel.send(embed);
 }
 
 exports.help = {

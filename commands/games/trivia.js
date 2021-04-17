@@ -59,7 +59,7 @@ exports.run = async (client, message, args, prefix) => {
     .setColor('RANDOM')
 
     if (winner) {
-      let amount = getRandomInt(5, 20);
+      let amount = getRandomInt(5, 8);
       const storageAfter = await client.money.findOneAndUpdate({
           guildId: message.guild.id,
           userId: winner.id

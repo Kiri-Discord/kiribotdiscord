@@ -4,27 +4,27 @@ exports.run = async (client, message, args) => {
     let first;
     let second;
     if (args[1]) {
-        first = await getUserfromMention(args[0]);
-        second = await getUserfromMention(args[1]);
+        first = await getMemberfromMention(args[0], message.guild)
+        second = await getMemberfromMention(args[1], message.guild)
     } else {
-        first = message.author;
-        second = await getUserfromMention(args[0]);
-    }
-    if (!second) return message.inlineReply('you must to mention someone!');
-    if (first.id === client.user.id) return message.channel.send('well you decide it yourself tho');
-    if (second.id === client.user.id) return message.channel.send('well you decide it yourself tho');
-    if (first.bot) return message.inlineReply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
-    if (second.bot) return message.inlineReply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
+        first = message.member;
+        second = await getMemberfromMention(args[0], message.guild)
+    };
+    if (!second.user) return message.inlineReply('you must to mention someone in this server!');
+    if (first.user.id === client.user.id) return message.channel.send('well you decide it yourself tho');
+    if (second.user.id === client.user.id) return message.channel.send('well you decide it yourself tho');
+    if (first.user.bot) return message.inlineReply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
+    if (second.user.bot) return message.inlineReply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');
     let level;
-    const self = first.id === second.id;
+    const self = first.user.id === second.user.id;
     if (self) {
         level = 100;
     } else {
-        const calculated = -Math.abs(Number.parseInt(BigInt(first.id) - BigInt(second.id), 10));
+        const calculated = -Math.abs(Number.parseInt(BigInt(first.user.id) - BigInt(second.user.id), 10));
         const random = MersenneTwister19937.seed(calculated);
         level = integer(0, 100)(random);
     }
-    return message.channel.send(`there is ${level}% friendship between **${first.username}** and **${second.username}**, ${calculateLevelText(level, self)}`);
+    return message.channel.send(`there is ${level}% friendship between **${first.user.username}** and **${second.user.username}**, ${calculateLevelText(level, self)}`);
 }
 
 function calculateLevelText(level, self) {

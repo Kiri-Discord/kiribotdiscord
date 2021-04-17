@@ -155,7 +155,7 @@ exports.run = async (client, message, args, prefix) => {
       .setURL(song.url)
       .setTitle(song.title)
       .setThumbnail(song.thumbnail)
-      .setColor('RANDOM')
+      .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
       .addField('Duration', humanizeDuration(duration), true)

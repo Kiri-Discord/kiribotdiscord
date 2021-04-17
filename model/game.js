@@ -5,7 +5,7 @@ const reqString = {
   required: true,
 }
 
-const moneySchema = mongoose.Schema({
+const gameSchema = mongoose.Schema({
   guildId: reqString,
   userId: reqString,
   storage: {
@@ -16,6 +16,6 @@ const moneySchema = mongoose.Schema({
 
 module.exports = mongoose.model(
   'gameStorage',
-  moneySchema,
+  gameSchema,
   'gameStorage'
 )

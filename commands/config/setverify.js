@@ -1,10 +1,4 @@
-exports.run = async (client, message, args) => {
-
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-      });
-      const prefix = setting.prefix;
-
+exports.run = async (client, message, args, prefix) => {
     if (message.flags[0] === "off") {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
@@ -16,13 +10,13 @@ exports.run = async (client, message, args) => {
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ verify has been disabled`}});
     };
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-    if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
+    if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔');
     const roleName = args.slice(1).join(' ');
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
-    if (!role) return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (!role) return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls');
 
-    if (role.name === "@everyone") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
-    if (role.name === "@here") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls').then(m => m.delete({ timeout: 5000 }));
+    if (role.name === "@everyone") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls');
+    if (role.name === "@here") return message.inlineReply('p l e a s e provide a vaild role name, mention or id for me to add pls');
     
 
     await client.dbguilds.findOneAndUpdate({

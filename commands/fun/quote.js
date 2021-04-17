@@ -1,8 +1,13 @@
 const quotes = require('../../assets/quote');
 
+exports.run = async (client, message, args) => {
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    return message.channel.send(`${quote.quote.toLowerCase()}\n- _${quote.author}_`);
+};
+
 exports.help = {
   name: "quote",
-  description: "you make me say a random quote",
+  description: "say a random quote",
   usage: "quote",
   example: ["quote"]
 }
@@ -13,9 +18,4 @@ exports.conf = {
   guildOnly: true,
   userPerms: [],
   clientPerms: ["SEND_MESSAGES"]
-}
-
-exports.run = async (client, message, args) => {
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
-    return message.channel.send(`${quote.quote.toLowerCase()}\n- _${quote.author}_`);
 }

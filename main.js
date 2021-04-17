@@ -27,6 +27,7 @@ const client = new sefy(({
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);
+require("./handler/getMemberfromMention.js")();
 
 client.package = require("./package.json");
 client.on("warn", console.warn); 

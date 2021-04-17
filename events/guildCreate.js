@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (client, guild) => {
-
+  
   const guildexist = await client.dbguilds.findOne({
     guildID: guild.id
   });
@@ -19,8 +19,8 @@ module.exports = async (client, guild) => {
 
   await newGuild.save();
 
+
   const prefix = client.config.prefix;
-  const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
 
   const embed = new MessageEmbed()
   .setTitle('Thanks for inviting me :D')
@@ -37,7 +37,7 @@ module.exports = async (client, guild) => {
   if (log2) log2.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     
   await guild.owner.send(embed);
-  guild.owner.send(`**some of my suggestion for you to get started:** ${blush}\n\`${prefix}invite\` - check out our community server and support server!\n\`${prefix}help\` - check out my command list!\n\`${prefix}levelings\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!\n*and many more to come...*`)
+  guild.owner.send(`**some of my suggestion for you to get started:** ${blush}\n\n\`${prefix}invite\` - check out our community server and support server.\n\`${prefix}help\` - my command list\n\`${prefix}levelings\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up\n\`${prefix}invite\` - set your server's own verification portal, powered by Google reCAPTCHA.\n\n*and many more to come...*`)
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   client.users.cache.get('617777631257034783').send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 

@@ -1,6 +1,8 @@
 const { findBestMatch } = require("string-similarity");
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
+const agreed = new Collection();
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (client, message) => {
 
@@ -9,6 +11,12 @@ module.exports = async (client, message) => {
   let prefix;
   let setting;
 
+  let globalStorage = client.globalStorage;
+  let storage = await globalStorage.findOne();
+  if (!storage) storage = new globalStorage();
+
+  const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
+
   if (message.channel.type === "dm") {
     prefix = client.config.prefix
   } else {
@@ -16,32 +24,83 @@ module.exports = async (client, message) => {
       guildID: message.guild.id
     });
     if (!setting) {
-      await client.emit('guildCreate', message.guild);
-      return message.channel.send(`somehow your guild disappeared from my bookshelf.. this is not an error :) you can continue with your convo.\n*this might be caused when you kick me and invite me again when i accidently went offline. all your guild setting has been reseted :(\nthe default prefix for me is* \`${client.config.prefix}\``).then(m => m.delete({ timeout: 7000 }));
+      const dbguilds = client.dbguilds
+      setting = new dbguilds({
+        guildID: message.guild.id
+      });
+      await dbguilds.save();
+      prefix = setting.prefix;
     } else {
       prefix = setting.prefix;
-      const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
-      if (message.channel.id === setting.verifyChannelID) {
-        if (alreadyHasVerifyRole) {
-          return message.inlineReply(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or either \`${prefix}setverify <#channel | id> <role name | id>\``).then(async m => {
-            await message.delete();
-            m.delete({ timeout: 4000 });
-          })
-        } else {
-          return client.emit('verify', message);
-        }
-      };
-      if (setting.enableLevelings && message.channel.type === "text") {
-        client.emit('experience', message, setting);
-      }
     }
-  }
+    const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
+    if (message.channel.id === setting.verifyChannelID) {
+      if (alreadyHasVerifyRole) {
+        return message.inlineReply(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or either \`${prefix}setverify <#channel | id> <role name | id>\``).then(async m => {
+          await message.delete();
+          m.delete({ timeout: 4000 });
+        })
+      } else {
+        return client.emit('verify', message);
+      }
+    };
+    if (setting.enableLevelings && message.channel.type === "text" && alreadyAgreed) {
+      client.emit('experience', message, setting);
+    };
+  };
   const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 
 
   if (!prefixRegex.test(message.content)) return;
   const [, matchedPrefix] = message.content.match(prefixRegex);
+
+
+  if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
+    const agreedCount = storage.acceptedRules.toObject();
+    let key;
+
+    if (message.channel.type === 'dm') key = message.author.id;
+    else key = `${message.author.id}-${message.guild.id}`;
+
+    const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
+    const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
+
+    const verifyEmbed = new MessageEmbed()
+    .setAuthor(`Rules`, client.user.displayAvatarURL())
+    .setColor('#81c42f')
+    .setTitle('any failure in following those rules will result in you being banned from using my features or your guild being banned :warning:')
+    .setDescription(`
+    • any actions performed to give other users a bad experience are explicitly against the rules ${sed}
+    this includes but not limited to:
+    ├> using macros/scripts for commands (make me slower in serving other users)
+    └> use any of my features for actions that is against the Discord Terms of Service
+  
+    • do not use any exploits and report any found in the bot in our server!
+  
+    • you can not sell/trade token or any bot goods for anything outside of my interface
+  
+    • if you have any questions come ask us in [our support server](https://discord.gg/kJRAjMyEkY) ${blush}
+
+    *for your convience, i will only ask for acceptance once. you only have to do this once only.*
+    `)
+    .setFooter(`${agreedCount.length} user have agreed to those rules :)`);
+
+    const existingCollector = agreed.get(key);
+
+    if (existingCollector) {
+      await existingCollector.stop();
+    };
+    const filter = (reaction, user) => {
+      return reaction.emoji.name === '👍' && user.id === message.author.id;
+    };
+    const verifyMessage = await message.inlineReply(`:warning: you must accept these rules below before using me! react with the hands up emojis to agree with those rules ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`, verifyEmbed);
+    await verifyMessage.react('👍');
+    const collectedEmojis = verifyMessage.createReactionCollector(filter, { max: 1, time: 20000, errors: ['time'] });
+    agreed.set(key, collectedEmojis);
+    return agreeCollector(storage, collectedEmojis, message, key);
+  };
+
   let execute = message.content.slice(matchedPrefix.length).trim();
   if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
   let args = execute.split(/ +/g);
@@ -62,7 +121,7 @@ module.exports = async (client, message) => {
   message.flags = []
   while (args[0] && args[0][0] === "-") {
     message.flags.push(args.shift().slice(1)); 
-  }
+  };
   
   
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
@@ -134,3 +193,15 @@ module.exports = async (client, message) => {
     console.error(error);
   }
 };
+
+async function agreeCollector(storage, collector, message, key) {
+  collector.on('collect', async () => {
+    await collector.stop();
+    storage.acceptedRules.push(message.author.id);
+    await storage.save();
+  });
+  
+  collector.on('end', () => {
+    agreed.delete(key);
+  });
+}

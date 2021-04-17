@@ -5,11 +5,7 @@ const { delay, awaitPlayers, reactIfAble } = require('../../util/util');
 const trueOptions = ['true', 'yes', 'the truth', 't', 'tru', 'tr', 'y', 'ye'];
 const falseOptions = ['false', 'lie', 'no', 'a lie', 'f', 'fals', 'fal', 'fa', 'n', 'l'];
 
-exports.run = async (client, message, args) => {
-	const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    const prefix = setting.prefix;
+exports.run = async (client, message, args, prefix) => {
     let players = args[0];
     if (!players || isNaN(players) || players < 2 || players > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 2 and 20 by using \`${prefix}lie-detector <number of player>\``)
     const current = client.games.get(message.channel.id);

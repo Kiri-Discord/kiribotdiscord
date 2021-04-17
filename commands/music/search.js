@@ -13,7 +13,7 @@ exports.run = async (client, message, args, prefix) => {
     let resultsEmbed = new MessageEmbed()
     .setDescription('*pro tip: add more than a song from this search result to the queue by using commma :wink:*\n*for example*: \`1, 6 ,4\`')
     .setTitle(`Here is your search result for "${search}"`)
-    .setColor("RANDOM")
+    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
     .setFooter('this search will timeout in 15 seconds')
     .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))

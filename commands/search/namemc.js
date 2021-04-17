@@ -46,7 +46,7 @@ exports.run = async (client, message, args) => {
     }
 
     const embed = new MessageEmbed()
-    .setColor('RANDOM')
+    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setThumbnail(user.skins.renders.face)
     .setTitle(`${user.currentName}'s profile`)
     .setFooter(`Note: due to Discord limitation, not all past skin and names will be shown, sorry :(`)

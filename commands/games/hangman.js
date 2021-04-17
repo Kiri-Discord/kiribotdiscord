@@ -98,10 +98,14 @@ class Game {
 
 
 exports.run = async (client, message, args) => {
-    const challenged = message.mentions.users.first();
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
-    if (!challenged || challenged === message.author || challenged.bot) return message.inlineReply('you should mention a valid user to play with :(');
+    const member = await getMemberfromMention(args[0], message.guild);
+    if (!member) return message.inlineReply('who do you want to play with ?');
+    const challenged = member.user;
+    if (challenged.id === message.author.id) return message.inlineReply("you can't play against yourself!");
+    if (challenged.id === client.user.id) return message.inlineReply("you can't play against me!");
+    if (challenged.bot) return message.inlineReply("you can't play against bots!");
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${challenged.username}** finish playing hangman :(` });
     if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are allready in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is allready in a game. try again in a minute.');

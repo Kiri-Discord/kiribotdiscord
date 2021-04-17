@@ -6,12 +6,17 @@ const slapSchema = require('../../model/slap')
 exports.run = async (client, message, args) => {
     let data = await random.getAnimeImgURL("slap")
 
-    const target = message.mentions.users.first()
-    if (!target) {
-      message.inlineReply("you can't just slap *air* :( please mention somebody to slap pls")
-      return
-    }
-    if (target === client.user) return message.inlineReply('what did you say?')
+
+    const member = await getMemberfromMention(args[0], message.guild);
+
+    if (!member) {
+      const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
+      return message.inlineReply(`you can't just slap at the air ${sedEmoji} please mention somebody to slap pls`)
+    };
+
+    const target = member.user;
+
+    if (target.id === client.user.id) return message.inlineReply('what did you say?');
     if (target.bot) return message.inlineReply("you can't slap that bot, sorry :(")
 
     const { guild } = message

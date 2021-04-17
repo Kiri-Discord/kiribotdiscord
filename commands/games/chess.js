@@ -32,8 +32,9 @@ exports.run = async (client, message, args, prefix) => {
             }
         };
     };
-    const opponent = message.mentions.users.first();
-    if (!opponent) return message.inlineReply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
+    const member = await getMemberfromMention(args[0], message.guild);
+    if (!member) return message.inlineReply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
+    const opponent = member.user;
     if (opponent.id === message.author.id) return message.inlineReply("you can't play with yourself!");
     if (opponent.bot && opponent.id !== client.user.id) return message.inlineReply("those bot are busy doing their jobs anyway. wanna play with me instead?");
     if (!args[1] || isNaN(args[1]) || args[1] < 0 || args[1] > 120) return message.inlineReply(`how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`);
@@ -216,7 +217,21 @@ exports.run = async (client, message, args, prefix) => {
             });
         }
         const winner = gameState.turn === 'black' ? whitePlayer : blackPlayer;
-        return message.channel.send(`checkmate! congratulations, **${winner.username}**!`, {
+        let amount = getRandomInt(5, 15);
+        const storageAfter = await client.money.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: winner.id
+        }, {
+            guildId: message.guild.id,
+            userId: winner.id,
+            $inc: {
+                balance: amount,
+            }, 
+        }, {
+            upsert: true,
+            new: true,
+        });
+        return message.channel.send(`checkmate! congratulations, **${winner.username}**!\n\n⏣ **${amount}** token was placed in your wallet 💵\nyour current balance: ${storageAfter.balance}`, {
             files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }]
         });
     } catch (err) {
@@ -388,6 +403,11 @@ exports.run = async (client, message, args, prefix) => {
             color: playerColor
         };
     }
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
 };
 
 exports.help = {

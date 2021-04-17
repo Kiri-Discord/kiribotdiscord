@@ -2,9 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const moment = require('moment');
 
 exports.run = async (client, message, args) => {
-    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
-
-    let mention = message.guild.members.cache.get(user.id);
+    let mention = await getMemberfromMention(args[0], message.guild) || message.member;
     
     if (mention.user.presence.status === "dnd") mention.user.presence.status = "Do not disturb";
     if (mention.user.presence.status === "idle") mention.user.presence.status = "Idle";
@@ -30,7 +28,7 @@ exports.run = async (client, message, args) => {
     let created = Math.floor(x / 86400000);
     let joined = Math.floor(y / 86400000);
     
-    const member = message.guild.member(user);
+    const member = message.guild.member(mention);
     let highestrole = member.roles.highest !== undefined && member.roles.highest !== null ? member.roles.highest : "None";
     let nickname = member.nickname !== undefined && member.nickname !== null ? member.nickname : "None";
     let createdate = moment.utc(mention.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); 
@@ -43,7 +41,7 @@ exports.run = async (client, message, args) => {
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setThumbnail(avatar)
     .setTimestamp()
-    .setColor('#ffe6cc')
+    .setColor(mention.displayHexColor)
     .addField("Highest role", highestrole, true)
     .addField("ID", mention.user.id, true)
     .addField("Nickname", nickname, true)

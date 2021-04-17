@@ -1,15 +1,12 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 exports.run = async (client, message, args) => {
-    if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {
-        return message.channel.send(`you do not have \`MANAGE_MESSAGES\` or \`ADMINISTRATOR\` permission to use this command 😔`).then(m => m.delete({ timeout: 5000 }));
-    }
     let pollChannel = message.mentions.channels.first();
     if (!pollChannel) return message.inlineReply("please mention a channel!");
 
     let pollDescription = args.slice(1).join(' ');
 
-    let embedPoll = new Discord.MessageEmbed()
+    let embedPoll = new MessageEmbed()
     .setTitle(`${message.member.displayName} started a new poll!`)
     .setDescription(pollDescription)
     .setColor('RANDOM')

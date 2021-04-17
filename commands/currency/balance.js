@@ -1,20 +1,20 @@
 const { MessageEmbed } = require("discord.js");
 const humanizeDuration = require("humanize-duration");
 exports.run = async (client, message, args) => {
-    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
-    let mention = message.guild.members.cache.get(user.id);
-    if (mention.user.id === client.user.id) return message.inlineReply("that's me :( you think i have any money :pensive:");
-    if (mention.user.bot) return message.inlineReply("duh you can't ask money out of a bot. we are broke enough :pensive:");
+    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+    const user = member.user;
+    if (user.id === client.user.id) return message.inlineReply("that's me :( you think i have any money :pensive:");
+    if (user.bot) return message.inlineReply("duh you can't ask money out of a bot. we are broke enough :pensive:");
     let cooldown = 8.64e+7;
     let storage = await client.money.findOne({
-        userId: mention.user.id,
+        userId: user.id,
         guildId: message.guild.id
     });
     let lastDaily;
     if (!storage) {
         const model = client.money
         const newUser = new model({
-            userId: mention.user.id,
+            userId: user.id,
             guildId: message.guild.id
         });
         await newUser.save();
@@ -28,8 +28,8 @@ exports.run = async (client, message, args) => {
         lastDaily = 'ready to collect';
     }
     const embed = new MessageEmbed()
-    .setThumbnail(mention.user.displayAvatarURL({size: 1024, dynamic: true}))
-    .setTitle(`${mention.user.username}'s balance`)
+    .setThumbnail(user.displayAvatarURL({size: 1024, dynamic: true}))
+    .setTitle(`${user.username}'s balance`)
     .setDescription(`
     💵 **balance**: ⏣ **${balance}** token(s)
 
@@ -49,7 +49,7 @@ exports.help = {
   
 exports.conf = {
     aliases: ["bal", "coin", "money", "credit"],
-    cooldown: 5,
+    cooldown: 3,
     guildOnly: true,
     userPerms: [],
     clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]

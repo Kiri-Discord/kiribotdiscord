@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-  if(!args[0]) {
+  if (!args[0]) {
     return message.channel.send("press 🇫 to pay respect.").then(async msg => {
       await msg.react("🇫");
 
@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
         return reaction.emoji.id === "🇫";
       }
 
-      const reactions = msg.awaitReactions(filter, { time: 30000 })
+      const reactions = msg.awaitReactions(filter, { time: 15000 })
       .then(collected => message.channel.send(`**${msg.reactions.cache.get("🇫").count - 1}** person has paid their respect.`));
     })
   } else {
@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
         return reaction.emoji.id === "🇫";
       }
 
-      const reactions = msg.awaitReactions(filter, { time: 60000 })
+      const reactions = msg.awaitReactions(filter, { time: 30000 })
       .then(collected => message.channel.send(`**${msg.reactions.cache.get("🇫").count - 1}** person paid their respect to **${reason}**`));
     })
   }

@@ -150,7 +150,7 @@ exports.run = async (client, message, args, prefix) => {
     let playlistEmbed = new MessageEmbed()
     .setAuthor(`✔️ Requested by ${message.author.username}`,  message.author.displayAvatarURL({ dynamic: true }))
     .setTitle(playlist.title)
-    .setColor('RANDOM')
+    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setURL(playlisturl)
     .setThumbnail(thumbnail)
 

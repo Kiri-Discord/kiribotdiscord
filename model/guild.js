@@ -1,15 +1,25 @@
 const mongoose = require('mongoose');
 
+const reqString = {
+    type: String,
+    required: true,
+}
+
 const guildSchema = mongoose.Schema({
-    guildID: String,
-    guildName: String,
-    prefix: String,
+    guildID: reqString,
+    prefix: {
+        type: String,
+        default: '>'
+    },
     logChannelID: String,
     verifyChannelID: String,
     verifyRole: String,
     ignoreLevelingsChannelID: String,
-    enableLevelings: Boolean,
-    verifyTimeout: Number,
+    enableLevelings: {
+        type: Boolean,
+        default: false
+    },
+    verifyTimeout: Number
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');
