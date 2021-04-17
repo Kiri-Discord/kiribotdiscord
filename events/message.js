@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
         return client.emit('verify', message);
       }
     };
-    if (setting.enableLevelings && message.channel.type === "text" && alreadyAgreed) {
+    if (setting.enableLevelings && message.channel.type === "text") {
       client.emit('experience', message, setting);
     };
   };

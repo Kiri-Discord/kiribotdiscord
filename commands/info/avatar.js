@@ -9,11 +9,11 @@ exports.run = async (client, message, args) => {
   const embed = new MessageEmbed()
   .setTitle(`${user.tag} avatar`)
   .setDescription(`[Avatar URL](${avatar})`)
-  .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
+  .setColor(member.displayHexColor)
   .setImage(avatar)
   .setTimestamp(new Date())
   .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-  
+
   return message.channel.send(embed);
 }
 
