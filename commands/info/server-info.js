@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new MessageEmbed()
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
+    .setColor(message.guild.me.displayHexColor)
     .setTimestamp(new Date())
     .setThumbnail(icon)
     .setAuthor(`Information for ${message.guild.name}:`, client.user.displayAvatarURL())
