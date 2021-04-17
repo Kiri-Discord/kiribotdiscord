@@ -69,7 +69,7 @@ module.exports = async (client, message) => {
     const verifyEmbed = new MessageEmbed()
     .setAuthor(`Rules`, client.user.displayAvatarURL())
     .setColor('#81c42f')
-    .setTitle('any failure in following those rules will result in you being banned from using my features or your guild being banned :warning:')
+    .setTitle('any failure in following those rules will result in you being temp banned from using my features or your guild being temp banned :warning:')
     .setDescription(`
     • any actions performed to give other users a bad experience are explicitly against the rules ${sed}
     this includes but not limited to:
@@ -78,9 +78,12 @@ module.exports = async (client, message) => {
   
     • do not use any exploits and report any found in the bot in our server!
   
-    • you can not sell/trade token or any bot goods for anything outside of my interface
+    • you can not sell/trade token or any bot goods for real money
   
-    • if you have any questions come ask us in [our support server](https://discord.gg/kJRAjMyEkY) ${blush}
+    • if you have any questions come ask us in ${blush}
+    
+    [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
+    [sefy support (support server)](https://discord.gg/D6rWrvS)
 
     *for your convience, i will only ask for acceptance once. you only have to do this once only.*
     `)

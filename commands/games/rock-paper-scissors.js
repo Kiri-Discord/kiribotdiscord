@@ -1,5 +1,5 @@
-/* eslint-disable max-statements-per-line */
 const utils = require('../../util/util');
+const { verify } = require('../../util/util');
 
 class Game { 
     constructor(message, challenged, args) { 
@@ -91,6 +91,12 @@ exports.run = async (client, message, args) => {
     if (challenged.bot) return message.inlineReply("you can't play against bots!");
     if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
+
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+    await message.channel.send(`${challenged}, do you accept this challenge? \`y/n\``);
+    const verification = await verify(message.channel, challenged);
+    if (!verification) return message.channel.send(`looks like they declined... ${sedEmoji}`);
+
     utils.inGame.push(challenged.id, message.author.id);
     const game = new Game(message, challenged, args);
     game.run();

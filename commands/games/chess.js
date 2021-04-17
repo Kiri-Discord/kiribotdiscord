@@ -14,9 +14,9 @@ const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 exports.run = async (client, message, args, prefix) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
-            const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
             const data = await client.gameStorage.findOne({
                 guildId: message.guild.id,
                 userId: message.author.id

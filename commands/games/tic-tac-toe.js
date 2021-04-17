@@ -1,5 +1,5 @@
 const utils = require('../../util/util');
-
+const { verify } = require('../../util/util');
 
 exports.help = {
 	name: "tic-tac-toe",
@@ -27,6 +27,12 @@ exports.run = async (client, message, args) => {
     if (player_two.bot) return message.inlineReply("you can't play against bots!");
     if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are already in a game. please finish that first.');
     if (utils.inGame.includes(player_two.id)) return message.inlineReply('that user is already in a game. try again in a minute.');
+
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+    await message.channel.send(`${player_two}, do you accept this challenge? \`y/n\``);
+    const verification = await verify(message.channel, player_two);
+    if (!verification) return message.channel.send(`looks like they declined... ${sedEmoji}`);
+
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${player_two.username}** finish playing tic-tac-toe :(` });
     utils.inGame.push(player_two.id, message.author.id);
     class Game {

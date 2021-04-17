@@ -1,4 +1,6 @@
 const utils = require('../../util/util');
+const { verify } = require('../../util/util');
+
 class Game { 
     constructor(client, message, challenged) { 
 
@@ -106,6 +108,12 @@ exports.run = async (client, message, args) => {
     if (challenged.id === message.author.id) return message.inlineReply("you can't play against yourself!");
     if (challenged.id === client.user.id) return message.inlineReply("you can't play against me!");
     if (challenged.bot) return message.inlineReply("you can't play against bots!");
+
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+    await message.channel.send(`${challenged}, do you accept this challenge? \`y/n\``);
+    const verification = await verify(message.channel, challenged);
+    if (!verification) return message.channel.send(`looks like they declined... ${sedEmoji}`);
+
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${challenged.username}** finish playing hangman :(` });
     if (utils.inGame.includes(message.author.id)) return message.inlineReply('you are allready in a game. please finish that first.');
     if (utils.inGame.includes(challenged.id)) return message.inlineReply('that user is allready in a game. try again in a minute.');
