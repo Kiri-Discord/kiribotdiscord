@@ -32,9 +32,9 @@ module.exports = async client => {
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
   web.init(client);
   const activity = randomStatus(client);
-  client.user.setActivity(activity.text, { type: activity.type });
+  client.user.setActivity('just woke up...', { type: 'PLAYING' });
   client.setInterval(() => {
     const activity = randomStatus(client);
 		client.user.setActivity(activity.text, { type: activity.type });
-	}, 100000);
+	}, 120000);
 };
