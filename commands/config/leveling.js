@@ -25,7 +25,7 @@ exports.help = {
 	name: "leveling",
 	description: "toggle message leveling for your server",
 	usage: "leveling \`<toggle>\`",
-	example: ["leveling \`on\`", "levelingignore \`off\`"]
+	example: ["leveling \`on\`", "leveling \`off\`"]
 };
   
 exports.conf = {
