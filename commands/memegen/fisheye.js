@@ -1,18 +1,26 @@
-const Discord = require("discord.js");
-const {loadImage, createCanvas} = require("canvas");
+const { loadImage, createCanvas } = require("canvas");
 const request = require("node-superfetch");
+const srod = require("something-random-on-discord").ServerAssistant;
 
 exports.run = async (client, message, args) => {
+    let image;
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
-
-    var level = 50; 
-
+    if (args[0]) {
+        if (srod.isURL(args[0])) {
+            image = args[0];
+        } else {
+            return message.inlineReply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));
+        }
+    } else {
+        if (attachments.length === 0) image = message.author.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
+        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+        else image = attachments[0].url;
+    };
+    var level = 50;
     try {
         message.channel.startTyping(true); 
         
-        const {body} = await request.get(attachments[0].url);
+        const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
         const ctx = canvas.getContext("2d");
@@ -30,14 +38,14 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "fisheye",
-    description: "*what is fisheyes?*",
-    usage: "fisheye `<image attachment>`",
-    example: "fisheye"
+    description: "turn your image into *fisheyes*?",
+    usage: ["fisheye `[image attachment]`", "fisheye `[URL]`"],
+    example: ["fisheye `image attachment`", "fisheye `https://example.com/girl.jpg`", "fisheye"]
 };
 
 exports.conf = {
     aliases: ["fish-eye"],
-    cooldown: 6,
+    cooldown: 5,
     guildOnly: true,
     userPerms: [],
 	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]

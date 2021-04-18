@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
   const Embed = new MessageEmbed()
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(client.user.username, client.user.displayAvatarURL())
-    .setColor(`RANDOM`)
+    .setColor(message.member.displayHexColor)
     .setTimestamp()
     .setImage(mem.user.displayAvatarURL({size: 4096, dynamic: true}))
     .setTitle(`The oldest user in ${message.guild.name} is ${mem.user.tag}!`)

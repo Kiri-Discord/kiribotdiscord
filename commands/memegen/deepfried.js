@@ -1,14 +1,24 @@
 const { createCanvas, loadImage } = require('canvas');
 const request = require('node-superfetch');
+const srod = require("something-random-on-discord").ServerAssistant;
 
 exports.run = async (client, message, args) => {
+    let image;
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
-
+    if (args[0]) {
+        if (srod.isURL(args[0])) {
+            image = args[0];
+        } else {
+            return message.inlineReply("that isn't a correct URL!");
+        }
+    } else {
+        if (attachments.length === 0) image = message.author.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
+        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        else image = attachments[0].url;
+    };
     try {
         message.channel.startTyping(true);
-        const { body } = await request.get(attachments[0].url)
+        const { body } = await request.get(image)
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
         const ctx = canvas.getContext('2d');
@@ -17,7 +27,7 @@ exports.run = async (client, message, args) => {
         contrast(ctx, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer('image/jpeg', {quality: 0.2});
         await message.channel.stopTyping(true);
-        if (Buffer.byteLength(attachment) > 8e+6) return message.channel.send("the file is way too big for me to upload lmao").then(m => m.delete({ timeout: 5000 }));
+        if (Buffer.byteLength(attachment) > 8e+6) return message.channel.send("the file is way too big for me to upload lmao");
         return message.channel.send({files: [{attachment, name: "deep-fried.png"}] });
     } catch (error) {
         await message.channel.stopTyping(true);
@@ -53,15 +63,15 @@ function desaturate(ctx, level, x, y, width, height) {
     return ctx
 };
 exports.help = {
-    name: "deepfried",
+    name: "deepfry",
     description: "fry something on Discord!\nno clickbait",
-    usage: "deepfried <image attachment>",
-    example: "deepfried"
+    usage: ["deepfry `[URL]`", "deepfry `[image attachment]`"],
+    example:  ["deepfry `image attachment`", "deepfry `https://example.com/girl.jpg`", "deepfry"]
 };
 
 exports.conf = {
-    aliases: ["deep-fried"],
-    cooldown: 6,
+    aliases: ["deepfried", "deep-fry"],
+    cooldown: 5,
     guildOnly: true,
     userPerms: [],
 	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]

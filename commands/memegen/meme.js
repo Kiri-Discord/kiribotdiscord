@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 exports.run = async (client, message, args) => {
   let icon;
     let loadingEmbed = new Discord.MessageEmbed()
-    .setColor("RANDOM")
+    .setColor(message.member.displayHexColor)
     .setDescription(`getting a meme... hang tight!`)
     let msg = await message.channel
       .send(loadingEmbed)

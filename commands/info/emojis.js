@@ -22,12 +22,12 @@ exports.run = async (client, message, args) => {
   const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2047, char: ' ' });
   const embed = new MessageEmbed()
   .setDescription(first)
-  .setColor('#ffe6cc')
+  .setColor(message.member.displayHexColor)
   .setThumbnail(icon)
   .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
   if (rest.length) {
     const embed1 = new MessageEmbed()
-    .setColor('#ffe6cc')
+    .setColor(message.member.displayHexColor)
     await message.channel.send(embed);
     for (const text of rest) {
       embed1.setDescription(text)

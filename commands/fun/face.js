@@ -2,14 +2,24 @@ const request = require('node-superfetch');
 const { oneLine } = require('common-tags');
 const { base64 } = require('../../util/util');
 const { face_key, face_secret } = process.env;
+const srod = require("something-random-on-discord").ServerAssistant;
 const emotions = ['anger', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise'];
 const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 'sad', 'surprised'];
 
 exports.run = async (client, message, args) => {
+    let image;
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
-    let image = attachments[0].url
+    if (args[0]) {
+        if (srod.isURL(args[0])) {
+            image = args[0];
+        } else {
+            return message.inlineReply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));
+        }
+    } else {
+        if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
+        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+        image = attachments[0].url;
+    }
     try {
         message.channel.startTyping(true);
         const face = await detect(image);
@@ -56,8 +66,8 @@ async function detect(image) {
 exports.help = {
     name: "face",
     description: "give me a portrait and i will try to guess the race, gender, and age of that face 😄",
-    usage: "face <image>",
-    example: "face"
+    usage: "face `<image attachment or URL>`",
+    example: "face `https://example.com/girl.jpg`"
 };
 
 exports.conf = {

@@ -26,7 +26,7 @@ exports.run = async (client, message, args, prefix) => {
     `)
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(`all of our command is community based, so consider joining our server with ${prefix}invite!`)
-    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
+    .setColor(message.member.displayHexColor)
     .setDeleteOnTimeout(true)
     .setImage('https://blackmirrorland.files.wordpress.com/2014/09/gloomy-anime-future-wallpaper-1920x1080.jpg')
     .build();

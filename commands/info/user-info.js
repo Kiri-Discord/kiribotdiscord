@@ -43,7 +43,7 @@ exports.run = async (client, message, args) => {
     .setTimestamp()
     .setColor(mention.displayHexColor)
     .addField("Highest role", highestrole, true)
-    .addField("ID", mention.user.id, true)
+    .addField("ID", `\`${mention.user.id}\``, true)
     .addField("Nickname", nickname, true)
     .addField("Account creation date", `${createdate} \nsince ${created} day(s) ago`, true)
     .addField("Guild join date", `${joindate} \nsince ${joined} day(s) ago`, true)
