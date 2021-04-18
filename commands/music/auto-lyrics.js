@@ -72,7 +72,7 @@ exports.help = {
 };
   
 exports.conf = {
-	aliases: ["karaoke", "al", "lyrics-scrolling"],
+	aliases: ["karaoke", "al", "lyrics-scrolling", "auto-lyrics"],
     cooldown: 5,
     guildOnly: true,
     userPerms: [],
