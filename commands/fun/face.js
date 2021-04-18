@@ -21,10 +21,10 @@ exports.run = async (client, message, args) => {
         image = attachments[0].url;
     }
     try {
-        message.channel.startTyping(true);
+       
         const face = await detect(image);
-        if (!face) return message.channel.send("wait a sec...there isn't any face in this image :frowning:").then(() => message.channel.stopTyping(true)).then(m => m.delete({ timeout: 5000 }));
-        if (face === 'size') return message.channel.send("the file is way too big for me to upload lmao").then(() => message.channel.stopTyping(true)).then(m => m.delete({ timeout: 5000 }));
+        if (!face) return message.channel.send("wait a sec...there isn't any face in this image :frowning:");
+        if (face === 'size') return message.channel.send("the file is way too big for me to upload lmao");
         const pronoun = face.gender.value === 'Male' ? 'He' : 'She';
         const emotion = emotionResponse[emotions.indexOf(
             emotions.slice(0).sort((a, b) => face.emotion[b] - face.emotion[a])[0]
@@ -32,7 +32,7 @@ exports.run = async (client, message, args) => {
         const smile = face.smile.value > face.smile.threshold;
         const beautyScore = face.gender.value === 'Male' ? face.beauty.female_score : face.beauty.male_score;
         const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':grimacing:';
-        await message.channel.stopTyping(true);
+       
         return message.inlineReply(oneLine`
             i think this is a photo of a ${face.age.value} year old ${face.gender.value.toLowerCase()} ${stareEmoji}
             
@@ -41,7 +41,7 @@ exports.run = async (client, message, args) => {
             ${beautyScore > 50 ? beautyScore > 70 ? beautyScore > 90 ? 'nice' : 'not bad' : 'not _too_ bad.' : 'nice'}
         `);
     } catch (err) {
-        await message.channel.stopTyping(true);
+       
         if (err.status === 400) return message.channel.send("wait a sec...there isn't any face in this image :frowning:");
         if (err.status === 403) return message.channel.send('hang on! the command is overloaded! try again later pls :(');
         else return message.inlineReply(`sorry :( i got an error. try again later! can you check the image files?`)
