@@ -28,7 +28,7 @@ module.exports = {
                     valID: req.query.valID
                 });
                   if (index) {
-                  let verified = false;
+                  let verified = true;
                     const setting = await client.dbguilds.findOne({
                       guildID: index.guildID
                   });
