@@ -154,7 +154,6 @@ exports.run = async (client, message, args, prefix) => {
       .setAuthor('✔️ Upcoming',  message.author.displayAvatarURL({ dynamic: true }))
       .setURL(song.url)
       .setTitle(song.title)
-      .setThumbnail(song.thumbnail)
       .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
@@ -187,14 +186,14 @@ exports.run = async (client, message, args, prefix) => {
 
 exports.help = {
   name: "play",
-  description: "Plays audio from YouTube or Soundcloud",
+  description: "Plays song from YouTube or Soundcloud",
   usage: ["play `<song name>`", "play `<youtube link>`", "play `<soundcloud link>`"],
   example: ["play [this](https://www.youtube.com/watch?v=dQw4w9WgXcQ)", "play [this](https://soundcloud.com/thepopposse/never-gonna-give-you-up)"]
 }
 
 exports.conf = {
   aliases: ["p"],
-  cooldown: 3,
+  cooldown: 4,
   guildOnly: true,
   userPerms: [],
   clientPerms: ["SEND_MESSAGES", "EMBED_LINKS", "CONNECT", "SPEAK"]
