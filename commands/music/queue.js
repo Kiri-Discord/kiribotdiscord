@@ -69,7 +69,6 @@ function generateQueueEmbed(message, queue, client) {
         const info = current.map((track) => `\`${++j}\` **[${track.title}](${track.url})**`).join("\n");
 
         const embed = new MessageEmbed()
-        .setThumbnail(queue[0].thumbnail)
         .setAuthor(`Current music queue for ${message.guild.name}`, client.user.displayAvatarURL({ dynamic: true }))
         .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
         .setDescription(`**Now playing - [${queue[0].title}](${queue[0].url})**\n\n${info}`)
