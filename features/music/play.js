@@ -114,7 +114,6 @@ module.exports = {
       .addField('Duration', humanizeDuration(duration), true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .setAuthor('Now playing', song.requestedby.displayAvatarURL())
-      .setThumbnail(song.thumbnail)
       .addField('Requested by', song.requestedby, true)
       await queue.textChannel.send(embed);
     } catch (error) {
