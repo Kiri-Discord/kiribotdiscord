@@ -41,7 +41,6 @@ module.exports = async (client, member) => {
     .setTimestamp()
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
-    .setColor(member.guild.me.displayHexColor)
     .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
     .setDescription(`Hello! Before you join ${member.guild.name}, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in \`${ms(timeMs, {long: true})}\`\n\n*sorry, this is the only way to prevent bots from joining the server* :pensive:`)
     .addField(`Here is the link...`, `||${__baseURL}verify?valID=${code}||`)
