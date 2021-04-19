@@ -152,7 +152,6 @@ exports.run = async (client, message, args, prefix) => {
     .setTitle(playlist.title)
     .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setURL(playlisturl)
-    .setThumbnail(thumbnail)
 
     if (newSongs.length > 6) {
       playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).splice(0, 6).join("\n") + `\n\n*and ${newSongs.length - 6} more...*`);
