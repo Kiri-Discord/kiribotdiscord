@@ -28,6 +28,7 @@ module.exports = {
                     valID: req.query.valID
                 });
                   if (index) {
+                  let verified;
                     const setting = await client.dbguilds.findOne({
                       guildID: index.guildID
                   });
@@ -43,10 +44,12 @@ module.exports = {
                     userID: index.userID
                   });
                   res.sendFile(__basedir + '/html/success.html');
+                  await client.verifytimers.deleteTimer(index.guildID, index.userID);
                   await member.roles.add(VerifyRole).catch(() => {
+                  verified = false;
                   return member.send(`oof, so mods from ${guild.name} forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?\n*you will not be kicked after this message*`).then(i => i.delete({ timeout: 7500 }));
                   });
-                  return member.send(`**${member.user.username}**, you have passed my verification! Welcome to ${guild.name}!`).catch(() => {
+                  if (!verified) return member.send(`**${member.user.username}**, you have passed my verification! Welcome to ${guild.name}!`).catch(() => {
                     return;
                   })
                 } else {
