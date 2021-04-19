@@ -111,8 +111,6 @@ module.exports = {
       const embed = new MessageEmbed()
       .setURL(song.url)
       .setTitle(song.title)
-      .setThumbnail(song.thumbnail)
-      .setColor('RANDOM')
       .addField('Duration', humanizeDuration(duration), true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .setAuthor('Now playing', song.requestedby.displayAvatarURL())
