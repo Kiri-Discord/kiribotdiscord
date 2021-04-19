@@ -11,7 +11,6 @@ exports.run = async (client, message, args) => {
     const duration = song.duration / 1000;
 
     let nowPlaying = new MessageEmbed()
-    .setThumbnail(song.thumbnail)
     .setTitle(song.title)
     .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setAuthor(`Now playing in ${message.guild.name}`, client.user.displayAvatarURL())
