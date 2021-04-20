@@ -35,6 +35,7 @@ exports.run = async (client, message, args, prefix) => {
       songs: [],
       loop: false,
       volume: null,
+      color: message.guild.me.displayHexColor,
       karaoke: [Object],
       playing: true
     };
@@ -145,6 +146,7 @@ exports.run = async (client, message, args, prefix) => {
     .setAuthor(`✔️ Upcoming`,  message.author.displayAvatarURL({ dynamic: true }))
     .setTitle(playlist.title)
     .setURL(playlisturl)
+    .setColor(message.guild.me.displayHexColor)
 
     if (newSongs.length > 6) {
       playlistEmbed.setDescription(newSongs.map((song, index) => `\`${index + 1}\` **[${song.title}](${song.url})**`).splice(0, 6).join("\n") + `\n\n*and ${newSongs.length - 6} more...*`);

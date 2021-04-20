@@ -115,6 +115,7 @@ module.exports = {
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .setAuthor('Now playing', song.requestedby.displayAvatarURL())
       .addField('Requested by', song.requestedby, true)
+      .setColor(queue.color)
       await queue.textChannel.send(embed);
     } catch (error) {
       console.error(error);

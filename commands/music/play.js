@@ -47,6 +47,7 @@ exports.run = async (client, message, args, prefix) => {
       connection: null,
       songs: [],
       loop: false,
+      color: message.guild.me.displayHexColor,
       playing: true,
       volume: null,
       karaoke: [Object]
@@ -151,6 +152,7 @@ exports.run = async (client, message, args, prefix) => {
       .setAuthor('Upcoming',  message.author.displayAvatarURL({ dynamic: true }))
       .setURL(song.url)
       .setTitle(song.title)
+      .setColor(serverQueue.color)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
       .addField('Duration', humanizeDuration(duration), true)

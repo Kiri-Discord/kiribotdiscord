@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js");
 const YouTubeAPI = require("simple-youtube-api");
 const { YOUTUBE_API_KEY } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
@@ -10,23 +9,21 @@ exports.run = async (client, message, args, prefix) => {
 
     const search = args.join(" ");
 
-    let resultsEmbed = new MessageEmbed()
-    .setDescription('*pro tip: add more than a song from this search result to the queue by using commma :wink:*\n*for example*: \`1, 6 ,4\`')
-    .setTitle(`Here is your search result for "${search}"`)
-    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
-    .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-    .setFooter('this search will timeout in 15 seconds')
-    .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
-
     try {
+        let videos = [];
+        let resultField = [];
         const results = await youtube.searchVideos(search, 10);
-        results.map((video, index) => resultsEmbed.addField(video.shortURL, `\`${index + 1}\` **${video.title}**`));
+        results.map((video, index) => { 
+            videos.push(video.shortURL);
+            resultField.push(`${index + 1}) ${video.title} - ${video.raw.snippet.channelTitle}`);
+        });
 
-        let resultsMessage = await message.channel.send(resultsEmbed);
+        resultField.push(`\n\nyou can type 'cancel' to quit. timing out in 15 second...`);
+        let resultsMessage = await message.channel.send(`:mag: here is your search result for \`${search}\`...\n\`\`\`js\n${resultField.join('\n')}\`\`\`\npro tip: add more than a song from this search result to the queue by using commma :wink:\nfor example: \`1, 6 ,4\``);
 
         function filter(msg) {
-        const pattern = /^[0-9]{1,2}(\s*,\s*[0-9]{1,2})*$/;
-        return pattern.test(msg.content);
+            const pattern = /^[0-9]{1,2}(\s*,\s*[0-9]{1,2})*$/;
+            if (pattern.test(msg.content) || msg.content.toLowerCase() === 'cancel') return true;
         }
 
         message.channel.activeCollector = true;
@@ -40,11 +37,11 @@ exports.run = async (client, message, args, prefix) => {
                 for (let song of songs) {
                     await client.commands
                     .get("play")
-                    .run(client, message, [resultsEmbed.fields[parseInt(song) - 1].name]);
+                    .run(client, message, [videos[parseInt(song) - 1]]);
                 }
             } else {
                 await msg.delete().catch(console.error);
-                const choice = resultsEmbed.fields[parseInt(msg.content) - 1].name;
+                const choice = videos[parseInt(msg.content) - 1];
                 client.commands.get("play").run(client, message, [choice]);        
             }
         });
@@ -58,11 +55,7 @@ exports.run = async (client, message, args, prefix) => {
       message.channel.activeCollector = false;
       message.inlineReply('there was an error while processing your search, sorry :pensive:').catch(console.error);
     }
-}
-
-
-
-
+};
 
 exports.help = {
   name: "search",

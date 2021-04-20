@@ -13,11 +13,12 @@ exports.run = async (client, message, args) => {
     const cursor = client.customEmojis.get('truck') ? client.customEmojis.get('truck') : '🔵';
 
     let nowPlaying = new MessageEmbed()
+    .setColor(queue.color)
     .setTitle(`Now playing in ${message.guild.name}`)
     .setDescription(`
     [${song.title}](${song.url}) - [${song.author}](${song.authorurl}) [${song.requestedby}]
 
-    ${createBar(duration == 0 ? seek : duration, seek, 15, '▬', cursor)[0]} ${moment.duration(new Date(seek * 1000).toISOString()).format('H [h], m [m], s [s]')}/${(duration == 0 ? "LIVE" : moment.duration(new Date(duration * 1000).toISOString()).format('H [h], m [m], s [s]'))}
+    ${createBar(duration == 0 ? seek : duration, seek, 15, '▬', cursor)[0]} ${moment.duration(seek * 1000).format('H [h] m [m] s [s]')}/${(duration == 0 ? "LIVE" : moment.duration(duration * 1000).format('H [h] m [m] s [s]'))}
     `)
     if (duration / 1000 > 0) {
         nowPlaying.setFooter(`Remaining time: ${new Date(left * 1000).toISOString().substr(11, 8)}`);

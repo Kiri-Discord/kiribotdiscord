@@ -12,9 +12,9 @@ exports.run = async (client, message, args) => {
 
     try {
       lyrics = await lyricsFinder(songs, "");
-      if (!lyrics) return message.inlineReply(`i found no lyrics for **${songs}** :(`);
+      if (!lyrics) return message.inlineReply(`i found no lyrics for \`${songs}\` :(`);
     } catch (error) {
-        return message.inlineReply(`i found no lyrics for **${songs}** :(`);
+        return message.inlineReply(`i found no lyrics for \`${songs}\` :(`);
     }
 
     let each = lyrics.slice().trim().split(/ +/g);
