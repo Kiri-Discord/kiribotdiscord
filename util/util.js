@@ -183,7 +183,7 @@ module.exports = class util {
 				type: 'LISTENING'
 			},
 			{
-				text: '@Sefy',
+				text: '@Sefy help',
 				type: 'LISTENING'
 			},
 			{
