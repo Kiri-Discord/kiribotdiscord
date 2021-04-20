@@ -25,7 +25,7 @@ exports.run = async (client, message, args) => {
     .setTitle(href.title)
     .setDescription(href.snippet)
     .setURL(href.link)
-    .setColor(message.member.displayHexColor)
+    .setColor(message.guild.me.displayHexColor)
     .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png', 'https://google.com')
     if (href.pagemap.cse_image) {
         embed.setImage(href.pagemap.cse_image[0].src)

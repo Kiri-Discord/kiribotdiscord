@@ -18,8 +18,7 @@ exports.run = async (client, message, args) => {
     };
     var level = 50;
     try {
-        message.channel.startTyping(true); 
-        
+        message.channel.startTyping(true);
         const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);

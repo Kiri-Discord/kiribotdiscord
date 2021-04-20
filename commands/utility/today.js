@@ -29,10 +29,10 @@ exports.run = async (client, message, args) => {
         const events = body.data.Events;
         const event = events[Math.floor(Math.random() * events.length)];
         const embed = new MessageEmbed()
-        .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-        .setColor('RANDOM')
+        .setTitle(body.date)
+        .setAuthor(`On this day...`, client.user.displayAvatarURL())
+        .setColor(message.guild.me.displayHexColor)
         .setURL(body.url)
-        .setAuthor(`On this day (${body.date})...`, client.user.displayAvatarURL())
         .setTimestamp()
         .setDescription(`${event.year}: ${event.text}`)
         .addField(':arrow_right: More event:', event.links.map(link => embedURL(link.title, link.link)).join('\n'));

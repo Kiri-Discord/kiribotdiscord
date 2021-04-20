@@ -75,13 +75,36 @@ exports.run = async (client, message, args) => {
             if (choice !== 'failed:time' && battle.lastTurnTimeout) battle.lastTurnTimeout = false;
         }
         client.games.delete(message.channel.id);
-        if (battle.winner === 'time') return message.channel.send('Game ended due to inactivity.');
-        return message.channel.send(`the match is over! congrats, ${battle.winner}!`);
+        if (battle.winner === 'time') return message.channel.send('i ended the game since there was no activity :pensive:');
+        if (!battle.winner.bot) {
+            let amount = getRandomInt(5, 15);
+            const storageAfter = await client.money.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: battle.winner.id
+            }, {
+                guildId: message.guild.id,
+                userId: battle.winner.id,
+                $inc: {
+                    balance: amount,
+                }, 
+            }, {
+                upsert: true,
+                new: true,
+            });
+            return message.channel.send(`the match is over! congrats, ${battle.winner}!\n\n⏣ __**${amount}**__ token was placed in your wallet as a reward!\ncurrent balance: \`${storageAfter.balance}\``);
+        } else {
+            return message.channel.send(`the match is over! congrats, ${battle.winner}!`);
+        }
     } catch (err) {
         client.games.delete(message.channel.id);
         throw err;
     }
-}
+};
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 exports.help = {
 	name: "battle",

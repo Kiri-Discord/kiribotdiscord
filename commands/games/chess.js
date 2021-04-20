@@ -115,27 +115,27 @@ exports.run = async (client, message, args, prefix) => {
                 if (gameState.turn === 'white') whiteTime -= timeTaken - 5000;
             } else {
                 const displayTime = userTime === Infinity ? 'infinite' : moment.duration(userTime).format();
-                const embed = new MessageEmbed()
+                const GameEmbed = new MessageEmbed()
                 .setDescription(stripIndents`
                 type \`end\` to forfeit.
 
-                save your game by typing \`save\`.
-                can't think of a move? use \`play for me\` *coward*
+                save your game by typing \`save\`
+                can't think of a move? use \`help\` *coward*
                 `)
                 .setTitle(`${message.author.username} vs ${opponent.username}`)
                 .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
                 .setColor('#34e363')
                 .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
                 .setImage(`attachment://chess.png`)
-                await message.channel.send(`**${user.username}**, what move do you want to make? (ex. A1A2 or NC3)?\n_you are ${gameState.check ? '**in check!**' : 'not in check.'}_`, embed);
+                await message.channel.send(`**${user.username}**, what move do you want to make? (ex. A1A2 or NC3)?\n_you are ${gameState.check ? '**in check!**' : 'not in check.'}_`, GameEmbed);
                 prevPieces = Object.assign({}, game.exportJson().pieces);
                 const moves = game.moves();
                 const pickFilter = res => {
                     if (![message.author.id, opponent.id].includes(res.author.id)) return false;
-                    const choice = res.content.toUpperCase();
-                    if (choice === 'END') return true;
-                    if (choice === 'SAVE') return true;
-                    if (choice === 'PLAY FOR ME') return true;
+                    const choice = res.content.toLowerCase();
+                    if (choice === 'end') return true;
+                    if (choice === 'save') return true;
+                    if (choice === 'help') return true;
                     if (res.author.id !== user.id) return false;
                     const move = choice.match(turnRegex);
                     if (!move) return false;
@@ -182,7 +182,7 @@ exports.run = async (client, message, args, prefix) => {
                     saved = true;
                     break;
                 }
-                if (turn.first().content.toLowerCase() === 'play for me') {
+                if (turn.first().content.toLowerCase() === 'help') {
                     game.aiMove(0);
                 } else {
                     const choice = parseSAN(gameState, moves, turn.first().content.toUpperCase().match(turnRegex));
@@ -231,9 +231,14 @@ exports.run = async (client, message, args, prefix) => {
             upsert: true,
             new: true,
         });
-        return message.channel.send(`checkmate! congratulations, **${winner.username}**!\n\n⏣ **${amount}** token was placed in your wallet 💵\nyour current balance: ${storageAfter.balance}`, {
-            files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }]
-        });
+        const EndEmbed = new MessageEmbed()
+        .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
+        .setTitle(`${winner.username} won!`)
+        .setFooter(`your current balance: ${storageAfter.balance} token`)
+        .setColor('#34e363')
+        .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
+        .setImage(`attachment://chess.png`)
+        return message.channel.send(`checkmate! congratulations, **${winner.username}**!`, EndEmbed);
     } catch (err) {
         client.games.delete(message.channel.id);
         throw err;

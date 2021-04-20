@@ -2,11 +2,22 @@ const request = require('node-superfetch');
 const { createCanvas, loadImage } = require('canvas');
 const { stripIndents } = require('common-tags');
 const { base64 } = require('../../util/util');
-exports.run = async (client, message, args) => {
+const srod = require("something-random-on-discord").ServerAssistant;
 
+exports.run = async (client, message, args) => {
+    let image;
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?").then(m => m.delete({ timeout: 5000 }));
-    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+    if (args[0]) {
+        if (srod.isURL(args[0])) {
+            image = args[0];
+        } else {
+            return message.inlineReply("that isn't a correct URL!");
+        }
+    } else {
+        if (attachments.length === 0) return message.inlineReply("can you upload any screenshot for me to analyze along with that command?");
+        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        else image = attachments[0].url;
+    };
     try {
         
         const status = await fetchRateLimit();
@@ -14,17 +25,18 @@ exports.run = async (client, message, args) => {
             return message.inlineReply(`oh no, i'm out of requests! please wait ${status.refresh} seconds and try again.`);
         }
         message.channel.startTyping(true);
-        let { body } = await request.get(attachments[0].url);
-        if (attachments[0].url.endsWith('.gif')) body = await convertGIF(body);
+        let { body } = await request.get(image);
+        if (image.endsWith('.gif')) body = await convertGIF(body);
         const result = await search(body, message.channel.nsfw);
         if (result === 'size') return message.inlineReply('the file is way too big for me to handle lmao. remember not to upload any image or gif larger than 10mb.');
-        if (result.nsfw && !msg.channel.nsfw) {
+        if (result.nsfw && !message.channel.nsfw) {
             return message.inlineReply('this is from a ||hentai||, and this isn\'t an NSFW channel lmao.');
         }
         const title = `${result.title}${result.episode ? ` episode ${result.episode}` : ''}`;
         await message.channel.stopTyping(true);
         return message.channel.send(stripIndents`
-            i'm ${result.prob}% sure this is from ${title}.
+            i'm pretty ${result.prob}% sure this is from **${title}**
+            
             ${result.prob < 87 ? '_this probablity is rather low, try using a higher quality image._' : ''}
         `, result.preview ? { files: [{ attachment: result.preview, name: 'preview.mp4' }] } : {});
     } catch (err) {
@@ -83,8 +95,8 @@ async function search(file) {
 exports.help = {
     name: "what-anime",
     description: "detect the anime by just a screenshot or a gif :)",
-    usage: "what-anime `<screenshot>`",
-    example: "what-anime"
+    usage: ["what-anime `<image attachment>`", "what-anime `<URL>`"],
+    example: ["what-anime `image attachment`", "what-anime `https://example.com/girl.jpg`"]
 }
 
 exports.conf = {

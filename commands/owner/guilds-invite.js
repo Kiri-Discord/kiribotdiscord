@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-  if (!client.config.owners.includes(message.author.id)) return message.channel.send('only coco or bell can execute this command!');
+  if (!client.config.owners.includes(message.author.id)) return;
   if (!args[0]) {
     let listGuild = [];
     client.guilds.cache.forEach(guild => {
