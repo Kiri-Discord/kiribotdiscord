@@ -55,7 +55,34 @@ module.exports = async (client, message) => {
   if (!prefixRegex.test(message.content)) return;
   const [, matchedPrefix] = message.content.match(prefixRegex);
 
+  let execute = message.content.slice(matchedPrefix.length).trim();
+  if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
+  let args = execute.split(/ +/g);
+  let cmd = args.shift().toLowerCase();
+  let sender = message.author;
+  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
+  if (prefixMention.test(matchedPrefix)) {
+    const prefixinMessage = new RegExp(`<@!?${client.user.id}>( |)$`);
+    const content = args.join(" ");
+    if (!prefixinMessage.test(content)) {
+      message.mentions.users.sweep(user => user.id === client.user.id);
+      if (message.channel.type !== "dm") {
+        message.mentions.members.sweep(user => user.id === client.user.id);
+      }
+    }
+  }
 
+  message.flags = []
+  while (args[0] && args[0][0] === "-") {
+    message.flags.push(args.shift().slice(1)); 
+  };
+  
+  
+  let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+  if (!commandFile) {
+    const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
+    return message.channel.send(`i don't remember having that commmand installed ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:'} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+  };
   if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
     const agreedCount = storage.acceptedRules.toObject();
     let key;
@@ -103,35 +130,6 @@ module.exports = async (client, message) => {
     agreed.set(key, collectedEmojis);
     return agreeCollector(storage, collectedEmojis, message, key);
   };
-
-  let execute = message.content.slice(matchedPrefix.length).trim();
-  if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
-  let args = execute.split(/ +/g);
-  let cmd = args.shift().toLowerCase();
-  let sender = message.author;
-  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
-  if (prefixMention.test(matchedPrefix)) {
-    const prefixinMessage = new RegExp(`<@!?${client.user.id}>( |)$`);
-    const content = args.join(" ");
-    if (!prefixinMessage.test(content)) {
-      message.mentions.users.sweep(user => user.id === client.user.id);
-      if (message.channel.type !== "dm") {
-        message.mentions.members.sweep(user => user.id === client.user.id);
-      }
-    }
-  }
-
-  message.flags = []
-  while (args[0] && args[0][0] === "-") {
-    message.flags.push(args.shift().slice(1)); 
-  };
-  
-  
-  let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-  if (!commandFile) {
-    const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-    return message.channel.send(`i don't remember having that commmand installed ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:'} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
-  }
 
   if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 

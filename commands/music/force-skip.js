@@ -19,6 +19,6 @@ exports.conf = {
   aliases: ["fs", "forceskip"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: ["MANAGE_GUILD"],
+  userPerms: ["MANAGE_MESSAGES"],
   clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 }

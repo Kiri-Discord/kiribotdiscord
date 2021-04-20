@@ -1,9 +1,10 @@
 const { canModifyQueue } = require("../../util/musicutil");
 const { MessageCollector } = require('discord.js');
+
 exports.run = async (client, message, args) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.inlineReply('there is nothing to skip since there isn\'t anything in the queue :grimacing:');
-    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m *playing* music! join ${queue.channel} to listen :wink:`);
+    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m playing music! join ${queue.channel} to listen :wink:`);
     if (queue.channel.members.size > 2 && queue.songs[0].requestedby.id !== message.author.id) {
       let listening = queue.channel.members.size;
       let leftMembers = listening - 2;

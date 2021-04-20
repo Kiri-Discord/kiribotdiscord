@@ -102,7 +102,6 @@ exports.run = async (client, message, args, prefix) => {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
-          thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
           duration: null,
           type: 'yt'
         };
@@ -120,7 +119,6 @@ exports.run = async (client, message, args, prefix) => {
           title: trackInfo.title,
           url: trackInfo.permalink_url,
           requestedby: message.author,
-          thumbnail: trackInfo.artwork_url,
           duration: null
         };
       } catch (error) {
@@ -139,7 +137,6 @@ exports.run = async (client, message, args, prefix) => {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
           requestedby: message.author,
-          thumbnail: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1].url,
           duration: null,
           type: 'yt'
         };
@@ -151,10 +148,9 @@ exports.run = async (client, message, args, prefix) => {
     if (serverQueue) {
       serverQueue.songs.push(song);
       const embed = new MessageEmbed()
-      .setAuthor('✔️ Upcoming',  message.author.displayAvatarURL({ dynamic: true }))
+      .setAuthor('Upcoming',  message.author.displayAvatarURL({ dynamic: true }))
       .setURL(song.url)
       .setTitle(song.title)
-      .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .addField('Requested by', song.requestedby, true)
       .addField('Duration', humanizeDuration(duration), true)
@@ -171,7 +167,7 @@ exports.run = async (client, message, args, prefix) => {
         if (!queueConstruct.connection) {
           client.queue.delete(message.guild.id);
           return message.channel.send('there was an error when i tried to join your voice channel :pensive:').catch(console.error);
-        } 
+        }
         message.channel.send({embed: {color: "f3f3f3", description: `**i have joined your voice channel :microphone2: \`#${channel.name}\` and bound to :page_facing_up: ${message.channel}!**`}})
         await queueConstruct.connection.voice.setSelfDeaf(true);
         play(queueConstruct.songs[0], message, client);

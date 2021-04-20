@@ -80,14 +80,12 @@ exports.run = async (client, message, args, prefix) => {
             title: video.title,
             url: `https://www.youtube.com/watch?v=${video.id}`,
             requestedby: message.author,
-            thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
             duration: null,
             type: 'yt'
           })
         })
-        thumbnail = newSongs[0].thumbnail;
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         return message.inlineReply("i can't find the playlist from the URL you provided :(").catch(console.error);
@@ -102,7 +100,6 @@ exports.run = async (client, message, args, prefix) => {
                 title: track.title,
                 url: track.permalink_url,
                 requestedby: message.author,
-                thumbnail: track.artwork_url,
                 authorurl: track.user.permalink_url,
                 author: track.user.username,
                 duration: null,
@@ -110,7 +107,6 @@ exports.run = async (client, message, args, prefix) => {
             })
           });
           newSongs = videos;
-          thumbnail = newSongs[0].thumbnail;
           playlisturl = url;
         }
       } catch (error) {
@@ -130,14 +126,12 @@ exports.run = async (client, message, args, prefix) => {
             title: video.title,
             url: `https://www.youtube.com/watch?v=${video.id}`,
             requestedby: message.author,
-            thumbnail: video.thumbnails.high.url,
             authorurl: `https://www.youtube.com/channel/${video.raw.snippet.videoOwnerChannelId}`,
             author: video.raw.snippet.videoOwnerChannelTitle,
             duration: null,
             type: 'yt'
           })
         })
-        thumbnail = newSongs[0].thumbnail;
         playlisturl = `https://www.youtube.com/playlist?list=${playlist.id}`;
       } catch (error) {
         console.error(error);
@@ -148,9 +142,8 @@ exports.run = async (client, message, args, prefix) => {
     serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
 
     let playlistEmbed = new MessageEmbed()
-    .setAuthor(`✔️ Requested by ${message.author.username}`,  message.author.displayAvatarURL({ dynamic: true }))
+    .setAuthor(`✔️ Upcoming`,  message.author.displayAvatarURL({ dynamic: true }))
     .setTitle(playlist.title)
-    .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
     .setURL(playlisturl)
 
     if (newSongs.length > 6) {
