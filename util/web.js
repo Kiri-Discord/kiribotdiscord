@@ -10,9 +10,6 @@ module.exports = {
         client.webapp.use(`/assets`, express.static(__basedir + '/html/assets/'));
         client.webapp.use(`/css`, express.static(__basedir + '/html/css/'));
         client.webapp.get('/', (_, res) => res.sendFile(__basedir + '/html/landing.html'));
-        if (client.config.enableArc) {
-          client.webapp.get('/arc-sw.js', (_, res) => res.sendFile(__basedir + '/html/arc-sw.js'));
-        }
         client.webapp.get("/val", async (req, res) => {
             if ("token" in req.query && "valID" in req.query) {
               const body = new URLSearchParams()
