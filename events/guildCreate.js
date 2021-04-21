@@ -33,8 +33,6 @@ module.exports = async (client, guild) => {
   .setImage('https://i.imgur.com/1ef8ZEw.png')
   .setFooter('Image by Cabbie #1964')
 
-  const log1 = client.channels.cache.get('768448397786349578');
-  if (log1) log1.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   const log2 = client.channels.cache.get('827954468779327489')
   if (log2) log2.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 
