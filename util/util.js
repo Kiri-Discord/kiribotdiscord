@@ -58,14 +58,14 @@ module.exports = class util {
 		if (max === 1) return [message.author.id];
 		const addS = min - 1 === 1 ? '' : 's';
 		await message.channel.send(
-			`you will need at least ${min - 1} more player${addS} (at max ${max - 1}). to join, type \`join game\`.`
+			`at least ${min - 1} more player${addS} (at max ${max - 1}). to join, type \`join\`.`
 		);
 		const joined = [];
 		joined.push(message.author.id);
 		const filter = res => {
 			if (res.author.bot) return false;
 			if (joined.includes(res.author.id)) return false;
-			if (res.content.toLowerCase() !== 'join game') return false;
+			if (res.content.toLowerCase() !== 'join') return false;
 			joined.push(res.author.id);
 			res.react('✅').catch(() => null);
 			return true;

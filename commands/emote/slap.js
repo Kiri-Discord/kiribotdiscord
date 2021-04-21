@@ -51,7 +51,7 @@ exports.run = async (client, message, args) => {
 
     const embed = new Discord.MessageEmbed() 
     .setColor("RANDOM") 
-    .setAuthor(`${message.author.username} slap ${target.username} They now have been slapped ${amount} time(s)`, message.author.displayAvatarURL()) 
+    .setAuthor(`${message.author.username} slap ${target.username} :( They now have been slapped ${amount} time(s)`, message.author.displayAvatarURL()) 
     .setImage(data)
 
     message.channel.send(embed)

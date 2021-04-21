@@ -4,8 +4,8 @@ const Pagination = require('discord-paginationembed');
 exports.run = async (client, message, args, prefix) => {  
   if (!args[0]) {
     let module = client.helps.array();
-
-    if (!client.config.owners.includes(message.author.id)) module = client.helps.array().filter(x => !x.hide);
+    if (!client.config.owners.includes(message.author.id)) module = await module.filter(x => !x.hide);
+    if (!message.channel.nsfw) module = module.filter(x => !x.adult);
 
     const embeds = [];
     for (const mod of module) embeds.push(new MessageEmbed().addField(`${mod.name}`, mod.cmds.map(x => `\`${x}\``).join(" | ")));
@@ -13,9 +13,10 @@ exports.run = async (client, message, args, prefix) => {
     new Pagination.Embeds()
     .setArray(embeds)
     .setAuthorizedUsers([message.author.id])
-    .setPageIndicator(true)
+    .setPageIndicator(true, (page, pages) => `page ${page} of ${pages}${message.channel.nsfw ? '' : `. i hidden nsfw command cuz you are in a normal channel ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`}`)
     .setChannel(message.channel)
     .setPage(1)
+    .setClientAssets({ prompt: 'uh {{user}} to what page would you like to jump? type 0 or \'cancel\' to cancel jumping.' })
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
     .setDescription(`
@@ -27,7 +28,7 @@ exports.run = async (client, message, args, prefix) => {
     .setAuthor(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setFooter(`all of our command is community based, so consider joining our server with ${prefix}invite!`)
     .setColor(message.member.displayHexColor)
-    .setDeleteOnTimeout(true)
+    .setTimeout(25000)
     .setImage('https://blackmirrorland.files.wordpress.com/2014/09/gloomy-anime-future-wallpaper-1920x1080.jpg')
     .build();
 

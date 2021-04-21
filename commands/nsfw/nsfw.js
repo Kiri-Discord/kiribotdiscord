@@ -6,14 +6,14 @@ const fetch = require("node-fetch");
 exports.run = async (client, message, args) => {
     let choices = ["local", "reddit"];
     let choice = choices[Math.floor(Math.random() * choices.length)];
-    if (choice === "local" && message.channel.nsfw) {
+    if (choice === "local") {
         const nsfw = randomanime.nsfw()
         const embed = new Discord.MessageEmbed()
         .setColor('RANDOM')
         .setDescription(`powered by bell's homework folder`)
         .setImage(nsfw)
 		return message.channel.send(embed)
-	} else if (choice === "reddit" && message.channel.nsfw) {
+	} else if (choice === "reddit") {
 		let random =  ["hentai", "ecchi"];
 		let subreddit = random[Math.floor(Math.random() * random.length)];
 		fetch(`https://www.reddit.com/r/${subreddit}/about.json`)
@@ -43,19 +43,12 @@ exports.run = async (client, message, args) => {
 		.setFooter(`⬆ ${post[randomnumber].data.ups} 💬 ${post[randomnumber].data.num_comments}`)
 		return message.channel.send(embed)
 	});
-} else {
-    const embed2 = new Discord.MessageEmbed()
-    .setColor(0x7289DA)
-    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
-    .setTitle('say hi to my uncle')
-    .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
-    return message.channel.send(embed2);
-}
+	};
 }
 
 exports.help = {
 	name: "nsfw",
-	description: "do i even have to explain this again?",
+	description: "send some NSFW content fron different subreddit",
 	usage: "nsfw",
 	example: "nsfw"
 };
@@ -64,6 +57,7 @@ exports.conf = {
 	aliases: ["anime-nsfw", "hentai", "ecchi"],
     cooldown: 3,
     guildOnly: true,
+	adult: true,
     userPerms: [],
 	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 };

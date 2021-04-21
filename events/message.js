@@ -132,7 +132,14 @@ module.exports = async (client, message) => {
   };
 
   if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
-
+  if (!message.channel.nsfw && commandFile.conf.adult) {
+    const embed2 = new MessageEmbed()
+    .setColor(0x7289DA)
+    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
+    .setTitle('say hi to my uncle')
+    .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
+    return message.channel.send(embed2).catch(() => null)
+  };
   
   if (commandFile.conf.userPerms && message.channel.type !== "dm") {
     for (permission in commandFile.conf.userPerms) {
@@ -189,7 +196,7 @@ module.exports = async (client, message) => {
   try {
     if (!commandFile) return;
     commandFile.run(client, message, args, prefix);
-    console.log(`${sender.tag} (${sender.id}) ran a command: ${cmd}`);
+    console.log(`${sender.tag} (${sender.id}) from ${message.channel.type === 'dm' ? 'DM' : message.guild.name} ran a command: ${prefix}${cmd}`);
   } catch (error) {
     console.error(error);
   }

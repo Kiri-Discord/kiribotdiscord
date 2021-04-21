@@ -6,7 +6,7 @@ exports.run = async (client, message, args) => {
   }).sort({
     xp: -1
   });
-  if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( try chatting more to level up :D`}});
+  if (!data || !data.length) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( try chatting more to level up :D`}});
 
   const emoji = {
     "1": ":crown:",
@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
     } else {
       arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — Level: \`${user.level}\` | XP: \`${user.xp}\``);
     }
-  })
+  });
   let rank = message.guild.memberCount;
   for (let counter = 0; counter < data.length; ++counter) {
 
@@ -52,27 +52,27 @@ exports.run = async (client, message, args) => {
   const FieldsEmbed = new Pagination.FieldsEmbed()
   .setArray(arr)
   .setElementsPerPage(10)
-  .setPageIndicator(true)
+  .setPageIndicator(true, (page, pages) => `page ${page} of ${pages}`)
   .setAuthorizedUsers([message.author.id])
   .formatField('\u200b', list => list)
   .setChannel(message.channel)
-  .setTimeout(30000)
+  .setClientAssets({ prompt: 'uh {{user}} to what page would you like to jump? type 0 or \'cancel\' to cancel jumping.' })
+  .setTimeout(25000)
 
   FieldsEmbed.embed
   .setColor(message.guild.me.displayHexColor)
-  .setAuthor(`leveling leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
+  .setAuthor(`leveling leaderboard for ${message.guild.name}:`, message.author.displayAvatarURL())
   .setFooter(`you are ranked ${rank} in this guild :)`)
   .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
-  .setDescription(`you can level up by [sending messages](https://support.discord.com/hc/en-us/articles/360034632292-Sending-Messages) in the server!`)
-
+  .setDescription(`you can level up by [sending messages](https://support.discord.com/hc/en-us/articles/360034632292-Sending-Messages) in ${message.guild.name}!`)
   FieldsEmbed.build();
 }
 
 exports.help = {
 	name: "levelboard",
-	description: "i will show the guild's leveling leaderboard when you use this. easy to understand, right? :D",
-	usage: "levelboard <page>",
-	example: "levelboard 2"
+	description: "show the guild's leveling leaderboard :D",
+	usage: "levelboard",
+	example: "levelboard"
 };
   
 exports.conf = {
