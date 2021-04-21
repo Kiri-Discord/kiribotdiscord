@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 exports.run = async (client, message, args) => {
     let jokeFilter;
-    if (message.channel.nsfw) jokeFilter = "blacklistFlags=nsfw,religious,political,racist,sexist";
+    if (!message.channel.nsfw) jokeFilter = "blacklistFlags=nsfw,religious,political,racist,sexist";
     else jokeFilter = "";
     fetch(`https://sv443.net/jokeapi/v2/joke/Any?${jokeFilter}`)
     .then(res => res.json())
