@@ -27,13 +27,13 @@ exports.run = async (client, message, args, prefix) => {
         verifyRole: role.id
     })
     .catch(err => console.error(err));
-    return message.channel.send({embed: {color: "f3f3f3", description: `☑️ the verify channel has been set to ${channel}! with the verify role \`${role.name}\`!\nunverified people will be kicked in **5 minutes** by default. use \`${prefix}setverifytimeout <time>\` to set your own duration!`}});
+    return message.channel.send({embed: {color: "f3f3f3", description: `☑️ the verification guiding channel has been set to ${channel} and user will be given the verify role \`${role.name}\`after verifying!\nunverified people will be kicked in \`10 minutes\` by default. use \`${prefix}setverifytimeout <time>\` to set your own duration!`}});
 
 }
         
 exports.help = {
 	name: "setverify",
-	description: "Set the verify channel where i *verify* people",
+	description: "setup my verification system",
 	usage: ["setverify `<#channel | id> <role name | id>`", "setverify `[-off]`"],
 	example: ["setverify `#verify @Verify`", "setverify `55879822272712 575475475474577`"]
 };
