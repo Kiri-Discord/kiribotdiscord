@@ -44,7 +44,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.33",
-    "mongoose": "^5.12.3",
+    "mongoose": "^5.12.5",
     "mquery": "^3.2.5",
     "namemc": "^1.7.4",
     "nekos.life": "^2.0.7",
