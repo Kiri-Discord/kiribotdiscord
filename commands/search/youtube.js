@@ -13,6 +13,7 @@ exports.run = async (client, message, args) => {
             type: 'video',
             maxResults: 1,
             q: query,
+            safeSearch: message.channel.nsfw ? 'none' : 'strict',
             key: process.env.youtubekey
           });
         if (!body.items.length) return message.channel.send('no results found for ' + query + ".");
