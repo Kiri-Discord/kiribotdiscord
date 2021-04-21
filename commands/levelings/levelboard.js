@@ -1,42 +1,38 @@
-const Discord = require("discord.js");
+const Pagination = require('discord-paginationembed');
 
 exports.run = async (client, message, args) => {
-  let rank = message.guild.memberCount;
   let data = await client.dbleveling.find({
     guildId: message.guild.id,
   }).sort({
     xp: -1
-  })
+  });
   if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( try chatting more to level up :D`}});
 
-  var limit = 15;
-
-  let lastpage = Math.ceil(Object.keys(data).length / limit);
-  let page = parseInt(args[0]);
-  if (!page) page = 1;
-  if (page > lastpage) return message.channel.send({embed: {color: "f3f3f3", description: `❌ sorry, i have no data for page \`${page}\` :(`}});
-
-  let frompages = limit * (page - 1);
-  let pageslimit = 15 * page;
-
-  let list = Object.entries(data).sort((a, b) => b[1].xp - a[1].xp).slice(frompages, pageslimit);
+  const emoji = {
+    "0": ":crown:",
+    "1": ":trident:",
+    "2": ":trophy:",
+    "3": ":medal:",
+    "4": ":four:",
+    "5": ":five:"
+  };
   let arr = [];
 
-  for (var i in list) {
-    let member = message.guild.members.cache.get(list[i][1].userId)
+  data.map((user, index) => {
+    let member = message.guild.members.cache.get(user.userId);
     if (!member) {
       client.dbleveling.findOneAndDelete({
-        userId: list[i][1].userId,
+        userId: user.userId,
         guildId: message.guild.id,
       }, (err) => {
         if (err) console.error(err)
       });
-      arr.push(`✨ \`${i * 1 + 1 + frompages}\` ||Left user|| — XP: **${list[i][1].xp}** | Level: **${list[i][1].level}**`);
+      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| — XP: **${user.xp}** | Level: **${user.level}**`);
     } else {
-      arr.push(`✨ \`${i * 1 + 1 + frompages}\` **${member.user.username}** — XP: **${list[i][1].xp}** | Level: **${list[i][1].level}**`);
+      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — XP: **${user.xp}** | Level: **${user.level}**`);
     }
-  };
-
+  })
+  let rank = message.guild.memberCount;
   for (let counter = 0; counter < data.length; ++counter) {
 
     let member = message.guild.members.cache.get(data[counter].userId)
@@ -52,15 +48,23 @@ exports.run = async (client, message, args) => {
     } else if (member.user.id === message.author.id) {
       rank = counter + 1
     }
-  }
+  };
 
-  const embed = new Discord.MessageEmbed()
-  .setColor("RANDOM")
+  const FieldsEmbed = new Pagination.FieldsEmbed()
+  .setArray(arr)
+  .setElementsPerPage(10)
+  .setPageIndicator(true)
+  .setAuthorizedUsers([message.author.id])
+  .formatField('\u200b', list => list)
+  .setChannel(message.channel)
+
+  FieldsEmbed.embed
+  .setColor(message.guild.me.displayHexColor)
   .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
+  .setFooter(`you are ranked ${rank} in this guild :)`)
   .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
-  .setDescription(`${arr.join("\n")}`)
-  .setFooter(`page: ${page} of ${lastpage} | you are ranked ${rank} in this guild :)`)
-  return message.channel.send(embed);
+
+  FieldsEmbed.build();
 }
 
 exports.help = {
