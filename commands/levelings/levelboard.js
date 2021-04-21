@@ -9,12 +9,11 @@ exports.run = async (client, message, args) => {
   if (!data) return message.channel.send({embed: {color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :( try chatting more to level up :D`}});
 
   const emoji = {
-    "0": ":crown:",
-    "1": ":trident:",
-    "2": ":trophy:",
-    "3": ":medal:",
-    "4": ":four:",
-    "5": ":five:"
+    "1": ":crown:",
+    "2": ":trident:",
+    "3": ":trophy:",
+    "4": ":medal:",
+    "5": ":zap:"
   };
   let arr = [];
 
@@ -27,9 +26,9 @@ exports.run = async (client, message, args) => {
       }, (err) => {
         if (err) console.error(err)
       });
-      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| — XP: **${user.xp}** | Level: **${user.level}**`);
+      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| —  Level: \`${user.level}\` | XP: \`${user.xp}\``);
     } else {
-      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — XP: **${user.xp}** | Level: **${user.level}**`);
+      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — Level: \`${user.level}\` | XP: \`${user.xp}\``);
     }
   })
   let rank = message.guild.memberCount;
@@ -57,12 +56,14 @@ exports.run = async (client, message, args) => {
   .setAuthorizedUsers([message.author.id])
   .formatField('\u200b', list => list)
   .setChannel(message.channel)
+  .setTimeout(30000)
 
   FieldsEmbed.embed
   .setColor(message.guild.me.displayHexColor)
-  .setAuthor(`Leveling leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
+  .setAuthor(`leveling leaderboard for ${message.guild.name}:`, client.user.displayAvatarURL())
   .setFooter(`you are ranked ${rank} in this guild :)`)
   .setThumbnail(message.guild.iconURL({size: 4096, dynamic: true}))
+  .setDescription(`you can level up by [sending messages](https://support.discord.com/hc/en-us/articles/360034632292-Sending-Messages) in the server!`)
 
   FieldsEmbed.build();
 }
