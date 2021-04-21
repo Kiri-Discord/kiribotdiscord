@@ -70,7 +70,7 @@ exports.run = async (client, message, args, prefix) => {
         let blackTime = time === 0 ? Infinity : time * 60000;
         let whitePlayer = message.author;
         let blackPlayer = opponent;
-        let foundGameSave = resumeGame.storage.find(storage => storage.type === 'chess');
+        let foundGameSave = resumeGame.storage.chess;
         if (foundGameSave) {
             await message.channel.send(stripIndents`
             you already have a saved game, do you want to resume it? \`y/n\`
@@ -86,11 +86,11 @@ exports.run = async (client, message, args, prefix) => {
                     blackTime = data.blackTime === -1 ? Infinity : data.blackTime;
                     whitePlayer = data.color === 'white' ? message.author : opponent;
                     blackPlayer = data.color === 'black' ? message.author : opponent;
-                    resumeGame.storage.splice(resumeGame.storage.indexOf(x => x.type === 'chess'), 1);
+                    resumeGame.storage.chess = undefined;
                     await resumeGame.save();
                 } catch {
                     client.games.delete(message.channel.id);
-                    resumeGame.storage.splice(resumeGame.storage.indexOf(x => x.type === 'chess'), 1);
+                    resumeGame.storage.chess = undefined;
                     await resumeGame.save();
                     return message.inlineReply(`there was an error while reading your saved game... try again please ${sedEmoji}`);
                 }
@@ -163,16 +163,16 @@ exports.run = async (client, message, args, prefix) => {
                 if (turn.first().content.toLowerCase() === 'end') break;
                 if (turn.first().content.toLowerCase() === 'save') {
                     const { author } = turn.first();
-                    const alreadySaved = resumeGame.storage.find(storage => storage.type === 'chess');
+                    const alreadySaved = resumeGame.storage.chess;
                     if (alreadySaved) {
                         await message.channel.send('you already have a saved game, do you want to overwrite it? \`y/n\`');
                         const verification = await verify(message.channel, author);
                         if (!verification) continue;
                     };
-                    resumeGame.storage.splice(resumeGame.storage.indexOf(x => x.type === 'chess'), 1);
+                    resumeGame.storage.chess = undefined;
                     if (gameState.turn === 'black') blackTime -= new Date() - now;
                     if (gameState.turn === 'white') whiteTime -= new Date() - now;
-                    resumeGame.storage.push(exportGame(
+                    resumeGame.storage.chess = (exportGame(
                         game,
                         blackTime,
                         whiteTime,

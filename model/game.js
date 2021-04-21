@@ -9,8 +9,8 @@ const gameSchema = mongoose.Schema({
   guildId: reqString,
   userId: reqString,
   storage: {
-    type: [Object],
-    default: []
+    type: Object,
+    default: Object
   },
 });
 
