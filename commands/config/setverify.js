@@ -19,8 +19,8 @@ exports.run = async (client, message, args, prefix) => {
     if (role.name === "@everyone") return message.inlineReply(`\`@everyone\` is a default role ${sedEmoji}`);
     if (role.name === "@here") return message.inlineReply(`\`@here\` is not a role ${sedEmoji}`);
 
-    if (message.member.roles.highest.comparePositionTo(role) < 0) return message.inlineReply('that role is higher than your highest role! :pensive:');
-    if (message.guild.me.roles.highest.comparePositionTo(role) < 0) return message.inlineReply('that role is higher than me :pensive:');
+    if (message.member.roles.highest.comparePositionTo(role) < 0 || message.member.roles.highest.comparePositionTo(role) === 0) return message.inlineReply('that role is equal or higher than your highest role! :pensive:');
+    if (message.guild.me.roles.highest.comparePositionTo(role) < 0 || message.guild.me.roles.highest.comparePositionTo(role) === 0) return message.inlineReply('that role is equal or higher than me :pensive:');
 
     
 
