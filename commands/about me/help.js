@@ -13,14 +13,14 @@ exports.run = async (client, message, args, prefix) => {
     new Pagination.Embeds()
     .setArray(embeds)
     .setAuthorizedUsers([message.author.id])
-    .setPageIndicator(true, (page, pages) => `page ${page} of ${pages}${message.channel.nsfw ? '' : `. i hidden nsfw command cuz you are in a normal channel ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`}`)
+    .setPageIndicator(true, (page, pages) => `page ${page} of ${pages}.${message.channel.nsfw ? '' : `\n*nsfw command was hidden cuz you are in a normal channel* ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`}`)
     .setChannel(message.channel)
     .setPage(1)
     .setClientAssets({ prompt: 'uh {{user}} to what page would you like to jump? type 0 or \'cancel\' to cancel jumping.' })
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
     .setDescription(`
-    hi, i'm Sefy, just an another wandering bot ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}
+    hi, i'm Sefy, formerly [Sefiria](https://discord.gg/D6rWrvS) secret custom assistant ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}, now goes public!
     you can use \`${prefix}help [command]\` to get more specific information about a command 😄
     
     *btw you can navigate thru my commands using the emojis below*
@@ -45,6 +45,7 @@ exports.run = async (client, message, args, prefix) => {
       let example = command.help.example ? command.help.example : "no example provided.";
       let userperms = command.conf.userPerms.map(x => `\`${x}\``).join(", ") ? command.conf.userPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
       let botperms = command.conf.clientPerms.map(x => `\`${x}\``).join(", ") ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
+      let adult = command.conf.adult ? 'true' : 'false';
       
       let embed = new MessageEmbed()
       .setColor(message.guild ? message.guild.me.displayHexColor : '#ffe6cc')
@@ -60,6 +61,7 @@ exports.run = async (client, message, args, prefix) => {
       .addField("example", example, true)
       .addField("user permission(s)", userperms, true)
       .addField("bot permission(s)", botperms, true)
+      .addField('nsfw?', adult)
       
       return message.channel.send(embed);
     } else {

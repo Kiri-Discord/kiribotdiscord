@@ -19,11 +19,14 @@ exports.run = async (client, message, args, prefix) => {
     
     if (!role) return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`)
 
-    if (role.name === "@everyone") return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`);
-    if (role.name === "@here") return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`);
+    if (role.name === "@everyone") return message.inlineReply(`\`@everyone\` is a default role ${sedEmoji}`);
+    if (role.name === "@here") return message.inlineReply(`\`@here\` is not a role ${sedEmoji}`);
 
-    if (message.member.roles.highest.comparePositionTo(role) < 0 || member.roles.highest.comparePositionTo(message.member.roles.highest) > 0) return message.inlineReply('that role is higher than your highest role! :pensive:');
-    if (member.roles.highest.comparePositionTo(message.member.roles.highest) > 0) return message.inlineReply('that user has a role higher than yours :pensive:')
+    if (message.member.roles.highest.comparePositionTo(role) < 0) return message.inlineReply('that role is higher than your highest role! :pensive:');
+    if (member.roles.highest.comparePositionTo(message.member.roles.highest) > 0) return message.inlineReply('that user has a role higher than yours :pensive:');
+    if (message.guild.me.roles.highest.comparePositionTo(role) < 0) return message.inlineReply('that role is higher than me :pensive:');
+    if (message.guild.me.roles.highest.comparePositionTo(member.roles.highest) < 0) return message.inlineReply('that user has a role higher than me :pensive:');
+
 
     const alreadyHasRole = member._roles.includes(role.id);
 

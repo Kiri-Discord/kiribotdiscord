@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Message } = require("discord.js");
 const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
 const ms = require("ms");
 
@@ -42,8 +42,8 @@ module.exports = async (client, member) => {
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
     .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
-    .setDescription(`Hello! Before you join ${member.guild.name}, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in \`${ms(timeMs, {long: true})}\`\n\n*sorry, this is the only way to prevent bots from joining the server* :pensive:`)
-    .addField(`Here is the link...`, `||${__baseURL}verify?valID=${code}||`)
+    .setDescription(`Hello! Before you join ${member.guild.name}, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams :pensive:`)
+    .addField(`Verification link for ${member.user.username}`, `||${__baseURL}verify?valID=${code}||`)
     await member.send(dm).catch(() => {
       verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify code. can you unlock it first and type \`resend\` here?`)
       .then(i => i.delete({timeout: 10000}));

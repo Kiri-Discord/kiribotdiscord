@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
             guildID: message.guild.id,
         },
         {
-            ignoreLevelingsChannelID: null
+            ignoreLevelingsChannelID: undefined
         })
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ ignore levelings has been disabled`}});
     }

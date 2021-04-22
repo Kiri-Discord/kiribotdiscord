@@ -36,7 +36,7 @@ module.exports = class VerifyTimer {
                 const logembed = new Discord.MessageEmbed()
                 .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
                 .setTitle('User kicked')
-                .setColor("RANDOM")
+                .setColor("#ff0000")
                 .setThumbnail(member.user.avatarURL())
                 .addField('Username', member.user.username)
                 .addField('User ID', member.id)
@@ -45,7 +45,7 @@ module.exports = class VerifyTimer {
                 const logerror = new Discord.MessageEmbed()
                 .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
                 .setDescription(`Failed while kicking ${member} for not verifying in **${ms(time, {long: true})}**.\nPossible problem: \`MISSING_PERMISSION\`\nYou can manually kick them instead :)`)
-                .setColor('RANDOM')
+                .setColor('#ff0000')
                 .setThumbnail(member.user.avatarURL())
                 if (!member.kickable) {
                     if (!logChannel) {
