@@ -34,7 +34,7 @@
     "google-tts-api": "^2.0.2",
     "html-entities": "^2.3.2",
     "https": "^1.0.0",
-    "humanize-duration": "^3.25.1",
+    "humanize-duration": "^3.25.2",
     "ini": "^2.0.0",
     "ioredis": "^4.26.0",
     "iso-639-1": "^2.1.9",
