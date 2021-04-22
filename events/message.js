@@ -56,21 +56,17 @@ module.exports = async (client, message) => {
   const [, matchedPrefix] = message.content.match(prefixRegex);
 
   let execute = message.content.slice(matchedPrefix.length).trim();
-  if (!execute) return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
+  if (!execute) {
+    const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
+    if (prefixMention.test(matchedPrefix)) {
+      return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
+    } else {
+      return;
+    }
+  }
   let args = execute.split(/ +/g);
   let cmd = args.shift().toLowerCase();
   let sender = message.author;
-  const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
-  if (prefixMention.test(matchedPrefix)) {
-    const prefixinMessage = new RegExp(`<@!?${client.user.id}>( |)$`);
-    const content = args.join(" ");
-    if (!prefixinMessage.test(content)) {
-      message.mentions.users.sweep(user => user.id === client.user.id);
-      if (message.channel.type !== "dm") {
-        message.mentions.members.sweep(user => user.id === client.user.id);
-      }
-    }
-  }
 
   message.flags = []
   while (args[0] && args[0][0] === "-") {
