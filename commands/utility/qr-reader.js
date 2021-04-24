@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
             .query({ fileurl: attachments[0].url });
         const data = body[0].symbol[0];
         if (!data.data) return message.inlineReply(`i couldn't get a link from this qr code. are you sure that this is the right image?`);
-        return message.inlineReply(`here is your link: \n||${shorten(data.data, 2000 - (message.author.toString().length + 2))}||`);
+        return message.channel.send(`here is your link: \n||${shorten(data.data, 2000 - (message.author.toString().length + 2))}||`);
     } catch (err) {
         return message.channel.send(`sorry :( i got an error. try again later! can you check the image files?`);
     }
@@ -22,14 +22,12 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: "qr-reader",
     description: "get the link from a qr code right on Discord!",
-    usage: "qr-reader <image>",
-    example: "qr-reader <image>"
+    usage: "qr-reader `<image>`",
+    example: "qr-reader `<image>`"
 };
   
 exports.conf = {
     aliases: ["qr-read", "readqr"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 }

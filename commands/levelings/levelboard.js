@@ -77,8 +77,8 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["lvb"],
-  cooldown: 5,
+  cooldown: 3,
   guildOnly: true,
   userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+	channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
 };

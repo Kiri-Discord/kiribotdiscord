@@ -76,7 +76,7 @@ exports.conf = {
     cooldown: 10,
     guildOnly: true,
     userPerms: [],
-    clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS"]
 }
 function getRandomInt(min, max) {
     min = Math.ceil(min);

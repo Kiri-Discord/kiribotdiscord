@@ -18,12 +18,11 @@ const airingGraphQL = stripIndents`
 		}
 	}
 `;
-const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message, args) => {
     try {
         const anime = await getList();
-        if (!anime) return message.channel.send('No anime air today...');
+        if (!anime) return message.channel.send('no anime is airing today...');
         const mapped = anime.sort((a, b) => a.airingAt - b.airingAt).map(ani => {
             const title = ani.media.title.english || ani.media.title.romaji;
             const airingAt = moment(ani.airingAt * 1000).tz('Asia/Tokyo').format('h:mm A');
@@ -63,6 +62,4 @@ exports.conf = {
     aliases: ["airing-anime", "anichart", "aniair"],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 }

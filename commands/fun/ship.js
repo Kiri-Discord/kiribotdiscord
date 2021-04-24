@@ -60,6 +60,4 @@ exports.conf = {
 	aliases: ["love-test", "rateship"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

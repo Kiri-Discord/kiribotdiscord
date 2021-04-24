@@ -59,6 +59,4 @@ exports.conf = {
 	aliases: ["friendmeter", "ratefriendship"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

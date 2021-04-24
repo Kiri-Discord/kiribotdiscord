@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const ms = require("ms");
 module.exports = class VerifyTimer {
 	constructor(client) {
@@ -30,10 +30,10 @@ module.exports = class VerifyTimer {
                 if (!member) return;
                 const roleExist = guild.roles.cache.get(setting.verifyRole);
                 const verifyChannel = guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
-                const verifyRole = member._roles.includes(setting.verifyRole);
+                const verifyRole = member.roles.cache.has(setting.verifyRole);
                 if (verifyRole || !verifyChannel || !roleExist) return;
                 const logChannel = await guild.channels.cache.get(setting.logChannelID);
-                const logembed = new Discord.MessageEmbed()
+                const logembed = new MessageEmbed()
                 .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
                 .setTitle('User kicked')
                 .setColor("#ff0000")
@@ -42,26 +42,15 @@ module.exports = class VerifyTimer {
                 .addField('User ID', member.id)
                 .addField('Kicked by', this.client.user)
                 .addField('Reason', reason);
-                const logerror = new Discord.MessageEmbed()
+                const logerror = new MessageEmbed()
                 .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
                 .setDescription(`Failed while kicking ${member} for not verifying in **${ms(time, {long: true})}**.\nPossible problem: \`MISSING_PERMISSION\`\nYou can manually kick them instead :)`)
                 .setColor('#ff0000')
                 .setThumbnail(member.user.avatarURL())
-                if (!member.kickable) {
-                    if (!logChannel) {
-                        return;
-                    } else {
-                        return logChannel.send(logerror);
-                    };
-                }
-                if (!logChannel) {
-                    void(0)
-                } else {
-                    await logChannel.send(logembed);
-                };
-
+                if (!member.kickable && logChannel) return logChannel.send(logerror);
+                if (logChannel) await logChannel.send(logembed);
                 await member.send(`I have kicked you from **${guild.name}** for not verifying in in **${ms(time, {long: true})}** :(`).catch(() => {
-                    void(0)
+                    null
                 });
                 await member.kick(reason);
             } finally {

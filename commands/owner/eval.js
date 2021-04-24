@@ -53,10 +53,7 @@ exports.help = {
 
 exports.conf = {
   aliases: ["ev"],
-  cooldown: 4,
-  guildOnly: true,
-  userPerms: [],
-  clientPerms: ["SEND_MESSAGES"]
+  cooldown: 4
 }
 
 function clean(string) {

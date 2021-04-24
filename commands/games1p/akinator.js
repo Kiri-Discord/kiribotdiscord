@@ -10,14 +10,14 @@ class Game {
     }
 
     async init() {
-        await this.aki.start();
-        this.message.channel.send('are you thinking of a character and ready to begin? y / n').then(msg => { this.msg = msg; });
+        await this.message.channel.send('are you thinking of a character and ready to begin? y / n').then(msg => { this.msg = msg; });
         const filter = m => /^[yn]$/i.test(m.content) && m.author === this.message.author;
         const response = await this.getResponse(filter);
         if (response === 'y') this.run();
     }
 
     async run() {
+        await this.aki.start();
         this.msg.edit('', new MessageEmbed()
             .setColor('#DAF7A6')
             .setAuthor(this.message.member.displayName,  this.message.author.displayAvatarURL({ dynamic: true }))
@@ -110,5 +110,5 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+	channelPerms: ["EMBED_LINKS"]
 };

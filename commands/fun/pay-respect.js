@@ -48,5 +48,5 @@ exports.conf = {
   cooldown: 5,
   guildOnly: true,
   userPerms: [],
-	clientPerms: ["ADD_REACTIONS", "SEND_MESSAGES"]
+	channelPerms: ["ADD_REACTIONS"]
 }

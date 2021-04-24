@@ -59,5 +59,5 @@ exports.conf = {
     guildOnly: true,
 	adult: true,
     userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+	channelPerms: ["EMBED_LINKS"]
 };

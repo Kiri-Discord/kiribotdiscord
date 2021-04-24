@@ -1,9 +1,6 @@
 exports.run = async (client, message, args) => {
-    let question = args.join(" ")
-
-
-    if(!question) return message.channel.send('you must write something lmao.')
-
+    let question = args.join(" ");
+    if (!question) return message.channel.send('you must write something lmao.')
     const responses = [
         "ye",
         "probably",
@@ -13,15 +10,11 @@ exports.run = async (client, message, args) => {
         "heck no",
         ]
     const randomResponse = Math.floor(Math.random() * (responses.length - 1) + 1);
-
-    message.channel.startTyping()
-    setTimeout(() => {       
-        message.channel.send(`${responses[randomResponse]}`).then((message)=>{
-            message.channel.stopTyping();
-        });
+    await message.channel.startTyping()
+    setTimeout(async () => {
+        await message.channel.stopTyping();
+        return message.channel.send(`${responses[randomResponse]}`);
     }, 10000);
-    
-
 }
 exports.help = {
 	name: "8ball",
@@ -34,6 +27,4 @@ exports.conf = {
 	aliases: ["8ball"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

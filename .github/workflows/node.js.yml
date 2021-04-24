@@ -16,11 +16,9 @@ jobs:
         port: ${{ secrets.EC2_SSH_PORT }}
         script: |
           cd "${{ secrets.EC2_SSH_PATH }}"
-          pm2 kill
+          pm2 stop Sefy
           git pull
           npm i
           curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
-          pm2 restart ecosystem.config.js --update-env
+          pm2 restart ecosystem.config.js --update-env --log-date-format 'DD-MM HH:mm:ss.SSS'
           pm2 save
-
-

@@ -70,6 +70,4 @@ exports.conf = {
     aliases: ['wouldyourather', 'wyr'],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

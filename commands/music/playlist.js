@@ -188,5 +188,6 @@ exports.conf = {
   cooldown: 3,
   guildOnly: true,
   userPerms: [],
-  clientPerms: ["SEND_MESSAGES", "EMBED_LINKS", "CONNECT", "SPEAK"]
+  clientPerms: ["CONNECT", "SPEAK"],
+  channelPerms: ["EMBED_LINKS"]
 }

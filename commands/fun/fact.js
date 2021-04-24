@@ -21,6 +21,4 @@ exports.conf = {
 	aliases: ["funfact"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

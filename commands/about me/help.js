@@ -20,7 +20,7 @@ exports.run = async (client, message, args, prefix) => {
     .setThumbnail(client.user.displayAvatarURL())
     .setTitle('hey, how can i help?')
     .setDescription(`
-    hi, i'm Sefy, formerly [Sefiria](https://discord.gg/D6rWrvS) secret custom assistant ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}, now goes public!
+    hi, i'm Sefy, formerly [Sefiria](https://discord.gg/D6rWrvS) secret custom assistant, now goes public ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':blush:'}
     you can use \`${prefix}help [command]\` to get more specific information about a command 😄
     
     *btw you can navigate thru my commands using the emojis below*
@@ -79,8 +79,7 @@ exports.help = {
 
 exports.conf = {
   aliases: ["?", "about"],
-  cooldown: 3,
+  cooldown: 5,
   guildOnly: true,
-  userPerms: [],
-  clientPerms: ["EMBED_LINKS", "SEND_MESSAGES", "ADD_REACTIONS"]
-}
+  channelPerms: ["EMBED_LINKS", "SEND_MESSAGES", "MANAGE_MESSAGES"]
+};

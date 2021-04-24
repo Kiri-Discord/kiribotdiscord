@@ -139,6 +139,4 @@ exports.conf = {
 	aliases: ["lie-swatter", "lie-guess"],
     cooldown: 5,
 	guildOnly: true,
-	userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

@@ -12,7 +12,5 @@ exports.help = {
 exports.conf = {
     aliases: ["pre"],
     cooldown: 2,
-    guildOnly: false,
-    userPerms: [],
-    clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS"]
 };

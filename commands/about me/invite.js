@@ -16,9 +16,7 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: [],
+  aliases: ['inviteme'],
   cooldown: 2,
-  guildOnly: false,
-  userPerms: [],
-  clientPerms: ["SEND_MESSAGES"]
-}
+  channelPerms: ["EMBED_LINKS"]
+};

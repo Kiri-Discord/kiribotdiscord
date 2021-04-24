@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = async (client, message) => {
 
-  if (message.author.bot || message.author === client.user) return;
+  if (message.author.bot || message.author.id === client.user.id) return;
 
   let prefix;
   let setting;
@@ -20,6 +20,7 @@ module.exports = async (client, message) => {
   if (message.channel.type === "dm") {
     prefix = client.config.prefix
   } else {
+    if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
     setting = await client.dbguilds.findOne({
       guildID: message.guild.id
     });
@@ -33,10 +34,10 @@ module.exports = async (client, message) => {
     } else {
       prefix = setting.prefix;
     }
-    const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
+    const alreadyHasVerifyRole = message.member.roles.cache.has(setting.verifyRole);
     if (message.channel.id === setting.verifyChannelID) {
       if (alreadyHasVerifyRole) {
-        return message.inlineReply(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or either \`${prefix}setverify <#channel | id> <role name | id>\``).then(async m => {
+        return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(async m => {
           await message.delete();
           m.delete({ timeout: 4000 });
         })
@@ -55,11 +56,16 @@ module.exports = async (client, message) => {
   if (!prefixRegex.test(message.content)) return;
   const [, matchedPrefix] = message.content.match(prefixRegex);
 
+  const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
+  const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
+  const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
+  const sip = client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:';
+
   let execute = message.content.slice(matchedPrefix.length).trim();
   if (!execute) {
     const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
     if (prefixMention.test(matchedPrefix)) {
-      return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`).then(m => m.delete({ timeout: 5000 }));
+      return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${duh}`).then(m => m.delete({ timeout: 5000 }));
     } else {
       return;
     }
@@ -77,17 +83,17 @@ module.exports = async (client, message) => {
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-    return message.channel.send(`i don't remember having that commmand installed ${client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:'} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+    return message.channel.send(`i don't remember having that commmand installed ${sip} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
   };
   if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
+    if (message.channel.type === 'text') {
+      if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS'), { checkAdmin: true }) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
+    };
     const agreedCount = storage.acceptedRules.toObject();
     let key;
 
     if (message.channel.type === 'dm') key = message.author.id;
     else key = `${message.author.id}-${message.guild.id}`;
-
-    const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
-    const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
 
     const verifyEmbed = new MessageEmbed()
     .setAuthor(`Rules`, client.user.displayAvatarURL())
@@ -120,7 +126,7 @@ module.exports = async (client, message) => {
     const filter = (reaction, user) => {
       return reaction.emoji.name === '👍' && user.id === message.author.id;
     };
-    const verifyMessage = await message.inlineReply(`:warning: you must accept these rules below before using me! react with the hands up emojis to agree with those rules ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:'}`, verifyEmbed);
+    const verifyMessage = await message.inlineReply(`:warning: you must accept these rules below before using me! react with the hands up emojis to agree with those rules ${duh}`, verifyEmbed);
     await verifyMessage.react('👍');
     const collectedEmojis = verifyMessage.createReactionCollector(filter, { max: 1, time: 20000, errors: ['time'] });
     agreed.set(key, collectedEmojis);
@@ -138,22 +144,30 @@ module.exports = async (client, message) => {
   };
   
   if (commandFile.conf.userPerms && message.channel.type !== "dm") {
-    for (permission in commandFile.conf.userPerms) {
-      if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-        return message.inlineReply(`sorry, you don't have ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission, so i can't do that ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`);
+    if (commandFile.conf.userPerms.length) {
+      for (permission in commandFile.conf.userPerms) {
+        if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
+          return message.inlineReply(`sorry, you don't have \`${commandFile.conf.userPerms[permission]}\` permission, so i can't do that ${sed}`);
+        }
       }
     }
   }
-
+  if (commandFile.conf.channelPerms && message.channel.type !== 'dm') {
+    if (commandFile.conf.channelPerms.length) {
+      for (permission in commandFile.conf.channelPerms) {
+        if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
+          return message.inlineReply(`sorry, i don't have \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to do that command ${sed} can you move to an another channel where i have permission?\n*missing that permission will result in the command running abnormally (e.g missing Manage Messages will prevent the help reaction menu from deleting the reaction, result in an error)*`);
+        };
+      }
+    }
+  }
   if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
-    for (permission in commandFile.conf.clientPerms) {
-      if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-        return message.inlineReply(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission to do this for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
-          message.author.send(`sorry, i don't have ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission in **${message.guild.name}** to do that for you ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).catch(() => {
-            return;
-          })
-        });
-      };
+    if (commandFile.conf.clientPerms.length) {
+      for (permission in commandFile.conf.clientPerms) {
+        if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
+          return message.inlineReply(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission on this server to do that ${sed}`)
+        };
+      }
     }
   }
   
@@ -182,7 +196,7 @@ module.exports = async (client, message) => {
     
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
-      return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'}`).then(m => m.delete({ timeout: 5000 }));
+      return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${sed}`).then(m => m.delete({ timeout: 5000 }));
     }
     
     timestamps.set(member.id, now);
@@ -192,7 +206,7 @@ module.exports = async (client, message) => {
   try {
     if (!commandFile) return;
     commandFile.run(client, message, args, prefix);
-    console.log(`${sender.tag} (${sender.id}) from ${message.channel.type === 'dm' ? 'DM' : message.guild.name} ran a command: ${prefix}${cmd}`);
+    console.log(`${sender.tag} (${sender.id}) from ${message.channel.type === 'dm' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd}`);
   } catch (error) {
     console.error(error);
   }

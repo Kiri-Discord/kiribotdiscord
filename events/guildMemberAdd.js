@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
 const ms = require("ms");
 
@@ -11,9 +11,9 @@ module.exports = async (client, member) => {
   });
 
   const roleExist = member.guild.roles.cache.get(setting.verifyRole);
-
-  const alreadyHasRole = member._roles.includes(setting.verifyRole);
   const verifyChannel = member.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
+
+  const alreadyHasRole = member.roles.cache.has(setting.verifyRole);
 
   if (roleExist && verifyChannel && !alreadyHasRole) {
     const timeMs = setting.verifyTimeout || ms('10m');

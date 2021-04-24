@@ -13,7 +13,7 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "ADD_REACTIONS"]
+	channelPerms: ["ADD_REACTIONS"]
 };
 
 exports.run = async (client, message, args) => {

@@ -30,5 +30,5 @@ exports.conf = {
     cooldown: 4,
     guildOnly: true,
     userPerms: [],
-	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
+	channelPerms: ["ATTACH_FILES"]
 };

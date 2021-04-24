@@ -33,7 +33,7 @@ exports.run = async (client, message, args) => {
             }
             const answers = shuffle(question.answers);
             await message.channel.send(stripIndents`
-                **${turn}.** ${question.text}
+                **${turn})** **${question.text}**
                 
                 ${answers.map((answer, i) => `- **${choices[i]}.** ${answer.text}`).join('\n')}
             `);
@@ -77,6 +77,4 @@ exports.conf = {
   aliases: ["hogwarts-house", "sorting-hat", "sorting-hat-quiz"],
   cooldown: 4,
   guildOnly: true,
-  userPerms: [],
-  clientPerms: ["SEND_MESSAGES"]
 }

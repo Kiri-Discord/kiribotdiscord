@@ -29,6 +29,6 @@ exports.conf = {
     aliases: [],
     cooldown: 6,
     guildOnly: true,
-    userPerms: ["MANAGE_MESSAGES"],
-    clientPerms: ["EMBED_LINKS", "SEND_MESSAGES"]
+    userPerms: [],
+    channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
 }

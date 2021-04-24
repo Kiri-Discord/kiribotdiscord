@@ -10,11 +10,9 @@ exports.run = async (client, message, args) => {
     message.channel.send(embed)
 }
 
-
-
 exports.help = {
 	name: "freepfp",
-	description: "generate a pfp for you base on bell's *homework* folder 😂\n*no clickbait*",
+	description: "generate an anime pfp for you base on *bell's homework folder* 😂\n*no clickbait*",
 	usage: "freepfp",
 	example: "freepfp"
 };
@@ -24,5 +22,5 @@ exports.conf = {
 	cooldown: 4,
 	guildOnly: true,
 	userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+	channelPerms: ["EMBED_LINKS"]
 };

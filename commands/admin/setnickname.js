@@ -39,8 +39,8 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "setnickname",
   description: "set a user nickname.",
-  usage: "setnickname <@user> <nick>",
-  example: "setnickname @bell#9999 hoisted"
+  usage: "setnickname `<@user> <nick>`",
+  example: "setnickname `@bell#9999 hoisted`"
 }
 
 exports.conf = {
@@ -48,5 +48,6 @@ exports.conf = {
   cooldown: 3,
   guildOnly: true,
   userPerms: ["MANAGE_NICKNAMES"],
-	clientPerms: ["EMBED_LINKS", "SEND_MESSAGES", "MANAGE_NICKNAMES"]
+  clientPerms: ["MANAGE_NICKNAMES"],
+	channelPerms: ["EMBED_LINKS"]
 }

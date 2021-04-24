@@ -5,7 +5,7 @@ exports.run = async (client, message, args, prefix) => {
     let data = await patSchema.find({
         guildId: message.guild.id,
     }).sort([["received", "descending"]]);
-    if (!data || !data.length) return message.channel.send({embed: {color: "f3f3f3", description: `❌ seems like no one in your guild has decided to pat yet :( once someone is hugged, their hug count will show here!`}});
+    if (!data || !data.length) return message.channel.send({embed: {color: "f3f3f3", description: `❌ seems like no one in your guild has decided to pat yet :( once someone is pat, their pat count will show here!`}});
     const emoji = {
         "1": ":crown:",
         "2": ":trident:",
@@ -59,8 +59,8 @@ exports.help = {
   
 exports.conf = {
 	aliases: [],
-  cooldown: 5,
+  cooldown: 3,
   guildOnly: true,
   userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+	channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
 };

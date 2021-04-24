@@ -28,7 +28,7 @@ exports.run = async (client, message, args, prefix) => {
     if (message.guild.me.roles.highest.comparePositionTo(member.roles.highest) < 0 || message.guild.me.roles.highest.comparePositionTo(member.roles.highest) === 0) return message.inlineReply('that user has a role equal or higher than me :pensive:');
 
 
-    const alreadyHasRole = member._roles.includes(role.id);
+    const alreadyHasRole = member.roles.cache.has(role.id);
 
     if (alreadyHasRole) return message.inlineReply('that user already has that role!');
 
@@ -69,6 +69,6 @@ exports.conf = {
     cooldown: 3,
     guildOnly: true,
     userPerms: ["MANAGE_ROLES"],
-	clientPerms: ["MANAGE_ROLES", "SEND_MESSAGES", "EMBED_LINKS"]
+	clientPerms: ["MANAGE_ROLES"],
+    channelPerms: ["EMBED_LINKS"]
 };
-  

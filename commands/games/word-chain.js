@@ -16,8 +16,6 @@ exports.conf = {
 	aliases: ["wordchain"],
     cooldown: 5,
 	guildOnly: true,
-	userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };
 
 exports.run = async (client, message, args) => {

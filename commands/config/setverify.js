@@ -48,5 +48,6 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: ["MANAGE_GUILD"],
-	clientPerms: ["SEND_MESSAGES", "EMBED_LINKS", "MANAGE_ROLES"]
+    channelPerms: ["EMBED_LINKS"],
+	clientPerms: ["MANAGE_ROLES"]
 };

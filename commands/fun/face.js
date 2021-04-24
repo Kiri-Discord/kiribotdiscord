@@ -80,6 +80,4 @@ exports.conf = {
     aliases: ["face-analysis"],
     cooldown: 6,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 }

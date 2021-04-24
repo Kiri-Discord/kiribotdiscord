@@ -125,14 +125,17 @@ class Game {
     }
 
     async voteKill(channel, message) {
-        console.log('hi');
         this.voteCount = 0;
-        channel.send(message);
-        let response = await channel.awaitMessages(m => m.content === '-kill ZigDevZat', {
+        await channel.send(message);
+        let filter = (m) => {
+            return m.content.startsWith('-kill');
+        };
+        let response = await channel.awaitMessages(filter, {
             max: 1,
         });
 
         response = response.get(Array.from(response.keys()).toString()).content;
+        return console.log(response);
 
         response = response.slice(6);
 
@@ -184,6 +187,6 @@ exports.conf = {
 	aliases: [],
     cooldown: 7,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES", "MANAGE_CHANNELS", "MANAGE_ROLES", "ADD_REACTIONS"]
+	channelPerms: ["MANAGE_CHANNELS", "ADD_REACTIONS"],
+    clientPerms: ["MANAGE_ROLES"]
 };

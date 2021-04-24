@@ -85,6 +85,4 @@ exports.conf = {
 	aliases: ["check-relationship", "relationship"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

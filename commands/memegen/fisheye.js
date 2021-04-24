@@ -47,7 +47,7 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: [],
-	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
+	channelPerms: ["ATTACH_FILES"]
 }
 
 async function fishEye(ctx, level, x, y, width, height) {

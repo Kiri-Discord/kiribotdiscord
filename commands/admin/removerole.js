@@ -25,9 +25,9 @@ exports.run = async (client, message, args) => {
     if (message.member.roles.highest.comparePositionTo(role) < 0 || member.roles.highest.comparePositionTo(message.member.roles.highest) > 0) return message.inlineReply('that role is higher than your highest role! :pensive:');
     if (member.roles.highest.comparePositionTo(message.member.roles.highest) > 0) return message.inlineReply('that user has a role higher than yours :pensive:')
 
-    const alreadyHasRole = member._roles.includes(role.id);
+    const alreadyHasRole = member.roles.cache.has(role.id);
 
-    if (!alreadyHasRole) return message.inlineReply('that user don\'t have that role!');
+    if (!alreadyHasRole) return message.inlineReply('that user doesn\'t have that role!');
 
     const embed = new MessageEmbed()
     .setDescription(`☑️ i have successfully removed the role \`${role.name}\` from **${member.user.tag}**`)
@@ -67,5 +67,6 @@ exports.conf = {
     cooldown: 3,
     guildOnly: true,
     userPerms: ["MANAGE_ROLES"],
-	clientPerms: ["MANAGE_ROLES", "SEND_MESSAGES", "EMBED_LINKS"]
+	clientPerms: ["MANAGE_ROLES"], 
+    channelPerms: ["EMBED_LINKS"]
 };

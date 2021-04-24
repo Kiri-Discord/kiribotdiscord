@@ -75,5 +75,6 @@ exports.conf = {
   cooldown: 3,
   guildOnly: true,
   userPerms: ["BAN_MEMBERS"],
-  clientPerms: ["BAN_MEMBERS", "SEND_MESSAGES", "EMBED_LINKS"]
-}
+  clientPerms: ["BAN_MEMBERS"],
+  channelPerms: ["EMBED_LINKS"]
+};

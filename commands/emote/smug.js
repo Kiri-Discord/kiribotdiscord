@@ -9,14 +9,13 @@ exports.run = async (client, message, args) => {
     .setAuthor(`${message.author.username} just smugged 😏`, message.author.displayAvatarURL()) 
     .setImage(data)
     return message.channel.send(embed)
-
 }
 
 
 
 exports.help = {
     name: "smug",
-    description: "just try it out 🤔",
+    description: "smug on somebody 🤔",
     usage: "smug",
     example: "smug"
 };
@@ -25,6 +24,5 @@ exports.conf = {
     aliases: [],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["EMBED_LINKS", "SEND_MESSAGES"]
+	clientPerms: ["EMBED_LINKS"]
 }

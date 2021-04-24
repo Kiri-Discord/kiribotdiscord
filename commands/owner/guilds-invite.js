@@ -2,7 +2,7 @@ exports.run = async (client, message, args) => {
   if (!client.config.owners.includes(message.author.id)) return;
   if (!args[0]) {
     let listGuild = [];
-    client.guilds.cache.forEach(guild => {
+    client.guilds.cache.each(guild => {
       listGuild.push(`${guild.name} - ${guild.id}`)
     });
     return message.channel.send(`these are all guilds being connected to me. use this command with it's id to generate an invite:\n${listGuild.join('\n')}`, { split: true })
@@ -25,9 +25,7 @@ exports.help = {
 
 exports.conf = {
   aliases: ["guilds"],
-  cooldown: 2,
+  cooldown: 3,
   guildOnly: true,
-  userPerms: [],
-  clientPerms: ["SEND_MESSAGES", "CREATE_INSTANT_INVITE"]
 }
 

@@ -28,6 +28,4 @@ exports.conf = {
 	aliases: ["burn", "roast"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["EMBED_LINKS", "SEND_MESSAGES"]
 };

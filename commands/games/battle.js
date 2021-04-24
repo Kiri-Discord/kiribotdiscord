@@ -117,6 +117,4 @@ exports.conf = {
 	aliases: ["fight", "war"],
     cooldown: 6,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

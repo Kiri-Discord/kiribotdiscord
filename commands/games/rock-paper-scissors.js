@@ -114,6 +114,4 @@ exports.conf = {
 	aliases: ["rps", "rockpaperscissors"],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
-	clientPerms: ["SEND_MESSAGES"]
 };

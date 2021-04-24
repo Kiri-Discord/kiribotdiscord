@@ -1,8 +1,7 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
 const request = require('node-superfetch');
 const path = require('path');
-const { stripIndents } = require('common-tags');
-const { list, firstUpperCase } = require('../../util/util');
+const { firstUpperCase } = require('../../util/util');
 const { wrapText } = require('../../util/canvas');
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Matrix Book.ttf'), { family: 'Matrix Book' });
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Matrix Small Caps.ttf'), { family: 'Matrix' });
@@ -161,8 +160,8 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "yugiohrank",
 	description: "generate yours or other's yugioh card 😄",
-	usage: "yugiohrank [@member]",
-	example: "yugiohrank @bell"
+	usage: "yugiohrank `[@member]`",
+	example: "yugiohrank `@bell`"
 };
   
 exports.conf = {
@@ -170,5 +169,5 @@ exports.conf = {
 	cooldown: 5,
 	guildOnly: true,
 	userPerms: [],
-	clientPerms: ["ATTACH_FILES", "SEND_MESSAGES"]
+	channelPerms: ["ATTACH_FILES"]
 };
