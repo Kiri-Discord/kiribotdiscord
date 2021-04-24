@@ -36,7 +36,7 @@ exports.run = async (client, message, args, prefix) => {
       loop: false,
       volume: null,
       color: message.guild.me.displayHexColor,
-      karaoke: [Object],
+      karaoke: Object,
       playing: true
     };
     if (musicSettings) {

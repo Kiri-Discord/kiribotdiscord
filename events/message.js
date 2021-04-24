@@ -60,6 +60,7 @@ module.exports = async (client, message) => {
   const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
   const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
   const sip = client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:';
+  const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
 
   let execute = message.content.slice(matchedPrefix.length).trim();
   if (!execute) {
@@ -147,7 +148,7 @@ module.exports = async (client, message) => {
     if (commandFile.conf.userPerms.length) {
       for (permission in commandFile.conf.userPerms) {
         if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-          return message.inlineReply(`sorry, you don't have \`${commandFile.conf.userPerms[permission]}\` permission, so i can't do that ${sed}`);
+          return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${staring}`);
         }
       }
     }
@@ -156,7 +157,7 @@ module.exports = async (client, message) => {
     if (commandFile.conf.channelPerms.length) {
       for (permission in commandFile.conf.channelPerms) {
         if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
-          return message.inlineReply(`sorry, i don't have \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to do that command ${sed} can you move to an another channel where i have permission?\n*missing that permission will result in the command running abnormally (e.g missing Manage Messages will prevent the help reaction menu from deleting the reaction, result in an error)*`);
+          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${sed}\ncan you move to an another channel where i have that permission?`);
         };
       }
     }
@@ -165,7 +166,7 @@ module.exports = async (client, message) => {
     if (commandFile.conf.clientPerms.length) {
       for (permission in commandFile.conf.clientPerms) {
         if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-          return message.inlineReply(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission on this server to do that ${sed}`)
+          return message.channel.send(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission across the server to do that ${sed}`)
         };
       }
     }

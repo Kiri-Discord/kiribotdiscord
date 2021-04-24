@@ -50,7 +50,7 @@ exports.run = async (client, message, args, prefix) => {
       color: message.guild.me.displayHexColor,
       playing: true,
       volume: null,
-      karaoke: [Object]
+      karaoke: Object
     };
     if (musicSettings) {
       queueConstruct.karaoke.isEnabled = false;

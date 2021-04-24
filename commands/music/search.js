@@ -3,9 +3,9 @@ const { YOUTUBE_API_KEY } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 
 exports.run = async (client, message, args, prefix) => {
-    if (!args.length) return message.inlineReply({embed: {color: "f3f3f3", description: `you must to provide me a song to search for! use \`${prefix}help search\` to learn more :wink:`}}).catch(console.error);
-    if (message.channel.activeCollector) return message.inlineReply({embed: {color: "f3f3f3", description: `⚠️ there is already a search existing in this channel. please finish that first :pensive:`}});
-    if (!message.member.voice.channel) return message.inlineReply({embed: {color: "f3f3f3", description: `⚠️ you are not in a voice channel!`}});
+    if (!args.length) return message.channel.send({embed: {color: "f3f3f3", description: `you must to provide me a song to search for! use \`${prefix}help search\` to learn more :wink:`}}).catch(console.error);
+    if (message.channel.activeCollector) return message.channel.send({embed: {color: "f3f3f3", description: `⚠️ there is already a search existing in this channel. please finish that first :pensive:`}});
+    if (!message.member.voice.channel) return message.channel.send({embed: {color: "f3f3f3", description: `⚠️ you are not in a voice channel!`}});
 
     const search = args.join(" ");
 
