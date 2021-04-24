@@ -47,7 +47,10 @@ module.exports = class VerifyTimer {
                 .setDescription(`Failed while kicking ${member} for not verifying in **${ms(time, {long: true})}**.\nPossible problem: \`MISSING_PERMISSION\`\nYou can manually kick them instead :)`)
                 .setColor('#ff0000')
                 .setThumbnail(member.user.avatarURL())
-                if (!member.kickable && logChannel) return logChannel.send(logerror);
+                if (!member.kickable) {
+                    if (logChannel) return logChannel.send(logerror);
+                    else return;
+                }
                 if (logChannel) await logChannel.send(logembed);
                 await member.send(`I have kicked you from **${guild.name}** for not verifying in in **${ms(time, {long: true})}** :(`).catch(() => {
                     null
