@@ -1,10 +1,14 @@
 const neko = require('nekos.life');
 const { sfw } = new neko();
 
-exports.run = async (client, message, args, prefix, cmd) => {
+exports.run = async (client, message, args) => {
 	try {
 		message.channel.startTyping(true);
-		let query = args.join(' ') || message.channel.messages.cache.filter(x => !x.author.bot && !x.content.startsWith(prefix + cmd) && !x.content).last().cleanContent;
+		let query = args.join(' ');
+		if (!query) {
+			const messages = await message.channel.messages.fetch({ limit: 2 });
+			query = messages.last().cleanContent;
+		}
 		let text = await sfw.catText({ text: query });
 		await message.channel.stopTyping(true);
 		return message.channel.send(`here! ${text.cat.toLowerCase()}`)

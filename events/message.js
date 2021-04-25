@@ -157,7 +157,7 @@ module.exports = async (client, message) => {
     if (commandFile.conf.channelPerms.length) {
       for (permission in commandFile.conf.channelPerms) {
         if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
-          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${sed}\ncan you move to an another channel where i have that permission?`);
+          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}\ncan you move to an another channel where i have that permission? missing that permission could generate errors tho, especially when dealing with reaction ${sed}`);
         };
       }
     }
@@ -197,7 +197,7 @@ module.exports = async (client, message) => {
     
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
-      return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${sed}`).then(m => m.delete({ timeout: 5000 }));
+      return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${stare}`).then(m => m.delete({ timeout: 5000 }));
     }
     
     timestamps.set(member.id, now);
