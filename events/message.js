@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = async (client, message) => {
 
-  if (message.author.bot || message.author.id === client.user.id) return;
+  if (message.author.id === client.user.id || message.author.bot) return;
 
   let prefix;
   let setting;
@@ -88,7 +88,7 @@ module.exports = async (client, message) => {
   };
   if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
     if (message.channel.type === 'text') {
-      if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS'), { checkAdmin: true }) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
+      if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
     };
     const agreedCount = storage.acceptedRules.toObject();
     let key;
@@ -148,7 +148,7 @@ module.exports = async (client, message) => {
     if (commandFile.conf.userPerms.length) {
       for (permission in commandFile.conf.userPerms) {
         if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-          return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${staring}`);
+          return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${stare}`);
         }
       }
     }

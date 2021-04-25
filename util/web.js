@@ -34,7 +34,7 @@ module.exports = {
                   const member = await guild.members.cache.get(index.userID);
                   if (!member) return res.sendFile(__basedir + '/html/errorCaptcha.html');
                   const VerifyRole = guild.roles.cache.get(setting.verifyRole);
-                  const roleExist = member._roles.includes(setting.verifyRole);
+                  const roleExist = member.roles.cache.has(setting.verifyRole);
                   if (roleExist || !VerifyRole) return res.sendFile(__basedir + '/html/alreadyVerified.html');
                   await client.dbverify.findOneAndDelete({
                     guildID: index.guildID,
