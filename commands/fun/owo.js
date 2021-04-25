@@ -8,8 +8,8 @@ exports.run = async (client, message, args, prefix) => {
 		if (!query) {
 			const cache = message.channel.messages.cache.filter(msg => !msg.author.bot && !msg.content.startsWith(prefix)).last();
 			if (!cache) {
-				const messages = await message.channel.messages.fetch({ limit: 2 });
-				query = messages.last().cleanContent;
+				const messages = await message.channel.messages.fetch({ limit: 5 });
+				query = messages.filter(msg => !msg.author.bot && !msg.content.startsWith(prefix)).last().cleanContent;
 			} else query = cache.cleanContent;
 		}
 		let text = await sfw.OwOify({ text: query });
