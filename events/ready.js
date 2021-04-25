@@ -1,8 +1,9 @@
 const web = require('../util/web.js');
-const { randomStatus } = require('../util/util')
-
+const { randomStatus, botSitePost } = require('../util/util');
 module.exports = async client => {
+  let developmentMode;
   if (client.user.id !== '769411215855190026') {
+    developmentMode = false;
     console.log('[DISCORD] Fetching server...');
     const allServer = await client.dbguilds.find({});
     if (!allServer) return;
@@ -26,12 +27,14 @@ module.exports = async client => {
     });
     console.log(`[DISCORD] Added ${client.customEmojis.size} custom emojis`)
   };
-
   console.log(`[DISCORD] Fetching all unverified members..`);
   await client.verifytimers.fetchAll();
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
+  if (!developmentMode) {
+    botSitePost(client);
+    client.setInterval(() => botSitePost(client), 1200000);
+  }
   web.init(client);
-  const activity = randomStatus(client);
   client.user.setActivity('just woke up...', { type: 'PLAYING' });
   client.setInterval(() => {
     const activity = randomStatus(client);

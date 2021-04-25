@@ -3,6 +3,8 @@ const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', '
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 const ISO6391 = require('iso-639-1');
 const ms = require('ms');
+const fetch = require('node-fetch');
+const { URLSearchParams } = require('url');
 
 module.exports = class util {
 	static shortenText(text, maxLength) {
@@ -183,7 +185,7 @@ module.exports = class util {
 				type: 'LISTENING'
 			},
 			{
-				text: '@Sefy',
+				text: '@sefy',
 				type: 'LISTENING'
 			},
 			{
@@ -193,6 +195,20 @@ module.exports = class util {
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];
 		return { text: activity.text, type: activity.type }
+	}
+	static async botSitePost(client) {
+		const header = {
+			Authorization: process.env.dblToken
+		}
+		const body = new URLSearchParams()
+		body.append("guilds", client.guilds.cache.size);
+		body.append("users", client.users.cache.size);
+		fetch(`https://discordbotlist.com/api/v1/bots/sefy/stats`, {
+			method: "POST",
+			body,
+			headers: header
+		});
+
 	}
 };
 
