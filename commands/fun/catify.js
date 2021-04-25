@@ -1,13 +1,16 @@
 const neko = require('nekos.life');
 const { sfw } = new neko();
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, prefix) => {
 	try {
 		message.channel.startTyping(true);
 		let query = args.join(' ');
 		if (!query) {
-			const messages = await message.channel.messages.fetch({ limit: 2 });
-			query = messages.last().cleanContent;
+			const cache = message.channel.messages.cache.filter(msg => !msg.author.bot && !msg.content.startsWith(prefix)).last();
+			if (!cache) {
+				const messages = await message.channel.messages.fetch({ limit: 2 });
+				query = messages.last().cleanContent;
+			} else query = cache.cleanContent;
 		}
 		let text = await sfw.catText({ text: query });
 		await message.channel.stopTyping(true);
