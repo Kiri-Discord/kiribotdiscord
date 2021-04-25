@@ -206,7 +206,7 @@ module.exports = async (client, message) => {
 
   try {
     if (!commandFile) return;
-    commandFile.run(client, message, args, prefix);
+    commandFile.run(client, message, args, prefix, cmd);
     console.log(`${sender.tag} (${sender.id}) from ${message.channel.type === 'dm' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd}`);
   } catch (error) {
     console.error(error);
