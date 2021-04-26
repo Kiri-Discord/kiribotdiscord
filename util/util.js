@@ -28,7 +28,7 @@ module.exports = class util {
 		return now;
 	}
 	static tomorrow(timeZone) {
-		const today = Util.today(timeZone);
+		const today = util.today(timeZone);
 		today.setDate(today.getDate() + 1);
 		return today;
 	}
