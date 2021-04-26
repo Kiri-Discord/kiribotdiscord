@@ -5,6 +5,9 @@ exports.run = async (client, message, args) => {
 
     let mention = await getMemberfromMention(args[0], message.guild) || message.member;
 
+    if (mention.user.id === client.user.id) return message.inlineReply('that was me lmao :confused:');
+    if (mention.user.bot) return message.inlineReply('just to make this clear... bots can\'t level up :pensive:')
+
     let target = await client.dbleveling.findOne({
         guildId: message.guild.id,
         userId: mention.user.id
@@ -63,7 +66,7 @@ exports.help = {
 	name: "levelrank",
 	description: "show the current leveling rank of an user or yourself",
 	usage: ["levelrank `[@member]`", "levelrank `[user ID]`"],
-	example: ["levelrank `@bell`", "levelrank `661172574754545"]
+	example: ["levelrank `@bell`", "levelrank `661172574754545`"]
 };
   
 exports.conf = {

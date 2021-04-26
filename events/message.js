@@ -34,7 +34,7 @@ module.exports = async (client, message) => {
     } else {
       prefix = setting.prefix;
     }
-    const alreadyHasVerifyRole = message.member.roles.cache.has(setting.verifyRole);
+    const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
     if (message.channel.id === setting.verifyChannelID) {
       if (alreadyHasVerifyRole) {
         if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();

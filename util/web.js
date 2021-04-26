@@ -31,10 +31,12 @@ module.exports = {
                   });
                   const guild = await client.guilds.cache.get(index.guildID);
                   if (!guild) return res.sendFile(__basedir + '/html/errorCaptcha.html');
+                  if (guild.partial) await guild.fetch();
                   const member = await guild.members.cache.get(index.userID);
                   if (!member) return res.sendFile(__basedir + '/html/errorCaptcha.html');
+                  if (member.partial) await member.fetch();
                   const VerifyRole = guild.roles.cache.get(setting.verifyRole);
-                  const roleExist = member.roles.cache.has(setting.verifyRole);
+                  const roleExist = member._roles.includes(setting.verifyRole);
                   if (roleExist || !VerifyRole) return res.sendFile(__basedir + '/html/alreadyVerified.html');
                   await client.dbverify.findOneAndDelete({
                     guildID: index.guildID,
@@ -44,7 +46,7 @@ module.exports = {
                   await client.verifytimers.deleteTimer(index.guildID, index.userID);
                   await member.roles.add(VerifyRole).catch(() => {
                   verified = false;
-                  return member.send(`oof, so mods from ${guild.name} forgot to give me the role \`MANAGE_ROLES\` :( can you ask them to verify you instead?\n*you will not be kicked after this message*`).then(i => i.delete({ timeout: 7500 }));
+                  return member.send(`oof, so mods from ${guild.name} forgot to give me the role \`MANAGE_ROLES\` :pensive: can you ask them to verify you instead?\n*you will not be kicked after this message*`);
                   });
                   if (verified) return member.send(`**${member.user.username}**, you have passed my verification! Welcome to ${guild.name}!`).catch(() => {
                     return;
