@@ -1,10 +1,10 @@
-const Discord = require("discord.js")
-const random = require("something-random-on-discord").Random;
+const { MessageEmbed } = require("discord.js")
+const neko = require('nekos.life');
+const { sfw } = new neko();
 const patSchema = require('../../model/pat')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("pat");
     const member = await getMemberfromMention(args[0], message.guild);
 
     if (!member) {
@@ -45,13 +45,13 @@ exports.run = async (client, message, args) => {
         new: true,
       }
     )
-
+    let data = await sfw.pat();
     const amount = result.received;
-
-    const embed = new Discord.MessageEmbed()
+    const addS = amount === 1 ? '' : 's';
+    const embed = new MessageEmbed()
     .setColor("RANDOM") 
-    .setAuthor(`${message.author.username} pat ${target.username}! They now have been pat ${amount} time(s)`, message.author.displayAvatarURL()) 
-    .setImage(data)
+    .setAuthor(`${message.author.username} pat ${target.username} ❤️ they was pat ${amount} time${addS}!`, message.author.displayAvatarURL()) 
+    .setImage(data.url)
 
     return message.channel.send(embed);
 }
@@ -67,6 +67,6 @@ exports.conf = {
     aliases: [],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 };

@@ -1,18 +1,19 @@
-const Discord = require('discord.js')
-const random = require("something-random-on-discord").Random;
+const { MessageEmbed } = require('discord.js');
+const neko = require('nekos.life');
+const { sfw } = new neko();
 
 exports.run = async (client, message, args) => {
-	let data = await random.getAnimeImgURL("waifu")
-	const embed = new Discord.MessageEmbed()
+	let data = await sfw.waifu();
+	const embed = new MessageEmbed()
 	.setColor('RANDOM')
 	.setDescription(`powered by bell's homework folder`)
-	.setImage(data)
-    message.channel.send(embed)
+	.setImage(data.url)
+    return message.channel.send(embed)
 }
 
 exports.help = {
 	name: "freepfp",
-	description: "generate an anime pfp for you base on *bell's homework folder* 😂\n*no clickbait*",
+	description: "generate an anime pfp for you",
 	usage: "freepfp",
 	example: "freepfp"
 };
@@ -21,6 +22,6 @@ exports.conf = {
 	aliases: [],
 	cooldown: 4,
 	guildOnly: true,
-	userPerms: [],
+	
 	channelPerms: ["EMBED_LINKS"]
 };

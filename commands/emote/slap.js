@@ -1,12 +1,10 @@
-const Discord = require("discord.js")
-const random = require("something-random-on-discord").Random;
+const { MessageEmbed } = require("discord.js")
+const neko = require('nekos.life');
+const { sfw } = new neko();
 const slapSchema = require('../../model/slap')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("slap")
-
-
     const member = await getMemberfromMention(args[0], message.guild);
 
     if (!member) {
@@ -23,7 +21,6 @@ exports.run = async (client, message, args) => {
     const guildId = guild.id
     const targetId = target.id
     const authorId = message.author.id
-    const now = new Date()
 
     if (targetId === message.author.id) {
       message.inlineReply('are you in pain?')
@@ -47,12 +44,14 @@ exports.run = async (client, message, args) => {
       }
     )
 
-    const amount = result.received
+    const amount = result.received;
 
-    const embed = new Discord.MessageEmbed() 
+    const data = await sfw.slap();
+    const addS = amount === 1 ? '' : 's';
+    const embed = new MessageEmbed() 
     .setColor("RANDOM") 
-    .setAuthor(`${message.author.username} slap ${target.username} :( They now have been slapped ${amount} time(s)`, message.author.displayAvatarURL()) 
-    .setImage(data)
+    .setAuthor(`${message.author.username} slap ${target.username} 😔 they was slapped ${amount} time${addS}!`, message.author.displayAvatarURL()) 
+    .setImage(data.url)
 
     message.channel.send(embed)
 }

@@ -7,16 +7,14 @@ module.exports = async (client, message, setting) => {
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 
     const ignorechannel = setting.ignoreLevelingsChannelID;
-    const verifychannel = setting.verifyChannelID
-
-    let recent = client.recent;
+    const verifychannel = setting.verifyChannelID;
 
     if (prefixRegex.test(message.content)) return;
     if (ignorechannel && message.channel.id === ignorechannel) return;
     if (verifychannel && message.channel.id === verifychannel) return;
     if (message.content.match(prefixRegex)) return;
     
-
+    let recent = client.recent;
     if (recent.has(message.author.id)) return;
 
     let userprof = await client.dbleveling.findOneAndUpdate({

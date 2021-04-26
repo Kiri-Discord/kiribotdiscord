@@ -48,6 +48,6 @@ exports.conf = {
   aliases: ["emoji", "guild-emojis"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 };

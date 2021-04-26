@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
 	
 exports.help = {
 	name: "panda",
-	description: "Get a random panda image",
+	description: "get a random panda image",
 	usage: "panda",
 	example: "panda"
 };
@@ -26,6 +26,6 @@ exports.conf = {
 	aliases: [],
 	cooldown: 3,
 	guildOnly: true,
-	userPerms: [],
+	
 	channelPerms: ["EMBED_LINKS"]
 };

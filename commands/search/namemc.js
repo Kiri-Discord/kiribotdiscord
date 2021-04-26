@@ -74,6 +74,6 @@ exports.conf = {
   aliases: ["minecraft", "mcname"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 }

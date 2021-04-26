@@ -1,19 +1,24 @@
-const Discord = require("discord.js")
-const random = require("something-random-on-discord").Random;
+const { MessageEmbed } = require("discord.js")
+const fetch = require('node-fetch');
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("cry")
-
-    const embed = new Discord.MessageEmbed() 
-    .setColor("RANDOM") 
+    const embed = new MessageEmbed()
+	.setColor('RANDOM')
     .setAuthor(`${message.author.username} cried :(`, message.author.displayAvatarURL()) 
-    .setImage(data)
-    return message.channel.send(embed)
+
+    fetch('https://neko-love.xyz/api/v1/cry')
+    .then(res => res.json())
+    .then(json => embed.setImage(json.url))
+    .then(() => message.channel.send(embed))
+    .catch(err => {
+        message.channel.send("i can't seem to be able to do that :( here is a hug for now 🤗");
+        return console.error(err);
+    });
 
 }
 exports.help = {
     name: "cry",
-    description: "just let it all out",
+    description: "just let it all out :pensive:",
     usage: "cry",
     example: "cry"
 };
@@ -22,6 +27,6 @@ exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 }

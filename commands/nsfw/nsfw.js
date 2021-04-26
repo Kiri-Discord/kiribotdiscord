@@ -1,17 +1,21 @@
-//credit to my friend Crocodile#6300 for this command
+//all credit belongs to my friend Crocodile#6300
 
-const randomanime = require("random-anime");
+const neko = require('nekos.life');
+const { nsfw } = new neko();
 const Discord = require("discord.js");
 const fetch = require("node-fetch");
 exports.run = async (client, message, args) => {
     let choices = ["local", "reddit"];
     let choice = choices[Math.floor(Math.random() * choices.length)];
     if (choice === "local") {
-        const nsfw = randomanime.nsfw()
+		const stare = client.customEmojis.get('dead') ? client.customEmojis.get('dead') : ':thinking:';
+		let picks = ["1", "2"];
+		let pick = picks[Math.floor(Math.random() * picks.length)];
+        const data = pick === '1' ? await nsfw.randomHentaiGif() : await nsfw.classic();
         const embed = new Discord.MessageEmbed()
         .setColor('RANDOM')
-        .setDescription(`powered by bell's homework folder`)
-        .setImage(nsfw)
+        .setDescription(`still powered by bell's homework folder but.. ${stare}`)
+        .setImage(data.url)
 		return message.channel.send(embed)
 	} else if (choice === "reddit") {
 		let random =  ["hentai", "ecchi"];
@@ -48,16 +52,16 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "nsfw",
-	description: "send some NSFW content fron different subreddit",
+	description: "send some nsfw content fron random sources :cry:",
 	usage: "nsfw",
 	example: "nsfw"
 };
   
 exports.conf = {
-	aliases: ["anime-nsfw", "hentai", "ecchi"],
+	aliases: ["anime-nsfw"],
     cooldown: 3,
     guildOnly: true,
 	adult: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 };

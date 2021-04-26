@@ -2,6 +2,8 @@ const hugSchema = require('../model/hug');
 const punchSchema = require('../model/punch');
 const slapSchema = require('../model/slap');
 const patSchema = require('../model/pat');
+const cuddleSchema = require('../model/cuddle');
+const kissSchema = require('../model/kiss');
 
 module.exports = async (client, guild) => {
 
@@ -57,11 +59,24 @@ module.exports = async (client, guild) => {
         if (err) console.error(err)
     });
 
+    await cuddleSchema.deleteMany({
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await kissSchema.deleteMany({
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
     await patSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
+
     console.log(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     client.users.cache.get('617777631257034783').send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     const logChannel2 = client.channels.cache.get('827954468779327489');

@@ -59,6 +59,6 @@ exports.conf = {
   aliases: ["st", "skipto"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 }

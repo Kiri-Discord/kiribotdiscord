@@ -75,6 +75,6 @@ exports.conf = {
 	aliases: ["karaoke", "al", "lyrics-scrolling", "auto-lyrics"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 };

@@ -25,6 +25,6 @@ exports.help = {
 exports.conf = {
 	aliases: [],
 	cooldown: 3,
-	userPerms: [],
+	
 	channelPerms: ["EMBED_LINKS"]
 };

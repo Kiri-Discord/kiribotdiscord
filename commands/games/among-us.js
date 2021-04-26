@@ -161,6 +161,6 @@ exports.conf = {
 	aliases: ["imposter", "amongus"],
     cooldown: 10,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["ADD_REACTIONS"]
 };

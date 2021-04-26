@@ -1,12 +1,12 @@
 const { loadImage, createCanvas } = require("canvas");
 const request = require("node-superfetch");
-const srod = require("something-random-on-discord").ServerAssistant;
+const validUrl = require('valid-url');
 
 exports.run = async (client, message, args) => {
     let image;
     let attachments = message.attachments.array();
     if (args[0]) {
-        if (srod.isURL(args[0])) {
+        if (validUrl.isUri(args[0])) {
             image = args[0];
         } else {
             return message.inlineReply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));
@@ -46,7 +46,7 @@ exports.conf = {
     aliases: ["fish-eye"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["ATTACH_FILES"]
 }
 

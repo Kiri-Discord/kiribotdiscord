@@ -31,7 +31,7 @@ exports.run = async (client, message, args) => {
     .setThumbnail(user.displayAvatarURL({size: 1024, dynamic: true}))
     .setTitle(`${user.username}'s balance`)
     .setDescription(`
-    💵 **balance**: ⏣ **${balance}** token(s)
+    \`💵\` **wallet**: ⏣ **${balance}** token(s)
 
     ⏲️ **time until next daily collect:**
     ${lastDaily}
@@ -51,6 +51,6 @@ exports.conf = {
     aliases: ["bal", "coin", "money", "credit"],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 };

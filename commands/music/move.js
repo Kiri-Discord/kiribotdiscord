@@ -30,6 +30,6 @@ exports.conf = {
   aliases: ["mv"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 }

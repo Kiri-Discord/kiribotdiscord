@@ -1,4 +1,5 @@
 const Pagination = require('discord-paginationembed');
+const { millify } = require('millify');
 
 exports.run = async (client, message, args) => {
   let data = await client.dbleveling.find({
@@ -26,9 +27,9 @@ exports.run = async (client, message, args) => {
       }, (err) => {
         if (err) console.error(err)
       });
-      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| —  Level: \`${user.level}\` | XP: \`${user.xp}\``);
+      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| —  Level: \`${user.level}\` | XP: \`${millify(user.xp)}\``);
     } else {
-      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — Level: \`${user.level}\` | XP: \`${user.xp}\``);
+      arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — Level: \`${user.level}\` | XP: \`${millify(user.xp)}\``);
     }
   });
   let rank = message.guild.memberCount;
@@ -79,6 +80,6 @@ exports.conf = {
 	aliases: ["lvb"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
 };

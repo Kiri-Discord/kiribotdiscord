@@ -1,16 +1,26 @@
 const request = require('node-superfetch');
 const { shorten } = require('../../util/util');
+const validUrl = require('valid-url');
 
 
 exports.run = async (client, message, args) => {
-
+    let image;
     let attachments = message.attachments.array();
-    if (attachments.length === 0) return message.inlineReply("can you upload image along with that command?");
-    else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+    if (args[0]) {
+        if (validUrl.isUri(args[0])) {
+            image = args[0];
+        } else {
+            return message.inlineReply("that isn't a correct URL!");
+        }
+    } else {
+        if (attachments.length === 0) return message.inlineReply("can you paste any URL or upload any screenshot for me to analyze along with that command?");
+        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        else image = attachments[0].url;
+    };
     try {
         const { body } = await request
             .get('https://api.qrserver.com/v1/read-qr-code/')
-            .query({ fileurl: attachments[0].url });
+            .query({ fileurl: image });
         const data = body[0].symbol[0];
         if (!data.data) return message.inlineReply(`i couldn't get a link from this qr code. are you sure that this is the right image?`);
         return message.channel.send(`here is your link: \n||${shorten(data.data, 2000 - (message.author.toString().length + 2))}||`);

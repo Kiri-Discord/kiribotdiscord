@@ -36,6 +36,6 @@ exports.conf = {
   aliases: ["np", "nowplaying"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 }

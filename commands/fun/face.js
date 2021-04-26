@@ -2,7 +2,7 @@ const request = require('node-superfetch');
 const { oneLine } = require('common-tags');
 const { base64 } = require('../../util/util');
 const { face_key, face_secret } = process.env;
-const srod = require("something-random-on-discord").ServerAssistant;
+const validUrl = require('valid-url');
 const emotions = ['anger', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise'];
 const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 'sad', 'surprised'];
 
@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => {
     let image;
     let attachments = message.attachments.array();
     if (args[0]) {
-        if (srod.isURL(args[0])) {
+        if (validUrl.isUri(args[0])) {
             image = args[0];
         } else {
             return message.inlineReply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));

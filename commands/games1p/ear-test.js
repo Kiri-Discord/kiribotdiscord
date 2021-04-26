@@ -69,6 +69,6 @@ exports.conf = {
   aliases: ["listening-test", "hearing-test"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
   clientPerms: ["CONNECT", "SPEAK"],
 }

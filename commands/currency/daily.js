@@ -49,9 +49,9 @@ exports.run = async (client, message, args) => {
             });
             const embed = new MessageEmbed()
             .setDescription(`
-            ⏣ **${amount}** token was placed in your wallet 💵
+            ⏣ ${amount}** token was placed in your wallet 💵
 
-            current balance: **${storageAfter.balance}**
+            current balance: ⏣ **${storageAfter.balance}** token
             `)
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
             .setTitle(`here are your daily token, ${message.member.displayName}!`)
@@ -75,7 +75,7 @@ exports.conf = {
     aliases: ["dailies"],
     cooldown: 10,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 }
 function getRandomInt(min, max) {

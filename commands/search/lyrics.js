@@ -42,6 +42,6 @@ exports.conf = {
 	aliases: ["lyric"],
   cooldown: 7,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 };

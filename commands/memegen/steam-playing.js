@@ -50,6 +50,6 @@ exports.conf = {
   aliases: ["steamnp", "steam-now-playing"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["ATTACH_FILES"]
 }

@@ -11,7 +11,7 @@ const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=(
 const pieces = ['pawn', 'rook', 'knight', 'king', 'queen', 'bishop'];
 const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-exports.run = async (client, message, args, prefix) => {
+exports.run = async (client, message, args, prefix, cmd) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
@@ -202,10 +202,10 @@ exports.run = async (client, message, args, prefix) => {
         client.games.delete(message.channel.id);
         if (saved) {
             return message.channel.send(stripIndents`
-            game was saved! use \`${prefix}chess ${opponent.tag} ${time}\` to resume anywhere!
+            game was saved! use \`${prefix}${cmd} @${opponent.tag} ${time}\` to resume anywhere!
             the same opponent is not required to resume the game :)
 
-            *if you want to delete your saved game, use \`${prefix}chess delete\`*
+            *if you want to delete your saved game, use \`${prefix}${cmd} delete\`*
             `);
         }
         const gameState = game.exportJson();
@@ -426,6 +426,6 @@ exports.conf = {
     aliases: ["chess-game", "play-chess"],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 };

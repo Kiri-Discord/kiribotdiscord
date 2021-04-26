@@ -13,7 +13,7 @@ exports.conf = {
     aliases: ["history", "today-in-history", "on-this-day"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 }
 

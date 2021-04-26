@@ -96,6 +96,6 @@ exports.conf = {
 	aliases: ["who-pokemon", "pokemon"],
     cooldown: 5,
 	guildOnly: true,
-	userPerms: [],
+	
 	channelPerms: ["EMBED_LINKS"]
 };

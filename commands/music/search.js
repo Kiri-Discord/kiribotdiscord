@@ -68,6 +68,6 @@ exports.conf = {
   aliases: ["sh"],
   cooldown: 4,
   guildOnly: true,
-  userPerms: [],
+  
   clientPerms: ["CONNECT", "SPEAK"],
 }

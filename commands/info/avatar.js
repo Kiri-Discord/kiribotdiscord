@@ -28,6 +28,6 @@ exports.conf = {
   aliases: ["icon", "pfp", "ava"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["EMBED_LINKS"]
 }

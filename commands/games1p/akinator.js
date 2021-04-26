@@ -109,6 +109,6 @@ exports.conf = {
 	aliases: ["aki"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 };

@@ -59,6 +59,6 @@ exports.conf = {
 	aliases: ["hb"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
 };

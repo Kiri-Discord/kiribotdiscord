@@ -91,6 +91,6 @@ exports.conf = {
 	aliases: ["countdown", "letters"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["MANAGE_MESSAGES"]
 };

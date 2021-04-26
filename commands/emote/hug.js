@@ -1,10 +1,10 @@
-const Discord = require("discord.js")
-const random = require("something-random-on-discord").Random;
+const { MessageEmbed } = require("discord.js")
+const neko = require('nekos.life');
+const { sfw } = new neko();
 const hugSchema = require('../../model/hug')
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("hug")
     const member = await getMemberfromMention(args[0], message.guild);
 
     if (!member) {
@@ -25,9 +25,7 @@ exports.run = async (client, message, args) => {
     if (targetId === authorId) {
       message.inlineReply('you hug yourself :( here, take my hug instead 🤗')
       return
-    }
-
-
+    };
 
     const result = await hugSchema.findOneAndUpdate(
       {
@@ -45,16 +43,15 @@ exports.run = async (client, message, args) => {
         upsert: true,
         new: true,
       }
-    )
-
-    const amount = result.received
-
-    const embed = new Discord.MessageEmbed() 
+    );
+    let data = await sfw.hug();
+    const amount = result.received;
+    const addS = amount === 1 ? '' : 's';
+    const embed = new MessageEmbed() 
     .setColor("RANDOM") 
-    .setAuthor(`${message.author.username} hugged ${target.username}! They now have been hugged ${amount} time(s)`, message.author.displayAvatarURL()) 
-    .setImage(data)
-
-    message.channel.send(embed)
+    .setAuthor(`${message.author.username} hugged ${target.username} ❤️ they was hugged ${amount} time${addS}!`, message.author.displayAvatarURL()) 
+    .setImage(data.url)
+    return message.channel.send(embed)
 }
 
 exports.help = {
@@ -68,6 +65,6 @@ exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 }

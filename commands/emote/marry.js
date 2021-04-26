@@ -1,4 +1,5 @@
-const random = require("something-random-on-discord").Random;
+const neko = require('nekos.life');
+const { sfw } = new neko();
 const { MessageEmbed } = require('discord.js');
 exports.run = async (client, message, args) => {
     const author = await client.love.findOne({
@@ -77,10 +78,10 @@ exports.run = async (client, message, args) => {
                 guildID: message.guild.id,
                 marriedID: message.author.id
             });
-            let image = await random.getAnimeImgURL("kiss")
+            let image = await sfw.kiss();
             const embed = new MessageEmbed()
             .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
-            .setImage(image);
+            .setImage(image.url);
             message.channel.send(embed);
             return collector.stop();
         }

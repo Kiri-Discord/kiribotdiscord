@@ -37,8 +37,8 @@ module.exports = async (client, message) => {
     const alreadyHasVerifyRole = message.member.roles.cache.has(setting.verifyRole);
     if (message.channel.id === setting.verifyChannelID) {
       if (alreadyHasVerifyRole) {
+        if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
         return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(async m => {
-          await message.delete();
           m.delete({ timeout: 4000 });
         })
       } else {
@@ -80,11 +80,11 @@ module.exports = async (client, message) => {
     message.flags.push(args.shift().slice(1)); 
   };
   
-  
+
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-    return message.channel.send(`i don't remember having that commmand installed ${sip} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+    return message.channel.send(`i don't remember having that commmand installed :looking: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
   };
   if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
     if (message.channel.type === 'text') {
@@ -97,7 +97,7 @@ module.exports = async (client, message) => {
     else key = `${message.author.id}-${message.guild.id}`;
 
     const verifyEmbed = new MessageEmbed()
-    .setAuthor(`Rules`, client.user.displayAvatarURL())
+    .setAuthor(`rules`, client.user.displayAvatarURL())
     .setColor('#81c42f')
     .setTitle('any failure in following those rules will result in you being temp banned from using my features or your guild being temp banned :warning:')
     .setDescription(`
@@ -136,6 +136,12 @@ module.exports = async (client, message) => {
 
   if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
   if (!message.channel.nsfw && commandFile.conf.adult) {
+    if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) { 
+      const msg = await message.channel.send('https://www.youtube.com/watch?v=rTgj1HxmUbg');
+      setTimeout(async () => {
+        return msg.edit(`https://www.youtube.com/watch?v=rTgj1HxmUbg\n*seriously, turn to a nsfw channel pls*`);
+      }, 5000);
+    }
     const embed2 = new MessageEmbed()
     .setColor(0x7289DA)
     .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)

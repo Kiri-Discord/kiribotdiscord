@@ -53,7 +53,8 @@ exports.help = {
 
 exports.conf = {
   aliases: ["ev"],
-  cooldown: 4
+  cooldown: 4,
+  channelPerms: ["EMBED_LINKS"]
 }
 
 function clean(string) {

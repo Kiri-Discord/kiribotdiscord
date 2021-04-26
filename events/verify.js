@@ -26,7 +26,7 @@ module.exports = async (client, message) => {
 
 			return message.inlineReply('check your DM :grin:').then(i => i.delete({ timeout: 10000 }));
 		} else {
-			return message.delete();
+			if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();
 		}
 	}
 };

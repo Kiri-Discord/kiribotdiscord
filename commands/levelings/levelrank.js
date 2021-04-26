@@ -71,6 +71,6 @@ exports.conf = {
 	aliases: ["rank", "level"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["ATTACH_FILES"]
 };

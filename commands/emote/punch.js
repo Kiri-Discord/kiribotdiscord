@@ -1,11 +1,9 @@
-const Discord = require("discord.js")
-const random = require("something-random-on-discord").Random;
-const punchSchema = require('../../model/punch')
+const { MessageEmbed } = require("discord.js");
+const punchSchema = require('../../model/punch');
+const fetch = require('node-fetch');
 
 
 exports.run = async (client, message, args) => {
-    let data = await random.getAnimeImgURL("punch")
-
     const member = await getMemberfromMention(args[0], message.guild);
 
     if (!member) {
@@ -27,9 +25,8 @@ exports.run = async (client, message, args) => {
     if (targetId === message.author.id) {
       message.inlineReply('are you in pain?')
       return
-    }
-
-
+    };
+    const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
 
     const result = await punchSchema.findOneAndUpdate(
       {
@@ -47,16 +44,22 @@ exports.run = async (client, message, args) => {
         upsert: true,
         new: true,
       }
-    )
-
-    const amount = result.received
-
-    const embed = new Discord.MessageEmbed() 
+    );
+    const amount = result.received;
+    const addS = amount === 1 ? '' : 's';
+    const embed = new MessageEmbed() 
     .setColor("RANDOM") 
-    .setAuthor(`${message.author.username} punch ${target.username}! They now have been punched ${amount} time(s)`, message.author.displayAvatarURL()) 
-    .setImage(data)
+    .setAuthor(`${message.author.username} punch ${target.username} 😔 they was punched ${amount} time${addS}!`, message.author.displayAvatarURL())
 
-    message.channel.send(embed)
+    await fetch('https://neko-love.xyz/api/v1/punch')
+    .then(res => res.json())
+    .then(json => embed.setImage(json.url))
+    .catch(err => {
+        message.channel.send(`an error happened on my side and you wasn't able to punch that person ${stare} here is a hug for now 🤗`);
+        return console.error(err);
+    });
+
+    return message.channel.send(embed)
 }
 exports.help = {
     name: "punch",

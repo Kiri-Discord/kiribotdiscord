@@ -47,6 +47,6 @@ exports.conf = {
   aliases: ["f"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["ADD_REACTIONS"]
 }

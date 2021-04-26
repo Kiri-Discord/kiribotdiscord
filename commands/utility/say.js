@@ -12,7 +12,7 @@ exports.conf = {
     aliases: ["tts", "text-to-speech"],
     cooldown: 7,
     guildOnly: true,
-    userPerms: [],
+    
 	  clientPerms: ["CONNECT", "SPEAK"],
 }
 

@@ -94,6 +94,6 @@ exports.conf = {
     aliases: ["gambling", "bet"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 }

@@ -2,6 +2,8 @@ const hugSchema = require('../model/hug');
 const punchSchema = require('../model/punch');
 const slapSchema = require('../model/slap');
 const patSchema = require('../model/pat');
+const cuddleSchema = require('../model/cuddle');
+const kissSchema = require('../model/kiss');
 
 module.exports = async (client, member) => {
 
@@ -55,6 +57,20 @@ module.exports = async (client, member) => {
     });
 
     await slapSchema.findOneAndDelete({
+        userId: member.user.id,
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await cuddleSchema.findOneAndDelete({
+        userId: member.user.id,
+        guildId: member.guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await kissSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {

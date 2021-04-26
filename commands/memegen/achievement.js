@@ -29,6 +29,6 @@ exports.conf = {
     aliases: ["mc-achieve", "achieve"],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["ATTACH_FILES"]
 };

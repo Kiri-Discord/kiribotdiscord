@@ -128,6 +128,6 @@ exports.conf = {
     aliases: ['breakup'],
     cooldown: 4,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
 };

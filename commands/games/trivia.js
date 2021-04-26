@@ -76,9 +76,9 @@ exports.run = async (client, message, args, prefix) => {
       answerEmbed
       .setThumbnail(winner.displayAvatarURL({ size: 1024, dynamic: true }))
       .setFooter(`your current balance: ${storageAfter.balance}`)
-      .setTitle(`nice job ${winner.username}, you gave the correct answer ${funEmoji}`)
+      .setTitle(`nice job ${winner.username}, you gave the correct answer!`)
       .setDescription(`
-      ⏣ **${amount}** token was placed in your wallet 💵
+      ⏣ **${amount}** token was placed in your wallet ${funEmoji}
       `)
       message.channel.send(answerEmbed);
     }
@@ -110,6 +110,6 @@ exports.conf = {
 	aliases: ["quiz"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["EMBED_LINKS"]
 };

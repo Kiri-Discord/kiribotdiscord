@@ -54,6 +54,6 @@ exports.conf = {
 	aliases: ["cov"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 };

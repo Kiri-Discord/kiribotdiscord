@@ -36,6 +36,6 @@ exports.conf = {
   aliases: ["q"],
   cooldown: 4,
   guildOnly: true,
-  userPerms: [],
+  
   channelPerms: ["EMBED_LINKS"]
 }

@@ -24,11 +24,11 @@ module.exports = client => {
           
           client.commands.set(prop.help.name, prop);
           
-          client.allNameCmds.push(prop.help.name);
+          if (!prop.conf.adult) client.allNameCmds.push(prop.help.name);
           
           prop.conf.aliases.forEach(alias => {
             client.aliases.set(alias, prop.help.name);
-            client.allNameCmds.push(alias);
+            if (!prop.conf.adult) client.allNameCmds.push(alias);
           })
           
           client.helps.get(category).cmds.push(prop.help.name);

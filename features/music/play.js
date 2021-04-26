@@ -1,8 +1,9 @@
 const ytdl = require("ytdl-core-discord");
 const scdl = require("soundcloud-downloader").default;
 const { MessageEmbed } = require('discord.js');
-const { canModifyQueue, STAY_TIME, PRUNING } = require("../../util/musicutil");
-const humanizeDuration = require("humanize-duration");
+const { STAY_TIME } = require("../../util/musicutil");
+const moment = require('moment');
+require('moment-duration-format');
 const Guild = require('../../model/music');
 const { sing } = require("./karaoke");
 
@@ -111,7 +112,7 @@ module.exports = {
       const embed = new MessageEmbed()
       .setURL(song.url)
       .setTitle(song.title)
-      .addField('Duration', humanizeDuration(duration), true)
+      .addField('Duration', moment.duration(duration).format('H [hrs] m [m] s [s]'), true)
       .addField('Author', `[${song.author}](${song.authorurl})`, true)
       .setAuthor('Now playing', song.requestedby.displayAvatarURL())
       .addField('Requested by', song.requestedby, true)

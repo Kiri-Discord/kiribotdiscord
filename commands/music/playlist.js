@@ -187,7 +187,7 @@ exports.conf = {
   aliases: ["pl"],
   cooldown: 3,
   guildOnly: true,
-  userPerms: [],
+  
   clientPerms: ["CONNECT", "SPEAK"],
   channelPerms: ["EMBED_LINKS"]
 }

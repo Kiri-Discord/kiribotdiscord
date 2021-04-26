@@ -47,20 +47,6 @@ const resultGraphQL = stripIndents`
 		}
 	}
 `;
-const personalGraphQL = stripIndents`
-	query ($name: String, $type: MediaType) {
-		MediaListCollection(userName: $name, type: $type) {
-			lists {
-				entries {
-					mediaId
-					score(format: POINT_10)
-					status
-				}
-				name
-			}
-		}
-	}
-`;
 const seasons = {
 	WINTER: 'Winter',
 	SPRING: 'Spring',
@@ -151,6 +137,6 @@ exports.conf = {
 	aliases: ["ani"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 };

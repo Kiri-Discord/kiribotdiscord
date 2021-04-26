@@ -63,6 +63,6 @@ exports.conf = {
     aliases: ["tf"],
     cooldown: 15,
     guildOnly: true,
-    userPerms: [],
+    
     channelPerms: ["EMBED_LINKS"]
 }

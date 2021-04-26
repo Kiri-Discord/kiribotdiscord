@@ -100,6 +100,6 @@ exports.conf = {
 	aliases: ["animecharacter"],
     cooldown: 5,
     guildOnly: true,
-    userPerms: [],
+    
 	channelPerms: ["EMBED_LINKS"]
 };

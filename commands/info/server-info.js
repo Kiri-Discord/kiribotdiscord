@@ -61,6 +61,6 @@ exports.conf = {
   aliases: ["serverinfo", "guildinfo"],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["EMBED_LINKS"]
 }

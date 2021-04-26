@@ -1,14 +1,14 @@
 const request = require('node-superfetch');
 const { createCanvas, loadImage } = require('canvas');
 const canvasFuncs = require('../../util/canvas.js');
-const srod = require("something-random-on-discord").ServerAssistant;
+const validUrl = require('valid-url');
 
 exports.run = async (client, message, args, prefix) => {
   let distort_level;
   let image;
   let attachments = message.attachments.array();
   if (args[0]) {
-      if (srod.isURL(args[0])) {
+      if (validUrl.isUri(args[0])) {
           image = args[0];
           distort_level = args[1];
       } else {
@@ -53,6 +53,6 @@ exports.conf = {
   aliases: [],
   cooldown: 5,
   guildOnly: true,
-  userPerms: [],
+  
 	channelPerms: ["ATTACH_FILES"]
 }
