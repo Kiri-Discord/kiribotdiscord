@@ -73,6 +73,5 @@ exports.conf = {
     aliases: ["deepfried", "deep-fry"],
     cooldown: 5,
     guildOnly: true,
-    
 	channelPerms: ["ATTACH_FILES"]
 };

@@ -16,7 +16,7 @@ const cooldownTimeMessage = (timer) => {
 }
 
 const youNeedAWaifu = (user, prefix) => {
-    return user.at + `, you need to create a waifu to use this command. Use \`${prefix}wb create\` to create your waifu :D`
+    return user.at + `, you need to summon a waifu to use this command :( use \`${prefix}wb create\` to create your waifu :D`
 }
 
 const fightSyntax = (user, prefix) => {

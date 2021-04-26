@@ -247,7 +247,7 @@ const sellItems = async (user, itemName, quantity) => {
             }
   
         } else {
-            query = `${user.at}. You don't own that item!`
+            query = `${user.at}. you don't own that item!`
             
         }
 

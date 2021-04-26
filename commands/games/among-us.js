@@ -91,7 +91,7 @@ exports.run = async (client, message, args) => {
                 alright, who do you think the imposter is? you have 1 minute to vote.
 
                 _type the number of the player you think is the imposter._
-                ${choices.map(player => { i++; return `**${i}.** ${player.user.tag}`; }).join('\n')}
+                ${choices.map(player => { i++; return `\`${i}\` ${player.user.tag}`; }).join('\n')}
             `);
             const votes = new Collection();
             const voteFilter = res => {
