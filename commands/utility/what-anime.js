@@ -74,8 +74,12 @@ exports.run = async (client, message, args, prefix, cmd) => {
         let { body } = await request.get(image);
         if (image.endsWith('.gif')) body = await convertGIF(body);
         const result = await search(body);
-        if (result === 'size') return message.inlineReply('the file is way too big for me to handle lmao. remember not to upload any image or gif larger than 10mb pls :)');
+        if (result === 'size') {
+            await message.channel.stopTyping(true);
+            return message.inlineReply('the file is way too big for me to handle lmao. remember not to upload any image or gif larger than 10mb pls :)')
+        };
         if (result.nsfw && !message.channel.nsfw) {
+            await message.channel.stopTyping(true);
             return message.inlineReply('this is from a ||hentai||, and this isn\'t an NSFW channel lmao.');
         };
         const anime = await fetchAnime(result.id);
