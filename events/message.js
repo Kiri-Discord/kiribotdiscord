@@ -59,7 +59,6 @@ module.exports = async (client, message) => {
   const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
   const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
   const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
-  const sip = client.customEmojis.get('sip') ? client.customEmojis.get('sip') : ':thinking:';
   const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
 
   let execute = message.content.slice(matchedPrefix.length).trim();
@@ -138,7 +137,7 @@ module.exports = async (client, message) => {
   if (!message.channel.nsfw && commandFile.conf.adult) {
     if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) { 
       const msg = await message.channel.send('https://www.youtube.com/watch?v=rTgj1HxmUbg');
-      setTimeout(async () => {
+      setTimeout(() => {
         return msg.edit(`https://www.youtube.com/watch?v=rTgj1HxmUbg\n*seriously, turn to a nsfw channel pls*`);
       }, 5000);
     }

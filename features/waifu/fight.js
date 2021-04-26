@@ -23,7 +23,6 @@ const startFight = async (user, challengedUser, message) => {
 
         let winResult = {};
 
-        //If the person who sent the fight request lost...
         if (user.discordId !== winner.discordId) {
             const money = 500
 

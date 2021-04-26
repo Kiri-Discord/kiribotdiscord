@@ -10,7 +10,7 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf
 exports.run = async (client, message, args) => {
     let query;
     let game;
-    if (!message.mentions.users.first()) {
+    if (!args[0]) {
         query = args.join(" ");
     } else {
         query = args.slice(1).join(" ");
@@ -20,7 +20,8 @@ exports.run = async (client, message, args) => {
     } else {
         game = query;
     }
-    const user = await getUserfromMention(args[0]) || message.author;
+    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+    const user = member.user;
     const avatarURL = user.displayAvatarURL({ format: 'png', size: 64 });
     try {
         const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'steam-now-playing.png'));
