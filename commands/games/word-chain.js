@@ -5,19 +5,6 @@ const startWords = require('../../assets/word-list.json');
 const { webster_key } = process.env;
 
 
-exports.help = {
-	name: "word-chain",
-	description: "try to come up with words that start with the last letter of your opponent\'s word :)",
-	usage: ["word-chain `<@mention> [answer-second]`", "word-chain `<@mention>`"],
-	example: ["word-chain `@bell 10`", "word-chain `@bell`"],
-};
-  
-exports.conf = {
-	aliases: ["wordchain"],
-    cooldown: 5,
-	guildOnly: true,
-};
-
 exports.run = async (client, message, args) => {
 	const current = client.games.get(message.channel.id);
 	if (current) return message.inlineReply(current.prompt);
@@ -107,5 +94,17 @@ async function verifyWord(word) {
 		if (err.status === 404) return false;
 		return null;
 	}
-}
+};
+exports.help = {
+	name: "word-chain",
+	description: "try to come up with words that start with the last letter of your opponent\'s word :)",
+	usage: ["word-chain `<@mention> [answer-second]`", "word-chain `<@mention>`"],
+	example: ["word-chain `@bell 10`", "word-chain `@bell`"],
+};
+  
+exports.conf = {
+	aliases: ["wordchain"],
+    cooldown: 5,
+	guildOnly: true,
+};
 
