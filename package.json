@@ -36,7 +36,7 @@
     "https": "^1.0.0",
     "humanize-duration": "^3.25.2",
     "ini": "^2.0.0",
-    "ioredis": "^4.26.0",
+    "ioredis": "^4.27.1",
     "iso-639-1": "^2.1.9",
     "japanese-name-generator": "^0.2.0",
     "js-chess-engine": "^0.11.3",
