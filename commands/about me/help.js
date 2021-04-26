@@ -9,7 +9,7 @@ exports.run = async (client, message, args, prefix) => {
 
     const embeds = [];
     for (const mod of module) embeds.push(new MessageEmbed().addField(`${mod.name}`, mod.cmds.map(x => `\`${x}\``).join(" | ")));
-    const look = client.customEmojis.get('look') ? client.customEmojis.get('look') : ':looking:';
+    const look = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':looking:';
     const embed = new Pagination.Embeds()
     .setArray(embeds)
     .setAuthorizedUsers([message.author.id])
