@@ -1,5 +1,4 @@
 const canvacord = require('canvacord');
-const getMemberfromMention = require('../../handler/getMemberfromMention');
 
 exports.run = async (client, message, args) => {
     let rank;
@@ -42,7 +41,7 @@ exports.run = async (client, message, args) => {
       }
     }
     message.channel.startTyping(true);
-    const rankboard = new canvacord.Rank()
+    const rankboard = new canvacord.Rank({ renderEmojis: true })
     .setAvatar(mention.user.displayAvatarURL({size: 1024, dynamic: false, format: 'png'}))
     .setCurrentXP(target.xp)
     .setRequiredXP(neededXP)
@@ -63,14 +62,13 @@ exports.run = async (client, message, args) => {
 exports.help = {
 	name: "levelrank",
 	description: "show the current leveling rank of an user or yourself",
-	usage: "levelrank `[@member]`",
-	example: "levelrank `@bell`"
+	usage: ["levelrank `[@member]`", "levelrank `[user ID]`"],
+	example: ["levelrank `@bell`", "levelrank `661172574754545"]
 };
   
 exports.conf = {
 	aliases: ["rank", "level"],
   cooldown: 5,
   guildOnly: true,
-  
 	channelPerms: ["ATTACH_FILES"]
 };
