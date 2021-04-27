@@ -1,4 +1,4 @@
-const { lookupName } = require("namemc");
+const lookupName = require("namemc").lookupName;
 const { MessageEmbed } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 
