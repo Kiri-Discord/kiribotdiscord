@@ -43,11 +43,11 @@ exports.run = async (client, message, args) => {
     .setThumbnail(icon)
     .setAuthor(`Information for ${message.guild.name}:`, client.user.displayAvatarURL())
     .setDescription(`**ID:** \`${message.guild.id}\``)
-    .addField("Region", location, true)
-    .addField("Date created", `${created} \n**${h}** day(s) ago`, true)
-    .addField("Owner", `**${message.guild.owner.user.tag}** \n\`${message.guild.owner.user.id}\``, true)
-    .addField(`Members [${total}]`, `Online: ${online} \nIdle: ${idle} \nDND: ${dnd} \nOffline: ${offline} \nBots: ${robot}`, true)
-    .addField(`Channels [${totalchan}]`, `Text: ${text} \nVoice: ${vc} \nCategory: ${category}`, true)
+    .addField("🌐 Region", location, true)
+    .addField("📅 Date created", `${created} \n**${h}** day(s) ago`, true)
+    .addField("👑 Owner", `**${message.guild.owner.user.tag}** \n\`${message.guild.owner.user.id}\``, true)
+    .addField(`👤 Members [${total}]`, `Online: ${online} \nIdle: ${idle} \nDND: ${dnd} \nOffline: ${offline} \nBots: ${robot}`, true)
+    .addField(`💬 Channels [${totalchan}]`, `Text: ${text} \nVoice: ${vc} \nCategory: ${category}`, true)
     message.channel.send(embed); 
 }
 exports.help = {
@@ -61,6 +61,5 @@ exports.conf = {
   aliases: ["serverinfo", "guildinfo"],
   cooldown: 5,
   guildOnly: true,
-  
 	channelPerms: ["EMBED_LINKS"]
 }

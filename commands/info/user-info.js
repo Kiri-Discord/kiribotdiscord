@@ -42,13 +42,13 @@ exports.run = async (client, message, args) => {
     .setThumbnail(avatar)
     .setTimestamp()
     .setColor(mention.displayHexColor)
-    .addField("Highest role", highestrole, true)
-    .addField("ID", `\`${mention.user.id}\``, true)
-    .addField("Nickname", nickname, true)
-    .addField("Account creation date", `${createdate} \nsince ${created} day(s) ago`, true)
-    .addField("Guild join date", `${joindate} \nsince ${joined} day(s) ago`, true)
-    .addField("Status", status, true)
-    .addField("Activity", game(), true)
+    .addField("👤 Highest role", highestrole, true)
+    .addField("ℹ️ ID", `\`${mention.user.id}\``, true)
+    .addField("💬 Nickname", nickname, true)
+    .addField("📅 Account creation date", `${createdate} \nsince ${created} day(s) ago`, true)
+    .addField("➡️ Guild join date", `${joindate} \nsince ${joined} day(s) ago`, true)
+    .addField("👀 Status", status, true)
+    .addField("🎮 Activity", game(), true)
     
     message.channel.send(embed); 
 }
