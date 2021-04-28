@@ -54,6 +54,7 @@
     "node-gyp": "^8.0.0",
     "node-pre-gyp": "^0.17.0",
     "node-superfetch": "^0.2.2",
+    "opusscript": "0.0.8",
     "parse-ms": "^2.1.0",
     "querystring": "^0.2.1",
     "random-anime": "^1.0.6",
