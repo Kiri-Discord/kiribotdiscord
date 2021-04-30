@@ -11,6 +11,8 @@ exports.run = async (client, message, args, prefix) => {
     };
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔');
+    if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.inlineReply("i don't have the perms to send messages to that channel! :pensive:");
+    
     const roleName = args.slice(1).join(' ');
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
@@ -44,7 +46,7 @@ exports.help = {
 };
 
 exports.conf = {
-	aliases: ["verify", "set-verify"],
+	aliases: ["verify", "setverify"],
     cooldown: 5,
     guildOnly: true,
     userPerms: ["MANAGE_GUILD"],

@@ -52,6 +52,7 @@ module.exports = async (client, message) => {
   const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
   const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
   const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
+  const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
 
   let execute = message.content.slice(matchedPrefix.length).trim();
   if (!execute) {
@@ -75,7 +76,7 @@ module.exports = async (client, message) => {
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-    return message.channel.send(`i don't remember having that commmand installed :looking: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+    return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
   };
   let globalStorage = client.globalStorage;
   let storage = await globalStorage.findOne();

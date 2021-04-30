@@ -3,7 +3,6 @@ const ms = require("ms");
 module.exports = class VerifyTimer {
 	constructor(client) {
 		Object.defineProperty(this, 'client', { value: client });
-
 		this.timeouts = new Map();
 	}
 
@@ -20,7 +19,7 @@ module.exports = class VerifyTimer {
 		const data = { time: new Date(Date.now() + time).toISOString(), guildID, userID };
 		const timeout = setTimeout(async () => {
 			try {
-                let reason = 'Sefy verification timeout'
+                let reason = 'Sefy verification timeout (step 2)';
                 const setting = await this.client.dbguilds.findOne({
                     guildID: guildID
                 });
@@ -34,25 +33,30 @@ module.exports = class VerifyTimer {
                 if (verifyRole || !verifyChannel || !roleExist) return;
                 const logChannel = await guild.channels.cache.get(setting.logChannelID);
                 const logembed = new MessageEmbed()
-                .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
-                .setTitle('User kicked')
+                .setAuthor(`Verification`, this.client.user.displayAvatarURL())
+                .setTitle(`${member.user.tag} was kicked`)
+                .addField(`Progress`, `Step 2`)
                 .setColor("#ff0000")
-                .setThumbnail(member.user.avatarURL())
-                .addField('Username', member.user.username)
+                .setThumbnail(member.user.displayAvatarURL({size: 4096, dynamic: true}))
+                .addField('Username', member.user.tag)
                 .addField('User ID', member.id)
                 .addField('Kicked by', this.client.user)
-                .addField('Reason', reason);
+                .addField('Reason', reason)
+                .setTimestamp()
                 const logerror = new MessageEmbed()
-                .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
-                .setDescription(`Failed while kicking ${member} for not verifying in **${ms(time, {long: true})}**.\nPossible problem: \`MISSING_PERMISSION\`\nYou can manually kick them instead :)`)
+                .setAuthor(`Verification`, this.client.user.displayAvatarURL())
+                .setTitle(`Failed while kicking ${member.user.tag}`)
+                .addField(`Progress`, `Step 2`)
+                .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
                 .setColor('#ff0000')
-                .setThumbnail(member.user.avatarURL())
+                .setTimestamp()
+                .setThumbnail(member.user.displayAvatarURL({size: 4096, dynamic: true}))
                 if (!member.kickable) {
                     if (logChannel) return logChannel.send(logerror);
                     else return;
                 }
                 if (logChannel) await logChannel.send(logembed);
-                await member.send(`I have kicked you from **${guild.name}** for not verifying in in **${ms(time, {long: true})}** :(`).catch(() => {
+                await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** (at verification step 2) :pensive:`).catch(() => {
                     null
                 });
                 await member.kick(reason);

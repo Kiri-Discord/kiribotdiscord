@@ -7,7 +7,6 @@ exports.run = async (client, message, args) => {
     const channel = await guild.channels.cache.get(args[1]);
     if (!channel) return;
     channel.send(msg);
-    
 }
 
 exports.help = {
@@ -20,8 +19,6 @@ exports.help = {
 exports.conf = {
   aliases: [],
   cooldown: 2,
-  guildOnly: true,
-  
-  clientPerms: ["SEND_MESSAGES"]
+  owner: true
 }
 
