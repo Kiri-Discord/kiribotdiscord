@@ -3,7 +3,7 @@ module.exports = async () => {
         if (!mention) return;
         const id = mention.replace(/[<>@!]/g, "");
         const member = guild.members.cache.get(id);
-        if (member.partial) await member.fetch();
+        if (!member) return;
         return member;
     }
     global.getMemberfromMention = getMemberfromMention;
