@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
         userId: mention.user.id
     });
 
-    if (!target) return message.inlineReply("you or that user doesn't have any leveling data yet. chat more to show yours :)");
+    if (!target) return message.channel.send("you or that user doesn't have any leveling data yet. chat more to show yours :)");
 
     const res = client.leveling.getLevelBounds(target.level + 1)
 

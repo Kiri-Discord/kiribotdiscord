@@ -7,9 +7,7 @@ module.exports = async (client, message) => {
 			userID: message.author.id,
 		});
 		if (message.content.trim().toLowerCase().startsWith('resend')) {
-			if (!verifydb) {
-				return message.delete();
-			};
+			if (!verifydb && message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();
 			let valID = verifydb.valID;
 			await message.delete();
 			const dm = new MessageEmbed()
@@ -23,7 +21,6 @@ module.exports = async (client, message) => {
 				return message.inlineReply('your DM is still locked. unlock your DM first then type \`resend\` here :D')
 					.then(i => i.delete({ timeout: 10000 }));
 			});
-
 			return message.inlineReply('check your DM :grin:').then(i => i.delete({ timeout: 10000 }));
 		} else {
 			if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();

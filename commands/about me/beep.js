@@ -1,6 +1,8 @@
 exports.run = async (client, message, args) => {
   const blessEmoji = client.customEmojis.get('bless') ? client.customEmojis.get('bless') : '✔️' ;
-	return message.channel.send({embed: {color: "f3f3f3", description: `${blessEmoji} **boop!** took me **${(Date.now() - message.createdTimestamp)}ms** to reply, and the Discord API has a latency of **${Math.round(client.ws.ping)}ms**!`}});
+  const pingMessage = await message.channel.send(`almost there...`);
+	const ping = pingMessage.createdTimestamp - message.createdTimestamp;
+	return pingMessage.edit(`${blessEmoji} boop! took me roughly ${ping}ms to hit back, and the Discord API has a latency of ${Math.round(client.ws.ping)}ms?`);
 };
 
 exports.help = {
@@ -13,5 +15,4 @@ exports.help = {
 exports.conf = {
   aliases: [],
   cooldown: 2,
-  channelPerms: ["EMBED_LINKS"]
-}
+};

@@ -16,39 +16,86 @@ module.exports = async (client, member) => {
   const alreadyHasRole = member._roles.includes(setting.verifyRole);
 
   if (roleExist && verifyChannel && !alreadyHasRole) {
-    const timeMs = setting.verifyTimeout || ms('10m');
-    const exists = await client.verifytimers.exists(member.guild.id, member.user.id);
-    if (exists) {
-      await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
-      await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
-    } else {
-      await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
+    const startVerify = async () => {
+      const lookingEmoji = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
+      const timeMs = setting.verifyTimeout || ms('10m');
+      const exists = await client.verifytimers.exists(member.guild.id, member.user.id);
+      if (exists) {
+        await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
+        await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
+      } else {
+        await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
+      };
+      let code = randomText(10);
+      await client.dbverify.findOneAndUpdate({
+        guildID: member.guild.id,
+        userID: member.user.id,
+      }, {
+        guildID: member.guild.id,
+        userID: member.user.id,
+        valID: code
+      }, {
+          upsert: true,
+          new: true
+      });
+      const dm = new MessageEmbed()
+      .setTimestamp()
+      .setFooter(client.user.username, client.user.displayAvatarURL())
+      .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
+      .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
+      .setDescription(`Hello! Before you join ${member.guild.name}, i just want you to verify yourself first :slight_smile: Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams :pensive:`)
+      .addField(`Verification link for ${member.user.username}`, `||${__baseURL}verify?valID=${code}||`)
+      await member.send(dm).catch(() => {
+        verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
+        .then(i => i.delete({timeout: 10000}));
+      });
+      return verifyChannel.send(`:tada: well done ${member}! now check your DM for a verify link ${lookingEmoji}`).then(i => i.delete({timeout: 5000}));
     }
-    let code = randomText(10);
-    await client.dbverify.findOneAndUpdate({
-      guildID: member.guild.id,
-      userID: member.user.id,
-    }, {
-      guildID: member.guild.id,
-      userID: member.user.id,
-      valID: code
-    }, {
-        upsert: true,
-        new: true
-    })
-
-    const dm = new MessageEmbed()
-    .setTimestamp()
-    .setFooter(client.user.username, client.user.displayAvatarURL())
-    .setThumbnail(member.guild.iconURL({size: 4096, dynamic: true}))
-    .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
-    .setDescription(`Hello! Before you join ${member.guild.name}, I just want you to verify yourself first. Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams :pensive:`)
-    .addField(`Verification link for ${member.user.username}`, `||${__baseURL}verify?valID=${code}||`)
-    await member.send(dm).catch(() => {
-      verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
-      .then(i => i.delete({timeout: 10000}));
-    })
-  }
+    const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
+    const filter = (reaction, user) => {
+      return reaction.emoji.name === '👋' && user.id === member.user.id;
+    };
+    const verifyMessage = await verifyChannel.send(`hey ${member} ${waveEmoji}, welcome to ${member.guild.name}! in order to start the verification, react to the below reaction first!\nyou will be kicked for not reacting in \`4 minutes\``);
+    await verifyMessage.react('👋');
+    const collected = await verifyMessage.awaitReactions(filter, { max: 1, time: 240000 });
+    if (!collected.size) {
+      await verifyMessage.delete();
+      let reason = 'Sefy verification timeout (Step 2)';
+      const logChannel = member.guild.channels.cache.get(setting.logChannelID);
+      const logembed = new MessageEmbed()
+      .setAuthor(`Verification`, client.user.displayAvatarURL())
+      .setTitle(`${member.user.tag} was kicked`)
+      .addField(`Progress`, `Step 2`)
+      .setColor("#ff0000")
+      .setThumbnail(member.user.displayAvatarURL({size: 4096, dynamic: true}))
+      .addField('Username', member.user.tag)
+      .addField('User ID', member.id)
+      .addField('Kicked by', client.user.toString())
+      .addField('Reason', reason)
+      .setTimestamp()
+      const logerror = new MessageEmbed()
+      .setAuthor(`Verification`, client.user.displayAvatarURL())
+      .setTitle(`Failed while kicking ${member.user.tag}`)
+      .addField(`Progress`, `Step 2`)
+      .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
+      .setColor('#ff0000')
+      .setTimestamp()
+      .setThumbnail(member.user.displayAvatarURL())
+      if (!member.kickable) {
+        if (logChannel) return logChannel.send(logerror);
+        else return;
+      } else {
+        if (logChannel) await logChannel.send(logembed);
+        await member.send(`i have kicked you from **${member.guild.name}** for failing the verification (at step 1) :pensive:`).catch(() => {
+            null
+        });
+        return member.kick(reason);
+      }
+    } else {
+      await verifyMessage.delete();
+      return startVerify();
+    }
+  };
 }
 
 function randomText(len) {

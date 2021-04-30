@@ -1,6 +1,5 @@
 exports.run = async (client, message, args) => {
-	message.inlineReply('are you in pain?');
-	
+	return message.inlineReply('are you in pain?');
 };
 exports.help = {
 	name: "boop",

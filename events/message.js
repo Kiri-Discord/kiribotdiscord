@@ -11,12 +11,6 @@ module.exports = async (client, message) => {
   let prefix;
   let setting;
 
-  let globalStorage = client.globalStorage;
-  let storage = await globalStorage.findOne();
-  if (!storage) storage = new globalStorage();
-
-  const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
-
   if (message.channel.type === "dm") {
     prefix = client.config.prefix
   } else {
@@ -25,7 +19,7 @@ module.exports = async (client, message) => {
       guildID: message.guild.id
     });
     if (!setting) {
-      const dbguilds = client.dbguilds
+      const dbguilds = client.dbguilds;
       setting = new dbguilds({
         guildID: message.guild.id
       });
@@ -38,9 +32,7 @@ module.exports = async (client, message) => {
     if (message.channel.id === setting.verifyChannelID) {
       if (alreadyHasVerifyRole) {
         if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
-        return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(async m => {
-          m.delete({ timeout: 4000 });
-        })
+        return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(m => m.delete({ timeout: 4000 }));
       } else {
         return client.emit('verify', message);
       }
@@ -60,6 +52,7 @@ module.exports = async (client, message) => {
   const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
   const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
   const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
+  const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
 
   let execute = message.content.slice(matchedPrefix.length).trim();
   if (!execute) {
@@ -83,8 +76,14 @@ module.exports = async (client, message) => {
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-    return message.channel.send(`i don't remember having that commmand installed :looking: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+    return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
   };
+  let globalStorage = client.globalStorage;
+  let storage = await globalStorage.findOne();
+  if (!storage) storage = new globalStorage();
+
+  const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
+  
   if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
     if (message.channel.type === 'text') {
       if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)

@@ -1,5 +1,7 @@
 exports.run = async (client, message, args) => {
-	return message.channel.send({embed: {color: "f3f3f3", description: `🏓 **pong!** took me roughly **${(Date.now() - message.createdTimestamp)}ms** to hit back, and the Discord API has a latency of **${Math.round(client.ws.ping)}ms**!`}});
+	const pingMessage = await message.channel.send(`almost there...`);
+	const ping = pingMessage.createdTimestamp - message.createdTimestamp;
+	return pingMessage.edit(`🏓 pong! took me roughly ${ping}ms to hit back, and the Discord API has a latency of ${Math.round(client.ws.ping)}ms lol`);
 };
 exports.help = {
 	name: "ping",
@@ -11,6 +13,5 @@ exports.help = {
 exports.conf = {
 	aliases: [],
 	cooldown: 2,
-	channelPerms: ["EMBED_LINKS"]
 };
   

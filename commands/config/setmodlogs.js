@@ -11,7 +11,8 @@ exports.run = async (client, message, args) => {
 
     const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
 
-    if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
+    if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔');
+    if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.inlineReply("i don't have the perms to send messages to that channel! :pensive:");
 
     await client.dbguilds.findOneAndUpdate({
         guildID: message.guild.id,

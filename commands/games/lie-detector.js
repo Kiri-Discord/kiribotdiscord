@@ -70,7 +70,7 @@ exports.run = async (client, message, args, prefix) => {
 			}
 			await message.channel.send(stripIndents`
 				it was... **${question.answer ? 'true' : 'a lie'}**!
-				_fastest guess: ${correct.length ? `${pts.get(correct[0].id).user.username} (+75 pts)` : 'no one...'}_
+				fastest guess was: ${correct.length ? `${pts.get(correct[0].id).user.username} (+75 pts)` : 'no one...'}
 
 				${questions.length ? '_5 seconds into the next round..._' : ''}
 			`);
