@@ -1,10 +1,13 @@
 const express = require('express');
 const helmet = require("helmet");
+const compression = require("compression");
 
 module.exports = {
     init: (client) => {
         client.webapp.use(express.json());
         client.webapp.use(helmet());
+        client.webapp.use(compression());
+        client.webapp.disable("x-powered-by");
         client.webapp.get('/', authenticateToken, (_, res) => res.send('the heck bros'));
         client.webapp.post("/checkVerify", authenticateToken, async (req, res) => {
             if ("userID" in req.query && "guildID" in req.query) {

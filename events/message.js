@@ -11,12 +11,6 @@ module.exports = async (client, message) => {
   let prefix;
   let setting;
 
-  let globalStorage = client.globalStorage;
-  let storage = await globalStorage.findOne();
-  if (!storage) storage = new globalStorage();
-
-  const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
-
   if (message.channel.type === "dm") {
     prefix = client.config.prefix
   } else {
@@ -25,7 +19,7 @@ module.exports = async (client, message) => {
       guildID: message.guild.id
     });
     if (!setting) {
-      const dbguilds = client.dbguilds
+      const dbguilds = client.dbguilds;
       setting = new dbguilds({
         guildID: message.guild.id
       });
@@ -83,6 +77,12 @@ module.exports = async (client, message) => {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
     return message.channel.send(`i don't remember having that commmand installed :looking: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
   };
+  let globalStorage = client.globalStorage;
+  let storage = await globalStorage.findOne();
+  if (!storage) storage = new globalStorage();
+
+  const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
+  
   if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
     if (message.channel.type === 'text') {
       if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
