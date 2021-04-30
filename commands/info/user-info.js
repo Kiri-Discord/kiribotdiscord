@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const moment = require('moment');
+const { trimArray } = require('../../util/util');
 
 exports.run = async (client, message, args) => {
     let mention = await getMemberfromMention(args[0], message.guild) || message.member;
@@ -30,27 +31,31 @@ exports.run = async (client, message, args) => {
     
     const member = message.guild.member(mention);
     let highestrole = member.roles.highest !== undefined && member.roles.highest !== null ? member.roles.highest : "None";
+    let roles = member.roles.cache
+    .filter(role => role.id !== defaultRole.id)
+    .sort((a, b) => b.position - a.position)
+    .map(role => role.toString());
     let nickname = member.nickname !== undefined && member.nickname !== null ? member.nickname : "None";
     let createdate = moment.utc(mention.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); 
     let joindate = moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); 
     let status = mention.user.presence.status;
-    let avatar = mention.user.displayAvatarURL({size: 4096, dynamic: true}); 
-    
+    let avatar = mention.user.displayAvatarURL({size: 4096, dynamic: true});
     const embed = new MessageEmbed()
     .setAuthor(mention.user.tag, avatar)
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setThumbnail(avatar)
     .setTimestamp()
     .setColor(mention.displayHexColor)
-    .addField("👤 Highest role", highestrole, true)
+    .addField("👑 Highest role", highestrole, true)
     .addField("ℹ️ ID", `\`${mention.user.id}\``, true)
     .addField("💬 Nickname", nickname, true)
     .addField("📅 Account creation date", `${createdate} \nsince ${created} day(s) ago`, true)
     .addField("➡️ Guild join date", `${joindate} \nsince ${joined} day(s) ago`, true)
     .addField("👀 Status", status, true)
     .addField("🎮 Activity", game(), true)
+    .addField(`👤 Roles [${roles.length}]`, roles.length ? trimArray(roles, 6).join(', ') : 'None')
     
-    message.channel.send(embed); 
+    return message.channel.send(embed); 
 }
 
 exports.help = {
@@ -61,9 +66,8 @@ exports.help = {
 }
 
 exports.conf = {
-  aliases: ["userinfo", "whois"],
+  aliases: ["userinfo", "whois", 'user'],
   cooldown: 3,
   guildOnly: true,
-  
 	channelPerms: ["EMBED_LINKS"]
 }
