@@ -137,7 +137,7 @@ exports.run = async (client, message, args, prefix, cmd) => {
                     if (choice === 'save') return true;
                     if (choice === 'help') return true;
                     if (res.author.id !== user.id) return false;
-                    const move = choice.match(turnRegex);
+                    const move = choice.toUpperCase().match(turnRegex);
                     if (!move) return false;
                     const parsed = parseSAN(gameState, moves, move);
                     if (!parsed || !moves[parsed[0]] || !moves[parsed[0]].includes(parsed[1])) {
