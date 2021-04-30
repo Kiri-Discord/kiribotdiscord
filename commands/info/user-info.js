@@ -32,7 +32,7 @@ exports.run = async (client, message, args) => {
     const member = message.guild.member(mention);
     let highestrole = member.roles.highest !== undefined && member.roles.highest !== null ? member.roles.highest : "None";
     let roles = member.roles.cache
-    .filter(role => role.id !== defaultRole.id)
+    .filter(role => role.id !== highestrole.id)
     .sort((a, b) => b.position - a.position)
     .map(role => role.toString());
     let nickname = member.nickname !== undefined && member.nickname !== null ? member.nickname : "None";
