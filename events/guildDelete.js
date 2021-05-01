@@ -60,13 +60,13 @@ module.exports = async (client, guild) => {
     });
 
     await cuddleSchema.deleteMany({
-        guildId: member.guild.id,
+        guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
     await kissSchema.deleteMany({
-        guildId: member.guild.id,
+        guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
