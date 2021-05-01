@@ -9,6 +9,7 @@ exports.run = async (client, message, args, prefix) => {
         })
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ verify has been disabled`}});
     };
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔');
     if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.inlineReply("i don't have the perms to send messages to that channel! :pensive:");
