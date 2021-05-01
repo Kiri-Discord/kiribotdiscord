@@ -16,7 +16,7 @@ exports.run = async (client, message, args, prefix) => {
     const roleName = args.slice(1).join(' ');
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
-    if (!role) return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`)
+    if (!role) return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls :pensive:`)
 
     if (role.name === "@everyone") return message.inlineReply(`\`@everyone\` is a default role ${sedEmoji}`);
     if (role.name === "@here") return message.inlineReply(`\`@here\` is not a role ${sedEmoji}`);
