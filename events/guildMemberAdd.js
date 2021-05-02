@@ -11,7 +11,7 @@ module.exports = async (client, member) => {
   });
 
   const roleExist = member.guild.roles.cache.get(setting.verifyRole);
-  const verifyChannel = member.guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
+  const verifyChannel = member.guild.channels.cache.get(setting.verifyChannelID);
 
   const alreadyHasRole = member._roles.includes(setting.verifyRole);
 
@@ -59,6 +59,7 @@ module.exports = async (client, member) => {
     await verifyMessage.react('👋');
     const collected = await verifyMessage.awaitReactions(filter, { max: 1, time: 240000 });
     if (!collected.size) {
+      if (member._roles.includes(setting.verifyRole)) return;
       await verifyMessage.delete();
       let reason = 'Sefy verification timeout (Step 2)';
       const logChannel = member.guild.channels.cache.get(setting.logChannelID);
