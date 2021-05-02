@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const Pagination = require('discord-paginationembed');
+const { findBestMatch } = require("string-similarity");
 
 exports.run = async (client, message, args, prefix) => {  
   if (!args[0]) {
@@ -72,7 +73,9 @@ exports.run = async (client, message, args, prefix) => {
       
       return message.channel.send(embed);
     } else {
-      return message.channel.send({embed: {color: "RED", description: "unknown command :("}});
+      const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
+      const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
+      return message.channel.send({embed: {color: "RED", description: `i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}help ${matches}\` ?`}});
     }
   }
 }

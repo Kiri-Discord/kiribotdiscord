@@ -76,8 +76,9 @@ module.exports = async (client, message) => {
   let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!commandFile) {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-    return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 5000 }));
+    return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
   };
+  
   let globalStorage = client.globalStorage;
   let storage = await globalStorage.findOne();
   if (!storage) storage = new globalStorage();
