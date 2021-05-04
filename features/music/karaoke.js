@@ -8,7 +8,7 @@ const ISO6391 = require('iso-639-1');
 
 
 module.exports = {
-    async sing(song, message, channel, lang, queue) {
+    async sing(song, channel, lang, queue) {
         if (song.type === 'yt') {
             const info = await ytdl.getInfo(song.url);
             const foundCaption = info.player_response.captions;
@@ -19,7 +19,7 @@ module.exports = {
                 if (track) {
                   const { body } = await request
                   .get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
-                  const output = await parseSync(body.toString());
+                  const output = parseSync(body.toString());
                   const subtitles = output
                   .filter(x => x.type = 'cue')
                   .filter(x => x.data.text)
@@ -27,7 +27,7 @@ module.exports = {
                   let embed = new MessageEmbed()
                   .setTitle('Now singing')
                   .setDescription(`[${song.title}](${song.url}) by [${song.author}](${song.authorurl}) [${song.requestedby}]`)
-                  .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting :)`)
+                  .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
                   channel.send(embed);
                   subtitles.forEach(subtitle => {
                     const each = setTimeout(() => {
@@ -59,7 +59,7 @@ module.exports = {
               }
             } else {
               const lyrics = await lyricsFinder(song.title, '');
-              if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive:\n\n*don't know what is this about? auto-scroll lyrics mode is currently set to \`ON\` in your guild setting :)*`}});
+              if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive:`, footer: { text: "don't know what is this about? karaoke mode is currently set to ON in your guild setting" }}});
               let lyricsEmbed = new MessageEmbed()
               .setTitle(`Lyrics for ${song.title} by ${song.author}`)
               .setDescription(lyrics)

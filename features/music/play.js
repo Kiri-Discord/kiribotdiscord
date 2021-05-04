@@ -12,7 +12,7 @@ module.exports = {
     const { SOUNDCLOUD_CLIENT_ID } = require("../../util/musicutil");
 
     const queue = client.queue.get(message.guild.id);
-    if (queue.karaoke.timeout) {
+    if (queue.karaoke.timeout.length) {
       queue.karaoke.timeout.forEach(x => {
           clearTimeout(x);
       });
@@ -24,7 +24,7 @@ module.exports = {
         queue.textChannel.send({embed: {color: "f3f3f3", description: `**i'm leaving the voice channel...byebye** 👋`}});
       }, STAY_TIME * 1000);
       queue.textChannel.send({embed: {color: "f3f3f3", description: `**the music queue has ended** :pensive:`}}).catch(console.error);
-      if (queue.karaoke.timeout) {
+      if (queue.karaoke.timeout.length) {
         queue.karaoke.timeout.forEach(x => {
             clearTimeout(x);
         });
@@ -77,7 +77,7 @@ module.exports = {
     }
 
     queue.connection.on("disconnect", () => {
-      if (queue.karaoke.timeout) {
+      if (queue.karaoke.timeout.length) {
         queue.karaoke.timeout.forEach(x => {
             clearTimeout(x);
         });
@@ -103,11 +103,10 @@ module.exports = {
         module.exports.play(queue.songs[0], message, client);
       });
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
-    if (queue.karaoke.isEnabled) {
-      queue.karaoke.timeout = [];
-      sing(song, message, queue.karaoke.channel, queue.karaoke.languageCode, queue)
-    };
     try {
+      if (queue.karaoke.isEnabled) {
+        sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue)
+      };
       const embed = new MessageEmbed()
       .setURL(song.url)
       .setTitle(song.title)

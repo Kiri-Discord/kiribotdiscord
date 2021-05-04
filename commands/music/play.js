@@ -50,7 +50,12 @@ exports.run = async (client, message, args, prefix) => {
       color: message.guild.me.displayHexColor,
       playing: true,
       volume: null,
-      karaoke: Object
+      karaoke: {
+        timeout: [],
+        channel: null,
+        isEnabled: null,
+        languageCode: null
+      }
     };
     if (musicSettings) {
       queueConstruct.karaoke.isEnabled = false;
@@ -60,7 +65,7 @@ exports.run = async (client, message, args, prefix) => {
         message.channel.send({embed: {color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue :wink:`}, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}lyrics -off` }});
         const verification = await verify(message.channel, message.author, { time: 10000 });
         if (verification) {
-          await message.inlineReply({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' }}});
+          await message.channel.send({embed: {color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' }}});
           const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
           if (response.isVerify) {
             queueConstruct.karaoke.languageCode = response.choice;
@@ -193,7 +198,6 @@ exports.conf = {
   aliases: ["p"],
   cooldown: 4,
   guildOnly: true,
-  
   clientPerms: ["CONNECT", "SPEAK"],
   channelPerms: ["EMBED_LINKS"]
 };

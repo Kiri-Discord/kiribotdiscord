@@ -3,11 +3,11 @@ const ISO6391 = require('iso-639-1');
 
 exports.run = async (client, message, args, prefix) => {
     const serverQueue = client.queue.get(message.guild.id);
-    if (!message.flags[0]) return message.channel.send(`wrong usage :( use \`${prefix}help auto-lyrics\` to learn more!`)
+    if (!message.flags[0]) return message.channel.send(`uh seems like that's a wrong usage :pensive: check out \`${prefix}help auto-lyrics\`!`)
     if (message.flags[0] === "off") {
         if (serverQueue) {
             serverQueue.karaoke.isEnabled = false;
-            if (serverQueue.karaoke.timeout) {
+            if (serverQueue.karaoke.timeout.length) {
                 serverQueue.karaoke.timeout.forEach(x => {
                     clearTimeout(x);
                 });
@@ -50,7 +50,11 @@ exports.run = async (client, message, args, prefix) => {
         if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({timeout: 5000}));
         if (serverQueue) {
             serverQueue.karaoke.channel = channel;
-            if (serverQueue.karaoke.timeout) clearTimeout(serverQueue.karaoke.timeout);
+            if (serverQueue.karaoke.timeout.length) {
+                serverQueue.karaoke.timeout.forEach(x => {
+                    clearTimeout(x);
+                });
+            }
         }
     
         await Guild.findOneAndUpdate({
@@ -75,6 +79,5 @@ exports.conf = {
 	aliases: ["karaoke", "al", "lyrics-scrolling", "auto-lyrics"],
     cooldown: 5,
     guildOnly: true,
-    
 	channelPerms: ["EMBED_LINKS"]
 };
