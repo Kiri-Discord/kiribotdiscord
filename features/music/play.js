@@ -104,7 +104,7 @@ module.exports = {
       });
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
     } catch (error) {
-      client.queue.delete(message.guild.id);
+      queue.connection.disconnect();
       if (queue) return queue.textChannel.send({embed: {color: "f3f3f3", description: `**there was an error while playing the music** :pensive:`}});
     }
     try {
