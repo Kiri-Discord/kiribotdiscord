@@ -12,7 +12,6 @@ exports.conf = {
     aliases: ["tts", "text-to-speech"],
     cooldown: 7,
     guildOnly: true,
-    
 	  clientPerms: ["CONNECT", "SPEAK"],
 }
 
@@ -50,8 +49,10 @@ exports.run = async (client, message, args) => {
         });        
         dispatcher.on('finish', async () => {
           await client.voicequeue.delete(message.guild.id);
-          await connection.disconnect();
-          return msg.edit('done')
+          msg.edit('done');
+          return setTimeout(async () => {
+            connection.disconnect();
+          }, 3000);
         });
       } catch {
         await client.voicequeue.delete(message.guild.id);

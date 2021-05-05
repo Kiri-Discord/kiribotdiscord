@@ -81,11 +81,11 @@ module.exports = {
         queue.karaoke.timeout.forEach(x => {
             clearTimeout(x);
         });
-    }
+      }
       client.queue.delete(message.guild.id);
     });
-
-    const dispatcher = queue.connection
+    try {
+      const dispatcher = queue.connection
       .play(stream, { type: streamType })
       .on("finish", () => {
         if (queue.loop) {
@@ -103,6 +103,10 @@ module.exports = {
         module.exports.play(queue.songs[0], message, client);
       });
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
+    } catch (error) {
+      client.queue.delete(message.guild.id);
+      if (queue) return queue.textChannel.send({embed: {color: "f3f3f3", description: `**there was an error while playing the music** :pensive:`}});
+    }
     try {
       if (queue.karaoke.isEnabled) {
         sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue)
