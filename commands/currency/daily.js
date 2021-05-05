@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const humanizeDuration = require("humanize-duration");
+const { stripIndents } = require('common-tags');
 exports.run = async (client, message, args) => {
     let cooldown = 8.64e+7;
     let storage = await client.money.findOne({
@@ -17,22 +18,30 @@ exports.run = async (client, message, args) => {
     }
     let lastDaily = storage.lastDaily;
     try {
-        
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
             let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
             const embed = new MessageEmbed()
-            .setDescription(`
-            💸 sorry, you cannot collect your daily too early :pensive:
-
-            your next collect is ready in:
-            \`${finalTime}\`
-            `)
+            .setDescription(`💸 sorry, you cannot collect your daily too early :pensive:`)
+            .addFields('your next collect is ready in:', `\`${finalTime}\``)
             .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
             .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
             return message.channel.send(embed);
         } else {
+            let bonus = false;
+            let bonusAmount;
             let amount = getRandomInt(10, 50);
+            const voted = await client.vote.findOne({
+                userID: message.author.id
+            });
+            if (voted) {
+                bonus = true;
+                await client.vote.findOneAndDelete({
+                    userID: message.author.id
+                });
+                bonusAmount = (amount / 2).toFixed(0);
+                amount = amount + bonusAmount
+            }
             const storageAfter = await client.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
@@ -48,11 +57,12 @@ exports.run = async (client, message, args) => {
                 new: true,
             });
             const embed = new MessageEmbed()
-            .setDescription(`
+            .setDescription(stripIndents`
             ⏣ ${amount}** token was placed in your wallet 💵
 
-            current balance: ⏣ **${storageAfter.balance}** token
+            ${bonus ? `you collected \`${bonusAmount}\` more token for voting` : ''}
             `)
+            .addField(`current balance:`, `⏣ **${storageAfter.balance}** token`)
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
             .setTitle(`here are your daily token, ${message.member.displayName}!`)
             .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
@@ -75,7 +85,6 @@ exports.conf = {
     aliases: ["dailies"],
     cooldown: 10,
     guildOnly: true,
-    
     channelPerms: ["EMBED_LINKS"]
 }
 function getRandomInt(min, max) {

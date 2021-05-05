@@ -9,7 +9,7 @@ module.exports = {
             autoIndex: false,
             poolSize: 5,
             connectTimeoutMS: 10000,
-            family:4
+            family: 4
         };
 
         mongoose.connect(process.env.mongourl, dbOptions);

@@ -8,6 +8,7 @@ const app = express();
 module.exports = class sefy extends Client {
   constructor(options) {
     super(options)
+    this.vote = require('../model/vote');
     this.globalStorage = require('../model/global');
     this.gameStorage = require('../model/game');
     this.webapp = app;

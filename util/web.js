@@ -1,7 +1,8 @@
 const express = require('express');
 const helmet = require("helmet");
 const compression = require("compression");
-
+const { MessageEmbed } = require("discord.js");
+const { stripIndents } = require('common-tags');
 module.exports = {
     init: (client) => {
         client.webapp.use(express.json());
@@ -11,20 +12,11 @@ module.exports = {
         client.webapp.get('/', authenticateToken, (_, res) => res.send('the heck bros'));
         client.webapp.post("/checkVerify", authenticateToken, async (req, res) => {
             if ("userID" in req.query && "guildID" in req.query) {
-              await client.dbverify.findOneAndDelete({
-                guildID: req.query.userID,
-                userID: req.query.guildID
-              });
               await client.verifytimers.deleteTimer(req.query.guildID, req.query.userID);
               const setting = await client.dbguilds.findOne({
                 guildID: req.query.guildID
               });
               if (!setting) return res.json({ code: 204, message: 'NO_GUILD_SETTING_FOUND' });
-              const index = await client.dbverify.findOne({
-                userID: req.query.userID,
-                guildID: req.query.guildID
-              });
-              if (!index) return res.json({ code: 204, message: 'NO_VERIFICATION_FOUND' })
               const guild = client.guilds.cache.get(req.query.guildID);
               if (!guild) return res.json({ code: 204, message: 'NO_GUILD_FOUND' })
               if (!guild.available) return res.json({ code: 204, message: 'GUILD_NOT_AVAILABLE' });
@@ -57,6 +49,38 @@ module.exports = {
             } else {
               return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
             }
+        });
+        client.webapp.post('vote', authenticateToken, function(req, res) {
+          if ("userID" in req.query) {
+            const user = client.users.cache.get(req.query.userID);
+            if (!user) return res.status(400).json({ code: 400, message: 'USER_NOT_FOUND' });
+            const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
+            const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
+            const embed = new MessageEmbed()
+            .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`)
+            .setDescription(stripIndents`
+            thank you for being generous and gave me a vote ${blush}
+
+            you was given a 50% bonus on your next daily token collect! type \`>daily\` in any server to collect your token :tada:
+            that is the only thing i have to offer right now ${duh} keep voting to explore!
+
+            at the mean time, check out our family: 
+
+            [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
+            [sefy support (support server)](https://discord.gg/D6rWrvS)
+            `)
+            .setThumbnail(req.query.avatar)
+            res.status(200).json({ code: 200 });
+            await client.vote.findOneAndUpdate({
+              userID: req.query.userID
+            },
+            {
+              userID: req.query.userID
+            })
+            return user.send(embed).catch(() => null);
+          } else {
+            return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
+          }
         });
         client.webapp.get('*', authenticateToken, function(req, res) {
             res.status(404).send('wrong call bruh')
