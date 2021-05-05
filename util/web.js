@@ -50,7 +50,7 @@ module.exports = {
               return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
             }
         });
-        client.webapp.post('vote', authenticateToken, function(req, res) {
+        client.webapp.post('vote', authenticateToken, async function(req, res) {
           if ("userID" in req.query) {
             const user = client.users.cache.get(req.query.userID);
             if (!user) return res.status(400).json({ code: 400, message: 'USER_NOT_FOUND' });
