@@ -50,14 +50,14 @@ module.exports = {
               return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
             }
         });
-        client.webapp.post('vote', authenticateToken, async function(req, res) {
+        client.webapp.post('/vote', authenticateToken, async (req, res) => {
           if ("userID" in req.query) {
             const user = client.users.cache.get(req.query.userID);
             if (!user) return res.status(400).json({ code: 400, message: 'USER_NOT_FOUND' });
             const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
             const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
             const embed = new MessageEmbed()
-            .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`)
+            .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`, client.user.displayAvatarURL())
             .setDescription(stripIndents`
             thank you for being generous and gave me a vote ${blush}
 
@@ -69,7 +69,6 @@ module.exports = {
             [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
             [sefy support (support server)](https://discord.gg/D6rWrvS)
             `)
-            .setThumbnail(req.query.avatar)
             res.status(200).json({ code: 200 });
             await client.vote.findOneAndUpdate({
               userID: req.query.userID
