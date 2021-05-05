@@ -52,8 +52,12 @@ module.exports = {
         });
         client.webapp.post('/vote', authenticateToken, async (req, res) => {
           if ("userID" in req.query) {
-            const user = client.users.cache.get(req.query.userID);
-            if (!user) return res.status(400).json({ code: 400, message: 'USER_NOT_FOUND' });
+            let user;
+            try {
+              user = await client.users.fetch(req.query.userID);
+            } catch (error) {
+              return res.status(400).json({ code: 400, message: 'USER_NOT_FOUND' });
+            };
             const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
             const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
             const embed = new MessageEmbed()
