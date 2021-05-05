@@ -73,7 +73,7 @@ module.exports = class VerifyTimer {
 		return timeout;
 	}
 
-	deleteTimer(guildID, userID) {
+	async deleteTimer(guildID, userID) {
 		clearTimeout(this.timeouts.get(`${guildID}-${userID}`));
 		this.timeouts.delete(`${guildID}-${userID}`);
         await this.client.dbverify.findOneAndDelete({
