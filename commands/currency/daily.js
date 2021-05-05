@@ -58,7 +58,7 @@ exports.run = async (client, message, args) => {
             });
             const embed = new MessageEmbed()
             .setDescription(stripIndents`
-            ⏣ ${amount}** token was placed in your wallet 💵
+            ⏣ **${amount}** token was placed in your wallet 💵
 
             ${bonus ? `you collected \`${bonusAmount}\` more token for voting` : ''}
             `)
