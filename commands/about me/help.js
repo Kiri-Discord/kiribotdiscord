@@ -62,14 +62,14 @@ exports.run = async (client, message, args, prefix) => {
       .setDescription(desc)
       .setThumbnail(client.user.displayAvatarURL())
       .setFooter("[] optional, <> required. don't includes these things while typing a command :)")
-      .addField("cooldown", cooldown)
+      .addField("cooldown", cooldown, true)
       .addField("aliases", aliases, true)
       .addField("usage", usage, true)
       .addField("example", example, true)
       .addField("user permission(s)", userperms, true)
       .addField("global permission(s)", botperms, true)
       .addField(`channel permission(s)`, channelperms, true)
-      .addField('nsfw?', adult)
+      .addField('nsfw?', adult, true)
       
       return message.channel.send(embed);
     } else {

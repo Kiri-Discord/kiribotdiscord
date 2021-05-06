@@ -1,4 +1,5 @@
 {
-  "name": "❯ `🔨` moderation",
+  "displayName": "❯ `🔨` moderation",
+  "name": "mod",
   "hide": false
 }
