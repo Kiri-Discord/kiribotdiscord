@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
             let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
             const embed = new MessageEmbed()
-            .setDescription(`💸 sorry, you cannot collect your daily too early :pensive:`)
+            .setDescription(`💸 sorry, you cannot collect your daily too early :pensive:\n\nwant to get more token on your next daily collect? vote me [here](https://discord.ly/sefy) ^^`)
             .addFields('your next collect is ready in:', `\`${finalTime}\``)
             .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
             .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
@@ -60,7 +60,7 @@ exports.run = async (client, message, args) => {
             .setDescription(stripIndents`
             ⏣ **${amount}** token was placed in your wallet 💵
 
-            ${bonus ? `you collected \`${bonusAmount}\` more token for voting :)` : ''}
+            ${bonus ? `you collected **${bonusAmount}** more token for voting :)` : ''}
             `)
             .addField(`current balance:`, `⏣ **${storageAfter.balance}** token`)
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
