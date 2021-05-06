@@ -11,7 +11,7 @@ module.exports = client => {
       moduleConf.path = `./commands/${category}`;
       moduleConf.cmds = [];
       if (!moduleConf) return;
-      client.helps.set(category, moduleConf);
+      client.helps.set(moduleConf.name, moduleConf);
       
       fs.readdir(`./commands/${category}`, (err, files) => {
         console.log(`Found total ${files.length - 1} command(s) from ${category}.`);
