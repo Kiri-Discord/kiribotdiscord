@@ -6,8 +6,7 @@ const reqString = {
 }
 
 const voteSchema = mongoose.Schema({
-    userID: reqString,
-    lastBoost: Date,
+    userID: reqString
 });
 
 module.exports = mongoose.model('vote', voteSchema, 'vote');

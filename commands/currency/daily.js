@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
             return message.channel.send(embed);
         } else {
-            let bonus = false;
+            let bonus;
             let bonusAmount;
             let amount = getRandomInt(10, 50);
             const voted = await client.vote.findOne({
@@ -41,7 +41,7 @@ exports.run = async (client, message, args) => {
                 });
                 bonusAmount = (amount / 2).toFixed(0);
                 amount = amount + bonusAmount
-            }
+            } else bonus = false;
             const storageAfter = await client.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
