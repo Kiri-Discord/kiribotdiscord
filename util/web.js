@@ -75,10 +75,10 @@ module.exports = {
             `)
             res.status(200).json({ code: 200 });
             await client.vote.findOneAndUpdate({
-              userID: req.query.userID
+              userID: user.id
             },
             {
-              userID: req.query.userID
+              userID: user.id
             })
             return user.send(embed).catch(() => null);
           } else {

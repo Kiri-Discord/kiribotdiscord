@@ -60,7 +60,7 @@ exports.run = async (client, message, args) => {
             .setDescription(stripIndents`
             ⏣ **${amount}** token was placed in your wallet 💵
 
-            ${bonus ? `you collected \`${bonusAmount}\` more token for voting` : ''}
+            ${bonus ? `you collected \`${bonusAmount}\` more token for voting :)` : ''}
             `)
             .addField(`current balance:`, `⏣ **${storageAfter.balance}** token`)
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)

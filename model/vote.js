@@ -6,7 +6,7 @@ const reqString = {
 }
 
 const voteSchema = mongoose.Schema({
-    userId: reqString,
+    userID: reqString,
     lastBoost: Date,
 });
 
