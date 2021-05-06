@@ -1,9 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const { post } = require("node-superfetch");
 
-exports.run = async (client, message, args) => {
-  if (!client.config.owners.includes(message.author.id)) return;
-  
+exports.run = async (client, message, args) => {  
   const embed = new MessageEmbed()
   .addField("Input", "```js\n" + args.join(" ") + "```")
   .setAuthor(client.user.username, client.user.displayAvatarURL())

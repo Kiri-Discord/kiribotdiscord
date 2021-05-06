@@ -5,7 +5,6 @@ const { stripIndents } = require('common-tags');
 const { dependencies } = require('../../package.json');
 
 exports.run = async (client, message, args) => {
-  if (!client.config.owners.includes(message.author.id)) return message.message.inlineReply('only coco or bell can execute this command!')
   const needUpdate = [];
   for (const [dep, ver] of Object.entries(dependencies)) {
       const update = await parseUpdate(dep, ver);

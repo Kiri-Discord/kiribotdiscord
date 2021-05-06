@@ -1,4 +1,5 @@
 {
-  "name": "❯ `⚙️` my configuration",
+  "displayName": "⚙️ configuration",
+  "name": "config",
   "hide": false
 }
