@@ -164,7 +164,7 @@ module.exports = async (client, message) => {
     if (commandFile.conf.channelPerms.length) {
       for (permission in commandFile.conf.channelPerms) {
         if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
-          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}\ncan you move to an another channel where i have that permission? missing that permission could generate errors tho, especially when dealing with reaction ${sed}`);
+          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}`);
         };
       }
     }
