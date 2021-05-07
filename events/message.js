@@ -132,8 +132,10 @@ module.exports = async (client, message) => {
     agreed.set(key, collectedEmojis);
     return agreeCollector(storage, collectedEmojis, message, key);
   };
-
   if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
+
+  if (!client.config.owners.includes(message.author.id) && commandFile.conf.owner) return;
+  
   if (!message.channel.nsfw && commandFile.conf.adult) {
     if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) { 
       const msg = await message.channel.send('https://www.youtube.com/watch?v=rTgj1HxmUbg');
@@ -175,8 +177,7 @@ module.exports = async (client, message) => {
         };
       }
     }
-  }
-  
+  };
 
   if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
@@ -186,7 +187,7 @@ module.exports = async (client, message) => {
     member = message.author;
   } else {
     member = message.member
-  }
+  };
 
   const now = Date.now();
   const timestamps = cooldowns.get(commandFile.help.name);

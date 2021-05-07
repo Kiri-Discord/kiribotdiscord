@@ -11,7 +11,8 @@ module.exports = client => {
       moduleConf.path = `./commands/${category}`;
       moduleConf.cmds = [];
       if (!moduleConf) return;
-      client.helps.set(category, moduleConf);
+      client.helps.set(moduleConf.name, moduleConf);
+      if (!moduleConf.adult && !moduleConf.hide) client.allNameFeatures.push(moduleConf.name);
       
       fs.readdir(`./commands/${category}`, (err, files) => {
         console.log(`Found total ${files.length - 1} command(s) from ${category}.`);
@@ -27,7 +28,7 @@ module.exports = client => {
             client.aliases.set(alias, prop.help.name);
             if (!prop.conf.adult && !prop.conf.owner) client.allNameCmds.push(alias);
           })
-          client.helps.get(category).cmds.push(prop.help.name);
+          client.helps.get(moduleConf.name).cmds.push(prop.help.name);
         })
       })
     })
