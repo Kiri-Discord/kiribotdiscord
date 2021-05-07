@@ -30,6 +30,7 @@ exports.run = async (client, message, args) => {
         } else {
             let bonus;
             let bonusAmount;
+            let finalAmount;
             let amount = getRandomInt(10, 50);
             const voted = await client.vote.findOne({
                 userID: message.author.id
@@ -40,8 +41,11 @@ exports.run = async (client, message, args) => {
                     userID: message.author.id
                 });
                 bonusAmount = (amount / 2).toFixed(0);
-                amount = amount + bonusAmount
-            } else bonus = false;
+                finalAmount = amount + bonusAmount
+            } else {
+                bonus = false;
+                finalAmount = amount;
+            }
             const storageAfter = await client.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
@@ -50,7 +54,7 @@ exports.run = async (client, message, args) => {
                 userId: message.author.id,
                 lastDaily: Date.now(),
                 $inc: {
-                    balance: amount,
+                    balance: finalAmount,
                 }, 
             }, {
                 upsert: true,
@@ -58,7 +62,7 @@ exports.run = async (client, message, args) => {
             });
             const embed = new MessageEmbed()
             .setDescription(stripIndents`
-            ⏣ **${amount}** token was placed in your wallet 💵
+            ⏣ **${finalAmount}** token was placed in your wallet 💵
 
             ${bonus ? `you collected **${bonusAmount}** more token for voting :)` : ''}
             `)
