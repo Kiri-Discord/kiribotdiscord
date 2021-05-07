@@ -37,6 +37,9 @@ exports.run = async (client, message, args) => {
         $inc: {
             balance: -amount,
         }, 
+    }, {
+        upsert: true,
+        new: true,
     });
     await client.money.findOneAndUpdate({
         userId: user.id,
@@ -47,6 +50,9 @@ exports.run = async (client, message, args) => {
         $inc: {
             balance: amount,
         }, 
+    }, {
+        upsert: true,
+        new: true,
     });
 
     return message.channel.send(`💸 you've transferred to **${user.tag}** ⏣ **${amount}** credits!`);

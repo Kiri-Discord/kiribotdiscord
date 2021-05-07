@@ -1,5 +1,6 @@
 {
-  "displayName": "🔎 search",
-  "name": "search",
+  "displayName": "🔎 find",
+  "name": "find",
+  "desc": "fetch information on the internet",
   "hide": false
 }

@@ -61,6 +61,7 @@ module.exports = {
             const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
             const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
             const embed = new MessageEmbed()
+            .setColor('#F4EDB4')
             .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`, client.user.displayAvatarURL())
             .setDescription(stripIndents`
             thank you for being generous and gave me a vote ${blush}
@@ -74,12 +75,11 @@ module.exports = {
             [sefy support (support server)](https://discord.gg/D6rWrvS)
             `)
             res.status(200).json({ code: 200 });
-            await client.vote.findOneAndUpdate({
+            const voteStorage = client.vote;
+            const vote = new voteStorage({
               userID: user.id
-            },
-            {
-              userID: user.id
-            })
+            });
+            await vote.save();
             return user.send(embed).catch(() => null);
           } else {
             return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })

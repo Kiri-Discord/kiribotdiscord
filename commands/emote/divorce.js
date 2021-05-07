@@ -4,12 +4,6 @@ exports.run = async (client, message, args) => {
         guildID: message.guild.id
     });
     if (!author) {
-        const model = client.love
-        const newUser = new model({
-            userID: message.author.id,
-            guildID: message.guild.id
-        });
-        await newUser.save();
         return message.inlineReply('you are not married!');
     } else {
         if (!author.marriedID) return message.inlineReply('you are not married!');
@@ -18,38 +12,25 @@ exports.run = async (client, message, args) => {
             guildID: message.guild.id
         });
         if (!marry) {
-            await client.love.findOneAndUpdate({
+            await client.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
-            }, {
-                guildID: message.guild.id,
-                userID: message.author.id,
-                marriedID: null
             });
             return message.channel.send("it seems like you did married, but i don't know who though. you are single now.")
-        };
-        if (marry) {
+        } else {
             if (marry.marriedID) {
                 if (marry.marriedID !== message.author.id) {
-                    await client.love.findOneAndUpdate({
+                    await client.love.findOneAndDelete({
                         guildID: message.guild.id,
                         userID: message.author.id
-                    }, {
-                        guildID: message.guild.id,
-                        userID: message.author.id,
-                        marriedID: null
                     });
-                    return message.channel.send("your partner isn't married to you in my database! i will just change you to single instead...")
+                    return message.channel.send("that user isn't married to you! :pensive:")
                 } else {
                     const member = message.guild.members.cache.get(author.marriedID);
                     if (!member) {
-                        await client.love.findOneAndUpdate({
+                        await client.love.findOneAndDelete({
                             guildID: message.guild.id,
                             userID: message.author.id
-                        }, {
-                            guildID: message.guild.id,
-                            userID: message.author.id,
-                            marriedID: null
                         });
                         return message.channel.send("can't find your partner in this server! i will just change you to single instead...")
                     } else {
@@ -57,13 +38,9 @@ exports.run = async (client, message, args) => {
                     }
                 }
             } else {
-                await client.love.findOneAndUpdate({
+                await client.love.findOneAndDelete({
                     guildID: message.guild.id,
                     userID: message.author.id
-                }, {
-                    guildID: message.guild.id,
-                    userID: message.author.id,
-                    marriedID: null
                 });
                 return message.channel.send("your partner isn't married to you in my database! i will just change you to single instead...")
             }
@@ -93,21 +70,13 @@ async function divorce(client, message, member) {
             return collector.stop();
         } else if (reaction.emoji.name === '✅') {
             answered = true;
-            await client.love.findOneAndUpdate({
+            await client.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
-            }, {
-                guildID: message.guild.id,
-                userID: message.author.id,
-                marriedID: null
             });
-            await client.love.findOneAndUpdate({
+            await client.love.findOneAndDelete({
                 userID: member.user.id,
                 guildID: message.guild.id
-            }, {
-                userID: member.user.id,
-                guildID: message.guild.id,
-                marriedID: null
             });
             message.channel.send(`**${message.author.username}**, you have divorced with **${member.user.username}** :pensive:`);
             return collector.stop();

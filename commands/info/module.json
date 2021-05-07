@@ -1,5 +1,6 @@
 {
   "displayName": "📚 info",
+  "desc": "display information about members and the server",
   "name": "info",
   "hide": false
 }

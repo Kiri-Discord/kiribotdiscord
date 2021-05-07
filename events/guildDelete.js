@@ -4,6 +4,7 @@ const slapSchema = require('../model/slap');
 const patSchema = require('../model/pat');
 const cuddleSchema = require('../model/cuddle');
 const kissSchema = require('../model/kiss');
+const musicSchema = require('../model/music');
 
 module.exports = async (client, guild) => {
 
@@ -48,6 +49,12 @@ module.exports = async (client, guild) => {
     });
 
     await punchSchema.deleteMany({
+        guildId: guild.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await musicSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)

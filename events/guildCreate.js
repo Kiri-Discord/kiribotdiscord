@@ -31,11 +31,11 @@ module.exports = async (client, guild) => {
   const embed = new MessageEmbed()
   .setTitle("thanks for inviting me to your server :)")
   .setDescription(stripIndents`
-  hi, i'm Sefy ${sefy}, formerly a custom bot, is a new bot which is hoping to bring new perks and fun to your server!
+  hi, i'm Sefy, formerly a custom bot, is a new bot which is hoping to bring new perks and fun to your server!
   my default prefix is \`${prefix}\`, but mention also works!
 
   type \`${prefix}help\` to get started! have fun!
-  before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command) ${duh}
+  before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
 
   changes are updated quite frequently within the bot such as restarts, updates, etc...
   if you have any questions come ask us in our support server ${duh}
@@ -67,7 +67,7 @@ module.exports = async (client, guild) => {
     hi, i'm Sefy ${sefy}, formerly a custom bot, is a new bot which is hoping to bring new perks and fun to your server!
     my default prefix is \`${prefix}\`, but mention also works!
     type \`${prefix}help\` to get started! have fun!
-    before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command) ${duh}
+    before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
   
     changes are updated quite frequently within the bot such as restarts, updates, etc...
     if you have any questions come ask us in our support server by typing \`${prefix}invite\`
