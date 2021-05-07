@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
             let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
             const embed = new MessageEmbed()
             .setDescription(`💸 sorry, you cannot collect your daily too early :pensive:\n\nwant to get more token on your next daily collect? vote me [here](https://discord.ly/sefy) ^^`)
-            .addFields('your next collect is ready in:', `\`${finalTime}\``)
+            .addField('your next collect is ready in:', `\`${finalTime}\``)
             .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
             .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
             .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
