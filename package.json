@@ -68,7 +68,7 @@
     "string-similarity": "^4.0.4",
     "subtitle": "^4.1.0",
     "url": "^0.11.0",
-    "utf-8-validate": "^5.0.4",
+    "utf-8-validate": "^5.0.5",
     "valid-url": "^1.0.9",
     "weather-js": "^2.0.0",
     "ytdl-core": "^4.7.0",
