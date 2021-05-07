@@ -61,12 +61,12 @@ module.exports = async (client, member) => {
     if (!collected.size) {
       if (member._roles.includes(setting.verifyRole)) return;
       await verifyMessage.delete();
-      let reason = 'Sefy verification timeout (Step 2)';
+      let reason = 'Sefy verification timeout (Step 1)';
       const logChannel = member.guild.channels.cache.get(setting.logChannelID);
       const logembed = new MessageEmbed()
       .setAuthor(`Verification`, client.user.displayAvatarURL())
       .setTitle(`${member.user.tag} was kicked`)
-      .addField(`Progress`, `Step 2`)
+      .addField(`Progress`, `Step 1`)
       .setColor("#ff0000")
       .setThumbnail(member.user.displayAvatarURL({size: 4096, dynamic: true}))
       .addField('Username', member.user.tag)
