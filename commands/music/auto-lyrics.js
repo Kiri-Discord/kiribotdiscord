@@ -18,6 +18,9 @@ exports.run = async (client, message, args, prefix) => {
         },
         {
             KaraokeChannelID: null
+        }, {
+            upsert: true,
+            new: true,
         })
         return message.channel.send({embed: {color: "f3f3f3", description: `❌ auto scroll lyric has been disabled`}});
     };
@@ -32,6 +35,9 @@ exports.run = async (client, message, args, prefix) => {
         },
         {
             KaraokeChannelID: serverQueue.karaoke.channel.id
+        }, {
+            upsert: true,
+            new: true,
         })
         .catch(err => console.error(err));
         return message.channel.send(({embed: {color: "f3f3f3", description: `☑️ auto-scroll lyric is turned on in ${serverQueue.karaoke.channel}!`}}));
@@ -62,6 +68,9 @@ exports.run = async (client, message, args, prefix) => {
         },
         {
             KaraokeChannelID: channel.id
+        }, {
+            upsert: true,
+            new: true,
         })
         .catch(err => console.error(err));
         return message.channel.send(({embed: {color: "f3f3f3", description: `☑️ the auto scroll lyric channel has been set to ${channel}!\n\ndo \`${prefix}auto-lyric -on\` to enable it :wink:`}}));

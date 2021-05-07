@@ -1,4 +1,6 @@
 {
-  "name": "so you have found this place....",
+  "displayName": "so you have found this place....",
+  "desc": "commands that are only avaliable for owners",
+  "name": "owner",
   "hide": true
 }

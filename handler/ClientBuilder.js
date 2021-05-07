@@ -19,6 +19,7 @@ module.exports = class sefy extends Client {
     this.helps = new Collection();
     this.customEmojis = new Collection;
     this.allNameCmds = [];
+    this.allNameFeatures = [];
     this.aliases = new Collection();
     this.config = require('../config.json');
     this.recent = new Set();

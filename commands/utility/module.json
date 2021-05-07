@@ -1,4 +1,6 @@
 {
-  "name": "❯ `💡` utility",
+  "displayName": "💡 utility",
+  "name": "utility",
+  "desc": "these command are really useful, since when i have those? 🤔",
   "hide": false
 }

@@ -1,5 +1,4 @@
 exports.run = async (client, message, args) => {
-  if (!client.config.owners.includes(message.author.id)) return;
   if (!args[0]) {
     let listGuild = [];
     client.guilds.cache.each(guild => {

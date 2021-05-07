@@ -1,4 +1,6 @@
 {
-  "name": "❯ `⚙️` my configuration",
+  "displayName": "⚙️ configuration",
+  "name": "config",
+  "desc": "configure me to your liking, all settings are per server",
   "hide": false
 }

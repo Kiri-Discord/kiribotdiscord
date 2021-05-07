@@ -1,5 +1,7 @@
 {
-  "name": "❯ `🤦` nsfw",
+  "displayName": "🤦 nsfw",
+  "name": "adult",
+  "desc": "you get the idea",
   "hide": false,
   "adult": true
 }

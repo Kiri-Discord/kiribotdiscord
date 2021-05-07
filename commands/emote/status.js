@@ -10,12 +10,6 @@ exports.run = async (client, message, args) => {
             guildID: message.guild.id
         });
         if (!author) {
-            const model = client.love
-            const newUser = new model({
-                userID: message.author.id,
-                guildID: message.guild.id
-            });
-            await newUser.save();
             return message.channel.send('you are single');
         } else {
             const target = await client.love.findOne({
@@ -26,13 +20,9 @@ exports.run = async (client, message, args) => {
                 if (target.marriedID) {
                     const married = message.guild.members.cache.get(target.marriedID);
                     if (!married) {
-                        await client.love.findOneAndUpdate({
+                        await client.love.findOneAndDelete({
                             guildID: message.guild.id,
                             userID: user.id,
-                        }, {
-                            guildID: message.guild.id,
-                            userID: user.id,
-                            marriedID: null
                         });
                         return message.channel.send(`you are single!`);
                     } else {
@@ -54,13 +44,9 @@ exports.run = async (client, message, args) => {
         if (target.marriedID) {
             const married = message.guild.members.cache.get(target.marriedID);
             if (!married) {
-                await client.love.findOneAndUpdate({
+                await client.love.findOneAndDelete({
                     guildID: message.guild.id,
                     userID: user.id,
-                }, {
-                    guildID: message.guild.id,
-                    userID: user.id,
-                    marriedID: null
                 });
                 return message.channel.send(`**${user.username}** is single!`);
             } else {

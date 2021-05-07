@@ -69,6 +69,9 @@ exports.run = async (client, message, args) => {
                 guildID: message.guild.id,
                 userID: message.author.id,
                 marriedID: member.user.id
+            }, {
+                upsert: true,
+                new: true,
             });
             await client.love.findOneAndUpdate({
                 userID: member.user.id,
@@ -77,6 +80,9 @@ exports.run = async (client, message, args) => {
                 userID: member.user.id,
                 guildID: message.guild.id,
                 marriedID: message.author.id
+            }, {
+                upsert: true,
+                new: true,
             });
             let image = await sfw.kiss();
             const embed = new MessageEmbed()
