@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
         }
     } else {
         if (attachments.length === 0) {
-            const cache = message.channel.messages.cache.filter(msg => !msg.content.startsWith(prefix)).last();
+            const cache = message.channel.messages.cache.filter(msg => msg.attachments.first()).last();
             image = message.author.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
         }
         else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
