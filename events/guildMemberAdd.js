@@ -59,8 +59,8 @@ module.exports = async (client, member) => {
     await verifyMessage.react('👋');
     const collected = await verifyMessage.awaitReactions(filter, { max: 1, time: 240000 });
     if (!collected.size) {
-      if (member._roles.includes(setting.verifyRole)) return;
       await verifyMessage.delete();
+      if (member._roles.includes(setting.verifyRole)) return;
       let reason = 'Sefy verification timeout (Step 1)';
       const logChannel = member.guild.channels.cache.get(setting.logChannelID);
       const logembed = new MessageEmbed()
