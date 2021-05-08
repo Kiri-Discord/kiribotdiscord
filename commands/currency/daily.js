@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
             let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
             const embed = new MessageEmbed()
-            .setDescription(`💸 sorry, you cannot collect your daily too early :pensive:\n\nwant to get more token on your next daily collect? vote me [here](https://discord.ly/sefy) ^^`)
+            .setDescription(`sorry, you cannot collect your daily too early :pensive:\n\nwant to get more token on your next daily collect? vote me [here](https://discord.ly/sefy) ^^`)
             .addField('your next collect is ready in:', `\`${finalTime}\``)
             .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
             .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
@@ -97,6 +97,5 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function calcBonus(value) {
-    return (value / 2).toFixed(0)
-}
-
+    return parseInt((value / 2).toFixed(0))
+};
