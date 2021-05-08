@@ -31,8 +31,7 @@ exports.run = async (client, message, args) => {
             let bonus;
             let bonusAmount;
             let finalAmount;
-            let amount;
-            let random = getRandomInt(10, 50);
+            let amount = getRandomInt(10, 50);
             const voted = await client.vote.findOne({
                 userID: message.author.id
             });
@@ -41,12 +40,11 @@ exports.run = async (client, message, args) => {
                 await client.vote.findOneAndDelete({
                     userID: message.author.id
                 });
-                amount = random;
-                bonusAmount = (random / 2).toFixed(0);
+                bonusAmount = calcBonus(amount)
                 finalAmount = amount + bonusAmount
             } else {
                 bonus = false;
-                finalAmount = random;
+                finalAmount = amount;
             }
             const storageAfter = await client.money.findOneAndUpdate({
                 guildId: message.guild.id,
@@ -98,3 +96,7 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function calcBonus(value) {
+    return (value / 2).toFixed(0)
+}
+

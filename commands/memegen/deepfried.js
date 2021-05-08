@@ -1,12 +1,13 @@
 const { createCanvas, loadImage } = require('canvas');
 const request = require('node-superfetch');
 const validUrl = require('valid-url');
+const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
 exports.run = async (client, message, args) => {
     let image;
     let attachments = message.attachments.array();
     if (args[0]) {
-        if (validUrl.isUri(args[0])) {
+        if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
             return message.inlineReply("that isn't a correct URL!");
@@ -16,6 +17,7 @@ exports.run = async (client, message, args) => {
         else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
+    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")
     try {
         message.channel.startTyping(true);
         const { body } = await request.get(image)
