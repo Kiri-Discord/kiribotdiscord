@@ -33,7 +33,7 @@ module.exports = async client => {
   if (!developmentMode) {
     botSitePost(client);
     client.setInterval(() => botSitePost(client), 1200000);
-  }
+  };
   web.init(client);
   client.user.setActivity('just woke up...', { type: 'PLAYING' });
   client.setInterval(() => {
