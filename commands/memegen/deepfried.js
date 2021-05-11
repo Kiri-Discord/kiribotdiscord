@@ -14,8 +14,20 @@ exports.run = async (client, message, args) => {
         }
     } else {
         if (attachments.length === 0) {
-            const cache = message.channel.messages.cache.filter(msg => msg.attachments.first()).last();
-            image = message.author.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
+            try {
+                const caches = message.channel.messages.cache.filter(msg => msg.attachments.size > 0);
+                if (!caches.size) {
+                    const fetchs = await message.channel.messages.fetch({ limit: 10 });
+                    const fetch = fetchs.filter(msg => msg.attachments.size > 0);
+                    const target = fetch.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+                    image = target.last().attachments.first().url;
+                } else {
+                    const cache = caches.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+                    image = cache.last().attachments.first().url;
+                };
+            } catch (error) {
+                image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+            }
         }
         else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
         else image = attachments[0].url;
