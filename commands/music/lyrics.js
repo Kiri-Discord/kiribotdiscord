@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
       lyrics = await lyricsFinder(queue.songs[0].title, '');
       embed.setTitle(`Lyrics for ${queue.songs[0].title}`)
     };
-    if (!lyrics) return message.inlineReply(`i found no lyrics for \`${songs}\` :(`);
+    if (!lyrics) return message.inlineReply(`i found no lyrics for the current playing song :(`);
   } else {
     const query = args.join(" ");
     if (!query) return message.inlineReply(`you have to provide me a song to get the lyric of :(`);
@@ -35,7 +35,7 @@ exports.run = async (client, message, args) => {
       lyrics = await lyricsFinder(query, '');
       embed.setTitle(`Lyrics for ${query}`);
     };
-    if (!lyrics) return message.inlineReply(`i found no lyrics for \`${songs}\` :(`);
+    if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :(`);
   };
   const [first, ...rest] = Util.splitMessage(lyrics, { maxLength: 2000, char: '\n' });
 
