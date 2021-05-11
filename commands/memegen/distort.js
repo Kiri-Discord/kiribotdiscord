@@ -2,13 +2,14 @@ const request = require('node-superfetch');
 const { createCanvas, loadImage } = require('canvas');
 const canvasFuncs = require('../../util/canvas.js');
 const validUrl = require('valid-url');
+const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
 exports.run = async (client, message, args, prefix) => {
   let distort_level;
   let image;
   let attachments = message.attachments.array();
   if (args[0]) {
-      if (validUrl.isUri(args[0])) {
+      if (validUrl.isWebUri(args[0])) {
           image = args[0];
           distort_level = args[1];
       } else {
@@ -18,12 +19,27 @@ exports.run = async (client, message, args, prefix) => {
         distort_level = args[0];
       }
   } else {
-      if (attachments.length === 0) image = message.author.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
+      if (attachments.length === 0) {
+        try {
+          const caches = message.channel.messages.cache.filter(msg => msg.attachments.size > 0);
+          if (!caches.size) {
+              const fetchs = await message.channel.messages.fetch({ limit: 10 });
+              const fetch = fetchs.filter(msg => msg.attachments.size > 0);
+              const target = fetch.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+              image = target.last().attachments.first().url;
+          } else {
+              const cache = caches.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+              image = cache.last().attachments.first().url;
+          };
+        } catch (error) {
+            image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+        }
+      }
       else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
       else image = attachments[0].url;
       distort_level = args[0];
   };
-  
+  if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")
 	try {
         message.channel.startTyping(true); 
         if (isNaN(distort_level)) return message.inlineReply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``);
