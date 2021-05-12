@@ -9,7 +9,6 @@ exports.run = async (client, message, args) => {
   let lyrics;
   let embed = new MessageEmbed()
   .setColor(message.member.displayHexColor)
-  
   const queue = client.queue.get(message.guild.id);
   if (queue) {
     const searches = await genius.songs.search(queue.songs[0].title);
