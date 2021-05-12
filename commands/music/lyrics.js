@@ -7,37 +7,35 @@ exports.run = async (client, message, args) => {
   let lyrics;
   let embed = new MessageEmbed()
   .setColor(message.member.displayHexColor)
-  .setTimestamp()
   
   const queue = client.queue.get(message.guild.id);
   if (queue) {
-    try {
-      const searches = await genius.songs.search(queue.songs[0].title);
-      const firstSong = searches[0];
-      lyrics = await firstSong.lyrics();
-      if (!lyrics) return message.inlineReply(`i found no lyrics for the current playing song :(`);
+    const searches = await genius.songs.search(queue.songs[0].title);
+    const firstSong = searches[0];
+    lyrics = await firstSong.lyrics();
+    if (!lyrics) {
+      lyrics = await lyricsFinder(queue.songs[0].title, '');
+      if (!lyrics) return message.inlineReply(`i found no lyrics for the current playing song :pensive:`);
+      embed.setTitle(`Lyrics for ${queue.songs[0].title}`);
+    } else {
       embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
       embed.setThumbnail(firstSong.thumbnail)
-    } catch (error) {
-      lyrics = await lyricsFinder(queue.songs[0].title, '');
-      if (!lyrics) return message.inlineReply(`i found no lyrics for the current playing song :(`);
-      embed.setTitle(`Lyrics for ${queue.songs[0].title}`);
-    };
+    }
   } else {
     const query = args.join(" ");
-    if (!query) return message.inlineReply(`you have to provide me a song to get the lyric of :(`);
-    try {
-      const searches = await genius.songs.search(query);
-      const firstSong = searches[0];
-      lyrics = await firstSong.lyrics();
-      if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :(`);
-      embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
-      embed.setThumbnail(firstSong.thumbnail)
-    } catch (error) {
+    if (!query) return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
+    const searches = await genius.songs.search(query);
+    const firstSong = searches[0];
+    if (!firstSong) return message.inlineReply(`i found no song for ${query} :pensive:`);
+    lyrics = await firstSong.lyrics();
+    if (!lyrics) {
       lyrics = await lyricsFinder(query, '');
       if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :(`);
       embed.setTitle(`Lyrics for ${query}`);
-    };
+    } else {
+      embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
+      embed.setThumbnail(firstSong.thumbnail)
+    }
   };
   const [first, ...rest] = Util.splitMessage(lyrics, { maxLength: 2000, char: '\n' });
 
@@ -59,6 +57,7 @@ exports.run = async (client, message, args) => {
     return message.channel.send(embed3);
   } else {
     embed
+    .setTimestamp()
     .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
     .setColor(message.member.displayHexColor)
     .setDescription(first)
@@ -75,7 +74,7 @@ exports.help = {
   
 exports.conf = {
 	aliases: ["lyric"],
-  cooldown: 4,
+  cooldown: 3,
   guildOnly: true,
   channelPerms: ["EMBED_LINKS"]
 };

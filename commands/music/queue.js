@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
     .setColor(queue.color)
     .setAuthor(`Queue for ${message.guild.name}`, message.guild.iconURL({size: 4096, dynamic: true}))
     .setDescription(`Now playing: **[${queue.songs[0].title}](${queue.songs[0].url}) - [${queue.songs[0].author}](${queue.songs[0].authorurl})** [${queue.songs[0].requestedby}]`)
-    .setFooter(`${queue.songs.length - 1} song(s) in queue`)
+    .setFooter(`${queue.songs.length - 1} song${queue.songs.length - 1 === 1 ? '' : 's'} left in queue`)
 
     FieldsEmbed.build();
 }
@@ -36,6 +36,5 @@ exports.conf = {
   aliases: ["q"],
   cooldown: 4,
   guildOnly: true,
-  
-  channelPerms: ["EMBED_LINKS"]
+	channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
 }
