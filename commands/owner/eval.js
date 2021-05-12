@@ -10,13 +10,6 @@ exports.run = async (client, message, args) => {
     const code = args.join(" ");
     if (!code) return message.channel.send("gimme some code pls");
     let evaled;
-    
-    if (code.includes("process.env")) {
-      evaled = "hey no secret token here";
-    } else {
-      evaled = await eval(code);
-    }
-    
     if (typeof evaled !== "string") evaled = require("util").inspect(evaled, {depth: 0});
     
     let output = clean(evaled);
