@@ -1,9 +1,11 @@
 const { MessageEmbed, Util } = require("discord.js");
 const lyricsFinder = require("lyrics-finder");
 const Genius = require("genius-lyrics");
+const { query } = require("express");
 const genius = new Genius.Client(process.env.geniusKey);
 
 exports.run = async (client, message, args) => {
+  console.log(process.env.geniusKey)
   let lyrics;
   let embed = new MessageEmbed()
   .setColor(message.member.displayHexColor)
@@ -22,20 +24,24 @@ exports.run = async (client, message, args) => {
       embed.setThumbnail(firstSong.thumbnail)
     }
   } else {
-    const query = args.join(" ");
-    if (!query) return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
-    const searches = await genius.songs.search(query);
-    const firstSong = searches[0];
-    if (!firstSong) return message.inlineReply(`i found no song for ${query} :pensive:`);
-    lyrics = await firstSong.lyrics();
-    if (!lyrics) {
-      lyrics = await lyricsFinder(query, '');
-      if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :(`);
-      embed.setTitle(`Lyrics for ${query}`);
-    } else {
-      embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
-      embed.setThumbnail(firstSong.thumbnail)
-    }
+    const res = await getLyric(query, message, embed);
+    lyrics = res.lyrics;
+    embed.setTitle(`Lyrics for ${res.title} - ${res.artist}`)
+    embed.setThumbnail(res.thumbnail)
+    // const query = args.join(" ");
+    // if (!query) return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
+    // const searches = await genius.songs.search(query);
+    // const firstSong = searches[0];
+    // if (!firstSong) return message.inlineReply(`i found no song for ${query} :pensive:`);
+    // lyrics = await firstSong.lyrics();
+    // if (!lyrics) {
+    //   lyrics = await lyricsFinder(query, '');
+    //   if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :(`);
+    //   embed.setTitle(`Lyrics for ${query}`);
+    // } else {
+    //   embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
+    //   embed.setThumbnail(firstSong.thumbnail)
+    // }
   };
   const [first, ...rest] = Util.splitMessage(lyrics, { maxLength: 2000, char: '\n' });
 
@@ -78,3 +84,16 @@ exports.conf = {
   guildOnly: true,
   channelPerms: ["EMBED_LINKS"]
 };
+
+
+async function getLyric(query, message, embed) {
+  const searches = await genius.songs.search(query);
+  const firstSong = searches[0];
+  return {
+    type: 'genius',
+    title: firstSong.title,
+    lyrics: await firstSong.lyrics(),
+    thumbnail: firstSong.thumbnail,
+    artist: firstSong.artist.name
+  }
+}
