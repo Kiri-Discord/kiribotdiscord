@@ -23,12 +23,12 @@ exports.run = async (client, message, args) => {
       embed.setThumbnail(firstSong.thumbnail)
     }
   } else {
+    const query = args.join(" ");
+    if (!query) return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
     const res = await getLyric(query, message, embed);
     lyrics = res.lyrics;
     embed.setTitle(`Lyrics for ${res.title} - ${res.artist}`)
     embed.setThumbnail(res.thumbnail)
-    // const query = args.join(" ");
-    // if (!query) return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
     // const searches = await genius.songs.search(query);
     // const firstSong = searches[0];
     // if (!firstSong) return message.inlineReply(`i found no song for ${query} :pensive:`);
