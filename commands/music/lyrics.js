@@ -1,11 +1,9 @@
 const { MessageEmbed, Util } = require("discord.js");
 const lyricsFinder = require("lyrics-finder");
 const Genius = require("genius-lyrics");
-const { query } = require("express");
 const genius = new Genius.Client(process.env.geniusKey);
 
 exports.run = async (client, message, args) => {
-  console.log(process.env.geniusKey)
   let lyrics;
   let embed = new MessageEmbed()
   .setColor(message.member.displayHexColor)
