@@ -1,4 +1,7 @@
 const canvacord = require('canvacord');
+const { createCanvas, loadImage } = require('canvas');
+const stackBlur = require('stackblur-canvas');
+const request = require('node-superfetch');
 
 exports.run = async (client, message, args) => {
     let rank;
@@ -9,8 +12,8 @@ exports.run = async (client, message, args) => {
     if (mention.user.bot) return message.inlineReply('just to make this clear... bots can\'t level up :pensive:')
 
     let target = await client.dbleveling.findOne({
-        guildId: message.guild.id,
-        userId: mention.user.id
+      guildId: message.guild.id,
+      userId: mention.user.id
     });
 
     if (!target) return message.channel.send("you or that user doesn't have any leveling data yet. chat more to show yours :)");
@@ -23,14 +26,12 @@ exports.run = async (client, message, args) => {
       guildId: message.guild.id,
     }).sort({
       xp: -1
-    })
+    });
 
     if (!result) return message.inlineReply("this guild doesn't have any leveling data yet. chat more to show yours :)");
 
     for (let counter = 0; counter < result.length; ++counter) {
-
       let member = message.guild.members.cache.get(result[counter].userId)
-
       if (!member) {
         client.dbleveling.findOneAndDelete({
             userId: result[counter].userId,
@@ -38,13 +39,27 @@ exports.run = async (client, message, args) => {
         }, (err) => {
             if (err) console.error(err)
         });
-
       } else if (member.user.id === mention.user.id) {
         rank = counter + 1
       }
     }
     message.channel.startTyping(true);
-    const rankboard = new canvacord.Rank({ renderEmojis: true })
+
+    let backgroundImage;
+
+    if (message.guild.iconURL()) {
+      const { body } = await request.get(message.guild.iconURL({dynamic: false, format: 'png', size: 2048}));
+			const data = await loadImage(body);
+			const canvas = createCanvas(data.width, data.height);
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(data, 0, 0);
+			stackBlur.canvasRGBA(canvas, 0, 0, canvas.width, canvas.height, 40);
+			backgroundImage = canvas.toBuffer();
+    } else {
+      backgroundImage = 'https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg'
+    }
+    const rankboard = new canvacord.Rank()
+    .renderEmojis(true)
     .setAvatar(mention.user.displayAvatarURL({size: 1024, dynamic: false, format: 'png'}))
     .setCurrentXP(target.xp)
     .setRequiredXP(neededXP)
@@ -54,7 +69,7 @@ exports.run = async (client, message, args) => {
     .setDiscriminator(mention.user.discriminator)
     .setUsername(mention.user.username)
     .setProgressBar("#e6e6ff", "COLOR")
-    .setBackground("IMAGE", 'https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg')
+    .setBackground("IMAGE", backgroundImage)
     
     rankboard.build().then(data => {
       message.channel.stopTyping(true);

@@ -1,7 +1,6 @@
 const { MessageEmbed, Util } = require("discord.js");
 const lyricsFinder = require("lyrics-finder");
-const Genius = require("genius-lyrics");
-const genius = new Genius.Client(process.env.geniusKey);
+const AZLyrics = require("azlyrics-ext");
 
 exports.run = async (client, message, args) => {
   let lyrics;
@@ -9,36 +8,29 @@ exports.run = async (client, message, args) => {
   .setColor(message.member.displayHexColor)
   const queue = client.queue.get(message.guild.id);
   if (queue) {
-    const searches = await genius.songs.search(queue.songs[0].title);
-    const firstSong = searches[0];
-    lyrics = await firstSong.lyrics();
-    if (!lyrics) {
-      lyrics = await lyricsFinder(queue.songs[0].title, '');
-      if (!lyrics) return message.inlineReply(`i found no lyrics for the current playing song :pensive:`);
+    const songs = await AZLyrics.search(queue.songs[0].title);
+    if (!songs) {
+      lyrics = await lyricsFinder(query, '');
+      if (!lyrics) return message.inlineReply(`i found no lyrics for current playing song :pensive:`);
       embed.setTitle(`Lyrics for ${queue.songs[0].title}`);
     } else {
-      embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
-      embed.setThumbnail(firstSong.thumbnail)
-    }
+      const info = await AZLyrics.getTrack(songs[0].url);
+      embed.setTitle(`Lyrics for ${info.title} by ${info.artist}`)
+      lyrics = info.lyrics;
+    };
   } else {
     const query = args.join(" ");
     if (!query) return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
-    const res = await getLyric(query, message, embed);
-    lyrics = res.lyrics;
-    embed.setTitle(`Lyrics for ${res.title} - ${res.artist}`)
-    embed.setThumbnail(res.thumbnail)
-    // const searches = await genius.songs.search(query);
-    // const firstSong = searches[0];
-    // if (!firstSong) return message.inlineReply(`i found no song for ${query} :pensive:`);
-    // lyrics = await firstSong.lyrics();
-    // if (!lyrics) {
-    //   lyrics = await lyricsFinder(query, '');
-    //   if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :(`);
-    //   embed.setTitle(`Lyrics for ${query}`);
-    // } else {
-    //   embed.setTitle(`Lyrics for ${firstSong.title} - ${firstSong.artist.name}`)
-    //   embed.setThumbnail(firstSong.thumbnail)
-    // }
+    const songs = await AZLyrics.search(query);
+    if (!songs) {
+      lyrics = await lyricsFinder(query, '');
+      if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :pensive:`);
+      embed.setTitle(`Lyrics for ${queue.songs[0].title}`);
+    } else {
+      const info = await AZLyrics.getTrack(songs[0].url);
+      embed.setTitle(`Lyrics for ${info.title} by ${info.artist}`)
+      lyrics = info.lyrics;
+    };
   };
   const [first, ...rest] = Util.splitMessage(lyrics, { maxLength: 2000, char: '\n' });
 
@@ -81,16 +73,3 @@ exports.conf = {
   guildOnly: true,
   channelPerms: ["EMBED_LINKS"]
 };
-
-
-async function getLyric(query, message, embed) {
-  const searches = await genius.songs.search(query);
-  const firstSong = searches[0];
-  return {
-    type: 'genius',
-    title: firstSong.title,
-    lyrics: await firstSong.lyrics(),
-    thumbnail: firstSong.thumbnail,
-    artist: firstSong.artist.name
-  }
-}

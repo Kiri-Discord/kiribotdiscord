@@ -3,10 +3,7 @@ const { parseSync } = require('subtitle');
 const format = 'vtt';
 const request = require('node-superfetch');
 const { MessageEmbed } = require("discord.js");
-const lyricsFinder = require("lyrics-finder");
 const ISO6391 = require('iso-639-1');
-
-
 module.exports = {
     async sing(song, channel, lang, queue) {
         if (song.type === 'yt') {
@@ -36,37 +33,12 @@ module.exports = {
                     queue.karaoke.timeout.push(each);
                   });
                 } else {
-                    const lyrics = await lyricsFinder(song.title, '');
-                    if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.`}});
-                    let lyricsEmbed = new MessageEmbed()
-                    .setTitle(`Lyrics for ${song.title} by ${song.author}`)
-                    .setDescription(lyrics)
-                    .setColor('RANDOM')
-                    if (lyricsEmbed.description.length >= 2048)
-                    lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-                    return channel.send(`${song.requestedby}, i found some lyrics of **${song.title}**, but not in your language \`${ISO6391.getName(lang)}\` :pensive:\nshowing you the lyric that i found on internet instead...\nyou can try using an another language.`, lyricsEmbed);
+                    return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
                 }
               } else {
-                const lyrics = await lyricsFinder(song.title, '');
-                if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** in your language \`${ISO6391.getName(lang)}\` :pensive:\nyou can try using an another language.`}});
-                let lyricsEmbed = new MessageEmbed()
-                .setTitle(`Lyrics for ${song.title} by ${song.author}`)
-                .setDescription(lyrics)
-                .setColor('RANDOM')
-                if (lyricsEmbed.description.length >= 2048)
-                lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-                return channel.send(`${song.requestedby}, i found some lyrics of **${song.title}**, but not in your language \`${ISO6391.getName(lang)}\` :pensive:\n*showing you the lyric that i found on internet instead...`, lyricsEmbed);
+                return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
               }
-            } else {
-              const lyrics = await lyricsFinder(song.title, '');
-              if (!lyrics) return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive:`, footer: { text: "don't know what is this about? karaoke mode is currently set to ON in your guild setting" }}});
-              let lyricsEmbed = new MessageEmbed()
-              .setTitle(`Lyrics for ${song.title} by ${song.author}`)
-              .setDescription(lyrics)
-              .setColor('RANDOM')
-              if (lyricsEmbed.description.length >= 2048)
-              lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-              return channel.send(`${song.requestedby}, i found some lyrics of **${song.title}**, but not in your language \`${ISO6391.getName(lang)}\` :pensive:\n*showing you the lyric that i found on internet instead...`, lyricsEmbed);
+              return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive: \nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`, footer: { text: "don't know what is this about? karaoke mode is currently set to ON in your guild setting" }}});
             }
         } else {
           return channel.send({embed: {color: "f3f3f3", description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:*`}});
