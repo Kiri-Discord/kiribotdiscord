@@ -16,7 +16,7 @@ jobs:
         port: ${{ secrets.EC2_SSH_PORT }}
         script: |
           cd "${{ secrets.EC2_SSH_PATH }}"
-          pm2 stop ecosystem.config.js
+          pm2 kill
           git pull
           npm i
           curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
