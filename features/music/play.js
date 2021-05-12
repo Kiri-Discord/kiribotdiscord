@@ -16,6 +16,7 @@ module.exports = {
       queue.karaoke.timeout.forEach(x => {
           clearTimeout(x);
       });
+      queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
   }
     if (!song) {
       setTimeout(function () {
@@ -28,6 +29,7 @@ module.exports = {
         queue.karaoke.timeout.forEach(x => {
             clearTimeout(x);
         });
+        queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
     }
       await Guild.findOneAndUpdate({
         guildId: message.guild.id
@@ -81,6 +83,7 @@ module.exports = {
         queue.karaoke.timeout.forEach(x => {
             clearTimeout(x);
         });
+        queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
       }
       client.queue.delete(message.guild.id);
     });
