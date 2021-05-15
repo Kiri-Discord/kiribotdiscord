@@ -13,6 +13,13 @@ exports.run = async (client, message, args) => {
         safesearch = "active"
     }
     const href = await search(googleKey, csx, query, safesearch);
+
+    if (href.error) {
+        const code = href.error;
+        const dead = client.customEmojis.get('dead');
+        if (code === 429) return message.channel.send(`wait! i am receving too many search request or i have reached the search quota for today ${dead} can you try it later?`);
+        if (code === 400) return message.channel.send(`an error happened on Google's side with the error code ${code} ${dead} try again later!`);
+    }
     if (!href) {
         if (safesearch === "active") {
             return message.inlineReply("i can't find any result for that :pensive: try searching it again it a NSFW channel if you are looking for more darker result.\n*or Google is probably high*")
@@ -20,7 +27,6 @@ exports.run = async (client, message, args) => {
             return message.inlineReply("i can't find any result for that :pensive:\n*Google is probably high*")
         }
     };
-
     const embed = new MessageEmbed()
     .setTitle(href.title)
     .setDescription(href.snippet)
@@ -30,27 +36,31 @@ exports.run = async (client, message, args) => {
     if (href.pagemap.cse_image) {
         embed.setImage(href.pagemap.cse_image[0].src)
     }
-    return message.channel.send(embed).catch(err => message.channel.send("i can't seem to be able to grab you a result for that :( here is a hug for now 🤗"));
-
+    return message.channel.send(embed);
 }
 
 
 async function search(googleKey, csx, query, safesearch) {
-    const { body } = await request.get("https://www.googleapis.com/customsearch/v1").query({
-        key: googleKey, cx: csx, safe: safesearch, q: query
-    });
-    if (!body.items) {
-        return null;
-    } else if (Array.isArray(body.items)) {
-        return body.items[0];
-    } else {
-        return body.items;
+    try {
+        const { body } = await request.get("https://www.googleapis.com/customsearch/v1").query({
+            key: googleKey, cx: csx, safe: safesearch, q: query
+        });
+        if (!body.items) {
+            return null;
+        } else if (Array.isArray(body.items)) {
+            return body.items[0];
+        } else {
+            return body.items;
+        }
+    } catch (error) {
+        if (error.status) return { error: error.status };
+        else return null;
     }
 }
 
 exports.help = {
 	name: "google",
-	description: "Google sth for ya 👀",
+	description: "search something for you on Google 👀",
 	usage: "google `<query>`",
 	example: "google `discord`"
 };
@@ -59,6 +69,5 @@ exports.conf = {
 	aliases: ["gg"],
     cooldown: 5,
     guildOnly: true,
-    
     channelPerms: ["EMBED_LINKS"]
 };

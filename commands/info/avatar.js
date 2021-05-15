@@ -2,13 +2,13 @@ const { MessageEmbed } = require("discord.js");
 
 exports.run = async (client, message, args) => {
   let member = await getMemberfromMention(args[0], message.guild) || message.member;
-  let user = member.user;
+  let { user } = member;
 
   const avatar = user.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
   
   const embed = new MessageEmbed()
   .setTitle(`${user.tag} avatar`)
-  .setDescription(`[Avatar URL](${avatar})`)
+  .setDescription(`[**Avatar URL**](${avatar})`)
   .setColor(member.displayHexColor)
   .setImage(avatar)
   .setTimestamp(new Date())
@@ -28,6 +28,5 @@ exports.conf = {
   aliases: ["icon", "pfp", "ava"],
   cooldown: 5,
   guildOnly: true,
-  
 	channelPerms: ["EMBED_LINKS"]
 }

@@ -1,6 +1,6 @@
 const request = require('node-superfetch');
 const { createCanvas, loadImage } = require('canvas');
-const canvasFuncs = require('../../util/canvas.js');
+const { pixelize } = require('../../util/canvas');
 const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
@@ -40,15 +40,14 @@ exports.run = async (client, message, args) => {
     const data = await loadImage(body);
     const canvas = createCanvas(data.width, data.height);
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(data, 0, 0);
-    canvasFuncs.greyscale(ctx, 0, 0, data.width, data.height);
+    pixelize(ctx, canvas, data, 0.15, 0, 0, canvas.width, canvas.height);
     const attachment = canvas.toBuffer();
     if (Buffer.byteLength(attachment) > 8e+6) {
       await message.channel.stopTyping(true);
       return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
   };
     await message.channel.stopTyping(true);
-    return message.channel.send({ files: [{ attachment, name: 'greyscale.png' }] });
+    return message.channel.send({ files: [{ attachment, name: 'pixelize.png' }] });
   } catch (err) {
     await message.channel.stopTyping(true);
     return message.channel.send(`sorry :( i got an error. try again later! can you check the image files?`)
@@ -56,16 +55,15 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
-  name: "greyscale",
-  description: "is that blue? no, black.",
-  usage: ["greyscale `[image attachment]`", "greyscale `[URL]`"],
-  example: ["greyscale `image attachment`", "greyscale `https://example.com/girl.jpg`", "greyscale"]
+  name: "pixelize",
+  description: "pixelize your image",
+  usage: ["pixelize `[image attachment]`", "pixelize `[URL]`"],
+  example: ["pixelize `image attachment`", "pixelize `https://example.com/girl.jpg`", "pixelize"]
 };
 
 exports.conf = {
-  aliases: ["grayscale"],
+  aliases: ['pixel'],
   cooldown: 5,
   guildOnly: true,
-  
 	channelPerms: ["ATTACH_FILES"]
 }

@@ -78,7 +78,55 @@ module.exports = async (client, message) => {
     const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
     return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
   };
+
+  if (commandFile.conf.maintenance) return message.inlineReply(`\`${prefix}${cmd}\` is being maintained ${sed} try again later!`)
+  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
+
+  if (!client.config.owners.includes(message.author.id) && commandFile.conf.owner) return;
   
+  if (!message.channel.nsfw && commandFile.conf.adult) {
+    if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) { 
+      const msg = await message.channel.send('https://www.youtube.com/watch?v=rTgj1HxmUbg');
+      setTimeout(() => {
+        return msg.edit(`https://www.youtube.com/watch?v=rTgj1HxmUbg\n*seriously, turn to a nsfw channel pls*`);
+      }, 5000);
+    }
+    const embed2 = new MessageEmbed()
+    .setColor(0x7289DA)
+    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
+    .setTitle('say hi to my uncle')
+    .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
+    return message.channel.send(embed2).catch(() => null)
+  };
+  
+  if (commandFile.conf.userPerms && message.channel.type !== "dm") {
+    if (commandFile.conf.userPerms.length) {
+      for (permission in commandFile.conf.userPerms) {
+        if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
+          return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${stare}`);
+        }
+      }
+    }
+  }
+  if (commandFile.conf.channelPerms && message.channel.type !== 'dm') {
+    if (commandFile.conf.channelPerms.length) {
+      for (permission in commandFile.conf.channelPerms) {
+        if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
+          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}`);
+        };
+      }
+    }
+  }
+  if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
+    if (commandFile.conf.clientPerms.length) {
+      for (permission in commandFile.conf.clientPerms) {
+        if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
+          return message.channel.send(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission across the server to do that ${sed}`)
+        };
+      }
+    }
+  };
+
   let globalStorage = client.globalStorage;
   let storage = await globalStorage.findOne();
   if (!storage) storage = new globalStorage();
@@ -132,53 +180,6 @@ module.exports = async (client, message) => {
     agreed.set(key, collectedEmojis);
     return agreeCollector(storage, collectedEmojis, message, key);
   };
-  if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
-
-  if (!client.config.owners.includes(message.author.id) && commandFile.conf.owner) return;
-  
-  if (!message.channel.nsfw && commandFile.conf.adult) {
-    if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) { 
-      const msg = await message.channel.send('https://www.youtube.com/watch?v=rTgj1HxmUbg');
-      setTimeout(() => {
-        return msg.edit(`https://www.youtube.com/watch?v=rTgj1HxmUbg\n*seriously, turn to a nsfw channel pls*`);
-      }, 5000);
-    }
-    const embed2 = new MessageEmbed()
-    .setColor(0x7289DA)
-    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
-    .setTitle('say hi to my uncle')
-    .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
-    return message.channel.send(embed2).catch(() => null)
-  };
-  
-  if (commandFile.conf.userPerms && message.channel.type !== "dm") {
-    if (commandFile.conf.userPerms.length) {
-      for (permission in commandFile.conf.userPerms) {
-        if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-          return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${stare}`);
-        }
-      }
-    }
-  }
-  if (commandFile.conf.channelPerms && message.channel.type !== 'dm') {
-    if (commandFile.conf.channelPerms.length) {
-      for (permission in commandFile.conf.channelPerms) {
-        if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
-          return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}`);
-        };
-      }
-    }
-  }
-  if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
-    if (commandFile.conf.clientPerms.length) {
-      for (permission in commandFile.conf.clientPerms) {
-        if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-          return message.channel.send(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission across the server to do that ${sed}`)
-        };
-      }
-    }
-  };
-
   if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
   let member;

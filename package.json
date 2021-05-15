@@ -34,6 +34,7 @@
     "fen-validator": "^1.4.1",
     "ffmpeg-static": "^4.3.0",
     "gifencoder": "^2.0.1",
+    "gm": "^1.23.1",
     "google-tts-api": "^2.0.2",
     "helmet": "^4.5.0",
     "html-entities": "^2.3.2",

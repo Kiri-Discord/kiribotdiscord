@@ -15,6 +15,29 @@ module.exports = {
 		const y = heightOffest + ((maxHeight / 2) - (height / 2));
 		return { x, y, width, height };
 	},
+    desaturate: (ctx, level, x, y, width, height) => {
+		const data = ctx.getImageData(x, y, width, height);
+		for (let i = 0; i < height; i++) {
+			for (let j = 0; j < width; j++) {
+				const dest = ((i * width) + j) * 4;
+				const grey = Number.parseInt(
+					(0.2125 * data.data[dest]) + (0.7154 * data.data[dest + 1]) + (0.0721 * data.data[dest + 2]), 10
+				);
+				data.data[dest] += level * (grey - data.data[dest]);
+				data.data[dest + 1] += level * (grey - data.data[dest + 1]);
+				data.data[dest + 2] += level * (grey - data.data[dest + 2]);
+			}
+		}
+		ctx.putImageData(data, x, y);
+		return ctx;
+	},
+    pixelize: (ctx, canvas, image, level, x, y, width, height) => {
+		ctx.imageSmoothingEnabled = false;
+		ctx.drawImage(image, x, y, width * level, height * level);
+		ctx.drawImage(canvas, x, y, width * level, height * level, x, y, width, height);
+		ctx.imageSmoothingEnabled = true;
+		return ctx;
+	},
     greyscale: (ctx, x, y, width, height) => {
         const data = ctx.getImageData(x, y, width, height);
         for (let i = 0; i < data.data.length; i += 4) {

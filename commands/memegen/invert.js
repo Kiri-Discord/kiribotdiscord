@@ -21,14 +21,14 @@ exports.run = async (client, message, args) => {
               const fetchs = await message.channel.messages.fetch({ limit: 10 });
               const fetch = fetchs.filter(msg => msg.attachments.size > 0);
               const target = fetch.filter(msg => fileTypeRe.test(msg.attachments.first().name));
-              image = target.last().attachments.first().url;
+              image = target.first().attachments.first().url;
           } else {
               const cache = caches.filter(msg => fileTypeRe.test(msg.attachments.first().name));
               image = cache.last().attachments.first().url;
           };
-        } catch (error) {
-            image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
-        }
+      } catch (error) {
+          image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+      }
       }
       else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
       else image = attachments[0].url;
@@ -43,6 +43,10 @@ exports.run = async (client, message, args) => {
     ctx.drawImage(data, 0, 0);
     canvasFuncs.invert(ctx, 0, 0, data.width, data.height);
     const attachment = canvas.toBuffer();
+    if (Buffer.byteLength(attachment) > 8e+6) {
+      await message.channel.stopTyping(true);
+      return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
+  };
     await message.channel.stopTyping(true);
     return message.channel.send({ files: [{ attachment, name: 'greyscale.png' }] });
   } catch (err) {
@@ -62,6 +66,5 @@ exports.conf = {
   aliases: [],
   cooldown: 5,
   guildOnly: true,
-  
 	channelPerms: ["ATTACH_FILES"]
 }

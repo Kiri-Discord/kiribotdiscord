@@ -176,6 +176,25 @@ module.exports = class util {
 		if (no.includes(choice) || extraNo.includes(choice)) return false;
 		return false;
 	}
+	static async askString(channel, user, { time = 10000 } = {}) {
+		const filter = res => res.author.id === user.id;
+		const verify = await channel.awaitMessages(filter, {
+			max: 1,
+			time
+		});
+		if (!verify.size) return false;
+		const choice = verify.first().content.toLowerCase();
+		if (choice === 'cancel') return false;
+		return verify.first().content;
+	}
+	static magikToBuffer(magik) {
+		return new Promise((res, rej) => {
+			magik.toBuffer((err, buffer) => {
+				if (err) return rej(err);
+				return res(buffer);
+			});
+		});
+	}
 	static async verifyLanguage(channel, user, { time = 30000 } = {}) {
 		const filter = res => {
 			const value = res.content.toLowerCase();

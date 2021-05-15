@@ -132,12 +132,12 @@ exports.run = async (client, message, args, prefix, cmd) => {
                 const moves = game.moves();
                 const pickFilter = res => {
                     if (![message.author.id, opponent.id].includes(res.author.id)) return false;
-                    const choice = res.content.toLowerCase();
-                    if (choice === 'end') return true;
-                    if (choice === 'save') return true;
-                    if (choice === 'help') return true;
+                    const choice = res.content.toUpperCase();
+                    if (choice === 'END') return true;
+                    if (choice === 'SAVE') return true;
+                    if (choice === 'HELP') return true;
                     if (res.author.id !== user.id) return false;
-                    const move = choice.toUpperCase().match(turnRegex);
+                    const move = choice.match(turnRegex);
                     if (!move) return false;
                     const parsed = parseSAN(gameState, moves, move);
                     if (!parsed || !moves[parsed[0]] || !moves[parsed[0]].includes(parsed[1])) {
@@ -217,27 +217,30 @@ exports.run = async (client, message, args, prefix, cmd) => {
             });
         }
         const winner = gameState.turn === 'black' ? whitePlayer : blackPlayer;
-        let amount = getRandomInt(5, 15);
-        const storageAfter = await client.money.findOneAndUpdate({
-            guildId: message.guild.id,
-            userId: winner.id
-        }, {
-            guildId: message.guild.id,
-            userId: winner.id,
-            $inc: {
-                balance: amount,
-            }, 
-        }, {
-            upsert: true,
-            new: true,
-        });
         const EndEmbed = new MessageEmbed()
-        .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
         .setTitle(`${winner.username} won!`)
-        .setFooter(`your current balance: ${storageAfter.balance} token`)
         .setColor('#34e363')
         .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
         .setImage(`attachment://chess.png`)
+        if (!winner.bot) {
+            let amount = getRandomInt(5, 15);
+            const storageAfter = await client.money.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: winner.id
+            }, {
+                guildId: message.guild.id,
+                userId: winner.id,
+                $inc: {
+                    balance: amount,
+                }, 
+            }, {
+                upsert: true,
+                new: true,
+            });
+            EndEmbed
+            .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
+            .setFooter(`your current balance: ${storageAfter.balance} token`)
+        }
         return message.channel.send(`checkmate! congratulations, **${winner.username}**!`, EndEmbed);
     } catch (err) {
         client.games.delete(message.channel.id);
