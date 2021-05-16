@@ -187,7 +187,7 @@ module.exports = class util {
 		if (choice === 'cancel') return false;
 		return verify.first().content;
 	}
-	static magikToBuffer(magik) {
+	static async magikToBuffer(magik) {
 		return new Promise((res, rej) => {
 			magik.toBuffer((err, buffer) => {
 				if (err) return rej(err);

@@ -53,9 +53,10 @@ module.exports = async (client, guild) => {
   .setTimestamp()
   .setAuthor(`hi i'm Sefy!`, client.user.displayAvatarURL())
   .setThumbnail(client.user.displayAvatarURL())
-
-  const log2 = client.channels.cache.get('827954468779327489')
-  if (log2) log2.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  client.config.logChannels.forEach(id => {
+    const channel = client.channels.cache.get(id);
+    if (channel) channel.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  });
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   await client.users.cache.get('617777631257034783').send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   if (channelbutcansendEmbed.size > 0) { 

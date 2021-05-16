@@ -13,6 +13,7 @@ mongo.init();
 RedisClient.start();
 
 require('./handler/inlineReply');
+
 const sefy = require("./handler/ClientBuilder.js");
 
 const client = new sefy(({
@@ -33,3 +34,5 @@ client.package = require("./package.json");
 client.on("warn", console.warn); 
 client.on("error", console.error);
 client.login(process.env.token).catch(console.error);
+
+module.exports = client;

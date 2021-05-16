@@ -86,6 +86,8 @@ module.exports = async (client, guild) => {
 
     console.log(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     client.users.cache.get('617777631257034783').send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-    const logChannel2 = client.channels.cache.get('827954468779327489');
-    if (logChannel2) logChannel2.send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    client.config.logChannels.forEach(id => {
+        const channel = client.channels.cache.get(id);
+        if (channel) channel.send(`Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    });
 };

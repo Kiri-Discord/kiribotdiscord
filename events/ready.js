@@ -1,5 +1,7 @@
 const web = require('../util/web.js');
 const { randomStatus, botSitePost } = require('../util/util');
+const { GatewayServer, SlashCreator } = require('slash-create');
+const path = require('path');
 
 module.exports = async client => {
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
@@ -37,4 +39,18 @@ module.exports = async client => {
     const activity = randomStatus(client);
 		client.user.setActivity(activity.text, { type: activity.type });
 	}, 120000);
+  const creator = new SlashCreator({
+    applicationID: client.user.id,
+    publicKey: process.env.publicKey,
+    token: process.env.token
+  });
+  creator
+  .withServer(
+      new GatewayServer(
+        (handler) => client.ws.on('INTERACTION_CREATE', handler)
+      )
+  )
+  .registerCommandsIn(path.join(__dirname, '..', 'slashCommand'))
+  .syncCommands()
+  console.log('[DISCORD] Loaded slash command')
 };
