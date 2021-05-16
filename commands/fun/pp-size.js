@@ -6,7 +6,7 @@ exports.run = async (client, message, args) => {
     const { user } = member;
 
     let level;
-    if (client.config.owners.includes(message.author.id)) {
+    if (client.config.owners.includes(user.id)) {
         level = 10;
     } else {
         const random = MersenneTwister19937.seed(user.id);
