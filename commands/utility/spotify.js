@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
 
     if (status !== null && status.type === "LISTENING" && status.name === "Spotify" && status.assets !== null) {
         let image = `https://i.scdn.co/image/${status.assets.largeImage.slice(8)}`;
-        let url = `https:/open.spotify.com/track/${status.syncID}`;
+        let url = `https://open.spotify.com/track/${status.syncID}`;
         let name = status.details;
         let artist = status.state;
         let album = status.assets.largeText;
@@ -46,7 +46,7 @@ exports.run = async (client, message, args) => {
 			ctx.fillText(artist, base.width / 2, 720);
 			ctx.fillText(album, base.width / 2, 65);
             const attachment = canvas.toBuffer();
-			return message.channel.send(`${user.username} is listening to ${name} on Spotify!\ncheck out at ${url}`, {files: [{attachment, name: "spotify.png"}]})
+			return message.channel.send(`**${user.username}** is listening to **${name}** on Spotify!\ncheck out at ${url}`, {files: [{attachment, name: "spotify.png"}]})
 		} catch (err) {
 			return message.inlineReply(`sorry i got an error :pensive: try again later!`)
 		}
