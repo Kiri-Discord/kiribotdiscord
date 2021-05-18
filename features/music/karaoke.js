@@ -33,13 +33,12 @@ module.exports = {
                     queue.karaoke.timeout.push(each);
                   });
                 } else {
-                    return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
+                    return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\n\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
                 }
               } else {
-                return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
+                return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\n\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
               }
-              return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive: \nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`, footer: { text: "don't know what is this about? karaoke mode is currently set to ON in your guild setting" }}});
-            }
+            } else return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive: \nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`, footer: { text: "don't know what is this about? karaoke mode is currently set to ON in your guild setting" }}});
         } else {
           return channel.send({embed: {color: "f3f3f3", description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:*`}});
         }
