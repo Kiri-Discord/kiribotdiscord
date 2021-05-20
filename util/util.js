@@ -228,8 +228,8 @@ module.exports = class util {
 				type: 'PLAYING'
 			},
 			{
-				text: 'your heart',
-				type: 'LISTENING'
+				text: 'sus',
+				type: 'WATCHING'
 			},
 			{
 				text: '@sefy',
