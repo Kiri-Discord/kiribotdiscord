@@ -2,7 +2,7 @@ exports.run = async (client, message, args) => {
   if (!args[0]) {
     let listGuild = [];
     client.guilds.cache.each(guild => {
-      listGuild.push(`${guild.name} - ${guild.id}`)
+      listGuild.push(`${guild.name} - ${guild.id} (owner: ${guild.ownerID})`)
     });
     return message.channel.send(`these are all guilds being connected to me. use this command with it's id to generate an invite:\n${listGuild.join('\n')}`, { split: true })
   }
