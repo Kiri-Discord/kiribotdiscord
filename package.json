@@ -47,7 +47,7 @@
     "js-chess-engine": "^0.11.3",
     "libsodium-wrappers": "^0.7.9",
     "lyrics-finder": "^21.7.0",
-    "millify": "^3.5.2",
+    "millify": "^4.0.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.33",
