@@ -7,7 +7,7 @@ const Guild = require('../../model/music');
 const { sing } = require("./karaoke");
 
 module.exports = {
-  async play(song, message, client) {
+  async play(song, message, client, prefix) {
     let duration;
     const { SOUNDCLOUD_CLIENT_ID } = require("../../util/musicutil");
 
@@ -112,7 +112,7 @@ module.exports = {
     }
     try {
       if (queue.karaoke.isEnabled) {
-        sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue)
+        sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix)
       };
       const embed = new MessageEmbed()
       .setURL(song.url)

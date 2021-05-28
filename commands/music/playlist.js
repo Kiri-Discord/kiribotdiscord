@@ -170,7 +170,7 @@ exports.run = async (client, message, args, prefix) => {
           return message.channel.send('there was an error when i tried to join your voice channel :pensive:').catch(console.error);
         } 
         await queueConstruct.connection.voice.setSelfDeaf(true);
-        play(queueConstruct.songs[0], message, client);
+        play(queueConstruct.songs[0], message, client, prefix);
       } catch (error) {
         console.error(error);
         client.queue.delete(message.guild.id);

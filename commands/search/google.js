@@ -15,10 +15,7 @@ exports.run = async (client, message, args) => {
     const href = await search(googleKey, csx, query, safesearch);
 
     if (href.error) {
-        const code = href.error;
-        const dead = client.customEmojis.get('dead');
-        if (code === 429) return message.channel.send(`wait! i am receving too many search request or i have reached the search quota for today ${dead} can you try it later?`);
-        if (code === 400) return message.channel.send(`an error happened on Google's side with the error code ${code} ${dead} try again later!`);
+        return message.channel.send(`http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`)
     }
     if (!href) {
         if (safesearch === "active") {

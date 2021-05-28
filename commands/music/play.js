@@ -177,7 +177,7 @@ exports.run = async (client, message, args, prefix) => {
         }
         message.channel.send({embed: {color: "f3f3f3", description: `**i have joined your voice channel :microphone2: \`#${channel.name}\` and bound to :page_facing_up: ${message.channel}!**`}})
         await queueConstruct.connection.voice.setSelfDeaf(true);
-        play(queueConstruct.songs[0], message, client);
+        play(queueConstruct.songs[0], message, client, prefix);
     } catch (error) {
         console.error(error);
         client.queue.delete(message.guild.id);

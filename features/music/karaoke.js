@@ -5,7 +5,7 @@ const request = require('node-superfetch');
 const { MessageEmbed } = require("discord.js");
 const ISO6391 = require('iso-639-1');
 module.exports = {
-    async sing(song, channel, lang, queue) {
+    async sing(song, channel, lang, queue, prefix) {
         if (song.type === 'yt') {
             const info = await ytdl.getInfo(song.url);
             const foundCaption = info.player_response.captions;
@@ -33,12 +33,26 @@ module.exports = {
                     queue.karaoke.timeout.push(each);
                   });
                 } else {
-                    return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\n\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
+                  let embed = new MessageEmbed()
+                  .setTitle('No real-time lyrics was found :(')
+                  .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${prefix}al lang <language>\` (takes effect only on your next song)\n- Use \`${prefix}lyrics\` to fetch a normal lyric`)
+                  .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
+                  return channel.send(embed);
                 }
               } else {
-                return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** for your requested language \`${ISO6391.getName(lang)}\` :pensive:\n\nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`}});
+                  let embed = new MessageEmbed()
+                  .setTitle('No real-time lyrics was found :(')
+                  .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${prefix}al lang <language>\` (takes effect only on your next song)\n- Use \`${prefix}lyrics\` to fetch a normal lyric`)
+                  .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
+                  return channel.send(embed);
               }
-            } else return channel.send({embed: {color: "f3f3f3", description: `${song.requestedby}, i found no lyrics for **${song.title}** by **${song.author}** :pensive: \nyou can use \`@sefy lyrics ${song.title.toLowerCase()} - ${song.author.toLowerCase()}\` to fetch it manually :)`, footer: { text: "don't know what is this about? karaoke mode is currently set to ON in your guild setting" }}});
+            } else {
+                let embed = new MessageEmbed()
+                .setTitle('No real-time lyrics was found :(')
+                .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${prefix}al lang <language>\` (takes effect only on your next song)\n- Use \`${prefix}lyrics\` to fetch a normal lyric`)
+                .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
+                return channel.send(embed);
+            }
         } else {
           return channel.send({embed: {color: "f3f3f3", description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:*`}});
         }

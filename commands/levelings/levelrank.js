@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
 			const canvas = createCanvas(data.width, data.height);
 			const ctx = canvas.getContext('2d');
 			ctx.drawImage(data, 0, 0);
-			stackBlur.canvasRGBA(canvas, 0, 0, canvas.width, canvas.height, 40);
+			stackBlur.canvasRGBA(canvas, 0, 0, canvas.width, canvas.height, 60);
 			backgroundImage = canvas.toBuffer();
     } else {
       backgroundImage = 'https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg'
