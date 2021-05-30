@@ -9,7 +9,7 @@ exports.run = async (client, message, args, prefix) => {
     const embed1 = new MessageEmbed()
     .setColor("#bee7f7")
     .setAuthor('my command list (p`･ω･´) q', client.user.displayAvatarURL())
-    .setDescription(`run the command below each features to get more information!\n\nif you are using a mobile device, click the **hover for info** button to see descriptions!`)
+    .setDescription(`run the command below each features to get more information!\nif you are using a mobile device, click the **hover for info** button to see descriptions!\nif you ran into any trouble, use \`${prefix}invite\` to get more info about support servers.`)
     .setTitle('hey, how can i help?')
     .setThumbnail(client.user.displayAvatarURL())
     if (!message.channel.nsfw) embed1.setFooter(`bruh nsfw command was hidden cuz you are in a normal channel`);

@@ -12,7 +12,10 @@ module.exports = client => {
       moduleConf.cmds = [];
       if (!moduleConf) return;
       client.helps.set(moduleConf.name, moduleConf);
-      if (!moduleConf.adult && !moduleConf.hide) client.allNameFeatures.push(moduleConf.name);
+      if (!moduleConf.adult && !moduleConf.hide) {
+        client.allNameFeaturesSlash.push({ name: moduleConf.name, value: moduleConf.name })
+        client.allNameFeatures.push(moduleConf.name);
+      }
       
       fs.readdir(`./commands/${category}`, (err, files) => {
         console.log(`Found total ${files.length - 1} command(s) from ${category}.`);
