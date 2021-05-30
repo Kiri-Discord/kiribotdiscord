@@ -5,6 +5,7 @@ const ISO6391 = require('iso-639-1');
 const ms = require('ms');
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
+const { stripIndents } = require('common-tags');
 
 module.exports = class util {
 	static shortenText(text, maxLength) {
@@ -244,6 +245,7 @@ module.exports = class util {
 		return { text: activity.text, type: activity.type }
 	}
 	static async botSitePost(client) {
+		if (!process.env.dblToken) return;
 		const header = {
 			Authorization: process.env.dblToken
 		}
@@ -256,6 +258,23 @@ module.exports = class util {
 			headers: header
 		});
 
+	}
+	static async pickWhenMany(message, arr, defalt, arrListFunc, { time = 30000 } = {}) {
+		const resultsList = arr.map(arrListFunc);
+		await message.channel.send(stripIndents`
+			**${arr.length} results was found, which would you like to get more information?**
+			${resultsList.join('\n')}
+			*this will timeout in 30 seconds*
+		`);
+		const filter = res => {
+			if (res.author.id !== message.author.id) return false;
+			const num = Number.parseInt(res.content, 10);
+			if (!num) return false;
+			return num > 0 && num <= arr.length;
+		};
+		const messages = await message.channel.awaitMessages(filter, { max: 1, time });
+		if (!messages.size) return defalt;
+		return arr[Number.parseInt(messages.first().content, 10) - 1];
 	}
 };
 

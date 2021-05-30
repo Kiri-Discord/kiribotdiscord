@@ -71,7 +71,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "levelboard",
-	description: "show the guild's leveling leaderboard :D",
+	description: "show the guild's leveling leaderboard :eyes:",
 	usage: "levelboard",
 	example: "levelboard"
 };
@@ -80,6 +80,5 @@ exports.conf = {
 	aliases: ["lvb"],
   cooldown: 3,
   guildOnly: true,
-  
 	channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
 };

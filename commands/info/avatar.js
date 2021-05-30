@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { stripIndents } = require('common-tags');
 
 exports.run = async (client, message, args) => {
   let member = await getMemberfromMention(args[0], message.guild) || message.member;
@@ -7,13 +8,13 @@ exports.run = async (client, message, args) => {
   const avatar = user.displayAvatarURL({size: 4096, dynamic: true, format: 'png'});
   
   const embed = new MessageEmbed()
-  .setTitle(`${user.tag} avatar`)
-  .setDescription(`[**Avatar URL**](${avatar})`)
+  .setTitle(`${user.tag}`)
+  .setDescription(stripIndents`
+  ID: \`${user.id}\`
+  [**Avatar URL**](${avatar})
+  `)
   .setColor(member.displayHexColor)
   .setImage(avatar)
-  .setTimestamp(new Date())
-  .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
-
   return message.channel.send(embed);
 }
 

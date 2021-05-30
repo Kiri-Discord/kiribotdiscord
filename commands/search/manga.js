@@ -58,8 +58,12 @@ exports.run = async (client, message, args) => {
     let query = args.join(" ");
     if (!query) return message.inlineReply(`pls enter something so i can search ${sedEmoji}`);
     try {
+        message.channel.startTyping(true);
         const id = await search(query);
-        if (!id) return message.inlineReply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
+        if (!id) {
+            await message.channel.stopTyping(true);
+            return message.inlineReply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
+        }
         const manga = await fetchManga(id);
         const malScore = await fetchMALScore(manga.idMal);
         const malURL = `https://myanimelist.net/manga/${manga.idMal}`;
@@ -74,11 +78,11 @@ exports.run = async (client, message, args) => {
         .addField('🧨 Year', manga.startDate.year || '???', true)
         .addField('💯 Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
         .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
-        .addField('ℹ️ Links', manga.externalLinks.length
-            ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ')
-            : 'None');
+        .addField('ℹ️ Links', manga.externalLinks.length ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') : 'None');
+        await message.channel.stopTyping(true);
         return message.channel.send(embed);
     } catch (err) {
+        await message.channel.stopTyping(true);
         return message.inlineReply(`sorry :( i got an error. try again later! the server might be down tho.`);
     }
 }
@@ -129,7 +133,6 @@ exports.conf = {
 	aliases: [],
     cooldown: 4,
     guildOnly: true,
-    
     channelPerms: ["EMBED_LINKS"]
 };
 
