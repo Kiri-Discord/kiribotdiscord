@@ -55,7 +55,7 @@
     "mquery": "^3.2.5",
     "namemc": "^1.8.16",
     "nekos.life": "^2.0.7",
-    "node-gyp": "^8.0.0",
+    "node-gyp": "^8.1.0",
     "node-pre-gyp": "^0.17.0",
     "node-superfetch": "^0.2.2",
     "parse-ms": "^2.1.0",
