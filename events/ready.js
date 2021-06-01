@@ -1,7 +1,5 @@
 const web = require('../util/web.js');
 const { randomStatus, botSitePost } = require('../util/util');
-const { GatewayServer, SlashCreator } = require('slash-create');
-const path = require('path');
 
 module.exports = async client => {
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
@@ -27,30 +25,18 @@ module.exports = async client => {
   const staffsv = client.guilds.cache.get(client.config.supportServerID);
   if (staffsv) {
     await staffsv.emojis.cache.forEach(async emoji => {
-      client.customEmojis.set(emoji.name, emoji.toString());
+      client.customEmojis.set(emoji.name, emoji);
     });
     console.log(`[DISCORD] Added ${client.customEmojis.size} custom emojis`)
   };
   console.log(`[DISCORD] Fetching all unverified members..`);
   await client.verifytimers.fetchAll();
+  console.log(`[DISCORD] Loading giveaway module..`);
+  client.initGiveaways();
   web.init(client);
   client.user.setActivity('just woke up...', { type: 'PLAYING' });
   client.setInterval(() => {
     const activity = randomStatus(client);
 		client.user.setActivity(activity.text, { type: activity.type });
 	}, 120000);
-  const creator = new SlashCreator({
-    applicationID: client.user.id,
-    publicKey: process.env.publicKey,
-    token: process.env.token
-  });
-  creator
-  .withServer(
-      new GatewayServer(
-        (handler) => client.ws.on('INTERACTION_CREATE', handler)
-      )
-  )
-  .registerCommandsIn(path.join(__dirname, '..', 'slashCommand'))
-  .syncCommands()
-  console.log('[DISCORD] Loaded slash command')
 };
