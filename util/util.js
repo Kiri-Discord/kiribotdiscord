@@ -177,8 +177,7 @@ module.exports = class util {
 		if (no.includes(choice) || extraNo.includes(choice)) return false;
 		return false;
 	}
-	static async askString(channel, user, { time = 10000 } = {}) {
-		const filter = res => res.author.id === user.id;
+	static async askString(channel, user, filter, { time = 10000 } = {}) {
 		const verify = await channel.awaitMessages(filter, {
 			max: 1,
 			time

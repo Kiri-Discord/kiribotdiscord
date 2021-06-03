@@ -8,11 +8,12 @@ const { askString } = require('../../util/util');
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Impact.ttf'), { family: 'Impact' });
 
 exports.run = async (client, message, args) => {
+    const filter = res => res.author.id === message.author.id;
     await message.channel.send('what should the top text be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
-    const top = await askString(message.channel, message.author);
+    const top = await askString(message.channel, message.author, filter);
     if (!top) return message.channel.send('i cancelled the command :pensive:');
     await message.channel.send('what should the below text be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
-    const bottom = await askString(message.channel, message.author);
+    const bottom = await askString(message.channel, message.author, filter);
     if (!bottom) return message.channel.send('i cancelled the command :pensive:');
 
     let image;

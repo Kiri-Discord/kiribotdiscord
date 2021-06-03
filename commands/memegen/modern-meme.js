@@ -10,8 +10,9 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf')
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
 exports.run = async (client, message, args) => {
+    const filter = res => res.author.id === message.author.id;
     await message.channel.send('what should the text in your meme be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
-    const text = await askString(message.channel, message.author);
+    const text = await askString(message.channel, message.author, filter);
     if (!text) return message.channel.send('i cancelled the command :pensive:');
     
     let image;
