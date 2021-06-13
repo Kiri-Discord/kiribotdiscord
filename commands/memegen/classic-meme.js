@@ -9,11 +9,11 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Impact.ttf'), 
 
 exports.run = async (client, message, args) => {
     const filter = res => res.author.id === message.author.id;
-    await message.channel.send('what should the top text be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
-    const top = await askString(message.channel, message.author, filter);
+    await message.channel.send('what should the top text be? jot it down below :wink:\ni will be leaving in 20 second. type \`cancel\` to cancel this command');
+    const top = await askString(message.channel, filter);
     if (!top) return message.channel.send('i cancelled the command :pensive:');
-    await message.channel.send('what should the below text be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
-    const bottom = await askString(message.channel, message.author, filter);
+    await message.channel.send('what should the below text be? jot it down below :wink:\ni will be leaving in 20 second. type \`cancel\` to cancel this command');
+    const bottom = await askString(message.channel, filter);
     if (!bottom) return message.channel.send('i cancelled the command :pensive:');
 
     let image;
@@ -57,7 +57,7 @@ exports.run = async (client, message, args) => {
         ctx.fillStyle = 'white';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        const topLines = await wrapText(ctx, top, base.width - 10);
+        const topLines = await wrapText(ctx, top.content, base.width - 10);
         if (!topLines) return message.channel.send('uh oh. i can\'t make that meme because there wasn\'t enough width to make a meme with that image :pensive:');
         for (let i = 0; i < topLines.length; i++) {
             const textHeight = (i * fontSize) + (i * 10);
@@ -67,7 +67,7 @@ exports.run = async (client, message, args) => {
             ctx.fillStyle = 'white';
             ctx.fillText(topLines[i], base.width / 2, textHeight);
         }
-        const bottomLines = await wrapText(ctx, bottom, base.width - 10);
+        const bottomLines = await wrapText(ctx, bottom.content, base.width - 10);
         if (!bottomLines) return message.channel.send('uh oh. i can\'t make that meme because there wasn\'t enough width to make a meme with that image :pensive:');
         ctx.textBaseline = 'bottom';
         const initial = base.height - ((bottomLines.length - 1) * fontSize) - ((bottomLines.length - 1) * 10);

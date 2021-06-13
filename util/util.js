@@ -177,16 +177,16 @@ module.exports = class util {
 		if (no.includes(choice) || extraNo.includes(choice)) return false;
 		return false;
 	}
-	static async askString(channel, user, filter, { time = 10000 } = {}) {
+	static async askString(channel, filter, { time = 20000 } = {}) {
 		const verify = await channel.awaitMessages(filter, {
 			max: 1,
 			time
 		});
-		if (!verify.size) return false;
+		if (!verify.size) return 0;
 		const choice = verify.first().content.toLowerCase();
 		if (choice === 'cancel') return false;
-		return verify.first().content;
-	}
+		return verify.first();
+	};
 	static async magikToBuffer(magik) {
 		return new Promise((res, rej) => {
 			magik.toBuffer((err, buffer) => {

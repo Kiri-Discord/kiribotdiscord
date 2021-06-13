@@ -3,6 +3,8 @@ const { Collection } = require("discord.js");
 const cooldowns = new Collection();
 const agreed = new Collection();
 const { MessageEmbed } = require('discord.js');
+const { embedURL } = require('../util/util');
+const { stripIndents } = require('common-tags');
 
 module.exports = async (client, message) => {
 
@@ -48,7 +50,6 @@ module.exports = async (client, message) => {
   if (!prefixRegex.test(message.content)) return;
   const [, matchedPrefix] = message.content.match(prefixRegex);
 
-  const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
   const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
   const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
   const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
@@ -133,7 +134,7 @@ module.exports = async (client, message) => {
 
   const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
   
-  if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
+  if (!alreadyAgreed) {
     if (message.channel.type === 'text') {
       if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
     };
@@ -144,25 +145,15 @@ module.exports = async (client, message) => {
     else key = `${message.author.id}-${message.guild.id}`;
 
     const verifyEmbed = new MessageEmbed()
-    .setAuthor(`rules`, client.user.displayAvatarURL())
     .setColor('#81c42f')
-    .setTitle('any failure in following those rules will result in you being temp banned from using my features or your guild being temp banned :warning:')
-    .setDescription(`
+    .addField(`if you have any questions come ask us in:`, `${embedURL('Sefiria (community server)', 'https://discord.gg/kJRAjMyEkY')}\n${embedURL('sefy support (support server)', 'https://discord.gg/D6rWrvS')}`)
+    .setDescription(stripIndents`
     • any actions performed to give other users a bad experience are explicitly against the rules ${sed}
     this includes but not limited to:
-    ├> using macros/scripts for commands (make me slower in serving other users)
-    └> use any of my features for actions that is against the Discord Terms of Service
-  
+    > using macros/scripts for commands (make me slower in serving other users)
+    > use any of my features for actions that is against the ${embedURL('Discord Terms of Service', 'https://discord.com/terms')}
     • do not use any exploits and report any found in the bot in our server!
-  
     • you can not sell/trade token or any bot goods for real money
-  
-    • if you have any questions come ask us in ${blush}
-    
-    [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
-    [sefy support (support server)](https://discord.gg/D6rWrvS)
-
-    *for your convience, i will only ask for acceptance once. you only have to do this once only.*
     `)
     .setFooter(`${agreedCount.length} user have agreed to those rules :)`);
 
@@ -174,7 +165,7 @@ module.exports = async (client, message) => {
     const filter = (reaction, user) => {
       return reaction.emoji.name === '👍' && user.id === message.author.id;
     };
-    const verifyMessage = await message.inlineReply(`:warning: you must accept these rules below before using me! react with the hands up emojis to agree with those rules ${duh}`, verifyEmbed);
+    const verifyMessage = await message.inlineReply(`:warning: you must accept these rules below before using me by reacting with the hands up emojis ${duh}`, verifyEmbed);
     await verifyMessage.react('👍');
     const collectedEmojis = verifyMessage.createReactionCollector(filter, { max: 1, time: 20000, errors: ['time'] });
     agreed.set(key, collectedEmojis);

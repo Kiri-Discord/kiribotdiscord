@@ -1,5 +1,7 @@
 const web = require('../util/web.js');
 const { randomStatus, botSitePost } = require('../util/util');
+const slash = require('../util/slash');
+const giveaway = require('../util/giveaway');
 
 module.exports = async client => {
   console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
@@ -31,9 +33,9 @@ module.exports = async client => {
   };
   console.log(`[DISCORD] Fetching all unverified members..`);
   await client.verifytimers.fetchAll();
-  console.log(`[DISCORD] Loading giveaway module..`);
-  client.initGiveaways();
+  slash.init(client);
   web.init(client);
+  giveaway.init(client);
   client.user.setActivity('just woke up...', { type: 'PLAYING' });
   client.setInterval(() => {
     const activity = randomStatus(client);
