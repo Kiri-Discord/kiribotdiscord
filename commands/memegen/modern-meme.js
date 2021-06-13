@@ -10,8 +10,9 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf')
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
 exports.run = async (client, message, args) => {
-    await message.channel.send('what should the text in your meme be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
-    const text = await askString(message.channel, message.author);
+    const filter = res => res.author.id === message.author.id;
+    await message.channel.send('what should the text in your meme be? jot it down below :wink:\ni will be leaving in 20 second. type \`cancel\` to cancel this command');
+    const text = await askString(message.channel, filter);
     if (!text) return message.channel.send('i cancelled the command :pensive:');
     
     let image;
@@ -50,7 +51,7 @@ exports.run = async (client, message, args) => {
         const canvas = createCanvas(base.width, base.height);
         const ctx = canvas.getContext('2d');
         ctx.font = '40px Noto';
-        const lines = await wrapText(ctx, text, base.width - 10);
+        const lines = await wrapText(ctx, text.content, base.width - 10);
         const lineBreakLen = text.split('\n').length;
         const linesLen = (40 * lines.length)
             + (40 * (lineBreakLen - 1))

@@ -9,12 +9,12 @@ global.__baseURL = process.env.baseURL || 'https://sefy.daztopia.xyz/';
 
 const mongo = require('./util/mongo');
 const RedisClient = require('./util/redis');
+const sefy = require("./handler/ClientBuilder.js");
+
 mongo.init();
 RedisClient.start();
 
 require('./handler/inlineReply');
-
-const sefy = require("./handler/ClientBuilder.js");
 
 const client = new sefy(({
 	disableMentions: 'everyone',

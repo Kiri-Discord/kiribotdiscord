@@ -10,7 +10,7 @@ module.exports = class VerifyTimer {
 		const timers = await this.client.redis.hgetall('verifytimer');
 		for (let data of Object.values(timers)) {
 			data = JSON.parse(data);
-			await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, data.title, false);
+			await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, false);
 		}
 		return this;
 	}

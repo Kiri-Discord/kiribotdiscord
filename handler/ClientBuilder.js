@@ -6,7 +6,7 @@ const VerifyTimer = require('../features/redis/verify');
 const app = express();
 
 module.exports = class sefy extends Client {
-  constructor(options) {
+    constructor(options) {
     super(options)
     this.vote = require('../model/vote');
     this.globalStorage = require('../model/global');
@@ -34,5 +34,5 @@ module.exports = class sefy extends Client {
     this.voicequeue = new Collection();
     this.pokemon = new PokemonStore();
     this.verifytimers = new VerifyTimer(this);
-  }
+  };
 }
