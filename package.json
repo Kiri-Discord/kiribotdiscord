@@ -20,7 +20,7 @@
     "axios": "^0.21.1",
     "azlyrics-ext": "^1.0.1",
     "bufferutil": "^4.0.3",
-    "canvacord": "^5.2.0",
+    "canvacord": "^5.2.1",
     "canvas": "^2.8.0",
     "canvas-constructor": "^4.1.0",
     "cheerio": "^1.0.0-rc.9",
