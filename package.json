@@ -40,7 +40,7 @@
     "helmet": "^4.5.0",
     "html-entities": "^2.3.2",
     "https": "^1.0.0",
-    "humanize-duration": "^3.26.0",
+    "humanize-duration": "^3.27.0",
     "ini": "^2.0.0",
     "ioredis": "^4.27.3",
     "iso-639-1": "^2.1.9",
