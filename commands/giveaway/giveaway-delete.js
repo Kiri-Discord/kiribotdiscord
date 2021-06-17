@@ -16,6 +16,7 @@ exports.run = async (client, message, args, prefix, cmd) => {
         const onServer = client.giveaways.giveaways.filter(g => g.guildID === message.guild.id);
         if (!onServer || !onServer.length) return message.inlineReply(`:boom: there isn't any ongoing giveaway on the server :pensive:`);
         const giveaway = onServer.find(g => g.messageID === args[0]);
+	if (!giveaway) return message.inlineReply("there isn't any giveaway with that message ID :pensive:")
         if (giveaway.extraData.hostedByID !== message.author.id && !message.member.hasPermission('ADMINISTRATOR')) return message.inlineReply('that isn\'t your giveaway, or you don\'t have the \`ADMINISTRATOR\` permission to take full control over that giveaway :pensive:');
         await reactIfAble(message, client.user, '✅');
         await client.giveaways.delete(giveaway.messageID, true);
