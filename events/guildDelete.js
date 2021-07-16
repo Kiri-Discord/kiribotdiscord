@@ -6,7 +6,8 @@ const cuddleSchema = require('../model/cuddle');
 const kissSchema = require('../model/kiss');
 const musicSchema = require('../model/music');
 
-module.exports = async (client, guild) => {
+module.exports = async(client, guild) => {
+    client.guildsStorage.delete(guild.id);
 
     await client.dbguilds.findOneAndDelete({
         guildID: guild.id

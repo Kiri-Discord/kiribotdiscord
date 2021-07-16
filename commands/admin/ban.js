@@ -1,12 +1,10 @@
 const { MessageEmbed } = require('discord.js')
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
 
     const member = await getMemberfromMention(args[0], message.guild);
 
-    const guildDB = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
+    const guildDB = client.guildsStorage.get(message.guild.id);
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
@@ -27,30 +25,25 @@ exports.run = async (client, message, args) => {
 
 
     const banembed = new MessageEmbed()
-    .setTitle(`${member.user.tag} was banned!`)
-    .setColor("#ff0000")
-    .setAuthor(client.user.username, client.user.displayAvatarURL())
-    .setThumbnail(member.user.displayAvatarURL())
-    .addField('Member', member)
-    .addField('Moderator', message.author)
-    .addField('Reason', reason)
-    .setFooter('Time banned', client.user.displayAvatarURL())
-    .setTimestamp()
+        .setDescription(`🔨 i banned **${member.user.tag}** with reason **${reason}**!`)
+        .setColor("#ff0000")
 
 
     const logembed = new MessageEmbed()
-    .setColor(15158332)
-    .setAuthor(client.user.username, client.user.displayAvatarURL())
-    .setTitle('User banned')
-    .setThumbnail(member.user.avatarURL())
-    .addField('Username', member.user.username)
-    .addField('User ID', member.id)
-    .addField('Banned by', message.author)
-    .addField('Reason', reason);
+        .setColor(15158332)
+        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setTitle('User banned')
+        .setThumbnail(member.user.displayAvatarURL())
+        .addField('Username', member.user.username)
+        .addField('User ID', member.id)
+        .addField('Moderator', message.author)
+        .setFooter('Banned at')
+        .addField('Reason', reason)
+        .setTimestamp()
 
     try {
         if (!member.user.bot) member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}`);
-        await member.ban(reason);
+        await member.ban({ reason });
         await message.channel.send(banembed);
         if (!logChannel) {
             return;
@@ -58,23 +51,23 @@ exports.run = async (client, message, args) => {
             return logChannel.send(logembed);
         };
     } catch (error) {
-        return message.channel.send(`an error happened when i tried to ban that user ${sedEmoji} can you check my perms?`)
+        return message.channel.send(`an error happened when i tried to ban that user. can you try again later?`)
     }
 };
 
 
 exports.help = {
-  name: "ban",
-  description: "ban someone out of the guild",
-  usage: ["ban `<mention | user ID> [reason]`", "ban `<mention | user ID>`"],
-  example: ["ban `@Bell because it has to be`", "ban `@kuru`"]
+    name: "ban",
+    description: "ban someone out of the guild",
+    usage: ["ban `<mention | user ID> [reason]`", "ban `<mention | user ID>`"],
+    example: ["ban `@Bell because it has to be`", "ban `@kuru`"]
 }
 
 exports.conf = {
-  aliases: ["b"],
-  cooldown: 3,
-  guildOnly: true,
-  userPerms: ["BAN_MEMBERS"],
-  clientPerms: ["BAN_MEMBERS"],
-  channelPerms: ["EMBED_LINKS"]
+    aliases: ["b"],
+    cooldown: 3,
+    guildOnly: true,
+    userPerms: ["BAN_MEMBERS"],
+    clientPerms: ["BAN_MEMBERS"],
+    channelPerms: ["EMBED_LINKS"]
 };

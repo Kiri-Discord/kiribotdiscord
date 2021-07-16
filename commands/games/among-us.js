@@ -3,27 +3,23 @@ const { stripIndents, oneLine } = require('common-tags');
 const Collection = require('@discordjs/collection');
 const { delay, awaitPlayers, list } = require('../../util/util');
 
-exports.run = async (client, message, args) => {
-    const setting = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
-    const prefix = setting.prefix;
-    let playersCount = args[0];
-    if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
-    const current = client.games.get(message.channel.id);
-    if (current) return message.inlineReply(current.prompt);
-    client.games.set(message.channel.id, { prompt: `please wait until players here finish playing **among us** :(` });
-    try {
-        const awaitedPlayers = await awaitPlayers(message, playersCount, 3);
-        if (!awaitedPlayers) {
-            client.games.delete(message.channel.id);
-            return message.channel.send('game could not be started...');
-        }
-        const word = words[Math.floor(Math.random() * words.length)];
-        const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
-        const players = new Collection();
-        const imposter = awaitedPlayers[Math.floor(Math.random() * awaitedPlayers.length)];
-        await message.channel.send(oneLine`
+exports.run = async(client, message, args, prefix) => {
+        let playersCount = args[0];
+        if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
+        const current = client.games.get(message.channel.id);
+        if (current) return message.inlineReply(current.prompt);
+        client.games.set(message.channel.id, { prompt: `please wait until players here finish playing **among us** :(` });
+        try {
+            const awaitedPlayers = await awaitPlayers(message, playersCount, 3);
+            if (!awaitedPlayers) {
+                client.games.delete(message.channel.id);
+                return message.channel.send('game could not be started...');
+            }
+            const word = words[Math.floor(Math.random() * words.length)];
+            const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
+            const players = new Collection();
+            const imposter = awaitedPlayers[Math.floor(Math.random() * awaitedPlayers.length)];
+            await message.channel.send(oneLine `
             welcome to **among us**! 
             
             in this game, you will have to figure out who the imposter is!
@@ -33,61 +29,61 @@ exports.run = async (client, message, args) => {
             word is, and try to catch the imposter saying it. as for the imposter, you know the word, try to get
             everyone to say it!
         `);
-        for (const player of awaitedPlayers) {
-            players.set(player, {
-                id: player,
-                user: await client.users.fetch(player),
-                killed: false,
-                imposter: imposter === player
-            });
-            const newPlayer = players.get(player);
-            if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is ${word}.`).catch(async () => {
-                await client.games.delete(message.channel.id);
-                return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
-            });
-            else newPlayer.user.send('you are not the imposter. be careful what you say!').catch(async () => {
-                await client.games.delete(message.channel.id);
-                return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
-            });
-        }
-        let lastTurnTimeout = false;
-        const winners = [];
-        while (players.filter(player => !player.killed).size > 2) {
-            const playersLeft = players.filter(player => !player.killed).size;
-            await message.channel.send(`there are **${playersLeft}** players remaining. talk until someone says the kill word.`);
-            const filter = res => {
-                const player = players.get(res.author.id);
-                if (!player || player.killed || player.imposter) return false;
-                if (res.content && wordRegex.test(res.content)) return true;
-                return false;
-            };
-            const msgs = await message.channel.awaitMessages(filter, {
-                max: 1,
-                time: 240000
-            });
-            if (msgs.size) {
-                const killedMsg = msgs.first();
-                try {
-                    await killedMsg.react('🔪');
-                } catch {
-                    await killedMsg.reply('🔪');
-                }
-                players.get(killedMsg.author.id).killed = true;
-                await message.channel.send(stripIndents`
+            for (const player of awaitedPlayers) {
+                players.set(player, {
+                    id: player,
+                    user: await client.users.fetch(player),
+                    killed: false,
+                    imposter: imposter === player
+                });
+                const newPlayer = players.get(player);
+                if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is ${word}.`).catch(async() => {
+                    await client.games.delete(message.channel.id);
+                    return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
+                });
+                else newPlayer.user.send('you are not the imposter. be careful what you say!').catch(async() => {
+                    await client.games.delete(message.channel.id);
+                    return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
+                });
+            }
+            let lastTurnTimeout = false;
+            const winners = [];
+            while (players.filter(player => !player.killed).size > 2) {
+                const playersLeft = players.filter(player => !player.killed).size;
+                await message.channel.send(`there are **${playersLeft}** players remaining. talk until someone says the kill word.`);
+                const filter = res => {
+                    const player = players.get(res.author.id);
+                    if (!player || player.killed || player.imposter) return false;
+                    if (res.content && wordRegex.test(res.content)) return true;
+                    return false;
+                };
+                const msgs = await message.channel.awaitMessages(filter, {
+                    max: 1,
+                    time: 240000
+                });
+                if (msgs.size) {
+                    const killedMsg = msgs.first();
+                    try {
+                        await killedMsg.react('🔪');
+                    } catch {
+                        await killedMsg.reply('🔪');
+                    }
+                    players.get(killedMsg.author.id).killed = true;
+                    await message.channel.send(stripIndents `
                     ${killedMsg.author} has been murdered for saying the kill word!
                     talk amongst yourselves, who is the imposter? voting begins in 1 minute.
                 `);
-            } else {
-                await message.channel.send(stripIndents`
+                } else {
+                    await message.channel.send(stripIndents `
                     no one has said the word for 4 minutes. we're voting anyway! who looks suspicious?
                     talk amongst yourselves, who is the imposter? voting begins in 1 minute.
                 `);
-            }
-            await delay(60000);
-            const choices = players.filter(player => !player.killed);
-            const ids = choices.map(player => player.id);
-            let i = 0;
-            await message.channel.send(stripIndents`
+                }
+                await delay(60000);
+                const choices = players.filter(player => !player.killed);
+                const ids = choices.map(player => player.id);
+                let i = 0;
+                await message.channel.send(stripIndents `
                 alright, who do you think the imposter is? you have 1 minute to vote.
 
                 _type the number of the player you think is the imposter._

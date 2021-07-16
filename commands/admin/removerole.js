@@ -1,10 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 
 
-exports.run = async (client, message, args) => {
-    const guildDB = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
+exports.run = async(client, message, args) => {
+    const guildDB = client.guildsStorage.get(message.guild.id);
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
     const member = await getMemberfromMention(args[0], message.guild);
@@ -16,7 +14,7 @@ exports.run = async (client, message, args) => {
     if (!member || !roleName) return message.inlineReply(`incorrect usage bruh, it's \`${prefix}addrole <username || user id> <role name || id>\`!`);
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
-    
+
     if (!role) return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to remove pls ${sedEmoji}`)
 
     if (role.name === "@everyone") return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`);
@@ -30,17 +28,18 @@ exports.run = async (client, message, args) => {
     if (!alreadyHasRole) return message.inlineReply('that user doesn\'t have that role!');
 
     const embed = new MessageEmbed()
-    .setDescription(`☑️ i have successfully removed the role \`${role.name}\` from **${member.user.tag}**`)
-    .setColor('f3f3f3')
+        .setDescription(`☑️ i have successfully removed the role \`${role.name}\` from **${member.user.tag}**`)
+        .setColor('f3f3f3')
 
     const rolelog = new MessageEmbed()
-    .setAuthor(client.user.username, client.user.displayAvatarURL())
-    .setDescription(`Role removed from ${member.user.tag}`)
-    .setThumbnail(member.user.avatarURL())
-    .addField('Role added', role.name)
-    .addField('Username', member.user.username)
-    .addField('User ID', member.id)
-    .addField('Moderator', message.author)
+        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setDescription(`Role removed from ${member.user}`)
+        .setThumbnail(member.user.avatarURL())
+        .addField('Role added', role.name)
+        .addField('Username', member.user.username)
+        .addField('User ID', member.id)
+        .addField('Moderator', message.author)
+        .setTimestamp()
     try {
         await member.roles.remove(role);
         await message.channel.send(embed);
@@ -61,12 +60,12 @@ exports.help = {
     usage: ["removerole `<@user> <@role>`", "removerole `<@user> <role ID>`", "removerole `<user ID> <role ID>`", "removerole `<user ID> <@role>`", "removerole `<@user> <role name>`", "removerole `<user ID> <role name>"],
     example: ["removerole `@bach @pvp`", "removerole `@kuru 584484488877`", "removerole `5575557852 Member`"]
 };
-  
+
 exports.conf = {
     aliases: ["deleterole", "delrole"],
     cooldown: 3,
     guildOnly: true,
     userPerms: ["MANAGE_ROLES"],
-	clientPerms: ["MANAGE_ROLES"], 
+    clientPerms: ["MANAGE_ROLES"],
     channelPerms: ["EMBED_LINKS"]
 };

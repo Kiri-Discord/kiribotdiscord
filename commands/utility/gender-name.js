@@ -1,6 +1,6 @@
 const request = require('node-superfetch');
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let name = args.join(" ");
     if (!name) return message.inlineReply('you have to provide a name for me to guess :confused:').then(m => m.delete({ timeout: 5000 }));
     try {
@@ -18,7 +18,7 @@ exports.help = {
     name: "gender-name",
     description: "give me a name and i will try to guess the gender 😄",
     usage: "gender-name `<name>`",
-    example: "gender-name Sefy"
+    example: "gender-name Kiri"
 };
 
 exports.conf = {

@@ -8,113 +8,117 @@ const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
 
 module.exports = class util {
-	static shortenText(text, maxLength) {
-        let shorten = false;
-        while (text.length > maxLength) {
-            if (!shorten) shorten = true;
-            text = text.substr(0, text.length - 1);
+        static shortenText(text, maxLength) {
+            let shorten = false;
+            while (text.length > maxLength) {
+                if (!shorten) shorten = true;
+                text = text.substr(0, text.length - 1);
+            }
+            return shorten ? `${text}...` : text;
         }
-        return shorten ? `${text}...` : text;
-    }
-	static randomRange(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	};
-	static streamToArray(stream) {
-		if (!stream.readable) return Promise.resolve([]);
-		return new Promise((resolve, reject) => {
-			const array = [];
-			function onData(data) {
-				array.push(data);
-			}
-			function onEnd(error) {
-				if (error) reject(error);
-				else resolve(array);
-				cleanup();
-			}
-			function onClose() {
-				resolve(array);
-				cleanup();
-			}
-			function cleanup() {
-				stream.removeListener('data', onData);
-				stream.removeListener('end', onEnd);
-				stream.removeListener('error', onEnd);
-				stream.removeListener('close', onClose);
-			}
-			stream.on('data', onData);
-			stream.on('end', onEnd);
-			stream.on('error', onEnd);
-			stream.on('close', onClose);
-		});
-	}
-	static today(timeZone) {
-		const now = new Date();
-		now.setHours(0);
-		now.setMinutes(0);
-		now.setSeconds(0);
-		now.setMilliseconds(0);
-		if (timeZone) now.setUTCHours(now.getUTCHours() + timeZone);
-		return now;
-	}
-	static tomorrow(timeZone) {
-		const today = util.today(timeZone);
-		today.setDate(today.getDate() + 1);
-		return today;
-	}
+        static randomRange(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        static streamToArray(stream) {
+            if (!stream.readable) return Promise.resolve([]);
+            return new Promise((resolve, reject) => {
+                const array = [];
 
-	static removeDuplicates(arr) {
-		if (arr.length === 0 || arr.length === 1) return arr;
-		const newArr = [];
-		for (let i = 0; i < arr.length; i++) {
-			if (newArr.includes(arr[i])) continue;
-			newArr.push(arr[i]);
-		}
-		return newArr;
-	}
-	static async reactIfAble(message, user, emoji, fallbackEmoji) {
-		const dm = !message.guild;
-		if (fallbackEmoji && (!dm && !message.channel.permissionsFor(user).has('USE_EXTERNAL_EMOJIS'))) {
-			emoji = fallbackEmoji;
-		}
-		if (dm || message.channel.permissionsFor(user).has(['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'])) {
-			try {
-				await message.react(emoji);
-			} catch {
-				return null;
-			}
-		}
-		return null;
-	}
-	static async awaitPlayers(message, max, min = 1) {
-		if (max === 1) return [message.author.id];
-		const addS = min - 1 === 1 ? '' : 's';
-		await message.channel.send(
-			`at least ${min - 1} more player${addS} (at max ${max - 1}). to join, type \`join\`.`
-		);
-		const joined = [];
-		joined.push(message.author.id);
-		const filter = res => {
-			if (res.author.bot) return false;
-			if (joined.includes(res.author.id)) return false;
-			if (res.content.toLowerCase() !== 'join') return false;
-			joined.push(res.author.id);
-			res.react('✅').catch(() => null);
-			return true;
-		};
-		const verify = await message.channel.awaitMessages(filter, { max: max - 1, time: 60000 });
-		verify.set(message.id, message);
-		if (verify.size < min) return false;
-		return verify.map(player => player.author.id);
-	}
+                function onData(data) {
+                    array.push(data);
+                }
 
-	static delay(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
-	static list(arr, conj = 'and') {
-		const len = arr.length;
-		if (len === 0) return '';
-		if (len === 1) return arr[0];
-		return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
+                function onEnd(error) {
+                    if (error) reject(error);
+                    else resolve(array);
+                    cleanup();
+                }
+
+                function onClose() {
+                    resolve(array);
+                    cleanup();
+                }
+
+                function cleanup() {
+                    stream.removeListener('data', onData);
+                    stream.removeListener('end', onEnd);
+                    stream.removeListener('error', onEnd);
+                    stream.removeListener('close', onClose);
+                }
+                stream.on('data', onData);
+                stream.on('end', onEnd);
+                stream.on('error', onEnd);
+                stream.on('close', onClose);
+            });
+        }
+        static today(timeZone) {
+            const now = new Date();
+            now.setHours(0);
+            now.setMinutes(0);
+            now.setSeconds(0);
+            now.setMilliseconds(0);
+            if (timeZone) now.setUTCHours(now.getUTCHours() + timeZone);
+            return now;
+        }
+        static tomorrow(timeZone) {
+            const today = util.today(timeZone);
+            today.setDate(today.getDate() + 1);
+            return today;
+        }
+
+        static removeDuplicates(arr) {
+            if (arr.length === 0 || arr.length === 1) return arr;
+            const newArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (newArr.includes(arr[i])) continue;
+                newArr.push(arr[i]);
+            }
+            return newArr;
+        }
+        static async reactIfAble(message, user, emoji, fallbackEmoji) {
+            const dm = !message.guild;
+            if (fallbackEmoji && (!dm && !message.channel.permissionsFor(user).has('USE_EXTERNAL_EMOJIS'))) {
+                emoji = fallbackEmoji;
+            }
+            if (dm || message.channel.permissionsFor(user).has(['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'])) {
+                try {
+                    await message.react(emoji);
+                } catch {
+                    return null;
+                }
+            }
+            return null;
+        }
+        static async awaitPlayers(message, max, min = 1) {
+            if (max === 1) return [message.author.id];
+            const addS = min - 1 === 1 ? '' : 's';
+            await message.channel.send(
+                `at least ${min - 1} more player${addS} (at max ${max - 1}). to join, type \`join\`.`
+            );
+            const joined = [];
+            joined.push(message.author.id);
+            const filter = res => {
+                if (res.author.bot) return false;
+                if (joined.includes(res.author.id)) return false;
+                if (res.content.toLowerCase() !== 'join') return false;
+                joined.push(res.author.id);
+                res.react('✅').catch(() => null);
+                return true;
+            };
+            const verify = await message.channel.awaitMessages(filter, { max: max - 1, time: 60000 });
+            verify.set(message.id, message);
+            if (verify.size < min) return false;
+            return verify.map(player => player.author.id);
+        }
+
+        static delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        static list(arr, conj = 'and') {
+                const len = arr.length;
+                if (len === 0) return '';
+                if (len === 1) return arr[0];
+                return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
 	}
 
 	static firstUpperCase(text, split = ' ') {
@@ -228,12 +232,8 @@ module.exports = class util {
 				type: 'PLAYING'
 			},
 			{
-				text: 'sus',
-				type: 'WATCHING'
-			},
-			{
-				text: '@sefy',
-				type: 'LISTENING'
+				text: 'ping me to get help <3',
+				type: 'PLAYING'
 			},
 			{
 				text: `life in ${client.ws.ping}ms`,
@@ -245,17 +245,17 @@ module.exports = class util {
 	}
 	static async botSitePost(client) {
 		if (!process.env.dblToken) return;
-		const header = {
-			Authorization: process.env.dblToken
-		}
-		const body = new URLSearchParams()
-		body.append("guilds", client.guilds.cache.size);
-		body.append("users", client.users.cache.size);
-		fetch(`https://discordbotlist.com/api/v1/bots/sefy/stats`, {
-			method: "POST",
-			body,
-			headers: header
-		});
+		// const header = {
+		// 	Authorization: process.env.dblToken
+		// }
+		// const body = new URLSearchParams()
+		// body.append("guilds", client.guilds.cache.size);
+		// body.append("users", client.users.cache.size);
+		// fetch(`https://discordbotlist.com/api/v1/bots/sefy/stats`, {
+		// 	method: "POST",
+		// 	body,
+		// 	headers: header
+		// });
 
 	}
 	static async pickWhenMany(message, arr, defalt, arrListFunc, { time = 30000 } = {}) {

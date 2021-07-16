@@ -1,12 +1,10 @@
 const { MessageEmbed } = require('discord.js')
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
 
     const member = await getMemberfromMention(args[0], message.guild);
 
-    const guildDB = await client.dbguilds.findOne({
-        guildID: message.guild.id
-    });
+    const guildDB = client.guildsStorage.get(message.guild.id);
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
@@ -25,25 +23,21 @@ exports.run = async (client, message, args) => {
 
 
     const kickembed = new MessageEmbed()
-    .setTitle(`${member.user.tag} was kicked!`)
-    .setColor("#ff0000")
-    .setThumbnail(member.user.displayAvatarURL())
-    .setAuthor(client.user.username, client.user.displayAvatarURL())
-    .addField('Member', member)
-    .addField('Moderator', message.author)
-    .addField('Reason', reason)
-    .setFooter('Time kicked', client.user.displayAvatarURL())
-    .setTimestamp()
-
+        .setDescription(`🔨 i kicked **${member.user.tag}** for reason **${reason}**!`)
+        .setColor("#ff0000")
 
     const logembed = new MessageEmbed()
-    .setAuthor(client.user.username, client.user.displayAvatarURL())
-    .setTitle('User kicked')
-    .setThumbnail(member.user.avatarURL())
-    .addField('Username', member.user.username)
-    .addField('User ID', member.id)
-    .addField('Kicked by', message.author)
-    .addField('Reason', reason);
+        .setColor(15158332)
+        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setTitle('User kicked')
+        .setThumbnail(member.user.displayAvatarURL())
+        .addField('Username', member.user.username)
+        .addField('User ID', member.id)
+        .addField('Moderator', message.author)
+        .addField('Reason', reason)
+        .setFooter('Kicked at')
+        .setTimestamp()
+
 
     try {
         if (!member.user.bot) member.send(`🔨 you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}`);
@@ -55,23 +49,23 @@ exports.run = async (client, message, args) => {
             return logChannel.send(logembed);
         };
     } catch (error) {
-        return message.channel.send(`an error happened when i tried to ban that user ${sedEmoji} can you check my perms?`)
+        return message.channel.send(`an error happened when i tried to kick that user. can you try again later?`)
     };
 };
 
 
 exports.help = {
-  name: "kick",
-  description: "kick someone out of the guild.",
-  usage: ["kick `<mention | user ID> [reason]`", "kick `<mention | user ID>`"],
-  example: ["kick `@Bell because it has to be`", "kick `@kuru`"]
+    name: "kick",
+    description: "kick someone out of the guild.",
+    usage: ["kick `<mention | user ID> [reason]`", "kick `<mention | user ID>`"],
+    example: ["kick `@Bell because it has to be`", "kick `@kuru`"]
 }
 
 exports.conf = {
-  aliases: ["k"],
-  cooldown: 3,
-  guildOnly: true,
-  userPerms: ["KICK_MEMBERS"],
-  clientPerms: ["KICK_MEMBERS"],
-  channelPerms: ["EMBED_LINKS"]
+    aliases: ["k"],
+    cooldown: 3,
+    guildOnly: true,
+    userPerms: ["KICK_MEMBERS"],
+    clientPerms: ["KICK_MEMBERS"],
+    channelPerms: ["EMBED_LINKS"]
 }
