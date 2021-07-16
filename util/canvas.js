@@ -1,43 +1,43 @@
 module.exports = {
     centerImagePart: (data, maxWidth, maxHeight, widthOffset, heightOffest) => {
-		let { width, height } = data;
-		if (width > maxWidth) {
-			const ratio = maxWidth / width;
-			width = maxWidth;
-			height *= ratio;
-		}
-		if (height > maxHeight) {
-			const ratio = maxHeight / height;
-			height = maxHeight;
-			width *= ratio;
-		}
-		const x = widthOffset + ((maxWidth / 2) - (width / 2));
-		const y = heightOffest + ((maxHeight / 2) - (height / 2));
-		return { x, y, width, height };
-	},
+        let { width, height } = data;
+        if (width > maxWidth) {
+            const ratio = maxWidth / width;
+            width = maxWidth;
+            height *= ratio;
+        }
+        if (height > maxHeight) {
+            const ratio = maxHeight / height;
+            height = maxHeight;
+            width *= ratio;
+        }
+        const x = widthOffset + ((maxWidth / 2) - (width / 2));
+        const y = heightOffest + ((maxHeight / 2) - (height / 2));
+        return { x, y, width, height };
+    },
     desaturate: (ctx, level, x, y, width, height) => {
-		const data = ctx.getImageData(x, y, width, height);
-		for (let i = 0; i < height; i++) {
-			for (let j = 0; j < width; j++) {
-				const dest = ((i * width) + j) * 4;
-				const grey = Number.parseInt(
-					(0.2125 * data.data[dest]) + (0.7154 * data.data[dest + 1]) + (0.0721 * data.data[dest + 2]), 10
-				);
-				data.data[dest] += level * (grey - data.data[dest]);
-				data.data[dest + 1] += level * (grey - data.data[dest + 1]);
-				data.data[dest + 2] += level * (grey - data.data[dest + 2]);
-			}
-		}
-		ctx.putImageData(data, x, y);
-		return ctx;
-	},
+        const data = ctx.getImageData(x, y, width, height);
+        for (let i = 0; i < height; i++) {
+            for (let j = 0; j < width; j++) {
+                const dest = ((i * width) + j) * 4;
+                const grey = Number.parseInt(
+                    (0.2125 * data.data[dest]) + (0.7154 * data.data[dest + 1]) + (0.0721 * data.data[dest + 2]), 10
+                );
+                data.data[dest] += level * (grey - data.data[dest]);
+                data.data[dest + 1] += level * (grey - data.data[dest + 1]);
+                data.data[dest + 2] += level * (grey - data.data[dest + 2]);
+            }
+        }
+        ctx.putImageData(data, x, y);
+        return ctx;
+    },
     pixelize: (ctx, canvas, image, level, x, y, width, height) => {
-		ctx.imageSmoothingEnabled = false;
-		ctx.drawImage(image, x, y, width * level, height * level);
-		ctx.drawImage(canvas, x, y, width * level, height * level, x, y, width, height);
-		ctx.imageSmoothingEnabled = true;
-		return ctx;
-	},
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(image, x, y, width * level, height * level);
+        ctx.drawImage(canvas, x, y, width * level, height * level, x, y, width, height);
+        ctx.imageSmoothingEnabled = true;
+        return ctx;
+    },
     greyscale: (ctx, x, y, width, height) => {
         const data = ctx.getImageData(x, y, width, height);
         for (let i = 0; i < data.data.length; i += 4) {
@@ -49,17 +49,17 @@ module.exports = {
         ctx.putImageData(data, x, y);
         return ctx;
     },
-    
-	silhouette: (ctx, x, y, width, height) => {
-		const data = ctx.getImageData(x, y, width, height);
-		for (let i = 0; i < data.data.length; i += 4) {
-			data.data[i] = 0;
-			data.data[i + 1] = 0;
-			data.data[i + 2] = 0;
-		}
-		ctx.putImageData(data, x, y);
-		return ctx;
-	},
+
+    silhouette: (ctx, x, y, width, height) => {
+        const data = ctx.getImageData(x, y, width, height);
+        for (let i = 0; i < data.data.length; i += 4) {
+            data.data[i] = 0;
+            data.data[i + 1] = 0;
+            data.data[i + 2] = 0;
+        }
+        ctx.putImageData(data, x, y);
+        return ctx;
+    },
     invert: (ctx, x, y, width, height) => {
         const data = ctx.getImageData(x, y, width, height);
         for (let i = 0; i < data.data.length; i += 4) {
@@ -138,5 +138,4 @@ module.exports = {
             return resolve(lines);
         });
     }
-    
 };
