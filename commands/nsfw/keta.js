@@ -1,28 +1,22 @@
 //all credit belongs to my friend Crocodile#6300
 const neko = require('nekos.life');
 const { nsfw } = new neko();
-const { MessageEmbed } = require("discord.js");
-exports.run = async (client, message, args) => {
-    const stare = client.customEmojis.get('dead') ? client.customEmojis.get('dead') : ':thinking:';
+exports.run = async(client, message, args) => {
     const data = await nsfw.keta()
-    const embed = new MessageEmbed()
-    .setColor('RANDOM')
-    .setDescription(`still powered by bell's homework folder but.. ${stare}`)
-    .setImage(data.url);
-    return message.channel.send(embed);
+    return message.channel.send(data.url);
 }
 exports.help = {
-	name: "keta",
-	description: "send some nsfw keta from bell's homework folder :cry:",
-	usage: "keta",
-	example: "keta"
+    name: "keta",
+    description: "send some nsfw keta from bell's homework folder :cry:",
+    usage: "keta",
+    example: "keta"
 };
-  
+
 exports.conf = {
-	aliases: [],
+    aliases: [],
     cooldown: 3,
     guildOnly: true,
-	adult: true,
-    
-	channelPerms: ["EMBED_LINKS"]
+    adult: true,
+
+    channelPerms: ["EMBED_LINKS"]
 };

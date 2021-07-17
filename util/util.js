@@ -93,7 +93,7 @@ module.exports = class util {
             if (max === 1) return [message.author.id];
             const addS = min - 1 === 1 ? '' : 's';
             await message.channel.send(
-                `at least ${min - 1} more player${addS} (at max ${max - 1}). to join, type \`join\`.`
+                `at least ${min - 1} more player${addS} needed for the game to start (at max ${max - 1}). to join, type \`join\``
             );
             const joined = [];
             joined.push(message.author.id);
@@ -232,7 +232,7 @@ module.exports = class util {
 				type: 'PLAYING'
 			},
 			{
-				text: 'ping me to get help <3',
+				text: 'ping me for help <3',
 				type: 'PLAYING'
 			},
 			{

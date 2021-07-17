@@ -44,7 +44,6 @@
     "ini": "^2.0.0",
     "ioredis": "^4.27.6",
     "iso-639-1": "^2.1.9",
-    "japanese-name-generator": "^0.2.0",
     "js-chess-engine": "^0.11.3",
     "libsodium-wrappers": "^0.7.9",
     "lyrics-finder": "^21.7.0",
