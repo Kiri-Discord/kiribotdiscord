@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "aki-api": "^5.2.1",
+    "aki-api": "^6.0.5",
     "array-move": "^3.0.1",
     "axios": "^0.21.1",
     "azlyrics-ext": "^1.0.1",
