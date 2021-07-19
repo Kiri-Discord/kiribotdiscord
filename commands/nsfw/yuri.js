@@ -8,7 +8,7 @@ exports.run = async(client, message, args) => {
     if (choice === '1') data = await nsfw.yuri()
     else if (choice === '2') data = await nsfw.eroYuri()
     else data = await nsfw.lesbian()
-    return message.channel.send(data.url);
+    return message.channel.send(`||${data.url}||`);
 }
 exports.help = {
     name: "yuri",

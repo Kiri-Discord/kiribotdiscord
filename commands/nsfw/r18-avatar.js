@@ -3,7 +3,7 @@ const neko = require('nekos.life');
 const { nsfw } = new neko();
 exports.run = async(client, message, args) => {
     const data = await nsfw.avatar();
-    return message.channel.send(data.url);
+    return message.channel.send(`||${data.url}||`);
 }
 exports.help = {
     name: "r18-avatar",

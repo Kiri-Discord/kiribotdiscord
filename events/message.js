@@ -79,7 +79,7 @@ module.exports = async(client, message) => {
             return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
         };
 
-        if (commandFile.conf.maintenance) return message.inlineReply(`\`${prefix}${cmd}\` is being maintained ${sed} try again later!`)
+        if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.inlineReply(`\`${prefix}${cmd}\` is being maintained ${sed} try again later!`)
         if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 
         if (!client.config.owners.includes(message.author.id) && commandFile.conf.owner) return;
@@ -133,7 +133,7 @@ module.exports = async(client, message) => {
 
         const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
 
-        if (!alreadyAgreed) {
+        if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
             if (message.channel.type === 'text') {
                 if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
             };

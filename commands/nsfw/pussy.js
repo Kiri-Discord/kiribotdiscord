@@ -8,7 +8,7 @@ exports.run = async(client, message, args) => {
     if (choice === '1') data = await nsfw.pussy()
     else if (choice === '2') data = await nsfw.pussyArt()
     else data = await nsfw.pussyWankGif()
-    return message.channel.send(data.url);
+    return message.channel.send(`||${data.url}||`);
 }
 exports.help = {
     name: "pussy",

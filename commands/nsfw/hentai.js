@@ -5,7 +5,7 @@ exports.run = async(client, message, args) => {
     const choices = ["1", "2"];
     const choice = choices[Math.floor(Math.random() * choices.length)];
     const data = choice === '1' ? await nsfw.hentai() : await nsfw.ero();
-    return message.channel.send(data.url);
+    return message.channel.send(`||${data.url}||`);
 }
 exports.help = {
     name: "hentai",

@@ -3,7 +3,7 @@ const neko = require('nekos.life');
 const { nsfw } = new neko();
 exports.run = async(client, message, args) => {
     const data = await nsfw.spank()
-    return message.channel.send(data.url);
+    return message.channel.send(`||${data.url}||`);
 }
 exports.help = {
     name: "spank",
