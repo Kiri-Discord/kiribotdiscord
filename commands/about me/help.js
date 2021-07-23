@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Util } = require("discord.js");
 const { findBestMatch } = require("string-similarity");
 
 exports.run = async(client, message, args, prefix) => {
@@ -65,17 +65,37 @@ exports.run = async(client, message, args, prefix) => {
                     return message.channel.send({ embed: { color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel bruh ${dead}` } });
                 };
                 if (feature.hide) return message.channel.send({ embed: { color: "RED", description: `that feature is accessible only by my owner 👑` } });
-                let cmd = feature.cmds.map(x => `\`${x}\``).join(", ");
+                let cmd = feature.cmds.map(x => `● \`${x.name}\` - ${x.desc}`).join("\n");
                 let adult = feature.adult;
-
+                const [first, ...rest] = Util.splitMessage(cmd, { maxLength: 2000, char: '\n' });
                 let embed = new MessageEmbed()
                     .setColor("#bee7f7")
                     .setAuthor('feature information (=･ω･=)', client.user.displayAvatarURL())
-                    .setTitle(`commands for ${feature.displayName}`)
-                    .setDescription(`${cmd}\n\nif you want to get more help regarding each command, use \`${prefix}help <command>\`!${adult ? `\n\nall commands in here are flagged as NSFW, so you might want to execute it in a NSFW channel ${dead}` : ''}`)
-      .setFooter(`remember to type ${prefix} before each command!`)
-      .setThumbnail(client.user.displayAvatarURL())
-      return message.channel.send(embed)
+                    .setThumbnail(client.user.displayAvatarURL())
+                if (rest.length) {
+                    embed.setTitle(`commands list for ${feature.displayName}`)
+                    embed.setDescription(first)
+                    await message.channel.send(embed);
+                    const lastContent = rest.splice(rest.length - 1, 1);
+                    for (const text of rest) {
+                        const embed1 = new MessageEmbed()
+                            .setColor("#bee7f7")
+                            .setDescription(text)
+                        await message.channel.send(embed1)
+                    };
+                    const embed3 = new MessageEmbed()
+                        .setColor("#bee7f7")
+                        .setDescription(lastContent)
+                        .setFooter(`remember to type ${prefix} before each command!`)
+                    return message.channel.send(embed3);
+                } else {
+                    embed
+                        .setTitle(`commands list for ${feature.displayName}`)
+                        .setFooter(`remember to type ${prefix} before each command!`)
+                        .setColor("#bee7f7")
+                        .setDescription(first + `\n\nif you want to get more help regarding each command, use \`${prefix}help <command>\`!${adult ? `\n\nall commands in here are flagged as NSFW, so you might want to execute it in a NSFW channel ${dead}` : ''}`)
+                    return message.channel.send(embed);
+                };
     } else {
       const list = client.allNameCmds.concat(client.allNameFeatures)
       const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';

@@ -4,7 +4,7 @@ const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 const path = require('path');
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let image;
     let attachments = message.attachments.array();
     if (args[0]) {
@@ -27,14 +27,14 @@ exports.run = async (client, message, args) => {
                     image = cache.last().attachments.first().url;
                 };
             } catch (error) {
-                image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+                image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
             }
-        }
-        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        } else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
     if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
+        message.channel.startTyping(true);
         const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'brazzers.png'));
         const { body } = await request.get(image);
         const data = await loadImage(body);
@@ -51,7 +51,7 @@ exports.run = async (client, message, args) => {
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
         };
         await message.channel.stopTyping(true);
-        return message.channel.send({files: [{attachment, name: "brazzers.png"}] });
+        return message.channel.send({ files: [{ attachment, name: "brazzers.png" }] });
     } catch (error) {
         await message.channel.stopTyping(true);
         return message.inlineReply(`sorry i got an error :pensive: try again later!`)
@@ -62,12 +62,12 @@ exports.help = {
     name: "brazzers",
     description: "you get the idea :eyes:",
     usage: ["brazzers `[URL]`", "brazzers `[image attachment]`"],
-    example:  ["brazzers `image attachment`", "brazzers `https://example.com/girl.jpg`", "brazzers"]
+    example: ["brazzers `image attachment`", "brazzers `https://example.com/girl.jpg`", "brazzers"]
 };
 
 exports.conf = {
     aliases: ['brazzer'],
     cooldown: 5,
     guildOnly: true,
-	channelPerms: ["ATTACH_FILES"]
+    channelPerms: ["ATTACH_FILES"]
 };

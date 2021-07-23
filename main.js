@@ -24,7 +24,7 @@ const client = new kiri(({
         }
     }
 }));
-
+require("discord-buttons")(client);
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);

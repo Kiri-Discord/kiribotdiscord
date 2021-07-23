@@ -4,7 +4,7 @@ const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck of
 const ISO6391 = require('iso-639-1');
 const ms = require('ms');
 const fetch = require('node-fetch');
-const { URLSearchParams } = require('url');
+// const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
 
 module.exports = class util {

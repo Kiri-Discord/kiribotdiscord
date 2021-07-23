@@ -55,16 +55,37 @@ module.exports = class HelpCommand extends SlashCommand {
                         return ctx.send({ embeds: [{ description: `uh.. ${ctx.member.user.username}, wasn't that supposed to be sent in a NSFW channel bruh ${dead}` }], ephemeral: true });
                     };
                     if (feature.hide) return ctx.send({ embeds: [{ description: `that feature is accessible only by my owner 👑` }], ephemeral: true });
-                    let cmd = feature.cmds.map(x => `\`${x}\``).join(", ");
+                    let cmd = feature.cmds.map(x => `● \`${x.name}\` - ${x.desc}`).join("\n");
                     let adult = feature.adult;
-                    const embed = new MessageEmbed()
+                    const [first, ...rest] = Util.splitMessage(cmd, { maxLength: 2000, char: '\n' });
+                    let embed = new MessageEmbed()
                         .setColor("#bee7f7")
                         .setAuthor('feature information (=･ω･=)', client.user.displayAvatarURL())
-                        .setTitle(`commands for ${feature.displayName}`)
-                        .setDescription(`${cmd}\n\nif you want to get more help regarding each command, use \`${setting.prefix}help <command>\`!${adult ? `\n\nall commands in here are flagged as NSFW, so you might want to execute it in a NSFW channel ${dead}` : ''}`)
-                .setFooter(`remember to type ${setting.prefix} before each command!`)
-                .setThumbnail(client.user.displayAvatarURL())
-            return ctx.send({embeds: [embed]})
+                        .setThumbnail(client.user.displayAvatarURL())
+                    if (rest.length) {
+                        embed.setTitle(`commands list for ${feature.displayName}`)
+                        embed.setDescription(first)
+                        await message.channel.send(embed);
+                        const lastContent = rest.splice(rest.length - 1, 1);
+                        for (const text of rest) {
+                            const embed1 = new MessageEmbed()
+                                .setColor("#bee7f7")
+                                .setDescription(text)
+                            await ctx.send({ embeds: [embed1] })
+                        };
+                        const embed3 = new MessageEmbed()
+                            .setColor("#bee7f7")
+                            .setDescription(lastContent)
+                            .setFooter(`remember to type ${prefix} before each command!`)
+                        return ctx.send({ embeds: [embed3] })
+                    } else {
+                        embed
+                            .setTitle(`commands list for ${feature.displayName}`)
+                            .setFooter(`remember to type ${prefix} before each command!`)
+                            .setColor("#bee7f7")
+                            .setDescription(first + `\n\nif you want to get more help regarding each command, use \`${prefix}help <command>\`!${adult ? `\n\nall commands in here are flagged as NSFW, so you might want to execute it in a NSFW channel ${dead}` : ''}`)
+                            return ctx.send({ embeds: [embed] })
+                    };
         } else if (ctx.options.command) {
             let command = client.commands.get(ctx.options.command.command) || client.commands.get(client.aliases.get(ctx.options.command.command));
             if (!command) {
@@ -107,7 +128,7 @@ module.exports = class HelpCommand extends SlashCommand {
             return ctx.send({embeds: [embed]})
         } else {
             let module = client.helps.array();
-            if (!client.config.owners.includes(ctx.member.user.id)) module = await module.filter(x => !x.hide);
+            if (!client.config.owners.includes(ctx.member.user.id)) module = module.filter(x => !x.hide);
             if (!channel.nsfw) module = module.filter(x => !x.adult);
             const embed1 = new MessageEmbed()
             .setColor("#bee7f7")
