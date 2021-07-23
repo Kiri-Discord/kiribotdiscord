@@ -1,59 +1,57 @@
 const { MessageEmbed } = require("discord.js");
 const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
 const ms = require("ms");
-const { MessageButton } = require('discord-buttons');
+const { embedURL } = require('../util/util')
 
 module.exports = async(client, member) => {
 
-    if (member.user.bot) return;
+        if (member.user.bot) return;
 
-    const setting = await client.dbguilds.findOne({
-        guildID: member.guild.id
-    });
+        const setting = await client.dbguilds.findOne({
+            guildID: member.guild.id
+        });
 
-    const roleExist = member.guild.roles.cache.get(setting.verifyRole);
-    const verifyChannel = member.guild.channels.cache.get(setting.verifyChannelID);
+        const roleExist = member.guild.roles.cache.get(setting.verifyRole);
+        const verifyChannel = member.guild.channels.cache.get(setting.verifyChannelID);
 
-    const alreadyHasRole = member._roles.includes(setting.verifyRole);
+        const alreadyHasRole = member._roles.includes(setting.verifyRole);
 
-    if (roleExist && verifyChannel && !alreadyHasRole) {
-        const startVerify = async() => {
-            const lookingEmoji = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
-            const timeMs = setting.verifyTimeout || ms('10m');
-            const exists = await client.verifytimers.exists(member.guild.id, member.user.id);
-            if (exists) {
-                await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
-                await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
-            } else {
-                await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
-            };
-            let code = randomText(10);
-            await client.dbverify.findOneAndUpdate({
-                guildID: member.guild.id,
-                userID: member.user.id,
-            }, {
-                guildID: member.guild.id,
-                userID: member.user.id,
-                valID: code,
-                endTimestamp: new Date(Date.now() + timeMs)
-            }, {
-                upsert: true,
-                new: true
-            });
-            const button = new MessageButton()
-                .setStyle('url')
-                .setURL(`||${__baseURL}verify?valID=${code}||`)
-                .setLabel('click me to start the verify process');
-            const dm = new MessageEmbed()
-                .setFooter(`you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams`)
-                .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
-                .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
-                .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:`)
-            await member.send(dm, button).catch(() => {
+        if (roleExist && verifyChannel && !alreadyHasRole) {
+            const startVerify = async() => {
+                    const lookingEmoji = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
+                    const timeMs = setting.verifyTimeout || ms('10m');
+                    const exists = await client.verifytimers.exists(member.guild.id, member.user.id);
+                    if (exists) {
+                        await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
+                        await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
+                    } else {
+                        await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id);
+                    };
+                    let code = randomText(10);
+                    await client.dbverify.findOneAndUpdate({
+                        guildID: member.guild.id,
+                        userID: member.user.id,
+                    }, {
+                        guildID: member.guild.id,
+                        userID: member.user.id,
+                        valID: code,
+                        endTimestamp: new Date(Date.now() + timeMs)
+                    }, {
+                        upsert: true,
+                        new: true
+                    });
+                    const dm = new MessageEmbed()
+                        .setFooter(`you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams`)
+                        .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
+                        .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
+                        .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `||${__baseURL}verify?valID=${valID}||`)}`)
+            try {
+                await member.send(dm);
+                return verifyChannel.send(`:tada: well done ${member}! now check your DM for a verify link ${lookingEmoji}`).then(i => i.delete({ timeout: 5000 }));
+            } catch {
                 verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
                     .then(i => i.delete({ timeout: 10000 }));
-            });
-            return verifyChannel.send(`:tada: well done ${member}! now check your DM for a verify link ${lookingEmoji}`).then(i => i.delete({ timeout: 5000 }));
+            };
         }
         const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
         const filter = (reaction, user) => {

@@ -12,10 +12,6 @@ module.exports = async(client, message) => {
                 if (!verifydb && message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();
                 let valID = verifydb.valID;
                 await message.delete();
-                const button = new MessageButton()
-                    .setStyle('url')
-                    .setURL(`||${__baseURL}verify?valID=${valID}||`)
-                    .setLabel('click me to start the verify process');
                 const dm = new MessageEmbed()
                     .setFooter(`you will be kicked from the server in \`${ms(new Date(verifydb.endTimestamp) - new Date(), {long: true})}\` to prevent bots and spams`)
                     .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
