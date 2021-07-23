@@ -11,7 +11,8 @@ exports.run = async(client, message, args) => {
         queue.connection.dispatcher.resume();
         if (queue.textChannel.id !== message.channel.id) message.channel.send('▶️ resuming...')
         queue.textChannel.send(({ embed: { color: "f3f3f3", description: `${message.author} resumed the current song ▶️${queue.karaoke.isEnabled ? '\n*note: interruption such as pausing or disconnecting will force me to stop displaying auto lyrics*' : ''}` } }));
-        clearTimeout(queue.dcTimeout)
+        clearTimeout(queue.dcTimeout);
+        queue.dcTimeout = undefined;
     } else {
         return message.channel.send('there might be a problem when i tried to resume the song, sorry :pensive:')
     }

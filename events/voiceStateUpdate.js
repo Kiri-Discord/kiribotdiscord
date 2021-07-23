@@ -34,6 +34,7 @@ module.exports = async(client, oldState, newState) => {
             clearTimeout(queue.dcTimeout)
             queue.playing = true;
             queue.connection.dispatcher.resume();
+            queue.dcTimeout = undefined;
         };
     };
 };
