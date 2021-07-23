@@ -1,11 +1,11 @@
 const Battle = require('../../features/battle/battle');
 const { randomRange, verify } = require('../../util/util');
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild) || message.guild.me;
     const opponent = member.user;
     if (opponent.id === message.author.id) return message.inlineReply('you can\'t play against yourself :(');
-    if (opponent !== client.user && opponent.bot) return message.inlineReply('i am the only bot who can fight with you :) no, i am not looking at you, Dank Memer!');
+    if (opponent !== client.user && opponent.bot) return message.inlineReply('i am the only bot who can fight with you :)');
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
     client.games.set(message.channel.id, { name: this.name, data: new Battle(message.author, opponent), prompt: `you should wait until **${message.author.username}** and **${opponent.username}** finish fighting :)` });
@@ -86,7 +86,7 @@ exports.run = async (client, message, args) => {
                 userId: battle.winner.id,
                 $inc: {
                     balance: amount,
-                }, 
+                },
             }, {
                 upsert: true,
                 new: true,
@@ -100,6 +100,7 @@ exports.run = async (client, message, args) => {
         throw err;
     }
 };
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -107,14 +108,14 @@ function getRandomInt(min, max) {
 };
 
 exports.help = {
-	name: "battle",
-	description: "engage in a turn-based battle against another user or me!",
-	usage: "battle `<@mention>`",
-	example: "battle `@bell`"
+    name: "battle",
+    description: "engage in a turn-based battle against another user or me!",
+    usage: "battle `<@mention>`",
+    example: "battle `@bell`"
 };
-  
+
 exports.conf = {
-	aliases: ["fight", "war"],
+    aliases: ["fight", "war"],
     cooldown: 6,
     guildOnly: true,
 };

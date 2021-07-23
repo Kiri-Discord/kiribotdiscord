@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
 const ms = require("ms");
+const { MessageButton } = require('discord-buttons');
 
 module.exports = async(client, member) => {
 
@@ -33,19 +34,22 @@ module.exports = async(client, member) => {
             }, {
                 guildID: member.guild.id,
                 userID: member.user.id,
-                valID: code
+                valID: code,
+                endTimestamp: new Date(Date.now() + timeMs)
             }, {
                 upsert: true,
                 new: true
             });
+            const button = new MessageButton()
+                .setStyle('url')
+                .setURL(`||${__baseURL}verify?valID=${code}||`)
+                .setLabel('click me to start the verify process');
             const dm = new MessageEmbed()
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.displayAvatarURL())
+                .setFooter(`you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams`)
                 .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
-                .setTitle(`Welcome to ${member.guild.name}! Wait, beep beep, boop boop?`)
-                .setDescription(`Hello! Before you join ${member.guild.name}, i just want you to verify yourself first :slight_smile: Enter the link below and solve the captcha to verify yourself. Hurry up, if you don't verify fast you will be kicked from the server in \`${ms(timeMs, {long: true})}\` to prevent bots and spams :pensive:`)
-                .addField(`Verification link for ${member.user.username}`, `||${__baseURL}verify?valID=${code}||`)
-            await member.send(dm).catch(() => {
+                .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
+                .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:`)
+            await member.send(dm, button).catch(() => {
                 verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
                     .then(i => i.delete({ timeout: 10000 }));
             });
