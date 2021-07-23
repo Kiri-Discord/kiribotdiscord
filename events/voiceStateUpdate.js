@@ -23,7 +23,7 @@ module.exports = async(client, oldState, newState) => {
                         .setTitle("it's lonely in here :(")
                         .setDescription(`it's been a while since everyone started leaving the music channel, so i left it too ☹️\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${client.config.prefix}24/7\` for supporters! stay tuned <3`)
                     return queue.textChannel.send(embed);
-                }, 30000);
+                }, 900000);
             };
         };
     };

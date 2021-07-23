@@ -1,5 +1,5 @@
 const { canModifyQueue } = require("../../util/musicutil");
-
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
                 .setTitle("no music was playing :(")
                 .setDescription(`it's been a while since the music queue was paused, so i left the voice channel to reserve data :pensive:\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${client.config.prefix}24/7\` for supporters! stay tuned <3`)
             return queue.textChannel.send(embed);
-        }, 15000);
+        }, 1200000);
     } else {
         return message.channel.send('the music is already paused :thinking:')
     }

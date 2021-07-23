@@ -45,14 +45,14 @@ module.exports = async(client, guild) => {
   `)
         .addField(`some of my suggestion for you to get started: ${blush}`, `
   \`${prefix}help\` - display my command list
-  \`${prefix}levelings\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
-  \`${prefix}setverify\` - set your server's own verification portal, powered by Google reCAPTCHA.
+  \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
+  \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
   
   *and many more to come...*
   `)
         .setColor('#DAF7A6')
         .setTimestamp()
-        .setAuthor(`hi i'm Kiri!`, client.user.displayAvatarURL())
+        .setAuthor(`hi i'm Kiri!`)
         .setThumbnail(client.user.displayAvatarURL())
     client.config.logChannels.forEach(id => {
         const channel = client.channels.cache.get(id);
@@ -77,8 +77,8 @@ module.exports = async(client, guild) => {
     **some of my suggestion for you to get started:** ${blush}
   
     \`${prefix}help\` - display my command list
-    \`${prefix}levelings\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
-    \`${prefix}setverify\` - set your server's own verification portal, powered by Google reCAPTCHA.
+    \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
+    \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
     
     *and many more to come...*
     `)
