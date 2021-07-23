@@ -18,10 +18,10 @@ module.exports = async(client, message) => {
                 .setLabel('click me to start the verify process');
             const dm = new MessageEmbed()
                 .setFooter(`you will be kicked from the server in \`${ms(new Date(verifydb.endTimestamp) - new Date(), {long: true})}\` to prevent bots and spams`)
-                .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
-                .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
+                .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
+                .setTitle(`welcome to ${message.guild.name}! wait, beep beep, boop boop?`)
                 .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:`)
-            await member.send(dm, button).catch(() => {
+            await message.author.send(dm, button).catch(() => {
                 return message.channel.send('your DM is still locked. unlock your DM first then type \`resend\` here :D')
                     .then(i => i.delete({ timeout: 10000 }));
             });
