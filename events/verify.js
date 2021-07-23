@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { MessageButton } = require('discord-buttons');
+const ms = require('ms');
 
 module.exports = async(client, message) => {
     if (message.channel.type !== 'dm') {
