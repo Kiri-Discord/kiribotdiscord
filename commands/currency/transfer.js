@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
     if (!member) return message.inlineReply("who do you want to send token to?");
     const user = member.user;
@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
         userId: message.author.id,
         $inc: {
             balance: -amount,
-        }, 
+        },
     }, {
         upsert: true,
         new: true,
@@ -49,7 +49,7 @@ exports.run = async (client, message, args) => {
         guildId: message.guild.id,
         $inc: {
             balance: amount,
-        }, 
+        },
     }, {
         upsert: true,
         new: true,
@@ -60,7 +60,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "transfer",
-    description: "transfer a credits to an another user.",
+    description: "transfer tokens to an another user.",
     usage: ["transfer `<@user> <amount>`", "transfer `<user ID> <amount>`"],
     example: ["transfer `@coconut#1337 50`", "transfer `444177575757 50`"]
 }
@@ -69,6 +69,5 @@ exports.conf = {
     aliases: ["tf"],
     cooldown: 15,
     guildOnly: true,
-    
     channelPerms: ["EMBED_LINKS"]
 }

@@ -15,23 +15,26 @@ exports.run = async(client, message, args) => {
             });
             await newUser.save();
             storage = newUser;
-        }
+        };
         let lastDaily = storage.lastDaily;
         try {
             if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
                 let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
                 const embed = new MessageEmbed()
-                    .setDescription(`sorry, you cannot collect your daily too early :pensive:\n\n~~want to get more token on your next daily collect? vote me [here](https://discord.ly/sefy) ^^~~`)
-                    .addField('your next collect is ready in:', `\`${finalTime}\``)
+                    .setColor("#bee7f7")
+                    .setDescription(stripIndents `
+                    sorry, you cannot collect your daily too early :pensive:
+                    your next collect is ready in: **${finalTime}**
+
+                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/sefy)~~ (currently in maintenance)`)
                     .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
-                    .setThumbnail(message.author.displayAvatarURL({ size: 1024, dynamic: true }))
                     .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
                 return message.channel.send(embed);
             } else {
                 let bonus;
                 let bonusAmount;
                 let finalAmount;
-                let amount = getRandomInt(10, 50);
+                let amount = getRandomInt(10, 30);
                 const voted = await client.vote.findOne({
                     userID: message.author.id
                 });
@@ -62,14 +65,14 @@ exports.run = async(client, message, args) => {
                 });
                 const embed = new MessageEmbed()
                     .setDescription(stripIndents `
-            ⏣ **${finalAmount}** token was placed in your wallet 💵
+            ⏣ __${finalAmount}__token was placed in your wallet 🙂
 
-            ${bonus ? `you collected **${bonusAmount}** more token for voting :)` : ''}
+            ~~you can get more rewards by voting!~~ (currently in maintenance)
+            ${bonus ? `you collected __${bonusAmount}__ more token for voting :)` : ''}
             `)
-            .addField(`current balance:`, `⏣ **${storageAfter.balance}** token`)
-            .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
+            .setColor("#bee7f7")
+            .setFooter(`current balance: ⏣ ${storageAfter.balance} token`)
             .setTitle(`here are your daily token, ${message.member.displayName}!`)
-            .setThumbnail(message.author.displayAvatarURL({size: 1024, dynamic: true}))
             return message.channel.send(embed);
         }
     } catch (error) {
@@ -86,7 +89,7 @@ exports.help = {
 }
 
 exports.conf = {
-    aliases: ["dailies"],
+    aliases: ["dailies", 'claim', 'collect'],
     cooldown: 10,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
