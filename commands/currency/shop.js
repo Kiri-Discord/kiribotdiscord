@@ -10,12 +10,12 @@ exports.run = async(client, message, args, prefix) => {
         .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <items>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features.\ncheck \`${prefix}help ecomomy\` to get more info :slight_smile:`)
         .addField('items list :moneybag:', stripIndents `
         ${embedURL('💍 wedding ring', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 1,300)
-        used to propose to your partner via \`${prefix}marry\` <3
+        used to propose to your partner via \`${prefix}marry\` <3 (break after each proposal)
         
-        ${embedURL('🌱 seeds', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 50)
-        used for planting trees in your garden via \`${prefix}garden\` :chestnut:
+        ${embedURL('🌱 seed', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 50)
+        used for planting trees in your garden via \`${prefix}plant\` :chestnut:
 
-        ${embedURL('🪱 worms', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 150)
+        ${embedURL('🪱 worm', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 150)
         bait to use for catching \`${prefix}fish\` ${rod}
         `)
 

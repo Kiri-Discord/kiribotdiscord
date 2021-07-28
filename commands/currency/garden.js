@@ -1,25 +1,24 @@
 const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
-    let storage = await client.money.findOne({
+    let garden = await client.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
-    if (!storage) {
-        const model = client.money
-        const newUser = new model({
+    if (!garden) {
+        const model = client.garden
+        money = new model({
             userId: message.author.id,
-            guildId: message.guild.id
+            guildId: message.guild.id,
         });
-        await newUser.save();
-        storage = newUser;
+        await garden.save();
     };
-    const p1 = storage.garden.plant1;
-    const p2 = storage.garden.plant2;
-    const p3 = storage.garden.plant3;
-    var s1 = storage.garden.plant1Stage;
-    var s2 = storage.garden.plant2Stage;
-    var s3 = storage.garden.plant3Stage;
+    const p1 = garden.plantOne;
+    const p2 = garden.plantTwo;
+    const p3 = garden.plantThree;
+    var s1 = garden.plantOneStage;
+    var s2 = garden.plantTwoStage;
+    var s3 = garden.plantOneStage;
 
     var f1 = s1.replace('1', '').replace('2', ':seedling: ').replace('3', ':seedling: ').replace('4', `:${p1}: `)
     var f2 = s2.replace('1', '').replace('2', ':seedling: ').replace('3', ':seedling: ').replace('4', `:${p2}: `)
@@ -32,10 +31,10 @@ exports.run = async(client, message, args, prefix) => {
 
     const grass = client.customEmojis.get("dirt");
     const embed = new MessageEmbed()
-        .setTitle(`${message.author.username}'s garden`)
-        .setTimestamp()
-        .setDescription(`${f1}${f2}${f3}\n${grass}${grass}${grass}`)
-        .setFooter(`${prefix}water to water your plant!`)
+        .setColor("#bee7f7")
+        .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
+        .setDescription(`${f1}${f2}${f3}\n${grass}${grass}${grass}\n\n\nuse \`${prefix}water\` to water your plant or use \`${prefix}plant\` to grow more tree!`)
+        .setFooter(`you can only water your plant every 24 hours!`)
     return message.channel.send(embed)
 };
 exports.help = {

@@ -5,7 +5,7 @@ const patSchema = require('../model/pat');
 const cuddleSchema = require('../model/cuddle');
 const kissSchema = require('../model/kiss');
 
-module.exports = async (client, member) => {
+module.exports = async(client, member) => {
 
     await client.dbverify.findOneAndDelete({
         guildID: member.guild.id,
@@ -21,7 +21,21 @@ module.exports = async (client, member) => {
     }, (err) => {
         if (err) console.error(err)
     });
+
     await client.money.findOneAndDelete({
+        guildId: member.guild.id,
+        userId: member.user.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await client.cooldowns.findOneAndDelete({
+        guildId: member.guild.id,
+        userId: member.user.id,
+    }, (err) => {
+        if (err) console.error(err)
+    });
+    await client.inventory.findOneAndDelete({
         guildId: member.guild.id,
         userId: member.user.id,
     }, (err) => {

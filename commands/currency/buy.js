@@ -17,26 +17,37 @@ exports.run = async(client, message, args, prefix) => {
     if (!toBuy) return message.inlineReply(`what item do you want to buy? for a list of item that you can purchase, please check \`${prefix}shop\` <3`)
     if (!items.includes(toBuy.toLowerCase())) return message.inlineReply(`\`${toBuy}\` is an invalid item :pensive: check \`${prefix}shop\` for a list of avaliable item :grin:`);
 
-    let storage = await client.money.findOne({
+    let moneyStorage = await client.money.findOne({
+        userId: message.author.id,
+        guildId: message.guild.id
+    });
+    if (!moneyStorage) {
+        const model = client.money
+        moneyStorage = new model({
+            userId: message.author.id,
+            guildId: message.guild.id,
+        });
+        await moneyStorage.save();
+    };
+    let storage = await client.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.money
-        const newUser = new model({
+        const model = client.inventory
+        money = new model({
             userId: message.author.id,
-            guildId: message.guild.id
+            guildId: message.guild.id,
         });
-        await newUser.save();
-        storage = newUser;
+        await storage.save();
     };
-    const money = storage.balance;
+    const money = moneyStorage.balance;
 
-    function buyItem(money, price, quantity, item) {
+    async function buyItem(money, price, quantity, item) {
         const total = price * quantity
         if (money < price * quantity) return message.inlineReply(`you don't have that much money in your balance :pensive:\na total of ⏣ __${total - money}__ token is needed to buy it.`)
 
-        const storageAfter = await client.money.findOneAndUpdate({
+        await client.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -52,24 +63,57 @@ exports.run = async(client, message, args, prefix) => {
         const items = quantity < 1 ? item : item + 's';
         const embed = new MessageEmbed()
             .setColor("#bee7f7")
-            .setTitle('purchase successful (=^･ω･^=)')
-            .setDescription(`you have bought __${quantity}__ of **${items}** (⏣ ${price}) which cost you ⏣ __${total}__ token`)
-            .setFooter(`your current balance: ⏣ ${storageAfter.balance}`)
+            .setAuthor('purchase successful (=^･ω･^=)', message.author.displayAvatarURL())
+            .setDescription(`you have bought __${quantity}__ **${items}** (⏣ ${price}) which cost you ⏣ __${total}__ token`)
+            .setFooter(`your current balance: ⏣ ${money - price}`)
         message.inlineReply(embed)
 
         if (item === 'wedding ring' || item === 'ring') {
-            storage.inventory.rings = storage.inventory.rings + 1
-            await storage.save();
+            await client.inventory.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: message.author.id
+            }, {
+                guildId: message.guild.id,
+                userId: message.author.id,
+                $inc: {
+                    rings: quantity,
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
         };
 
         if (item === 'seed') {
-            storage.inventory.seeds = storage.inventory.seeds + 1
-            await storage.save();
+            await client.inventory.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: message.author.id
+            }, {
+                guildId: message.guild.id,
+                userId: message.author.id,
+                $inc: {
+                    seeds: quantity,
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
         }
 
         if (item === 'worm') {
-            storage.inventory.seeds = storage.inventory.seeds + 1
-            await storage.save();
+            await client.inventory.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: message.author.id
+            }, {
+                guildId: message.guild.id,
+                userId: message.author.id,
+                $inc: {
+                    worms: quantity,
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
         }
     };
     if (toBuy === 'wedding ring' || toBuy === 'ring') {
@@ -87,7 +131,7 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "buy",
-    description: "shows a list of purchasable items.",
+    description: "buy an item from the store",
     usage: "buy `<amount> <items>`",
     example: "buy `seeds 10`"
 };

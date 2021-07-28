@@ -10,17 +10,28 @@ exports.run = async(client, message, args) => {
         userId: user.id,
         guildId: message.guild.id
     });
-    let lastDaily;
     if (!storage) {
         const model = client.money
-        const newUser = new model({
+        storage = new model({
             userId: user.id,
             guildId: message.guild.id
         });
-        await newUser.save();
-        storage = newUser;
+        await storage.save();
     };
-    let msLastDaily = storage.lastDaily;
+    let cooldownStorage = await client.cooldowns.findOne({
+        userId: user.id,
+        guildId: message.guild.id
+    });
+    if (!cooldownStorage) {
+        const model = client.cooldowns
+        cooldownStorage = new model({
+            userId: user.id,
+            guildId: message.guild.id
+        });
+        await cooldownStorage.save();
+    };
+    let lastDaily;
+    let msLastDaily = cooldownStorage.lastDaily;
     let balance = storage.balance;
     if (msLastDaily && cooldown - (Date.now() - msLastDaily) > 0) {
         lastDaily = `\`${humanizeDuration(cooldown - (Date.now() - msLastDaily))}\` left`
@@ -49,6 +60,5 @@ exports.conf = {
     aliases: ["bal", "coin", "money", "credit"],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 };

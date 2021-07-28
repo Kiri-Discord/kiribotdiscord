@@ -16,12 +16,11 @@ exports.run = async(client, message, args) => {
     });
     if (!storage) {
         const model = client.money
-        const newUser = new model({
+        storage = new model({
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await newUser.save();
-        storage = newUser;
+        await storage.save();
     };
     let balance = storage.balance;
 

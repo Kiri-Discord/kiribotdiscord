@@ -1,63 +1,175 @@
 const humanizeDuration = require("humanize-duration");
 
 exports.run = async(client, message, args, prefix) => {
-    let storage = await client.money.findOne({
+    let garden = await client.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
-    if (!storage) {
-        const model = client.money
-        const newUser = new model({
+    if (!garden) {
+        const model = client.garden
+        garden = new model({
+            userId: message.author.id,
+            guildId: message.guild.id,
+        });
+        await garden.save();
+    };
+    let cooldownStorage = await client.cooldowns.findOne({
+        userId: message.author.id,
+        guildId: message.guild.id
+    });
+    if (!cooldownStorage) {
+        const model = client.cooldowns
+        cooldownStorage = new model({
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await newUser.save();
-        storage = newUser;
+        await cooldownStorage.save();
     };
+
     const cooldown = 8.64e+7;
-    const lastWater = storage.lastWater;
-    if (lastWater !== null && cooldown - (Date.now() - lastWater) > 0) return message.inlineReply(`💦 you just watered your plant today! you can water it again in **${humanizeDuration(cooldown - (Date.now() - lastWater))}**!`);
-    const p1 = storage.garden.plant1;
-    const p2 = storage.garden.plant2;
-    const p3 = storage.garden.plant3;
+    const lastWater = cooldownStorage.lastWater;
+    const p1 = garden.plantOne;
+    const p2 = garden.plantTwo;
+    const p3 = garden.plantThree;
     if (!p1 && !p2 && !p3) return message.inlineReply(`:x: you don't have any plants to water :pensive: check \`${prefix}shop\` to buy some!`);
-    var s1 = storage.garden.plant1Stage;
-    var s2 = storage.garden.plant2Stage;
-    var s3 = storage.garden.plant3Stage;
+    if (lastWater !== null && cooldown - (Date.now() - lastWater) > 0) return message.inlineReply(`💦 you just watered your plant today! you can water it again in **${humanizeDuration(cooldown - (Date.now() - lastWater))}**!`);
+    var s1 = garden.plantOneStage;
+    var s2 = garden.plantTwoStage;
+    var s3 = garden.plantThreeStage;
 
     if (s1 === "1") {
         s1 = "2";
-        storage.garden.plant1Stage = s1;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantOneStage: s1
+        }, {
+            upsert: true,
+            new: true,
+        });
     } else if (s1 === "2") {
         s1 = "3";
-        storage.garden.plant1Stage = s1;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantOneStage: s1
+        }, {
+            upsert: true,
+            new: true,
+        });
     } else if (s1 === "3") {
         s1 = "4"
-        storage.garden.plant1Stage = s1;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantOneStage: s1
+        }, {
+            upsert: true,
+            new: true,
+        });
     };
 
     if (s2 === "1") {
         s2 = "2";
-        storage.garden.plant2Stage = s2;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantTwoStage: s2
+        }, {
+            upsert: true,
+            new: true,
+        });
     } else if (s2 === "2") {
         s2 = "3";
-        storage.garden.plant2Stage = s2;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantTwoStage: s2
+        }, {
+            upsert: true,
+            new: true,
+        });
     } else if (s2 === "3") {
         s2 = "4";
-        storage.garden.plant2Stage = s2;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantTwoStage: s2
+        }, {
+            upsert: true,
+            new: true,
+        });
     };
 
     if (s3 === "1") {
         s3 = "2";
-        storage.garden.plant3Stage = s3;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantThreeStage: s3
+        }, {
+            upsert: true,
+            new: true,
+        });
     } else if (s3 === "2") {
         s3 = "3";
-        storage.garden.plant3Stage = s3;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantThreeStage: s3
+        }, {
+            upsert: true,
+            new: true,
+        });
     } else if (s3 === "3") {
         s3 = "4";
-        storage.garden.plant3Stage = s3;
+        await client.garden.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: message.author.id
+        }, {
+            guildId: message.guild.id,
+            userId: message.author.id,
+            plantThreeStage: s3
+        }, {
+            upsert: true,
+            new: true,
+        });
     };
-    await storage.save();
+    await client.cooldowns.findOneAndUpdate({
+        guildId: message.guild.id,
+        userId: message.author.id
+    }, {
+        guildId: message.guild.id,
+        userId: message.author.id,
+        lastWater: Date.now()
+    }, {
+        upsert: true,
+        new: true,
+    });
     return message.inlineReply(`💦 your plant was watered! check \`${prefix}garden\` to watch the progress or \`${prefix}harvest\` to collect the weed!`)
 };
 exports.help = {
@@ -71,5 +183,5 @@ exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS"]
+    channelPerms: []
 };

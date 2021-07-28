@@ -3,12 +3,12 @@ const { millify } = require('millify');
 const ordinal = require('ordinal')
 
 exports.run = async(client, message, args, prefix) => {
-    let data = await client.dbleveling.find({
+    let data = await client.money.find({
         guildId: message.guild.id,
     }).sort({
-        xp: -1
+        balance: -1
     });
-    if (!data || !data.length) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :pensive: try chatting more to level up or use \`${prefix}leveling on\` to set it up :smile:` } });
+    if (!data || !data.length) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :pensive: try chatting more to level up :smile:` } });
 
     const emoji = {
         "1": ":crown:",
@@ -22,16 +22,16 @@ exports.run = async(client, message, args, prefix) => {
     data.map((user, index) => {
         let member = message.guild.members.cache.get(user.userId);
         if (!member) {
-            client.dbleveling.findOneAndDelete({
+            client.money.findOneAndDelete({
                 userId: user.userId,
                 guildId: message.guild.id,
             }, (err) => {
                 if (err) console.error(err)
             });
-            arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| —  Level: \`${user.level}\` | XP: \`${millify(user.xp)}\``);
+            arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} ||Left user|| —  ⏣ **${millify(user.balance)}**`);
         } else {
             if (member.user.id === message.author.id) rank = index + 1;
-            arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — Level: \`${user.level}\` | XP: \`${millify(user.xp)}\``);
+            arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — ⏣ **${millify(user.balance)}**`);
         }
     });
     // for (let counter = 0; counter < data.length; ++counter) {
@@ -63,22 +63,22 @@ exports.run = async(client, message, args, prefix) => {
 
     FieldsEmbed.embed
         .setColor(message.guild.me.displayHexColor)
-        .setAuthor(`leveling leaderboard for ${message.guild.name}:`, message.author.displayAvatarURL())
+        .setAuthor(`richest user in ${message.guild.name}:`, message.author.displayAvatarURL())
         .setFooter(`you are ranked ${ordinal(rank)} in this guild :)`)
         .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
-        .setDescription(`you can level up by [sending messages](https://support.discord.com/hc/en-us/articles/360034632292-Sending-Messages) in ${message.guild.name}!`)
+        .setDescription(`token (⏣) can be claimed by winning games, betting and economy related features. (\`${prefix}help ecomomy\`)`)
     FieldsEmbed.build();
 }
 
 exports.help = {
-    name: "levelboard",
-    description: "show the guild's leveling leaderboard :eyes:",
-    usage: "levelboard",
-    example: "levelboard"
+    name: "richest",
+    description: "show the leaderboard of people that have the most token in this server 💰",
+    usage: "richest",
+    example: "richest"
 };
 
 exports.conf = {
-    aliases: ["lvb"],
+    aliases: [],
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]

@@ -4,21 +4,16 @@ const reqString = {
     type: String,
     required: true,
 };
-
-const moneySchema = mongoose.Schema({
+const cooldownSchema = mongoose.Schema({
     userId: reqString,
     guildId: reqString,
-    balance: {
-        type: Number,
-        default: 10,
-    },
     lastDaily: Date,
     lastWater: Date,
     lastGamble: Date
 });
 
 module.exports = mongoose.model(
-    'money',
-    moneySchema,
-    'money'
+    'cooldown',
+    cooldownSchema,
+    'cooldown'
 )

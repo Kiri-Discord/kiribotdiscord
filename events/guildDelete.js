@@ -30,6 +30,18 @@ module.exports = async(client, guild) => {
     }, (err) => {
         if (err) console.error(err)
     });
+    await client.cooldowns.deleteMany({
+        guildId: guild.id
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
+    await client.inventory.deleteMany({
+        guildId: guild.id
+    }, (err) => {
+        if (err) console.error(err)
+    });
+
 
     await client.love.deleteMany({
         guildID: guild.id
