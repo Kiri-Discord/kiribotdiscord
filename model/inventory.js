@@ -8,17 +8,22 @@ const reqString = {
 const moneySchema = mongoose.Schema({
     userId: reqString,
     guildId: reqString,
-    balance: {
+    rings: {
         type: Number,
-        default: 10,
+        default: 0,
     },
-    lastDaily: Date,
-    lastWater: Date,
-    lastGamble: Date
+    seeds: {
+        type: Number,
+        default: 0
+    },
+    worms: {
+        type: Number,
+        default: 0
+    }
 });
 
 module.exports = mongoose.model(
-    'money',
+    'inventory',
     moneySchema,
-    'money'
+    'inventory'
 )

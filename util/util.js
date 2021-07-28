@@ -228,7 +228,7 @@ module.exports = class util {
 	static randomStatus(client) {
 		const activities = [
 			{
-				text: `awake for ${ms(client.uptime)}`,
+				text: `teaching physics for ${ms(client.uptime)}`,
 				type: 'PLAYING'
 			},
 			{

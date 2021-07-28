@@ -1,22 +1,35 @@
 const neko = require('nekos.life');
 const { sfw } = new neko();
 const { MessageEmbed } = require('discord.js');
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
     const author = await client.love.findOne({
         userID: message.author.id,
         guildID: message.guild.id
     });
     if (author) {
         if (author.marriedID) {
-            return message.inlineReply('you are already married!\n*cheater*');
+            return message.inlineReply('you are already married! *cheater*');
         }
-    }
+    };
     if (!args[0]) return message.inlineReply('who do you want to propose to?');
     const member = await getMemberfromMention(args[0], message.guild);
     if (!member) return message.inlineReply("i couldn't find that user in this server :pensive:");
     if (member.user.id === message.author.id) return message.inlineReply('WHY DO YOU WANT TO MARRY YOURSELF?');
     if (member.user.id === client.user.id) return message.inlineReply('aww i apreciated that but.. i am just a bot :(');
-    if (member.user.bot) return message.inlineReply('that user is a bot :(\n*we are emotionless. why do you want to marry?*');
+    if (member.user.bot) return message.inlineReply('that user is a bot :pensive:');
+    let storage = await client.inventory.findOne({
+        userId: message.author.id,
+        guildId: message.guild.id
+    });
+    if (!storage) {
+        const model = client.inventory;
+        storage = new model({
+            userId: message.author.id,
+            guildId: message.guild.id,
+        });
+        await storage.save();
+    };
+    if (storage.rings < 1) return message.inlineReply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: message.guild.id
@@ -42,20 +55,20 @@ exports.run = async (client, message, args) => {
         });
         await newUser.save();
     };
-    const msg = await message.channel.send({embed: {color: "a65959", description: `
+    const msg = await message.channel.send({ embed: { color: "a65959", description: `
     ${member}, it seems like ${message.author} is interested in taking you as their loved one...
     
     do you accept this proposal? please react with ✅ for yes, and ❌ for no.
-    *i will be going in a minute.*
-    `}});
+    *this proposal will expire in a minute.*
+    ` } });
     await msg.react('✅');
     await msg.react('❌');
     let answered;
     const filter = (reaction, user) => {
         return ['✅', '❌'].includes(reaction.emoji.name) && user.id === member.user.id;
     };
-    const collector = msg.createReactionCollector(filter, {time: 60000});
-    collector.on('collect', async (reaction, user) => {
+    const collector = msg.createReactionCollector(filter, { time: 60000 });
+    collector.on('collect', async(reaction, user) => {
         if (reaction.emoji.name === '❌') {
             answered = true;
             message.channel.send(`**${member.user.username}** declined your proposal :(`);
@@ -84,11 +97,25 @@ exports.run = async (client, message, args) => {
                 upsert: true,
                 new: true,
             });
+
             let image = await sfw.kiss();
             const embed = new MessageEmbed()
-            .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
-            .setImage(image.url);
+                .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
+                .setImage(image.url);
             message.channel.send(embed);
+            await client.inventory.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: message.author.id
+            }, {
+                guildId: message.guild.id,
+                userId: message.author.id,
+                $inc: {
+                    rings: -1,
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
             return collector.stop();
         }
     });
