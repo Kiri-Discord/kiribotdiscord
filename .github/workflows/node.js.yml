@@ -1,5 +1,5 @@
 # this file is for me deploying the bot myself. if you are deploying the bot to heroku or other platform, simply ignore this
-name: Deploying bot
+name: Deploying bot on cloud
 on:
   push:
     branches: [ master ]
