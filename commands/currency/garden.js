@@ -7,7 +7,7 @@ exports.run = async(client, message, args, prefix) => {
     });
     if (!garden) {
         const model = client.garden
-        money = new model({
+        garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
