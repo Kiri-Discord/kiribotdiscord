@@ -1,18 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
-    let money = await client.money.findOne({
-        userId: message.author.id,
-        guildId: message.guild.id
-    });
-    if (!money) {
-        const model = client.money
-        storage = new model({
-            userId: message.author.id,
-            guildId: message.guild.id
-        });
-        await money.save();
-    };
     let storage = await client.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
