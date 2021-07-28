@@ -18,7 +18,7 @@ exports.run = async(client, message, args, prefix) => {
     const p3 = garden.plantThree;
     var s1 = garden.plantOneStage;
     var s2 = garden.plantTwoStage;
-    var s3 = garden.plantOneStage;
+    var s3 = garden.plantThreeStage;
 
     var f1 = s1.replace('1', '').replace('2', ':seedling: ').replace('3', ':seedling: ').replace('4', `:${p1}: `)
     var f2 = s2.replace('1', '').replace('2', ':seedling: ').replace('3', ':seedling: ').replace('4', `:${p2}: `)
