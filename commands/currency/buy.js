@@ -29,18 +29,6 @@ exports.run = async(client, message, args, prefix) => {
         });
         await moneyStorage.save();
     };
-    let storage = await client.inventory.findOne({
-        userId: message.author.id,
-        guildId: message.guild.id
-    });
-    if (!storage) {
-        const model = client.inventory
-        money = new model({
-            userId: message.author.id,
-            guildId: message.guild.id,
-        });
-        await storage.save();
-    };
     const money = moneyStorage.balance;
 
     async function buyItem(money, price, quantity, item) {
