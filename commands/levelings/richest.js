@@ -8,7 +8,7 @@ exports.run = async(client, message, args, prefix) => {
     }).sort({
         balance: -1
     });
-    if (!data || !data.length) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :pensive: try chatting more to level up :smile:` } });
+    if (!data || !data.length) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ i can't find any money data for this guild :pensive: use \`${prefix}help currency\` for more info :smile:` } });
 
     const emoji = {
         "1": ":crown:",
