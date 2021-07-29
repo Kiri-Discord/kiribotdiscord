@@ -8,7 +8,7 @@ const { stripIndents } = require('common-tags');
 
 module.exports = async(client, message) => {
         if (!client.finished) return;
-        if (message.author.id === client.user.id || message.author.bot) return;
+        if (message.author.bot) return;
 
         let prefix;
         let setting;
@@ -172,33 +172,27 @@ module.exports = async(client, message) => {
         };
         if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
-        let member;
-
-        if (message.channel.type === "dm") {
-            member = message.author;
-        } else {
-            member = message.member
-        };
-
+        const cooldownID = message.channel.type === "dm" ? message.author.id : message.author.id + message.guild.id
+        
         const now = Date.now();
         const timestamps = cooldowns.get(commandFile.help.name);
         const cooldownAmount = (commandFile.conf.cooldown || 3) * 1000;
 
-        if (!timestamps.has(member.id)) {
+        if (!timestamps.has(cooldownID)) {
             if (!client.config.owners.includes(message.author.id)) {
 
-                timestamps.set(member.id, now);
+                timestamps.set(cooldownID, now);
             }
         } else {
-            const expirationTime = timestamps.get(member.id) + cooldownAmount;
+            const expirationTime = timestamps.get(cooldownID) + cooldownAmount;
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
                 return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${stare}`).then(m => m.delete({ timeout: 5000 }));
             }
 
-            timestamps.set(member.id, now);
-            setTimeout(() => timestamps.delete(member.id), cooldownAmount);
+            timestamps.set(cooldownID, now);
+            setTimeout(() => timestamps.delete(cooldownID), cooldownAmount);
         }
 
         try {
