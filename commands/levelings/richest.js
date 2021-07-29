@@ -66,7 +66,7 @@ exports.run = async(client, message, args, prefix) => {
         .setAuthor(`richest user in ${message.guild.name}:`, message.author.displayAvatarURL())
         .setFooter(`you are ranked ${ordinal(rank)} in this guild :)`)
         .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
-        .setDescription(`token (⏣) can be claimed by winning games, betting and economy related features. (\`${prefix}help ecomomy\`)`)
+        .setDescription(`token (⏣) can be claimed by winning games, betting and economy related features. (\`${prefix}help currency\`)`)
     FieldsEmbed.build();
 }
 
