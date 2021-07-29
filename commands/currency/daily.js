@@ -49,7 +49,7 @@ exports.run = async(client, message, args) => {
                 const voted = await client.vote.findOne({
                     userID: message.author.id
                 });
-                if (voted) {
+                if (voted.length) {
                     bonus = true;
                     await client.vote.findOneAndDelete({
                         userID: message.author.id

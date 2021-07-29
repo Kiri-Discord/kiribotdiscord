@@ -4,7 +4,7 @@ module.exports = async(client, oldState, newState) => {
     if (newState.channelID === null) { //leaving vc
         const queue = client.queue.get(oldState.guild.id);
         if (!queue) return;
-        if (!queue.channel.members.filter(x => !x.user.bot).size > 2) return;
+        if (!queue.channel.members.filter(x => !x.user.bot).size >= 2) return;
 
         if (queue.playing) {
             queue.playing = false;
