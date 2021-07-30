@@ -13,7 +13,7 @@ exports.run = async(client, message, args, prefix) => {
         });
         await storage.save();
     };
-    if (storage.worms < 0) return message.inlineReply(`:x: you don't have enough 🪱 **worms** in your inventory to plant in your garden! buy one at \`${prefix}shop\`!`);
+    if (storage.worms < 1) return message.inlineReply(`:x: you don't have enough 🪱 **worms** in your inventory to plant in your garden! buy one at \`${prefix}shop\`!`);
     var d = 0
     d = Math.random()
 
