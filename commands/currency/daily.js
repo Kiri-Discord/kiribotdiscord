@@ -49,16 +49,16 @@ exports.run = async(client, message, args) => {
                 const voted = await client.vote.findOne({
                     userID: message.author.id
                 });
-                if (voted.length) {
+                if (!voted) {
+                    bonus = false;
+                    finalAmount = amount;
+                } else {
                     bonus = true;
                     await client.vote.findOneAndDelete({
                         userID: message.author.id
                     });
                     bonusAmount = calcBonus(amount)
                     finalAmount = amount + bonusAmount
-                } else {
-                    bonus = false;
-                    finalAmount = amount;
                 };
                 await client.cooldowns.findOneAndUpdate({
                     guildId: message.guild.id,
