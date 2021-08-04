@@ -7,8 +7,7 @@ exports.run = async(client, message, args) => {
         if (!queue) return message.channel.send('there is nothing to display since i\'m not playing anything :grimacing:');
         let queueFields = [];
         const nowPlaying = queue.nowPlaying;
-        const trackList = queue.songs;
-        trackList.push(queue.nowPlaying);
+        queueFields.push(`**NOW** - [${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author} [${nowPlaying.requestedby}]`)
         let totalDuration = 0;
         queue.songs.map((track, index) => {
             totalDuration = totalDuration + track.info.length;
