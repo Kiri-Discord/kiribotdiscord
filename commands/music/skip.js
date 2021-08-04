@@ -6,10 +6,10 @@ exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: there isn't any ongoing music queue` } });
     if (!canModifyQueue(message.member)) return message.channel.send({ embed: { color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` } });
-    const playerListening = queue.channel.members.filter(x => !x.user.bot).size;
-    if (playerListening >= 2 && queue.songs[0].requestedby.id !== message.author.id) {
-        let listening = playerListening;
-        let leftMembers = listening - 2;
+    const playerListening = queue.channel.members.flatMap(members => members);
+    let listening = playerListening.filter(x => !x.user.bot).size;
+    if (listening >= 2 && queue.songs[0].requestedby.id !== message.author.id) {
+        let leftMembers = listening - 1;
         let vote = 0;
         let voted = [];
         await message.channel.send(`there are **${leftMembers}** people listening as well! to skip, type \`skip\` ⏭`);
