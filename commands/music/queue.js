@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
         FieldsEmbed.embed
             .setAuthor(`Music queue for ${message.guild.name}`, message.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`Now playing: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)
-            .setFooter(`${queue.loop ? 'Currently looping the queue' : `${queue.songs.length - 1} song${queue.songs.length - 1 === 1 ? '' : 's'} left in queue`} (queue duration: ${moment.duration(totalDuration).format('H[h] m[m] s[s]')})`)
+            .setFooter(`${queue.loop ? 'Currently looping the queue' : `${queue.songs.length} song${queue.songs.length === 1 ? '' : 's'} left in queue`} (queue duration: ${moment.duration(totalDuration).format('H[h] m[m] s[s]')})`)
 
     FieldsEmbed.build();
 };
