@@ -72,13 +72,13 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             })
             .catch(err => console.error(err));
-        return message.channel.send(({ embed: { color: "f3f3f3", description: `☑️ the scrolling lyric channel has been set to ${channel}!\n\ndo \`${prefix}auto-lyric -on\` to enable it :wink:` } }));
+        return message.channel.send(({ embed: { color: "f3f3f3", description: `☑️ the scrolling lyric channel has been set to ${channel}!\n\ndo \`${prefix}scrolling-lyric -on\` to enable it :wink:` } }));
     }
 
 }
 exports.help = {
     name: "scrolling-lyrics",
-    description: "Setting for the auto scrolling lyrics features",
+    description: "set up the auto scrolling lyrics feature",
     usage: ["scrolling-lyrics `set <#channel>`", "scrolling-lyrics `set <channel id>`", "scrolling-lyrics `off`", "scrolling-lyrics `-lang <language code>`"],
     example: ["scrolling-lyrics `set #singing`", "scrolling-lyrics `set 4545455454644`", "scrolling-lyrics `off`", "scrolling-lyrics `-lang english`"]
 };

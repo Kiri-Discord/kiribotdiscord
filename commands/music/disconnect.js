@@ -2,16 +2,16 @@ const { canModifyQueue } = require("../../util/musicutil");
 const { reactIfAble } = require('../../util/util');
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.inlineReply('there is nothing to stop since there isn\'t anything in the queue :grimacing:');
-    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m playing music! join ${queue.channel} first :wink:`);
-    queue.connection.disconnect();
+    if (!queue) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: there isn't any ongoing music queue` } });
+    if (!canModifyQueue(message.member)) return message.channel.send({ embed: { color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` } });
+    client.lavacordManager.leave(queue.textChannel.guild.id);
     return reactIfAble(message, client.user, '👋')
 };
 
 
 exports.help = {
     name: "disconnect",
-    description: "disconnect from the current music voice channel that i am connecting to",
+    description: "disconnect from the current music voice channel and clear the queue",
     usage: "disconnect",
     example: "disconnect"
 };

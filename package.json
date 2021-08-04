@@ -16,6 +16,7 @@
     "dependencies": {
         "@discord-player/extractor": "^3.0.2",
         "@discordjs/opus": "^0.5.3",
+        "@lavacord/discord.js": "0.0.7",
         "aki-api": "^6.0.5",
         "array-move": "^3.0.1",
         "axios": "^0.21.1",
@@ -30,7 +31,6 @@
         "discord-buttons": "^4.0.0",
         "discord-giveaways": "^4.5.1",
         "discord-paginationembed": "^2.1.0",
-        "discord-ytdl-core": "^5.0.4",
         "discord.js": "^12.5.3",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",

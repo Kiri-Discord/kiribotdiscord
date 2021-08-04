@@ -10,12 +10,12 @@ exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
     const query = args.join(" ");
     if (queue) {
-        const info = await lyricsClient.search(queue.songs[0].title);
+        const info = await lyricsClient.search(queue.songs[0].info.title);
         if (!info) {
-            lyrics = await lyricsFinder(queue.songs[0].title, '');
+            lyrics = await lyricsFinder(queue.songs[0].info.title, '');
             if (!lyrics) return message.inlineReply(`i found no lyrics for current playing song :pensive:`);
             console.log('gg')
-            embed.setTitle(`Lyrics for ${queue.songs[0].title}`);
+            embed.setTitle(`Lyrics for ${queue.songs[0].info.title}`);
         } else {
             console.log('genius')
             embed.setTitle(`Lyrics for ${info.title} by ${info.artist.name}`)

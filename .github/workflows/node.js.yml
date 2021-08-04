@@ -20,5 +20,6 @@ jobs:
           git pull
           npm i
           curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.ENV_URL }}
+          curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.NODE_URL }}
           pm2 restart ecosystem.config.js --update-env --log-date-format 'DD-MM HH:mm:ss.SSS'
           pm2 save

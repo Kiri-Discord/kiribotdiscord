@@ -1,9 +1,7 @@
-const { play } = require("../../features/music/play");
+const { play, fetchInfo } = require("../../features/music/play");
 const { MessageEmbed } = require('discord.js')
-const ytdl = require("ytdl-core");
-const scdl = require("soundcloud-downloader").default
-const https = require("https");
-const { SOUNDCLOUD_CLIENT_ID, DEFAULT_VOLUME } = require("../../util/musicutil");
+const scdl = require("soundcloud-downloader").default;
+const { DEFAULT_VOLUME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const { verify, verifyLanguage, embedURL } = require('../../util/util');
 
@@ -40,10 +38,11 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     let queueConstruct = {
         textChannel: message.channel,
         channel,
-        connection: null,
+        player: null,
         songs: [],
         loop: false,
         playing: true,
+        nowPlaying: null,
         volume: null,
         karaoke: {
             timeout: [],
@@ -81,51 +80,24 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     }
     let song = null;
 
-    if (mobileScRegex.test(url)) {
-        try {
-            https.get(url, function(res) {
-                if (res.statusCode == "302") {
-                    return client.commands.get("play").run(client, message, [res.headers.location]);
-                } else {
-                    return message.inlineReply("no content could be found at that url :pensive:").catch(console.error);
-                }
-            });
-        } catch (error) {
-            return message.inlineReply('there was an error when i tried to get the song from that link :pensive:').catch(console.error);
-        }
-        return message.channel.send("following url redirection...").catch(console.error);
-    }
     if (urlValid) {
         try {
-            message.channel.send({ embed: { color: "f3f3f3", description: `**retrieving song data...** :mag_right:` } })
-            const songInfo = await ytdl.getInfo(url);
-            song = {
-                authorurl: songInfo.videoDetails.ownerProfileUrl,
-                author: songInfo.videoDetails.ownerChannelName,
-                title: songInfo.videoDetails.title,
-                url: songInfo.videoDetails.video_url,
-                requestedby: message.author,
-                duration: songInfo.videoDetails.lengthSeconds * 1000,
-                type: 'yt'
-            };
+            [song] = await fetchInfo(client, url, false);
+            if (!song) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
+            song.type = 'yt';
+            song.requestedby = message.author;
         } catch (error) {
-            return message.channel.send("i can't find any song with that URL :pensive:\n*if this problem persist, probably YouTube is ratelimiting me from playing the audio. try again later :(*");
+            console.log(error)
+            return message.channel.send({ embed: { color: "RED", description: `:x: no match were found. try again later :pensive:` } });
         }
-    } else if (scRegex.test(url)) {
+    } else if (scRegex.test(url) || mobileScRegex.test(url)) {
         try {
-            message.channel.send({ embed: { color: "f3f3f3", description: `**retrieving song data...** :mag_right:` } })
-            const trackInfo = await scdl.getInfo(url, SOUNDCLOUD_CLIENT_ID);
-            duration = trackInfo.duration;
-            song = {
-                authorurl: trackInfo.user.permalink_url,
-                author: trackInfo.user.username,
-                title: trackInfo.title,
-                url: trackInfo.permalink_url,
-                requestedby: message.author,
-                duration: trackInfo.duration
-            };
+            [song] = await fetchInfo(client, url, false, 'sc');
+            if (!song) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
+            song.type = 'sc';
+            song.requestedby = message.author;
         } catch (error) {
-            return message.inlineReply("i can't find any song with that URL :pensive:").catch(console.error);
+            return message.channel.send({ embed: { color: "RED", description: `:x: no match were found. try again later :pensive:` } });
         }
     } else {
         return client.commands
@@ -136,7 +108,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     if (serverQueue) {
         serverQueue.songs.push(song);
         const embed = new MessageEmbed()
-            .setDescription(`✅ Added **${embedURL(song.title, song.url)}** by **${embedURL(song.author, song.authorurl)}** to the queue [${song.requestedby}]`)
+            .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`)
         return serverQueue.textChannel
             .send(embed)
             .catch(console.error);
@@ -145,19 +117,11 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     client.queue.set(message.guild.id, queueConstruct);
 
     try {
-        queueConstruct.connection = await channel.join();
-        if (!queueConstruct.connection) {
-            client.queue.delete(message.guild.id);
-            return message.channel.send('there was an error when i tried to join your voice channel :pensive:').catch(console.error);
-        }
-        message.channel.send({ embed: { description: `**i have joined your voice channel :microphone2: \`#${channel.name}\` and bound to :page_facing_up: ${message.channel}!**` } })
         play(queueConstruct.songs[0], message, client, prefix);
     } catch (error) {
         console.error(error);
         client.queue.delete(message.guild.id);
-        if (queueConstruct.connection) await channel.leave();
-        await client.voicequeue.delete(message.guild.id);
-        return message.channel.send('there was an error when i tried to join your voice channel :pensive:').catch(console.error);
+        return message.channel.send({ embed: { color: "RED", description: `:x: there was an error when i tried to join your voice channel` } }).catch(console.error);
     }
 }
 

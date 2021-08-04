@@ -1,35 +1,35 @@
-const YouTubeAPI = require("simple-youtube-api");
-const { YOUTUBE_API_KEY } = require("../../util/musicutil");
-const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-const scdl = require("soundcloud-downloader").default
+const scdl = require("soundcloud-downloader").default;
 const { MessageMenuOption, MessageMenu } = require("discord-buttons");
 const { MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../util/util');
+const { fetchInfo } = require('../../features/music/play');
+const moment = require('moment');
+require('moment-duration-format');
 
 exports.run = async(client, message, args, prefix, cmd, internal) => {
-    if (!args.length) return message.channel.send({ embed: { color: "f3f3f3", description: `you must to provide me a song to search for! use \`${prefix}help search\` to learn more :wink:` } }).catch(console.error);
-    if (!message.member.voice.channel) return message.channel.send({ embed: { color: "f3f3f3", description: `⚠️ you are not in a voice channel!` } });
+        if (!args.length) return message.channel.send({ embed: { color: "f3f3f3", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` } });
+        if (!message.member.voice.channel) return message.channel.send({ embed: { color: "f3f3f3", description: `⚠️ you are not in a voice channel!` } });
 
-    const search = args.join(" ");
-    let result = [];
-    let options = [];
-    const loadingMessage = await message.channel.send({ embed: { description: `:mag_right: searching for \`${search}\`` } })
-    try {
-        message.channel.startTyping(true);
-        const ytRes = await youtube.searchVideos(search, 10);
-        const scRes = await scdl.search({
-            query: search,
-            resourceType: 'tracks'
-        });
-        if (!(ytRes.length + scRes.total_results) > 0) return message.inlineReply(`i am so sorry but there isn\'t any result for \`${search}\` :pensive:\ncan you check if there is typo?`)
-        ytRes
-            .filter((video) => video.type === 'video')
-            .map((video) => {
-                result.push({
-                    type: 'yt',
-                    title: shortenText(video.title, 22),
-                    url: video.url,
-                    desc: shortenText(video.raw.snippet.channelTitle, 22)
+        const search = args.join(" ");
+        let result = [];
+        let options = [];
+        try {
+            const loadingMessage = await message.channel.send({ embed: { description: `looking for \`${search}\`` } })
+            message.channel.startTyping(true);
+            const ytRes = await fetchInfo(client, search, true);
+            const scRes = await scdl.search({
+                query: search,
+                resourceType: 'tracks'
+            });
+            if (!(ytRes.length + scRes.total_results) > 0) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } })
+            ytRes
+                .splice(0, 10)
+                .map((video) => {
+                        result.push({
+                                    type: 'yt',
+                                    title: shortenText(video.info.title, 22),
+                                    url: video.info.uri,
+                                    desc: `${shortenText(video.info.author, 12)} ${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'))}`}`
                 });
             });
         scRes.collection
@@ -40,7 +40,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                     type: 'sc',
                     title: shortenText(track.title, 22),
                     url: track.permalink_url,
-                    desc: shortenText(track.user.username, 22)
+                    desc: `${shortenText(track.user.username, 12)} | ${shortenText(moment.duration(track.duration).format('H[h] m[m] s[s]'))}`
                 })
             })
         result.map((song, index) => {
@@ -65,7 +65,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         let executed = false;
         setTimeout(async() => {
             if (!executed) {
-                await loadingMessage.edit('this command is now inactive :pensive:')
+                await loadingMessage.edit({ embed: { description: `this command is now inactive :pensive:` } })
                 return resultsMessage.delete();
             }
         }, 30000);
@@ -75,6 +75,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 if (menu.clicker.user.id == message.author.id) {
                     executed = true;
                     await menu.message.delete();
+                    await loadingMessage.edit({ embed: { description: `this command is now inactive :pensive:` } })
                     for (let song of menu.values) {
                         const url = result[song].url;
                         await client.commands

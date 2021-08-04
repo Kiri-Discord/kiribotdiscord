@@ -5,9 +5,13 @@ const patSchema = require('../model/pat');
 const cuddleSchema = require('../model/cuddle');
 const kissSchema = require('../model/kiss');
 const musicSchema = require('../model/music');
+const gameSchema = require('../model/game');
 
 module.exports = async(client, guild) => {
     client.guildsStorage.delete(guild.id);
+    client.voicequeue.delete(guild.id);
+    client.queue.delete(guild.id);
+
 
     await client.dbguilds.findOneAndDelete({
         guildID: guild.id

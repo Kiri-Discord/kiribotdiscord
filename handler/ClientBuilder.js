@@ -3,14 +3,17 @@ const { Client, Collection } = require("discord.js");
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const RedisClient = require('../util/redis');
 const VerifyTimer = require('../features/redis/verify');
+const { Manager } = require('@lavacord/discord.js');
 const app = express();
 
 module.exports = class kiri extends Client {
     constructor(options) {
         super(options)
+        this.nodes = require('../lavalinkNodes.json');
         this.vote = require('../model/vote');
         this.globalStorage = require('../model/global');
         this.gameStorage = require('../model/game');
+        this.lavacordManager = new Manager(this, this.nodes);
         this.webapp = app;
         this.queue = new Map();
         this.commands = new Collection();

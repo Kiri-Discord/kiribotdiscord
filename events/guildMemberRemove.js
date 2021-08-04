@@ -77,6 +77,7 @@ module.exports = async(client, member) => {
         if (err) console.error(err)
     });
 
+
     await cuddleSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,

@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     async sing(song, channel, lang, queue, prefix) {
         if (song.type === 'yt') {
-            const info = await ytdl.getInfo(song.url);
+            const info = await ytdl.getInfo(song.info.uri);
             const foundCaption = info.player_response.captions;
             if (foundCaption) {
                 const tracks = foundCaption.playerCaptionsTracklistRenderer.captionTracks;

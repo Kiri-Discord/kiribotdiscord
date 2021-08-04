@@ -1,12 +1,13 @@
 const { canModifyQueue } = require("../../util/musicutil");
+const { reactIfAble } = require("../../util/util");
 const { MessageCollector } = require('discord.js');
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.inlineReply('there is nothing to skip since there isn\'t anything in the queue :grimacing:');
-    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m playing music! join ${queue.channel} to listen :wink:`);
-    const playerListening = queue.channel.members.filter(x => !x.user.bot).size
-    if (playerListening > 2 && queue.songs[0].requestedby.id !== message.author.id) {
+    if (!queue) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: there isn't any ongoing music queue` } });
+    if (!canModifyQueue(message.member)) return message.channel.send({ embed: { color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` } });
+    const playerListening = queue.channel.members.filter(x => !x.user.bot).size;
+    if (playerListening >= 2 && queue.songs[0].requestedby.id !== message.author.id) {
         let listening = playerListening;
         let leftMembers = listening - 2;
         let vote = 0;
@@ -20,7 +21,7 @@ exports.run = async(client, message, args) => {
             vote = vote + 1;
             if (vote === leftMembers) {
                 collector.stop();
-                return skip(queue, message);
+                return skip(queue, message, client);
             }
             message.channel.send(`**${vote}** member voted to skip the current song ⏭ only **${leftMembers - vote}** member left!`)
         });
@@ -28,14 +29,13 @@ exports.run = async(client, message, args) => {
             if (vote !== leftMembers) return message.channel.send(`not enough people to skip song!`);
         });
     } else {
-        return skip(queue, message);
+        return skip(queue, message, client);
     }
 }
-async function skip(queue, message) {
+async function skip(queue, message, client) {
     queue.playing = true;
-    await queue.connection.dispatcher.end();
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embed: { color: "f3f3f3", description: `${message.author}, you skipped to the next track in the queue ⏭` } })
-    return queue.textChannel.send({ embed: { color: "f3f3f3", description: `${message.author} skipped to the next track in the queue ⏭` } });
+    queue.player.stop();
+    return reactIfAble(message, client.user, '👌')
 }
 exports.help = {
     name: "skip",

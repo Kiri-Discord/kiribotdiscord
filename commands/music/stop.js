@@ -1,12 +1,12 @@
 const { canModifyQueue } = require("../../util/musicutil");
+const { reactIfAble } = require("../../util/util");
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.inlineReply('there is nothing to stop since there isn\'t anything in the queue :grimacing:');
-    if (!canModifyQueue(message.member)) return message.inlineReply(`you are not in the voice channel where i\'m playing music! join ${queue.channel} to listen :wink:`);
+    if (!queue) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: there isn't any ongoing music queue` } });
+    if (!canModifyQueue(message.member)) return message.channel.send({ embed: { color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` } });
     queue.songs = [];
-    queue.connection.dispatcher.end();
-    if (queue.textChannel.id !== message.channel.id) message.channel.send('🛑 stopping...')
-    return queue.textChannel.send({ embed: { color: "f3f3f3", description: `${message.author} stopped the music 🛑` } });
+    await queue.player.stop();
+    return reactIfAble(message, client.user, '👌')
 }
 
 exports.help = {
@@ -17,7 +17,7 @@ exports.help = {
 }
 
 exports.conf = {
-    aliases: ["end"],
+    aliases: ["end", 'clear'],
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
