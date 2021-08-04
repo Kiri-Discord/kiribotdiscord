@@ -44,7 +44,7 @@
         "https": "^1.0.0",
         "humanize-duration": "^3.27.0",
         "ini": "^2.0.0",
-        "ioredis": "^4.27.6",
+        "ioredis": "^4.27.7",
         "iso-639-1": "^2.1.9",
         "js-chess-engine": "^0.11.3",
         "libsodium-wrappers": "^0.7.9",
