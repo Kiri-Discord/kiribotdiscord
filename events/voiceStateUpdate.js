@@ -2,9 +2,10 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async(client, oldState, newState) => {
     if ((oldState.member.user.bot && oldState.member.user.id !== client.user.id) ||
         (newState.member.user.bot && newState.member.user.id !== client.user.id)) return;
-    if (newState.channelID === null) { //leaving vc
+    if (newState.channelID === null || oldState.channelID) { //leaving vc
         const queue = client.queue.get(oldState.guild.id);
         if (!queue) return;
+        if (queue.channel.id !== oldState.channelID) return;
         if (newState.member.user.id === client.user.id) {
             await client.lavacordManager.leave(queue.textChannel.guild.id);
             if (queue.karaoke.isEnabled) {
@@ -15,8 +16,9 @@ module.exports = async(client, oldState, newState) => {
             };
             return client.queue.delete(queue.textChannel.guild.id);
         };
-        const playerListening = queue.channel.members.filter(x => !x.user.bot).size;
-        if (!playerListening >= 2) return;
+        const playerListening = queue.channel.members.array();
+        let listening = playerListening.filter(x => !x.user.bot).length;
+        if (listening >= 1) return;
 
         if (queue.playing) {
             queue.playing = false;
@@ -42,8 +44,9 @@ module.exports = async(client, oldState, newState) => {
         };
     };
     if (oldState.channelID === null) {
-        const queue = client.queue.get(oldState.guild.id);
+        const queue = client.queue.get(newState.guild.id);
         if (!queue) return;
+        if (queue.channel.id !== newState.channelID) return;
         if (queue.dcTimeout && queue.afkPause && !queue.playing) {
             clearTimeout(queue.dcTimeout)
             queue.playing = true;
