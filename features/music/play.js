@@ -20,8 +20,8 @@ module.exports = {
             if (!song) {
                 if (queue.songs.length) return;
                 setTimeout(() => {
-                    if (queue.player && message.guild.me.voice.channel) return;
-                    client.lavacordManager.leave(queue.textChannel.guild.id)
+                    if (queue.player.playing && message.guild.me.voice.channel) return;
+                    await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embed: { description: `i'm leaving the voice channel... ${waveEmoji}` } });
                 }, STAY_TIME * 1000);
