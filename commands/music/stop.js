@@ -5,6 +5,7 @@ exports.run = async(client, message, args) => {
     if (!queue) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: there isn't any ongoing music queue` } });
     if (!canModifyQueue(message.member)) return message.channel.send({ embed: { color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` } });
     queue.songs = [];
+    queue.nowPlaying = null;
     await queue.player.stop();
     return reactIfAble(message, client.user, '👌')
 }
