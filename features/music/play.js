@@ -18,7 +18,7 @@ module.exports = {
                 queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
             };
             if (!song) {
-                setTimeout(() => {
+                setTimeout(async () => {
                     if (queue.player.playing && message.guild.me.voice.channel) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
