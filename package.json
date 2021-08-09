@@ -78,6 +78,6 @@
         "utf-8-validate": "^5.0.5",
         "valid-url": "^1.0.9",
         "weather-js": "^2.0.0",
-        "ytdl-core": "^4.9.0"
+        "ytdl-core": "^4.9.1"
     }
 }
