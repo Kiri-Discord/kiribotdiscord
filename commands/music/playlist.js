@@ -8,8 +8,7 @@ const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 
 exports.run = async(client, message, args, prefix) => {
-        const current = client.voicequeue.get(message.guild.id);
-        if (current) return message.inlineReply(current.prompt);
+        if (!args.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:` }] });
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
         if (!channel) return message.inlineReply('you are not in a voice channel!');
@@ -17,9 +16,8 @@ exports.run = async(client, message, args, prefix) => {
 
         if (serverQueue && channel !== message.guild.me.voice.channel) {
             const voicechannel = serverQueue.channel
-            return message.inlineReply(`i have already been playing music to someone in your server! join \`#${voicechannel.name}\` to listen :smiley:`).catch(console.error);
+            return message.inlineReply({ embeds: [{ color: "f3f3f3", description: `:x: i have already been playing music on another channel in your server! join ${voicechannel.toString()} to listen!` }] });
         };
-        if (!args.length) return message.inlineReply(`you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:`).catch(console.error);
 
         const musicSettings = await Guild.findOne({
             guildId: message.guild.id

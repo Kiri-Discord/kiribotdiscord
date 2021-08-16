@@ -51,8 +51,8 @@ module.exports = async client => {
     };
     client.finished = true;
     const activity = randomStatus(client);
-    client.user.setPresence({ activity: { name: activity.text, type: activity.type }, status: 'online' })
-    client.setInterval(() => {
+    client.user.setPresence({ activity: { name: activity.text, type: activity.type }, status: 'online' });
+    setInterval(() => {
         const activity = randomStatus(client);
         client.user.setPresence({ activity: { name: activity.text, type: activity.type }, status: 'online' })
     }, 120000);
