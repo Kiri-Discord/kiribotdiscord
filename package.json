@@ -18,7 +18,7 @@
         "@lavacord/discord.js": "0.0.7",
         "@vitalets/google-translate-api": "^7.0.0",
         "aki-api": "^6.0.5",
-        "array-move": "^3.0.1",
+        "array-move": "^4.0.0",
         "axios": "^0.21.1",
         "bufferutil": "^4.0.3",
         "canvacord": "^5.2.3",
