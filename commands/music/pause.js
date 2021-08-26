@@ -10,13 +10,10 @@ exports.run = async(client, message, args) => {
     if (queue.playing) {
         queue.playing = false;
         queue.player.pause(true);
+        queue.pausedAt = Date.now();
+        if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.pause(queue.pausedAt);
         queue.textChannel.send(({ embed: { color: "f3f3f3", description: `${message.author} paused the current song ⏸️` } }))
         if (queue.textChannel.id !== message.channel.id) message.channel.send('⏸️ pausing...');
-        queue.karaoke.timeout.forEach(x => {
-            clearTimeout(x);
-        });
-        queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
-        queue.pausedAt = Date.now();
         queue.dcTimeout = setTimeout(async() => {
             await client.lavacordManager.leave(queue.textChannel.guild.id);
             const embed = new MessageEmbed()

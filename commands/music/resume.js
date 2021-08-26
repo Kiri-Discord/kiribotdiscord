@@ -8,13 +8,15 @@ exports.run = async(client, message, args) => {
     if (!queue.playing) {
         queue.playing = true;
         queue.player.resume();
+        if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume();
         queue.pausedAt = undefined;
-        if (queue.textChannel.id !== message.channel.id) message.channel.send('▶️ resuming...')
-        queue.textChannel.send(({ embed: { color: "f3f3f3", description: `${message.author} resumed the current song ▶️${queue.karaoke.isEnabled ? '\n*note: interruption such as pausing or disconnecting will force me to stop displaying auto lyrics*' : ''}` } }));
+        if (queue.textChannel.id !== message.channel.id) message.channel.send('▶️ resuming...');
+
+        queue.textChannel.send(({ embed: { color: "f3f3f3", description: `${message.author.toString()} resumed the current song ▶️` } }));
         clearTimeout(queue.dcTimeout);
         queue.dcTimeout = undefined;
     } else {
-        return message.channel.send({ embed: { color: "f3f3f3", description: `:x: i am already paused!` } })
+        return message.channel.send({ embed: { color: "f3f3f3", description: `:x: i am already playing!` } })
     }
 
 }

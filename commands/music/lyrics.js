@@ -1,7 +1,5 @@
 const { MessageEmbed, Util } = require("discord.js");
-const lyricsFinder = require("lyrics-finder");
-const { Lyrics } = require("@discord-player/extractor");
-const lyricsClient = Lyrics.init(process.env.geniusKey);
+const request = require('node-superfetch');
 
 exports.run = async(client, message, args) => {
     let lyrics;
@@ -9,31 +7,43 @@ exports.run = async(client, message, args) => {
         .setColor(message.member.displayHexColor)
     const queue = client.queue.get(message.guild.id);
     const query = args.join(" ");
-    if (queue) {
-        const info = await lyricsClient.search(queue.songs[0].info.title);
-        if (!info) {
-            lyrics = await lyricsFinder(queue.songs[0].info.title, '');
-            if (!lyrics) return message.inlineReply(`i found no lyrics for current playing song :pensive:`);
-            console.log('gg')
-            embed.setTitle(`Lyrics for ${queue.songs[0].info.title}`);
-        } else {
-            console.log('genius')
-            embed.setTitle(`Lyrics for ${info.title} by ${info.artist.name}`)
-            embed.setThumbnail(info.thumbnail)
-            lyrics = info.lyrics;
+    if (query) {
+        try {
+            const { body } = await request
+                .post(process.env.lyricURL + 'fetch')
+                .set({ Authorization: process.env.lyricsKey })
+                .query({
+                    song: query
+                });
+            if (body.notFound) return message.inlineReply(`no lyrics was found for that song :pensive:`);
+            if (!body.googleFetch) {
+                embed.setTitle(`Lyrics for ${body.title} by ${body.author}`);
+                embed.setThumbnail(body.thumbnail);
+            } else {
+                embed.setTitle(`Lyrics for ${query}`);
+            };
+            lyrics = body.lyrics;
+        } catch (error) {
+            return message.inlineReply(`couldn't connect you to the server. try again later :pensive:`);
         };
-    } else if (query) {
-        const info = await lyricsClient.search(query);
-        if (!info) {
-            lyrics = await lyricsFinder(query, '');
-            if (!lyrics) return message.inlineReply(`i found no lyrics for \`${query}\` :pensive:`);
-            console.log('gg')
-            embed.setTitle(`Lyrics for ${query}`);
-        } else {
-            console.log('genius')
-            embed.setTitle(`Lyrics for ${info.title} by ${info.artist.name}`)
-            embed.setThumbnail(info.thumbnail)
-            lyrics = info.lyrics;
+    } else if (queue) {
+        try {
+            const { body } = await request
+                .post(process.env.lyricURL + 'fetch')
+                .set({ Authorization: process.env.lyricsKey })
+                .query({
+                    song: queue.songs[0].info.title
+                });
+            if (body.notFound) return message.inlineReply(`i found no lyrics for the current playing song :pensive:`);
+            if (!body.googleFetch) {
+                embed.setTitle(`Lyrics for ${body.title} by ${body.author}`);
+                embed.setThumbnail(body.thumbnail);
+            } else {
+                embed.setTitle(`Lyrics for ${queue.songs[0].info.title}`);
+            };
+            lyrics = body.lyrics;
+        } catch (error) {
+            return message.inlineReply(`couldn't connect you to the server. try again later :pensive:`);
         };
     } else {
         return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
@@ -69,7 +79,7 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "lyrics",
     description: "get the lyrics for a song",
-    usage: "lyrics <song>",
+    usage: "lyrics [song]",
     example: "lyrics `never let me go`"
 };
 
@@ -78,5 +88,4 @@ exports.conf = {
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],
-    maintenance: true
 };

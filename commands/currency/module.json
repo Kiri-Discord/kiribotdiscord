@@ -1,6 +1,6 @@
 {
-  "displayName": "💰 currency",
-  "name": "currency",
-  "desc": "go betting, receive daily token and robbing. you can get token from playing games!",
-  "hide": false
+    "displayName": "💰 economy",
+    "name": "economy",
+    "desc": "go betting, receive daily token earn money from gardening. token can also be claimed from playing games!",
+    "hide": false
 }

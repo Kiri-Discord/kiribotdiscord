@@ -39,7 +39,8 @@ exports.run = async(client, message, args, prefix) => {
                 timeout: [],
                 channel: null,
                 isEnabled: null,
-                languageCode: null
+                languageCode: null,
+                instance: null,
             }
         };
         if (musicSettings) {

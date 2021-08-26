@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { STAY_TIME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
-const { sing } = require("./karaoke");
+const ScrollingLyrics = require("./karaoke");
 const request = require('node-superfetch');
 const { embedURL } = require('../../util/util');
 const ISO6391 = require('iso-639-1');
@@ -11,25 +11,13 @@ module.exports = {
             let success;
 
             const queue = client.queue.get(message.guild.id);
-            if (queue.karaoke.timeout.length) {
-                queue.karaoke.timeout.forEach(x => {
-                    clearTimeout(x);
-                });
-                queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
-            };
             if (!song) {
-                setTimeout(async () => {
+                setTimeout(async() => {
                     if (queue.player.playing && message.guild.me.voice.channel) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embed: { description: `i'm leaving the voice channel... ${waveEmoji}` } });
                 }, STAY_TIME * 1000);
-                if (queue.karaoke.timeout.length) {
-                    queue.karaoke.timeout.forEach(x => {
-                        clearTimeout(x);
-                    });
-                    queue.karaoke.timeout.splice(0, queue.karaoke.timeout.length);
-                };
                 await Guild.findOneAndUpdate({
                     guildId: message.guild.id
                 }, {
@@ -52,6 +40,7 @@ module.exports = {
             };
             queue.player.once('end', async data => {
                 if (data.reason === "FINISHED" || data.reason === "STOPPED") {
+                    if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     if (queue.loop) {
                         queue.songs.push(queue.nowPlaying);
                         module.exports.play(queue.songs[0], message, client, prefix);
@@ -61,9 +50,16 @@ module.exports = {
                 };
                 if (data.reason === "REPLACED") return;
             });
-
+            if (queue.karaoke.isEnabled) {
+                queue.textChannel.send({ embed: { description: `fetching lyrics... :mag_right:` } });
+                // success = await sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
+                queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
+                success = await queue.karaoke.instance.init();
+                if (!success) queue.karaoke.instance = null;
+            };
             try {
                 await queue.player.play(song.track);
+                if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.start();
                 queue.nowPlaying = song;
                 queue.songs.shift();
                 queue.player.volume(queue.volume);
@@ -71,10 +67,6 @@ module.exports = {
                 await client.lavacordManager.leave(queue.textChannel.guild.id);
                 client.queue.delete(message.guild.id);
                 return queue.textChannel.send({ embed: { description: `**there was an error while playing the music** :pensive:` } });
-            }
-            if (queue.karaoke.isEnabled) {
-                queue.textChannel.send({ embed: { description: `fetching lyrics... :mag_right:` } });
-                success = await sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
             };
 
             const emoji = {
@@ -100,6 +92,6 @@ module.exports = {
             .query({
                 identifier: urlRegex.test(query) ? query : `ytsearch:${query}`,
             });
-        return body.tracks
+        return body.tracks;
     },
 };

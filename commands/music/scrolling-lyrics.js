@@ -6,13 +6,10 @@ exports.run = async(client, message, args, prefix) => {
     if (!args.length) return message.channel.send(`uh seems like that's a wrong usage :pensive: check out \`${prefix}help scrolling-lyrics\`!`)
     if (args[0] === "off") {
         if (serverQueue) {
+            if (serverQueue.karaoke.isEnabled && serverQueue.karaoke.instance) {
+                serverQueue.karaoke.instance.stop();
+            };
             serverQueue.karaoke.isEnabled = false;
-            if (serverQueue.karaoke.timeout.length) {
-                serverQueue.karaoke.timeout.forEach(x => {
-                    clearTimeout(x);
-                });
-                serverQueue.karaoke.timeout.splice(0, serverQueue.karaoke.timeout.length);
-            }
         }
         await Guild.findOneAndUpdate({
             guildId: message.guild.id,
@@ -55,11 +52,8 @@ exports.run = async(client, message, args, prefix) => {
         if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔').then(m => m.delete({ timeout: 5000 }));
         if (serverQueue) {
             serverQueue.karaoke.channel = channel;
-            if (serverQueue.karaoke.timeout.length) {
-                serverQueue.karaoke.timeout.forEach(x => {
-                    clearTimeout(x);
-                });
-                serverQueue.karaoke.timeout.splice(0, serverQueue.karaoke.timeout.length);
+            if (serverQueue.karaoke.isEnabled && serverQueue.karaoke.instance) {
+                serverQueue.karaoke.instance.change(channel);
             }
         }
 
