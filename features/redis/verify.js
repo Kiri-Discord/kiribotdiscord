@@ -7,16 +7,13 @@ module.exports = class VerifyTimer {
     }
 
     async fetchAll() {
-        const timers = await this.client.redis.hgetall('verifytimer');
-        for (let data of Object.values(timers)) {
-            data = JSON.parse(data);
-            await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, false);
-        }
+        const timers = await this.client.dbverify.find({});
+        if (!timers || !timers.length) return;
+        for (let data of timers) await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, data.valID, false);
         return this;
     }
 
-    async setTimer(guildID, time, userID, updateRedis = true) {
-        const data = { time: new Date(Date.now() + time).toISOString(), guildID, userID };
+    async setTimer(guildID, time, userID, code, update = true) {
         const timeout = setTimeout(async() => {
             try {
                 let reason = 'Kiri verification timeout (step 2)';
@@ -65,11 +62,23 @@ module.exports = class VerifyTimer {
                     guildID: guildID,
                     userID: userID,
                 });
-                await this.client.redis.hdel('verifytimer', `${guildID}-${userID}`);
             }
         }, time);
-        if (updateRedis) await this.client.redis.hset('verifytimer', {
-            [`${guildID}-${userID}`]: JSON.stringify(data) });
+        if (update) {
+            await this.client.dbverify.findOneAndUpdate({
+                guildID,
+                userID,
+            }, {
+                guildID,
+                userID,
+                valID: code,
+                endTimestamp: new Date(Date.now() + time),
+                time: new Date(Date.now() + time).toISOString()
+            }, {
+                upsert: true,
+                new: true
+            });
+        }
         this.timeouts.set(`${guildID}-${userID}`, timeout);
         return timeout;
     }
@@ -81,10 +90,13 @@ module.exports = class VerifyTimer {
             guildID: guildID,
             userID: userID,
         });
-        return this.client.redis.hdel('verifytimer', `${guildID}-${userID}`);
     }
 
-    exists(guildID, userID) {
-        return this.client.redis.hexists('verifytimer', `${guildID}-${userID}`);
+    async exists(guildID, userID) {
+        const exist = await this.client.dbverify.findOne({
+            guildID: guildID,
+            userID: userID,
+        });
+        return exist ? true : false;
     }
 };

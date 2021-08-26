@@ -9,7 +9,6 @@ const gameSchema = require('../model/game');
 
 module.exports = async(client, guild) => {
     client.guildsStorage.delete(guild.id);
-    client.voicequeue.delete(guild.id);
     client.queue.delete(guild.id);
 
 

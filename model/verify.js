@@ -5,7 +5,8 @@ const verifySchema = mongoose.Schema({
     guildID: String,
     userID: String,
     valID: String,
-    endTimestamp: Date
+    endTimestamp: Date,
+    time: String
 });
 
 module.exports = mongoose.model('verify', verifySchema, 'verify');

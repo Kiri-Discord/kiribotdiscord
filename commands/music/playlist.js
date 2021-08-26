@@ -8,8 +8,6 @@ const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 
 exports.run = async(client, message, args, prefix) => {
-        const current = client.voicequeue.get(message.guild.id);
-        if (current) return message.inlineReply(current.prompt);
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
         if (!channel) return message.inlineReply('you are not in a voice channel!');

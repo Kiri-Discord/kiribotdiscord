@@ -1,7 +1,6 @@
 const express = require('express');
 const { Client, Collection } = require("discord.js");
 const PokemonStore = require('../features/pokemon/pokemonstore');
-const RedisClient = require('../util/redis');
 const VerifyTimer = require('../features/redis/verify');
 const { Manager } = require('@lavacord/discord.js');
 const app = express();
@@ -17,7 +16,6 @@ module.exports = class kiri extends Client {
         this.webapp = app;
         this.queue = new Map();
         this.commands = new Collection();
-        this.redis = RedisClient ? RedisClient.db : null;
         this.cooldowns = require('../model/cooldown');
         this.inventory = require('../model/inventory');
         this.garden = require('../model/garden');
@@ -37,7 +35,6 @@ module.exports = class kiri extends Client {
         this.dbleveling = require("../model/leveling")
         this.dbverify = require("../model/verify")
         this.games = new Collection();
-        this.voicequeue = new Collection();
         this.pokemon = new PokemonStore();
         this.verifytimers = new VerifyTimer(this);
     };

@@ -11,10 +11,10 @@ const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=(
 const pieces = ['pawn', 'rook', 'knight', 'king', 'queen', 'bishop'];
 const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-exports.run = async (client, message, args, prefix, cmd) => {
+exports.run = async(client, message, args, prefix, cmd) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.inlineReply(current.prompt);
-    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
             const data = await client.gameStorage.findOne({
@@ -72,7 +72,7 @@ exports.run = async (client, message, args, prefix, cmd) => {
         let blackPlayer = opponent;
         let foundGameSave = resumeGame.storage.chess;
         if (foundGameSave) {
-            await message.channel.send(stripIndents`
+            await message.channel.send(stripIndents `
             you already have a saved game, do you want to resume it? \`y/n\`
 
             *this will delete your currently saved game*
@@ -116,17 +116,17 @@ exports.run = async (client, message, args, prefix, cmd) => {
             } else {
                 const displayTime = userTime === Infinity ? 'infinite' : moment.duration(userTime).format();
                 const GameEmbed = new MessageEmbed()
-                .setDescription(stripIndents`
+                    .setDescription(stripIndents `
                 type \`end\` to forfeit.
 
                 save your game by typing \`save\`
                 can't think of a move? use \`help\` *coward*
                 `)
-                .setTitle(`${message.author.username} vs ${opponent.username}`)
-                .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
-                .setColor('#34e363')
-                .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
-                .setImage(`attachment://chess.png`)
+                    .setTitle(`${message.author.username} vs ${opponent.username}`)
+                    .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
+                    .setColor('#34e363')
+                    .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
+                    .setImage(`attachment://chess.png`)
                 await message.channel.send(`**${user.username}**, what move do you want to make? (ex. A1A2 or NC3)?\n_you are ${gameState.check ? '**in check!**' : 'not in check.'}_`, GameEmbed);
                 prevPieces = Object.assign({}, game.exportJson().pieces);
                 const moves = game.moves();
@@ -189,9 +189,9 @@ exports.run = async (client, message, args, prefix, cmd) => {
                     const pawnMoved = gameState.pieces[choice[0]].toUpperCase() === 'P';
                     game.move(choice[0], choice[1]);
                     if (pawnMoved && choice[1].endsWith(gameState.turn === 'white' ? '8' : '1')) {
-                        game.board.configuration.pieces[choice[1]] = gameState.turn === 'white'
-                            ? choice[2]
-                            : choice[2].toLowerCase();
+                        game.board.configuration.pieces[choice[1]] = gameState.turn === 'white' ?
+                            choice[2] :
+                            choice[2].toLowerCase();
                     };
                 }
                 const timeTaken = new Date() - now;
@@ -201,8 +201,8 @@ exports.run = async (client, message, args, prefix, cmd) => {
         }
         client.games.delete(message.channel.id);
         if (saved) {
-            return message.channel.send(stripIndents`
-            game was saved! use \`${prefix}${cmd} @${opponent.tag} ${time}\` to resume anywhere!
+            return message.channel.send(stripIndents `
+            game was saved! use \`${prefix}${cmd} @${opponent.tag} ${time}\` to resume anytime!
             the same opponent is not required to resume the game :)
 
             *if you want to delete your saved game, use \`${prefix}${cmd} delete\`*
@@ -218,10 +218,10 @@ exports.run = async (client, message, args, prefix, cmd) => {
         }
         const winner = gameState.turn === 'black' ? whitePlayer : blackPlayer;
         const EndEmbed = new MessageEmbed()
-        .setTitle(`${winner.username} won!`)
-        .setColor('#34e363')
-        .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
-        .setImage(`attachment://chess.png`)
+            .setTitle(`${winner.username} won!`)
+            .setColor('#34e363')
+            .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
+            .setImage(`attachment://chess.png`)
         if (!winner.bot) {
             let amount = getRandomInt(5, 15);
             const storageAfter = await client.money.findOneAndUpdate({
@@ -232,21 +232,21 @@ exports.run = async (client, message, args, prefix, cmd) => {
                 userId: winner.id,
                 $inc: {
                     balance: amount,
-                }, 
+                },
             }, {
                 upsert: true,
                 new: true,
             });
             EndEmbed
-            .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
-            .setFooter(`your current balance: ${storageAfter.balance} token`)
+                .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
+                .setFooter(`your current balance: ${storageAfter.balance} token`)
         }
         return message.channel.send(`checkmate! congratulations, **${winner.username}**!`, EndEmbed);
     } catch (err) {
         client.games.delete(message.channel.id);
         throw err;
     }
-    
+
     function parseSAN(gameState, moves, move) {
         if (!move) return null;
         if (move[0] === '0-0') {
@@ -411,6 +411,7 @@ exports.run = async (client, message, args, prefix, cmd) => {
             color: playerColor
         };
     }
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -429,6 +430,6 @@ exports.conf = {
     aliases: ["chess-game", "play-chess"],
     cooldown: 4,
     guildOnly: true,
-    
-	channelPerms: ["EMBED_LINKS"]
+
+    channelPerms: ["EMBED_LINKS"]
 };

@@ -8,11 +8,9 @@ global.__basedir = __dirname;
 global.__baseURL = process.env.baseURL || 'https://kiri.daztopia.xyz/';
 
 const mongo = require('./util/mongo');
-const RedisClient = require('./util/redis');
 const kiri = require("./handler/ClientBuilder.js");
 
 mongo.init();
-RedisClient.start();
 
 require('./handler/inlineReply');
 
