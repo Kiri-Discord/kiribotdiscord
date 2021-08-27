@@ -4,8 +4,6 @@ module.exports = {
     init: () => {
         const dbOptions = {
             keepAlive: true,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             autoIndex: false,
             poolSize: 5,
             connectTimeoutMS: 10000,
@@ -13,7 +11,6 @@ module.exports = {
         };
 
         mongoose.connect(process.env.mongourl, dbOptions);
-        mongoose.set('useFindAndModify', false);
         mongoose.Promise = global.Promise;
 
         mongoose.connection.on('connected', () => {
