@@ -15,7 +15,7 @@ module.exports = async client => {
             await client.guilds.fetch(guild.guildID);
             client.guildsStorage.set(guild.guildID, guild);
         } catch (err) {
-            await client.dbguilds.findOneAndDelete({
+            client.dbguilds.findOneAndDelete({
                 guildID: guild.guildID
             });
             client.config.logChannels.forEach(id => {

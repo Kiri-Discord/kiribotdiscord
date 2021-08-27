@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const ms = require("ms");
+const sendHook = require('../../features/webhook.js');
 module.exports = class VerifyTimer {
     constructor(client) {
         Object.defineProperty(this, 'client', { value: client });
@@ -32,7 +33,7 @@ module.exports = class VerifyTimer {
                 const logembed = new MessageEmbed()
                     .setAuthor(`Verification`, this.client.user.displayAvatarURL())
                     .setTitle(`${member.user.tag} was kicked`)
-                    .addField(`Progress`, `Step 2`)
+                    .addField(`Progress`, `Step 1`)
                     .setColor("#ff0000")
                     .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
                     .addField('Username', member.user.tag)
@@ -43,17 +44,30 @@ module.exports = class VerifyTimer {
                 const logerror = new MessageEmbed()
                     .setAuthor(`Verification`, this.client.user.displayAvatarURL())
                     .setTitle(`Failed while kicking ${member.user.tag}`)
-                    .addField(`Progress`, `Step 2`)
+                    .addField(`Progress`, `Step 1`)
                     .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
                     .setColor('#ff0000')
                     .setTimestamp()
                     .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
                 if (!member.kickable) {
-                    if (logChannel) return logChannel.send(logerror);
-                    else return;
+                    if (logChannel) {
+                        const instance = new sendHook(this.client, logChannel, {
+                            username: member.guild.me.displayName,
+                            avatarURL: this.client.user.displayAvatarURL(),
+                            embeds: [logerror],
+                        });
+                        return instance.send();
+                    } else return;
                 }
-                if (logChannel) await logChannel.send(logembed);
-                await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** (at verification step 2) :pensive:`).catch(() => {
+                if (logChannel) {
+                    const instance = new sendHook(this.client, logChannel, {
+                        username: member.guild.me.displayName,
+                        avatarURL: this.client.user.displayAvatarURL(),
+                        embeds: [logembed],
+                    })
+                    return instance.send();
+                }
+                await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** :pensive:`).catch(() => {
                     null
                 });
                 await member.kick(reason);

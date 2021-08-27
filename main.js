@@ -10,9 +10,6 @@ global.__baseURL = process.env.baseURL || 'https://kiri.daztopia.xyz/';
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 require('./handler/inlineReply');
-
-mongo.init();
-
 const client = new kiri(({
     disableMentions: 'everyone',
     ws: {
@@ -20,16 +17,18 @@ const client = new kiri(({
             $browser: "Discord Android"
         }
     }
+
 }));
 require("discord-buttons")(client);
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);
 require("./handler/getMemberfromMention.js")();
-
 client.package = require("./package.json");
 client.on("warn", console.warn);
 client.on("error", console.error);
+(async() => {
+    await mongo.init();
+})()
 client.login(process.env.token).catch(console.error);
-
 module.exports = client;

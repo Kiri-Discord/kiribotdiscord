@@ -85,7 +85,7 @@ exports.run = async(client, message, args, prefix) => {
     if (rarity === "very rare") worth = 250
     if (rarity === "legendary") worth = 500
 
-    await client.inventory.findOneAndUpdate({
+    client.inventory.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {
@@ -99,7 +99,7 @@ exports.run = async(client, message, args, prefix) => {
         new: true,
     });
 
-    await client.money.findOneAndUpdate({
+    client.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

@@ -11,7 +11,7 @@ exports.run = async(client, message, args, prefix) => {
             };
             serverQueue.karaoke.isEnabled = false;
         }
-        await Guild.findOneAndUpdate({
+        Guild.findOneAndUpdate({
             guildId: message.guild.id,
         }, {
             KaraokeChannelID: undefined
@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!serverQueue.karaoke.languageCode) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ you haven't set the language for the lyrics yet. do \`${prefix}scrolling-lyrics lang <language>\` to set it first!` } });
         if (serverQueue.karaoke.isEnabled) return message.channel.send({ embed: { color: "f3f3f3", description: `i thought scrolling lyrics is already enabled? :thinking:` } });
         serverQueue.karaoke.isEnabled = true;
-        await Guild.findOneAndUpdate({
+        Guild.findOneAndUpdate({
                 guildId: message.guild.id,
             }, {
                 KaraokeChannelID: serverQueue.karaoke.channel.id
@@ -57,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
             }
         }
 
-        await Guild.findOneAndUpdate({
+        Guild.findOneAndUpdate({
                 guildId: message.guild.id,
             }, {
                 KaraokeChannelID: channel.id

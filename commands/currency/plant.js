@@ -46,7 +46,7 @@ exports.run = async(client, message, args, prefix) => {
             plant = choices[random];
         };
         if (args[0] === '1') {
-            await client.garden.findOneAndUpdate({
+            client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -59,7 +59,7 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             });
         } else if (args[0] === '2') {
-            await client.garden.findOneAndUpdate({
+            client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -72,7 +72,7 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             });
         } else if (args[0] === '3') {
-            await client.garden.findOneAndUpdate({
+            client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -85,7 +85,7 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             });
         };
-        await client.inventory.findOneAndUpdate({
+        client.inventory.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {

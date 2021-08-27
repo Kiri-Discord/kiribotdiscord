@@ -3,7 +3,7 @@ exports.run = async(client, message, args, prefix) => {
     if (message.flags[0] === "off") {
         db.verifyChannelID = undefined;
         db.verifyRole = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyChannelID: undefined,
@@ -28,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
     if (message.guild.me.roles.highest.position < role.position) return message.inlineReply('that role is equal or higher than me :pensive:');
     db.verifyChannelID = channel.id;
     db.verifyRole = role.id;
-    await client.dbguilds.findOneAndUpdate({
+    client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyChannelID: channel.id,

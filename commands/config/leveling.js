@@ -4,7 +4,7 @@ exports.run = async(client, message, args, prefix) => {
         message.channel.send({ embed: { color: "f3f3f3", description: `☑️ **levelings has been enabled**` } });
         const db = client.guildsStorage.get(message.guild.id);
         db.enableLevelings = true;
-        await client.dbguilds.findOneAndUpdate({
+        client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             enableLevelings: true
@@ -13,7 +13,7 @@ exports.run = async(client, message, args, prefix) => {
         message.channel.send({ embed: { color: "f3f3f3", description: `❌ **levelings has been disabled**` } });
         const db = client.guildsStorage.get(message.guild.id);
         db.enableLevelings = true;
-        await client.dbguilds.findOneAndUpdate({
+        client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             enableLevelings: false

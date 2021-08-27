@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-
+const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
     const guildDB = client.guildsStorage.get(message.guild.id);
@@ -46,7 +46,12 @@ exports.run = async(client, message, args) => {
         if (!logChannel) {
             return
         } else {
-            return logChannel.send(rolelog);
+            const instance = new sendHook(client, logChannel, {
+                username: message.guild.me.displayName,
+                avatarURL: client.user.displayAvatarURL(),
+                embeds: [rolelog],
+            })
+            return instance.send();
         }
     } catch (error) {
         return message.inlineReply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");

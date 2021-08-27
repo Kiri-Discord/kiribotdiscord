@@ -27,7 +27,7 @@ exports.run = async(client, message, args) => {
     if (!balance || balance == 0) return message.inlineReply("your wallet is empty. broke. nothing is there :anguished:");
     if (amount > balance) return message.inlineReply("you don't have that enough credits to transfer!");
     if (amount === 0) return message.inlineReply("why did you transfer nothing?");
-    await client.money.findOneAndUpdate({
+    client.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {
@@ -40,7 +40,7 @@ exports.run = async(client, message, args) => {
         upsert: true,
         new: true,
     });
-    await client.money.findOneAndUpdate({
+    client.money.findOneAndUpdate({
         userId: user.id,
         guildId: message.guild.id
     }, {

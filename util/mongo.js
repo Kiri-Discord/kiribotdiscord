@@ -10,7 +10,7 @@ module.exports = {
         };
         mongoose.Promise = global.Promise;
         mongoose.set('bufferCommands', false);
-        mongoose.connect(process.env.mongourl, dbOptions);
+        mongoose.set('cloneSchemas', true);
         mongoose.connection.on('connected', () => {
             console.log('[MONGO] Mongoose has successfully connected!');
         });
@@ -22,5 +22,7 @@ module.exports = {
         mongoose.connection.on('disconnected', () => {
             console.warn('[MONGO] Mongoose connection lost');
         });
+        await mongoose.connect(process.env.mongourl, dbOptions);
+        return true;
     }
 }

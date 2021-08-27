@@ -43,7 +43,7 @@ exports.run = async(client, message, args, prefix) => {
 
         if (getStage !== "4") return message.inlineReply(':x: the plant in the slot you choose is not ripe enough to be harvested yet.');
         if (args[0] === '1') {
-            await client.garden.findOneAndUpdate({
+            client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -57,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
             });
         }
         if (args[0] === '2') {
-            await client.garden.findOneAndUpdate({
+            client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -71,7 +71,7 @@ exports.run = async(client, message, args, prefix) => {
             });
         }
         if (args[0] === '3') {
-            await client.garden.findOneAndUpdate({
+            client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -116,7 +116,7 @@ exports.run = async(client, message, args, prefix) => {
         if (rarity === "very rare") worth = 500
         if (rarity === "legendary") worth = 1000
 
-        await client.money.findOneAndUpdate({
+        client.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {

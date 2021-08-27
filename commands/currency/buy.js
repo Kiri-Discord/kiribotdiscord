@@ -35,7 +35,7 @@ exports.run = async(client, message, args, prefix) => {
         const total = price * quantity
         if (money < price * quantity) return message.inlineReply(`you don't have that much money in your balance :pensive:\na total of ⏣ __${total - money}__ token is needed to buy it.`)
 
-        await client.money.findOneAndUpdate({
+        client.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -57,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
         message.inlineReply(embed)
 
         if (item === 'wedding ring' || item === 'ring') {
-            await client.inventory.findOneAndUpdate({
+            client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -73,7 +73,7 @@ exports.run = async(client, message, args, prefix) => {
         };
 
         if (item === 'seed') {
-            await client.inventory.findOneAndUpdate({
+            client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -89,7 +89,7 @@ exports.run = async(client, message, args, prefix) => {
         }
 
         if (item === 'worm') {
-            await client.inventory.findOneAndUpdate({
+            client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {

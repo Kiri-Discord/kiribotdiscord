@@ -41,7 +41,7 @@ exports.run = async(client, message, args) => {
     }
     const result = Math.floor(Math.random() * 10);
 
-    await client.cooldowns.findOneAndUpdate({
+    client.cooldowns.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

@@ -2,25 +2,24 @@ exports.run = async(client, message, args) => {
     const db = client.guildsStorage.get(message.guild.id);
     if (message.flags[0] === "off") {
         db.ignoreLevelingsChannelID = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             ignoreLevelingsChannelID: undefined
         });
-    }
+        return message.channel.send({ embed: { color: "f3f3f3", description: `❌ ignore levelings has been disabled` } });
+    };
 
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) channel = message.channel;
     db.ignoreLevelingsChannelID = channel.id;
-    await client.dbguilds.findOneAndUpdate({
+    client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             ignoreLevelingsChannelID: channel.id
         })
         .catch(err => console.error(err));
-    return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ i will ignore levelings from ${channel} starting from now :(` } });
-
-
+    return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ i will ignore levelings from ${channel} starting from now.` } });
 }
 
 exports.help = {

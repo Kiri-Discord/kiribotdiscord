@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
 
@@ -27,12 +28,17 @@ exports.run = async(client, message, args) => {
         await member.setNickname(nick);
         await message.channel.send({ embed: { color: "f3f3f3", description: `➕ i changed **${user}** nickname to **${nick}**!` } });
         if (!logChannel) {
-            return
+            return;
         } else {
-            return logChannel.send(rolelog);
+            const instance = new sendHook(client, logChannel, {
+                username: message.guild.me.displayName,
+                avatarURL: client.user.displayAvatarURL(),
+                embeds: [rolelog],
+            })
+            return instance.send();
         }
     } catch (error) {
-        return message.inlineReply(`ouch, i bumped by an error ${stareEmoji} can you check my perms? that user also might have a higher role than me btw`);
+        return message.channel.send({ embed: { color: "f3f3f3", description: `ouch, i bumped by an error. can you check my perms? ${stareEmoji}\nthat user might have the same role or a higher role than me.` } });
     }
 }
 

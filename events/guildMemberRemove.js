@@ -7,70 +7,56 @@ const kissSchema = require('../model/kiss');
 
 module.exports = async(client, member) => {
 
-    await client.dbverify.findOneAndDelete({
+    client.dbverify.findOneAndDelete({
         guildID: member.guild.id,
         userID: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
 
 
-    await client.dbleveling.findOneAndDelete({
+    client.dbleveling.findOneAndDelete({
         guildId: member.guild.id,
         userId: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
 
-    await client.money.findOneAndDelete({
+    client.money.findOneAndDelete({
         guildId: member.guild.id,
         userId: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
 
-    await client.cooldowns.findOneAndDelete({
+    client.cooldowns.findOneAndDelete({
         guildId: member.guild.id,
         userId: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
-    await client.inventory.findOneAndDelete({
+    client.inventory.findOneAndDelete({
         guildId: member.guild.id,
         userId: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
 
-    await client.love.findOneAndDelete({
+    client.love.findOneAndDelete({
         guildID: member.guild.id,
         userID: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
 
-    await client.gameStorage.findOneAndDelete({
+    client.gameStorage.findOneAndDelete({
         guildId: member.guild.id,
         userId: member.user.id,
-    }, (err) => {
-        if (err) console.error(err)
     });
 
-    await hugSchema.findOneAndDelete({
+    hugSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await punchSchema.findOneAndDelete({
+    punchSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await slapSchema.findOneAndDelete({
+    slapSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {
@@ -78,25 +64,25 @@ module.exports = async(client, member) => {
     });
 
 
-    await cuddleSchema.findOneAndDelete({
+    cuddleSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await kissSchema.findOneAndDelete({
+    kissSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await patSchema.findOneAndDelete({
+    patSchema.findOneAndDelete({
         userId: member.user.id,
         guildId: member.guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
-    await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
+    client.verifytimers.deleteTimer(member.guild.id, member.user.id);
 }

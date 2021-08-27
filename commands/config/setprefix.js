@@ -1,22 +1,17 @@
 exports.run = async(client, message, args, prefix) => {
-
     if (args.length < 1) {
         return message.channel.send({ embed: { color: "f3f3f3", description: `ℹ️ my current guild prefix here is \`${prefix}\` you could use \`${prefix}setprefix <prefix>\` to change it :D` } });
     };
     const db = client.guildsStorage.get(message.guild.id);
     db.prefix = args[0];
 
-    await client.dbguilds.findOneAndUpdate({
+    client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             prefix: args[0]
         })
         .catch(err => console.error(err));
-
-
     return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` } });
-
-
 };
 
 

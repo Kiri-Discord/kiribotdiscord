@@ -1,4 +1,5 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js');
+const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
 
@@ -48,7 +49,12 @@ exports.run = async(client, message, args) => {
         if (!logChannel) {
             return;
         } else {
-            return logChannel.send(logembed);
+            const instance = new sendHook(client, logChannel, {
+                username: message.guild.me.displayName,
+                avatarURL: client.user.displayAvatarURL(),
+                embeds: [logembed],
+            })
+            return instance.send();
         };
     } catch (error) {
         return message.channel.send(`an error happened when i tried to ban that user. can you try again later?`)

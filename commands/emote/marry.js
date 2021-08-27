@@ -75,7 +75,7 @@ exports.run = async(client, message, args, prefix) => {
             return collector.stop();
         } else if (reaction.emoji.name === '✅') {
             answered = true;
-            await client.love.findOneAndUpdate({
+            client.love.findOneAndUpdate({
                 guildID: message.guild.id,
                 userID: message.author.id
             }, {
@@ -86,7 +86,7 @@ exports.run = async(client, message, args, prefix) => {
                 upsert: true,
                 new: true,
             });
-            await client.love.findOneAndUpdate({
+            client.love.findOneAndUpdate({
                 userID: member.user.id,
                 guildID: message.guild.id
             }, {
@@ -103,7 +103,7 @@ exports.run = async(client, message, args, prefix) => {
                 .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
                 .setImage(image.url);
             message.channel.send(embed);
-            await client.inventory.findOneAndUpdate({
+            client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {

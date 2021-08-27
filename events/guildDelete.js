@@ -12,89 +12,89 @@ module.exports = async(client, guild) => {
     client.queue.delete(guild.id);
 
 
-    await client.dbguilds.findOneAndDelete({
+    client.dbguilds.findOneAndDelete({
         guildID: guild.id
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await client.dbverify.deleteMany({
+    client.dbverify.deleteMany({
         guildID: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
-    await client.dbleveling.deleteMany({
+    client.dbleveling.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
-    await client.money.deleteMany({
+    client.money.deleteMany({
         guildId: guild.id
     }, (err) => {
         if (err) console.error(err)
     });
-    await client.cooldowns.deleteMany({
-        guildId: guild.id
-    }, (err) => {
-        if (err) console.error(err)
-    });
-
-    await client.inventory.deleteMany({
+    client.cooldowns.deleteMany({
         guildId: guild.id
     }, (err) => {
         if (err) console.error(err)
     });
 
+    client.inventory.deleteMany({
+        guildId: guild.id
+    }, (err) => {
+        if (err) console.error(err)
+    });
 
-    await client.love.deleteMany({
+
+    client.love.deleteMany({
         guildID: guild.id
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await client.gameStorage.deleteMany({
+    client.gameStorage.deleteMany({
         guildId: guild.id
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await hugSchema.deleteMany({
+    hugSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await punchSchema.deleteMany({
+    punchSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await musicSchema.deleteMany({
+    musicSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await slapSchema.deleteMany({
+    slapSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await cuddleSchema.deleteMany({
+    cuddleSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await kissSchema.deleteMany({
+    kissSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
     });
 
-    await patSchema.deleteMany({
+    patSchema.deleteMany({
         guildId: guild.id,
     }, (err) => {
         if (err) console.error(err)
