@@ -32,14 +32,14 @@ exports.run = async(client, message, args) => {
                 .post(process.env.lyricURL + 'fetch')
                 .set({ Authorization: process.env.lyricsKey })
                 .query({
-                    song: queue.songs[0].info.title
+                    song: queue.nowPlaying.info.title
                 });
             if (body.notFound) return message.inlineReply(`i found no lyrics for the current playing song :pensive:`);
             if (!body.googleFetch) {
                 embed.setTitle(`Lyrics for ${body.title} by ${body.author}`);
                 embed.setThumbnail(body.thumbnail);
             } else {
-                embed.setTitle(`Lyrics for ${queue.songs[0].info.title}`);
+                embed.setTitle(`Lyrics for ${queue.nowPlaying.info.title}`);
             };
             lyrics = body.lyrics;
         } catch (error) {
