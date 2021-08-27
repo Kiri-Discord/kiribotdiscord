@@ -10,23 +10,26 @@ const { verify, verifyLanguage } = require('../../util/util');
 exports.run = async(client, message, args, prefix) => {
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
-        if (!channel) return message.inlineReply('you are not in a voice channel!');
-        if (!channel.joinable) return message.inlineReply("i can't join your voice channel :( check my perms pls");
+        if (!channel) return message.inlineReply({ embed: { color: "RED", description: '⚠️ you are not in a voice channel!' } });
+
+        if (!channel.joinable) return message.inlineReply({ embed: { color: "RED", description: "i can't join the voice channel where you are in. can you check my permission?" } });
 
         if (serverQueue && channel !== message.guild.me.voice.channel) {
-            const voicechannel = serverQueue.channel
-            return message.inlineReply(`i have already been playing music to someone in your server! join \`#${voicechannel.name}\` to listen :smiley:`).catch(console.error);
+            const voicechannel = serverQueue.channel;
+
+            return message.inlineReply({ embed: { color: "RED", description: `i have already been playing music to someone in your server! join \`#${voicechannel}\` to listen :smiley:` } });
         };
-        if (!args.length) return message.inlineReply(`you must to provide me a playlist to play or add to the queue! use \`${prefix}help playlist\` to learn more :wink:`).catch(console.error);
+        if (!args.length) return message.inlineReply({ embed: { color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` } });
+        const search = args.join(" ");
 
         const musicSettings = await Guild.findOne({
             guildId: message.guild.id
         });
-        const search = args.join(" ");
         const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
         const url = args[0];
         const urlValid = pattern.test(url);
         let queueConstruct = {
+            playingMessage: null,
             textChannel: message.channel,
             channel,
             player: null,
@@ -88,7 +91,7 @@ exports.run = async(client, message, args, prefix) => {
             try {
                 if (url.includes("/sets/")) {
                     newSongs = await fetchInfo(client, url, false, 'sc');
-                    if (!newSongs) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
+                    if (!newSongs) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found (SoundCloud tends to break things as we are working on our end. try again later!)` } });
                     playlistURL = url;
                     newSongs.forEach(song => {
                         song.type = 'sc';

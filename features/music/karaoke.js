@@ -14,6 +14,7 @@ module.exports = class ScrollingLyrics {
         this.slots = [];
         this.timeout = [];
         this.playing = false;
+        this.playTimestamp = null;
         this.pauseTimestamp = null;
     };
     async init() {
@@ -32,10 +33,11 @@ module.exports = class ScrollingLyrics {
             .filter(x => x.type = 'cue')
             .filter(x => x.data.text)
             .filter(x => x.data.text != '');
-        subtitles.forEach(subtitle => {
+        subtitles.map((subtitle, index) => {
             this.slots.push({
                 text: subtitle.data.text.replace("\n", " "),
-                time: subtitle.data.start - 500
+                time: subtitle.data.start - 500,
+                id: index
             })
         });
         return true;
@@ -46,11 +48,12 @@ module.exports = class ScrollingLyrics {
         this.slots.forEach(subtitle => {
             const each = setTimeout(() => {
                 this.channel.send(subtitle.text);
-                this.slots.shift();
+                this.slots.splice(this.slots.findIndex(x => x.id === subtitle.id), 1);
             }, subtitle.time);
             this.timeout.push(each);
         });
         this.playing = true;
+        this.playTimestamp = Date.now();
         return true;
     };
     pause(timestamp) {
@@ -73,21 +76,13 @@ module.exports = class ScrollingLyrics {
         this.playing = false;
         return true;
     }
-    resume() {
+    resume(player) {
         if (this.playing) return false;
-        this.slots.forEach(subtitle => {
-            const time = subtitle.time - (this.pauseTimestamp - this.queue.player.timestamp);
-            if (time < 0) this.slots.shift();
-            else {
-                subtitle.time = time;
-                const each = setTimeout(() => {
-                    this.channel.send(subtitle.text);
-                    this.slots.shift();
-                }, time);
-                this.timeout.push(each);
-            }
-        });
-        this.playing = true;
+        const seek = this.pauseTimestamp - this.playTimestamp;
+        this.slots.forEach(subtitle => subtitle.time = subtitle.time - seek);
+        this.slots = this.slots.filter(x => x.time > 0);
+        this.start();
+        player.resume();
         return true;
     };
     change(channel) {

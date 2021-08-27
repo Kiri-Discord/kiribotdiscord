@@ -40,6 +40,7 @@ module.exports = {
             };
             queue.player.once('end', async data => {
                 if (data.reason === "FINISHED" || data.reason === "STOPPED") {
+                    if (queue.playingMessage) await queue.playingMessage.delete();
                     if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     if (queue.loop) {
                         queue.songs.push(queue.nowPlaying);
@@ -64,6 +65,7 @@ module.exports = {
                 queue.songs.shift();
                 queue.player.volume(queue.volume);
             } catch (error) {
+                if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                 await client.lavacordManager.leave(queue.textChannel.guild.id);
                 client.queue.delete(message.guild.id);
                 return queue.textChannel.send({ embed: { description: `**there was an error while playing the music** :pensive:` } });
@@ -77,7 +79,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setDescription(`${emoji[song.type] ? `${client.customEmojis.get(emoji[song.type])} ` : ''}Now playing **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** [${song.requestedby}]`)
             if (success) embed.setFooter(`displaying scrolling lyrics (${ISO6391.getName(queue.karaoke.languageCode)}) for this track `)
-            await queue.textChannel.send(embed);
+            queue.playingMessage = await queue.textChannel.send(embed);
         } catch (error) {
             console.error(error);
         }

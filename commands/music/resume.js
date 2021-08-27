@@ -7,8 +7,8 @@ exports.run = async(client, message, args) => {
 
     if (!queue.playing) {
         queue.playing = true;
-        queue.player.resume();
-        if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume();
+        if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume(queue.player);
+        else queue.player.resume();
         queue.pausedAt = undefined;
         if (queue.textChannel.id !== message.channel.id) message.channel.send('▶️ resuming...');
 

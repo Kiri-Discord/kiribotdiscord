@@ -7,8 +7,8 @@ module.exports = async(client, oldState, newState) => {
         if (!queue) return;
         if (queue.channel.id !== oldState.channelID) return;
         if (newState.member.user.id === client.user.id) {
-            await client.lavacordManager.leave(queue.textChannel.guild.id);
             if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
+            await client.lavacordManager.leave(queue.textChannel.guild.id);
             return client.queue.delete(queue.textChannel.guild.id);
         };
         const playerListening = queue.channel.members.array();
@@ -18,9 +18,9 @@ module.exports = async(client, oldState, newState) => {
         if (queue.playing) {
             queue.playing = false;
             queue.afkPause = true;
-            await queue.player.pause(true);
+            queue.player.pause(true);
             queue.pausedAt = Date.now();
-            if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.pause();
+            if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.pause(queue.pausedAt);
             if (!queue.dcTimeout) {
                 queue.dcTimeout = setTimeout(async() => {
                     await client.lavacordManager.leave(queue.textChannel.guild.id);
@@ -42,8 +42,8 @@ module.exports = async(client, oldState, newState) => {
             clearTimeout(queue.dcTimeout)
             queue.playing = true;
             queue.pausedAt = undefined;
-            await queue.player.resume();
-            if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume();
+            if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume(queue.player);
+            else queue.player.resume();
             queue.dcTimeout = undefined;
         };
     };
