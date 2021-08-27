@@ -33,7 +33,7 @@ module.exports = async(client, message, setting) => {
 
 
     if (client.leveling.getLevel(userprof.xp) > userprof.level) {
-        client.dbleveling.findOneAndUpdate({
+        await client.dbleveling.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {

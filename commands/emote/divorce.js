@@ -12,7 +12,7 @@ exports.run = async(client, message, args) => {
             guildID: message.guild.id
         });
         if (!marry) {
-            client.love.findOneAndDelete({
+            await client.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
             });
@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
         } else {
             if (marry.marriedID) {
                 if (marry.marriedID !== message.author.id) {
-                    client.love.findOneAndDelete({
+                    await client.love.findOneAndDelete({
                         guildID: message.guild.id,
                         userID: message.author.id
                     });
@@ -28,7 +28,7 @@ exports.run = async(client, message, args) => {
                 } else {
                     const member = message.guild.members.cache.get(author.marriedID);
                     if (!member) {
-                        client.love.findOneAndDelete({
+                        await client.love.findOneAndDelete({
                             guildID: message.guild.id,
                             userID: message.author.id
                         });
@@ -38,7 +38,7 @@ exports.run = async(client, message, args) => {
                     }
                 }
             } else {
-                client.love.findOneAndDelete({
+                await client.love.findOneAndDelete({
                     guildID: message.guild.id,
                     userID: message.author.id
                 });
@@ -70,11 +70,11 @@ async function divorce(client, message, member) {
             return collector.stop();
         } else if (reaction.emoji.name === '✅') {
             answered = true;
-            client.love.findOneAndDelete({
+            await client.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
             });
-            client.love.findOneAndDelete({
+            await client.love.findOneAndDelete({
                 userID: member.user.id,
                 guildID: message.guild.id
             });

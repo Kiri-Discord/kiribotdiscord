@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
                 if (target.marriedID) {
                     const married = message.guild.members.cache.get(target.marriedID);
                     if (!married) {
-                        client.love.findOneAndDelete({
+                        await client.love.findOneAndDelete({
                             guildID: message.guild.id,
                             userID: user.id,
                         });
@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
         if (target.marriedID) {
             const married = message.guild.members.cache.get(target.marriedID);
             if (!married) {
-                client.love.findOneAndDelete({
+                await client.love.findOneAndDelete({
                     guildID: message.guild.id,
                     userID: user.id,
                 });

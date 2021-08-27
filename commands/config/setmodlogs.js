@@ -2,7 +2,7 @@ exports.run = async(client, message, args) => {
     const db = client.guildsStorage.get(message.guild.id);
     if (message.flags[0] === "off") {
         db.logChannelID = undefined;
-        client.dbguilds.findOneAndUpdate({
+        await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             logChannelID: undefined
@@ -17,7 +17,7 @@ exports.run = async(client, message, args) => {
     if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.inlineReply("i don't have the perms to send messages to that channel! :pensive:");
     db.logChannelID = channel.id;
 
-    client.dbguilds.findOneAndUpdate({
+    await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             logChannelID: channel.id

@@ -12,7 +12,7 @@ exports.run = async(client, message, args, prefix) => {
 
     if (toSecond > 21600 || toSecond < 1) return message.inlineReply("the timer should be more than or equal to 1 second or less than 6 hours!");
     db.verifyTimeout = convert;
-    client.dbguilds.findOneAndUpdate({
+    await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyTimeout: convert

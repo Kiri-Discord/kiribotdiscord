@@ -38,10 +38,10 @@ exports.run = async(client, message, args) => {
         let timeObj = ms(cooldown - (Date.now() - lastGamble));
         let second = pad_zero(timeObj.seconds).padStart(2, "0");
         return message.inlineReply(`that was fast! you need to wait **${second}** second(s) before you can gambling again.\n*money is not a river*  - someone`);
-    };
+    }
     const result = Math.floor(Math.random() * 10);
 
-    client.cooldowns.findOneAndUpdate({
+    await client.cooldowns.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

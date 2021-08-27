@@ -54,13 +54,13 @@ exports.run = async(client, message, args) => {
                     finalAmount = amount;
                 } else {
                     bonus = true;
-                    client.vote.findOneAndDelete({
+                    await client.vote.findOneAndDelete({
                         userID: message.author.id
                     });
                     bonusAmount = calcBonus(amount)
                     finalAmount = amount + bonusAmount
                 };
-                client.cooldowns.findOneAndUpdate({
+                await client.cooldowns.findOneAndUpdate({
                     guildId: message.guild.id,
                     userId: message.author.id
                 }, {
