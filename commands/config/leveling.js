@@ -11,7 +11,7 @@ exports.run = async(client, message, args, prefix) => {
         message.channel.send({ embed: { color: "f3f3f3", description: `☑️ levelings has been enabled` } });
     } else if (args[0] === "off") {
         const db = client.guildsStorage.get(message.guild.id);
-        db.enableLevelings = true;
+        db.enableLevelings = false;
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
