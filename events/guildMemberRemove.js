@@ -67,7 +67,7 @@ module.exports = async(client, member) => {
                 .split('{guild}').join(member.guild.name);
             const embed = new MessageEmbed()
                 .setColor('#bee7f7')
-                .setDescription(`:wave: ${message}`)
+                .setDescription(`\\👋 ${message}`)
                 // .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
             const instance = new sendHook(client, channel, {
                 username: member.guild.me.displayName,
@@ -85,7 +85,7 @@ module.exports = async(client, member) => {
                 .split('{guild}').join(member.guild.name);
             const embed = new MessageEmbed()
                 .setColor('#bee7f7')
-                .setDescription(`:wave: ${message}`)
+                .setDescription(`\\👋 ${message}`)
                 // .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
             const { body } = await request.get('https://waifu-generator.vercel.app/api/v1');
             const user = body[Math.floor(Math.random() * body.length)]
