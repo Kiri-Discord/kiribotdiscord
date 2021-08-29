@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
     const db = client.guildsStorage.get(message.guild.id);
     if (message.flags[0] === "off") {
         db.greetChannelID = undefined;

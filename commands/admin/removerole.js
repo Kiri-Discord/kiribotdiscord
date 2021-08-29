@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
     const guildDB = client.guildsStorage.get(message.guild.id);
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
