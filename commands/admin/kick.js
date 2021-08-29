@@ -8,9 +8,11 @@ exports.run = async(client, message, args) => {
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':pensive:';
 
-    if (!member) return message.inlineReply(`i can't find that user! pls mention a valid member or user ID in this guild ${stareEmoji}`);
-    if (!member.kickable) return message.inlineReply('this user can\'t be kicked. it\'s either because they are a mod/admin, or their highest role is equal or higher than mine 😔');
-    if (message.member.roles.highest.position < member.roles.highest.position) return message.inlineReply('you cannot kick someone with a higher role than you!');
+    if (!member) return message.channel.send({ embed: { color: "RED", description: `i can't find that user! please mention a valid member or user ID in this guild ${stareEmoji}` } });
+
+    if (!member.kickable) return message.inlineReply({ embed: { color: "RED", description: 'this user can\'t be kicked. it\'s either because they are a mod/admin, or their highest role is equal or higher than mine 😔' } });
+
+    if (message.member.roles.highest.position <= member.roles.highest.position) return message.inlineReply({ embed: { color: "RED", description: 'you cannot kick someone with a higher or equal role!' } });
 
     let reason = 'No reason specified';
     if (args.length > 1) reason = args.slice(1).join(' ');

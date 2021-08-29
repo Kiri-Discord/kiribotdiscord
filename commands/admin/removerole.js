@@ -9,23 +9,23 @@ exports.run = async(client, message, args) => {
 
     const roleName = args.slice(1).join(' ');
 
-    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
-
-    if (!member || !roleName) return message.inlineReply(`incorrect usage bruh, it's \`${prefix}addrole <username || user id> <role name || id>\`!`);
+    if (!member || !roleName) return message.channel.send({ embed: { color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}removerole <@user || user ID> <role name || role ID>\`` } });
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
-    if (!role) return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to remove pls ${sedEmoji}`)
+    if (!role) return message.channel.send({ embed: { color: "RED", description: `no valid role was provided :pensive: i can only accept role mention, role name and role ID` } })
 
-    if (role.name === "@everyone") return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`);
-    if (role.name === "@here") return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls ${sedEmoji}`);
+    if (role.name === "@everyone") return message.channel.send({ embed: { color: "RED", description: `\`@everyone\` is not a valid role!` } });
+    if (role.name === "@here") return message.channel.send({ embed: { color: "RED", description: `\`@here\` is not a valid role!` } });
 
-    if (message.member.roles.highest.position < role.position) return message.inlineReply('that role is higher than your highest role! :pensive:');
-    if (message.guild.me.roles.highest.position < member.roles.position) return message.inlineReply('that role is equal or higher than me :pensive:');
+    if (!message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.roles.highest.position <= role.position) return message.channel.send({ embed: { color: "RED", description: `that role is higher or equal your highest role!` } });
+        if (message.guild.me.roles.highest.position <= role.position) return message.inlineReply({ embed: { color: "RED", description: `that role is higher or equal my highest role!` } });
+    };
 
     const alreadyHasRole = member._roles.includes(role.id);
 
-    if (!alreadyHasRole) return message.inlineReply('that user doesn\'t have that role!');
+    if (!alreadyHasRole) return message.inlineReply({ embed: { color: "RED", description: `that user doesn't has that role!` } });
 
     const embed = new MessageEmbed()
         .setDescription(`☑️ i have successfully removed the role \`${role.name}\` from **${member.user.tag}**`)

@@ -76,7 +76,7 @@ module.exports = async(client, message) => {
         let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
         if (!commandFile) {
             const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-            return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
+            return message.channel.send(`:grey_question: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
         };
 
         if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.inlineReply(`\`${prefix}${cmd}\` is being maintained ${sed} try again later!`)

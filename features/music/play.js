@@ -13,7 +13,8 @@ module.exports = {
             const queue = client.queue.get(message.guild.id);
             if (!song) {
                 setTimeout(async() => {
-                    if (queue.player.playing && message.guild.me.voice.channel) return;
+                    const newQueue = client.queue.get(message.guild.id);
+                    if (newQueue.player.playing && message.guild.me.voice.channel) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embed: { description: `i'm leaving the voice channel... ${waveEmoji}` } });
@@ -39,7 +40,7 @@ module.exports = {
                 });
             };
             queue.player.once('end', async data => {
-                if (data.reason === "FINISHED" || data.reason === "STOPPED") {
+                if (data.reason === "FINISHED" || data.reason === "STOPPED" || data.reason === "LOAD_FAILED") {
                     if (queue.playingMessage) await queue.playingMessage.delete();
                     if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     if (queue.loop) {

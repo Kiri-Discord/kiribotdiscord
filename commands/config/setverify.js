@@ -9,23 +9,27 @@ exports.run = async(client, message, args, prefix) => {
             verifyChannelID: undefined,
             verifyRole: undefined
         })
-        return message.channel.send({ embed: { color: "f3f3f3", description: `❌ verify has been disabled` } });
+        return message.channel.send({ embed: { color: "f3f3f3", description: `❌ verify feature has been disabled for all upcoming new members` } });
     };
+    if (!args.length) return message.channel.send({ embed: { color: "RED", description: `to setup the verify feature, do \`${prefix}setverify <#channel> <@role>\` or \`${prefix}setverify -off\` to disable it ;)` } })
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-    if (!channel) return message.inlineReply('i can\'t find that channel. pls mention a channel within this guild 😔');
-    if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.inlineReply("i don't have the perms to send messages to that channel! :pensive:");
+    if (!channel) return message.inlineReply({ embed: { color: "f3f3f3", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' } });
+    if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.inlineReply({ embed: { color: "f3f3f3", description: "i don't have the perms to send messages to that channel! :pensive:" } });
 
     const roleName = args.slice(1).join(' ');
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
-    if (!role) return message.inlineReply(`p l e a s e provide a vaild role name, mention or id for me to add pls :pensive:`)
+    if (!role) return message.channel.send({ embed: { color: "RED", description: `no valid role was provided :pensive: i can only accept role mention, role name and role ID` } })
 
-    if (role.name === "@everyone") return message.inlineReply(`\`@everyone\` is a default role ${sedEmoji}`);
-    if (role.name === "@here") return message.inlineReply(`\`@here\` is not a role ${sedEmoji}`);
+    if (role.name === "@everyone") return message.channel.send({ embed: { color: "RED", description: `\`@everyone\` is not a valid role!` } });
+    if (role.name === "@here") return message.channel.send({ embed: { color: "RED", description: `\`@here\` is not a valid role!` } });
 
-    if (message.member.roles.highest.position < role.position) return message.inlineReply('that role is higher than your highest role! :pensive:');
-    if (message.guild.me.roles.highest.position < role.position) return message.inlineReply('that role is equal or higher than me :pensive:');
+    if (!message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.roles.highest.position <= role.position) return message.channel.send({ embed: { color: "RED", description: `that role is higher or equal your highest role!` } });
+        if (message.guild.me.roles.highest.position <= role.position) return message.inlineReply({ embed: { color: "RED", description: `that role is higher or equal my highest role!` } });
+    };
+
     db.verifyChannelID = channel.id;
     db.verifyRole = role.id;
     await client.dbguilds.findOneAndUpdate({

@@ -39,8 +39,8 @@ exports.run = async(client, message, args) => {
         }
     } catch (error) {
         return message.channel.send({ embed: { color: "f3f3f3", description: `ouch, i bumped by an error. can you check my perms? ${stareEmoji}\nthat user might have the same role or a higher role than me.` } });
-    }
-}
+    };
+};
 
 exports.help = {
     name: "setnickname",

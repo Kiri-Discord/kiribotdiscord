@@ -29,6 +29,6 @@ client.on("warn", console.warn);
 client.on("error", console.error);
 (async() => {
     await mongo.init();
-})()
-client.login(process.env.token).catch(console.error);
+    client.login(process.env.token).catch(console.error);
+})();
 module.exports = client;
