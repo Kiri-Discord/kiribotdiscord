@@ -18,7 +18,7 @@ module.exports = class ScrollingLyrics {
         this.pauseTimestamp = null;
     };
     async init() {
-        if (this.song.type !== 'yt') return this.error(true);
+        if (this.song.type !== 'yt') return this.error('sc');
         const info = await ytdl.getInfo(this.song.info.uri);
         const foundCaption = info.player_response.captions;
         if (!foundCaption) return this.error();
@@ -89,7 +89,7 @@ module.exports = class ScrollingLyrics {
         this.channel = channel;
     }
     error(type) {
-        if (type) {
+        if (type === 'sc') {
             this.channel.send({ embed: { description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:*` } });
         } else {
             let embed = new MessageEmbed()
