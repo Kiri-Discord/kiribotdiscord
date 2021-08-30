@@ -72,7 +72,7 @@ exports.run = async(client, message, args) => {
             .setFooter(`current balance: ⏣ ${storageAfter.balance} token`)
             .setTitle(`ahh, noooo! you lost, ${message.member.displayName}!`)
         return message.channel.send(embed);
-    } else if (result > 5) {
+    } else {
         const storageAfter = await client.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
