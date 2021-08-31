@@ -7,7 +7,7 @@ exports.run = async(client, message, args, prefix) => {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
-            byeChannelID: undefined
+            byeChannelID: null
         });
         const embed = new MessageEmbed()
             .setColor("f3f3f3")
