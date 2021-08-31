@@ -14,7 +14,7 @@ exports.run = async(client, message, args, prefix) => {
         await Guild.findOneAndUpdate({
             guildId: message.guild.id,
         }, {
-            KaraokeChannelID: undefined
+            KaraokeChannelID: null
         }, {
             upsert: true,
             new: true,
