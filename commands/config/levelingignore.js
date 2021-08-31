@@ -5,7 +5,7 @@ exports.run = async(client, message, args) => {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
-            ignoreLevelingsChannelID: undefined
+            ignoreLevelingsChannelID: null
         });
         return message.channel.send({ embed: { color: "f3f3f3", description: `❌ ignore levelings has been disabled` } });
     }
