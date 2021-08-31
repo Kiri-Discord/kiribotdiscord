@@ -5,7 +5,7 @@ exports.run = async(client, message, args, prefix) => {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
-            logChannelID: undefined
+            logChannelID: null
         })
         return message.channel.send({ embed: { color: "f3f3f3", description: `❌ mod logs has been disabled` } });
     };
