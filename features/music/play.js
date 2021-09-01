@@ -88,7 +88,7 @@ module.exports = {
         }
     },
     async fetchInfo(client, query, search, id) {
-        const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id) : client.lavacordManager.idealNodes[0];
+        const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id)[0] : client.lavacordManager.idealNodes[0];
         const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
 
         const { body } = await request
