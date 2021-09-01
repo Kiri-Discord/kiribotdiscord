@@ -1,7 +1,7 @@
 const { reactIfAble } = require('../../util/util');
 exports.run = async(client, message, args) => {
     if (!message.guild.me.voice.channel) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: i am not connected to any voice channel!` } });
-    client.lavacordManager.leave(queue.textChannel.guild.id);
+    client.lavacordManager.leave(message.guild.id);
     return reactIfAble(message, client.user, '👋');
 };
 
