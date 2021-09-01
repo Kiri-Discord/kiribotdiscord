@@ -35,7 +35,7 @@ module.exports = {
                 queue.player = await client.lavacordManager.join({
                     guild: queue.textChannel.guild.id,
                     channel: queue.channel.id,
-                    node: song.type === 'yt' ? client.lavacordManager.idealNodes[0].id : client.lavacordManager.idealNodes.find(x => x.id === 'sc').id
+                    node: song.type === 'yt' ? client.lavacordManager.idealNodes[0].id : client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id
                 }, {
                     selfdeaf: true
                 });
@@ -88,7 +88,7 @@ module.exports = {
         }
     },
     async fetchInfo(client, query, search, id) {
-        const node = id ? client.lavacordManager.idealNodes.find(x => x.id === id) : client.lavacordManager.idealNodes[0];
+        const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id) : client.lavacordManager.idealNodes[0];
         const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
 
         const { body } = await request

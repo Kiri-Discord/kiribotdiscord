@@ -16,7 +16,6 @@ exports.run = async(client, message, args, prefix) => {
 
         if (serverQueue && channel !== message.guild.me.voice.channel) {
             const voicechannel = serverQueue.channel;
-
             return message.inlineReply({ embed: { color: "RED", description: `i have already been playing music to someone in your server! join \`#${voicechannel}\` to listen :smiley:` } });
         };
         if (!args.length) return message.inlineReply({ embed: { color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` } });
@@ -76,7 +75,6 @@ exports.run = async(client, message, args, prefix) => {
 
         if (urlValid) {
             try {
-
                 newSongs = await fetchInfo(client, url, false);
                 if (!newSongs) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
                 playlistURL = url;
@@ -90,7 +88,7 @@ exports.run = async(client, message, args, prefix) => {
         } else if (scdl.isValidUrl(url)) {
             try {
                 if (url.includes("/sets/")) {
-                    newSongs = await fetchInfo(client, url, false, 'sc');
+                    newSongs = await fetchInfo(client, url, false, 'yt');
                     if (!newSongs) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found (SoundCloud tends to break things as we are working on our end. try again later!)` } });
                     playlistURL = url;
                     newSongs.forEach(song => {
@@ -100,7 +98,7 @@ exports.run = async(client, message, args, prefix) => {
                 };
             } catch (error) {
                 return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
-            }
+            };
         } else {
             try {
                 const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
@@ -117,8 +115,7 @@ exports.run = async(client, message, args, prefix) => {
                 console.error(error);
                 return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
             }
-        }
-
+        };
         serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
         let playlistEmbed = new MessageEmbed()
             .setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL})` : `[track](${playlistURL})`} to the queue [${message.author}]`)
@@ -126,7 +123,6 @@ exports.run = async(client, message, args, prefix) => {
 
     if (!serverQueue) {
         client.queue.set(message.guild.id, queueConstruct);
-
         try {
             play(queueConstruct.songs[0], message, client, prefix);
         } catch (error) {
@@ -134,7 +130,7 @@ exports.run = async(client, message, args, prefix) => {
             client.queue.delete(message.guild.id);
             return message.channel.send({ embed: { color: "RED", description: `:x: there was an error when i tried to join your voice channel` } }).catch(console.error);
         }
-    }
+    };
 }
 
 exports.help = {
