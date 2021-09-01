@@ -13,7 +13,8 @@ module.exports = {
             const queue = client.queue.get(message.guild.id);
             if (!song) {
                 setTimeout(async() => {
-                    if (message.guild.me.voice.channel) return;
+                    const newQueue = client.queue.get(message.guild.id);
+                    if (message.guild.me.voice.channel && newQueue) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embed: { description: `i'm leaving the voice channel... ${waveEmoji}` } });
@@ -44,16 +45,17 @@ module.exports = {
                     if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     if (queue.loop) {
                         queue.songs.push(queue.nowPlaying);
-                        module.exports.play(queue.songs[0], message, client, prefix);
+                        const upcoming = queue.songs[0];
+                        module.exports.play(upcoming, message, client, prefix);
                     } else {
-                        module.exports.play(queue.songs[0], message, client, prefix);
+                        const upcoming = queue.songs[0];
+                        module.exports.play(upcoming, message, client, prefix);
                     };
                 };
                 if (data.reason === "REPLACED") return;
             });
             if (queue.karaoke.isEnabled) {
                 queue.textChannel.send({ embed: { description: `fetching lyrics... :mag_right:` } });
-                // success = await sing(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
                 queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
                 success = await queue.karaoke.instance.init();
                 if (!success) queue.karaoke.instance = null;
