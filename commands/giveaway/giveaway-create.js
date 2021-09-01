@@ -31,13 +31,8 @@ exports.run = async(client, message, args, prefix) => {
         if (!setupMessage) setupMessage = await message.channel.send(embed);
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
-        if (res === 0) {
-            return ending(1);
-        }
-        if (!res) {
-            await res.delete();
-            return ending(2);
-        }
+        if (res === 0) return ending(1);
+        if (!res) return ending(2);
         const channel = res.mentions.channels.first();
         if (!channel) {
             await res.delete();
@@ -68,13 +63,8 @@ exports.run = async(client, message, args, prefix) => {
         };
         const filter = msg => msg.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
-        if (res === 0) {
-            return ending(1);
-        }
-        if (!res) {
-            await res.delete();
-            return ending(2);
-        }
+        if (res === 0) return ending(1);
+        if (!res) return ending(2);
         const time = res.content.toLowerCase();
         const convert = ms(time);
         const toSecond = Math.floor(convert / 1000);
@@ -110,13 +100,8 @@ exports.run = async(client, message, args, prefix) => {
         };
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
-        if (res === 0) {
-            return ending(1);
-        }
-        if (!res) {
-            await res.delete();
-            return ending(2);
-        };
+        if (res === 0) return ending(1);
+        if (!res) return ending(2);
         const number = parseInt(res.content);
         if (isNaN(number) || number < 1 || number > 40) {
             ongoing = true;
@@ -143,13 +128,19 @@ exports.run = async(client, message, args, prefix) => {
                 .setDescription(stripIndents `
 			:tada: mention or paste an ID or name of any role on this server that you would like me to mention for this giveaway!
 			
-			> not responding for over 30 seconds will cancel this **step**. typing \`cancel\` also help too!
+			> not responding for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
+            > for this optional step, you can type \`skip\` to pass this step.
 			`);
             await setupMessage.edit(embed);
         };
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
-        if (res === 0 || !res) break;
+        if (res === 0) return ending(1);
+        if (!res) return ending(2);
+        if (res.content.toLowerCase() === 'skip') {
+            await res.delete();
+            break;
+        }
         const role = message.guild.roles.cache.find(r => (r.name === res.content) || (r.id === res.content.replace(/[^\w\s]/gi, '')));
         if (!role) {
             ongoing = true;
@@ -180,13 +171,8 @@ exports.run = async(client, message, args, prefix) => {
         await setupMessage.edit(embed);
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
-        if (res === 0) {
-            return ending(1);
-        }
-        if (!res) {
-            await res.delete();
-            return ending(2);
-        };
+        if (res === 0) return ending(1);
+        if (!res) return ending(2);
         const giveaway = res.content;
         await res.delete();
         prize = giveaway;
