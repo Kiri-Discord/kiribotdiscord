@@ -49,6 +49,7 @@ exports.run = async(client, message, args, prefix) => {
         targetChannel = channel;
     };
     while (!duration) {
+        if (!setupMessage) setupMessage = await message.channel.send(embed);
         if (!ongoing) {
             embed
                 .setAuthor('step 2 of 5')
@@ -69,6 +70,7 @@ exports.run = async(client, message, args, prefix) => {
         const convert = ms(time);
         const toSecond = Math.floor(convert / 1000);
         if (!toSecond || toSecond == undefined || toSecond < 1 || toSecond > 2592000) {
+            if (!setupMessage) setupMessage = await message.channel.send(embed);
             ongoing = true;
             await res.delete();
             embed
@@ -104,6 +106,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!res) return ending(2);
         const number = parseInt(res.content);
         if (isNaN(number) || number < 1 || number > 40) {
+            if (!setupMessage) setupMessage = await message.channel.send(embed);
             ongoing = true;
             await res.delete();
             embed
@@ -121,6 +124,7 @@ exports.run = async(client, message, args, prefix) => {
         winners = number;
     };
     while (!pingRole) {
+        if (!setupMessage) setupMessage = await message.channel.send(embed);
         if (!ongoing) {
             embed
                 .setAuthor('step 4 of 5 (optional)')
@@ -143,6 +147,7 @@ exports.run = async(client, message, args, prefix) => {
         }
         const role = message.guild.roles.cache.find(r => (r.name === res.content) || (r.id === res.content.replace(/[^\w\s]/gi, '')));
         if (!role) {
+            if (!setupMessage) setupMessage = await message.channel.send(embed);
             ongoing = true;
             await res.delete();
             embed
@@ -160,6 +165,7 @@ exports.run = async(client, message, args, prefix) => {
         pingRole = role;
     };
     while (!prize) {
+        if (!setupMessage) setupMessage = await message.channel.send(embed);
         embed
             .setAuthor('step 5 of 5')
             .setTitle('finally, what do you want to giveaway?')
