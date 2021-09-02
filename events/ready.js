@@ -9,7 +9,7 @@ module.exports = async client => {
     client.user.setPresence({ activity: { name: 'waking up' }, status: 'dnd' });
     console.log('[DISCORD] Fetching server...');
     const allServer = await client.dbguilds.find({});
-    if (!allServer) return;
+    if (!allServer || !allServer.length) return;
     for (const guild of allServer) {
         try {
             await client.guilds.fetch(guild.guildID);
