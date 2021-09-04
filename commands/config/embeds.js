@@ -498,7 +498,6 @@ exports.run = async(client, message, args, prefix) => {
                 continue;
             };
             await res.delete();
-            // if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.image = {
                 url: iconUrl
             };

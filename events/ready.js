@@ -22,7 +22,8 @@ module.exports = async client => {
                 const channel = client.channels.cache.get(id);
                 if (channel) channel.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
             });
-            client.users.cache.get('617777631257034783').send(`Kicked from an undefined server (id: ${guild.guildID}).`);
+            const owner = client.users.cache.get(client.config.ownerID);
+            if (owner) owner.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
             console.log(`Kicked from an undefined server (id: ${guild.guildID}).`)
         };
     }
