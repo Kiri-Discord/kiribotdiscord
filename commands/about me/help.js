@@ -12,8 +12,6 @@ exports.run = async(client, message, args, prefix) => {
             .setDescription(`run the command below each features to get more information!\nif you are using a mobile device, click the **hover for info** button to see descriptions!\nif you ran into any trouble, use \`${prefix}invite\` to get more info about support servers.`)
             .setTitle('hey, how can i help?')
             .setThumbnail(client.user.displayAvatarURL())
-        if (!message.channel.nsfw) embed1.setFooter(`bruh nsfw command was hidden cuz you are in a normal channel`);
-
         for (const mod of module) {
             const addS = mod.cmds.length === 1 ? '' : 's';
             embed1.addField(mod.displayName, `\`${prefix}help ${mod.name}\`\n[hover for info](https://kiri.daztopia.xyz '${mod.desc} (there are ${mod.cmds.length} command${addS} for this feature)')`, true)
