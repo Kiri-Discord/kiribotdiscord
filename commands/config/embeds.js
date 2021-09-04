@@ -707,6 +707,6 @@ exports.conf = {
     aliases: ["embed"],
     cooldown: 5,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS", ""],
+    channelPerms: ["EMBED_LINKS", "MANAGE_MESSAGES"],
     userPerms: ["MANAGE_GUILD"]
 }
