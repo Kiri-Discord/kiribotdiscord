@@ -15,9 +15,7 @@ exports.run = async (client, message, args) => {
     .setImage(waifu.images[no])
     .setFooter([
       `❣️${(100 * (((1 - waifu.statistics.hate / (waifu.statistics.love + waifu.statistics.fav)) * 0.6) + ((waifu.statistics.upvote / (waifu.statistics.upvote + waifu.statistics.downvote)) * 0.4))).toFixed(2)}`,
-      `${ no + 1 } of ${ waifu.images.length }`,
-      `\©️${new Date().getFullYear()} waifu command`
-    ].join('\u2000|\u2000'));
+      `${ no + 1 } of ${ waifu.images.length }`].join('\u2000|\u2000'));
 
     return message.channel.send(embed).then( m => m.react('💖')).then(() => message.channel.stopTyping())
 };
@@ -31,6 +29,6 @@ exports.help = {
 
 exports.conf = {
   aliases: ['wa'],
-  cooldown: 10,
+  cooldown: 5,
   guildOnly: true,
 }
