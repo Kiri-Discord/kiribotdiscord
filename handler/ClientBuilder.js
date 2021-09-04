@@ -15,6 +15,7 @@ module.exports = class kiri extends Client {
         this.lavacordManager = new Manager(this, this.nodes);
         this.webapp = app;
         this.queue = new Map();
+        this.dbembeds = require('../model/embeds');
         this.commands = new Collection();
         this.cooldowns = require('../model/cooldown');
         this.inventory = require('../model/inventory');

@@ -1,4 +1,4 @@
-const types = ["weeb", "natural"]
+const types = ["cute", "natural"]
 
 exports.run = async(client, message, args) => {
     if (!types.includes(args[0])) return message.inlineReply({ embed: { color: "f3f3f3", description: `\`${args[0]}\` isn't a valid response mode :pensive: all the avaliable response are \`${types.join(', ')}\`` } })
@@ -24,5 +24,5 @@ exports.conf = {
     cooldown: 5,
     guildOnly: true,
     userPerms: ["MANAGE_GUILD"],
-    channelPerms: ["EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS", "MANAGE_MESSAGES"]
 };

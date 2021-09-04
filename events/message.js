@@ -52,7 +52,6 @@ module.exports = async(client, message) => {
         const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
         const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
         const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
-        const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
 
         let execute = message.content.slice(matchedPrefix.length).trim();
         if (!execute) {
@@ -61,8 +60,8 @@ module.exports = async(client, message) => {
                 return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${duh}`).then(m => m.delete({ timeout: 5000 }));
             } else {
                 return;
-            }
-        }
+            };
+        };
         let args = execute.split(/ +/g);
         let cmd = args.shift().toLowerCase();
         let sender = message.author;

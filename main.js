@@ -5,7 +5,7 @@ process.on('unhandledRejection', error => {
 
 global._port = process.env.PORT || 80;
 global.__basedir = __dirname;
-global.__baseURL = process.env.baseURL || 'https://kiri.daztopia.xyz/';
+global.__baseURL = process.env.baseURL || 'https://kiribot.xyz/';
 
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");

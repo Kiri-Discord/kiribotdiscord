@@ -24,7 +24,6 @@ module.exports = async(client, guild) => {
     const prefix = client.config.prefix;
     const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
     const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
-    const sefy = client.customEmojis.get('sefy') ? client.customEmojis.get('sefy') : ':smile:';
 
     const channels = guild.channels.cache.filter(x => x.type === 'text').filter(x => x.permissionsFor(guild.me).has('SEND_MESSAGES'))
     const channelbutcansendEmbed = guild.channels.cache.filter(x => x.type === 'text').filter(x => x.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']));

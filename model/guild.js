@@ -25,7 +25,31 @@ const guildSchema = mongoose.Schema({
         default: 'natural'
     },
     greetChannelID: String,
-    byeChannelID: String
+    byeChannelID: String,
+    levelings: {
+        type: Object,
+        default: {
+            destination: null,
+            content: {
+                type: 'plain',
+                content: '{auto}'
+            }
+        }
+    },
+    greetContent: {
+        type: Object,
+        default: {
+            type: 'plain',
+            content: '{auto}'
+        }
+    },
+    byeContent: {
+        type: Object,
+        default: {
+            type: 'plain',
+            content: '{auto}'
+        }
+    }
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');
