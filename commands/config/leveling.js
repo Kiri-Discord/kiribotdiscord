@@ -101,7 +101,7 @@ exports.run = async(client, message, args, prefix) => {
         setting.levelings.content = contentObject;
         db.levelings.content = contentObject;
         await setting.save();
-        return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ your leveling announcement message has been set up!` }, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } });
+        return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ your leveling announcement message has been set up!`, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` }  }});
     } else if (args[0] === 'test') {
         let channel;
         const setting = await client.dbguilds.findOne({

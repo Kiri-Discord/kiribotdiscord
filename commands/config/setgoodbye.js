@@ -94,7 +94,7 @@ exports.run = async(client, message, args, prefix) => {
         }, {
             byeContent: contentObject
         });
-        return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ your goodbye message has been set up!` }, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } });
+        return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ your goodbye message has been set up!`, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } } });
     };
     if (args[0].toLowerCase() === 'test') {
         const setting = await client.dbguilds.findOne({
