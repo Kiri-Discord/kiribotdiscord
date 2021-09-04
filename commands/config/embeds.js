@@ -103,6 +103,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -156,6 +157,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -238,6 +240,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -291,6 +294,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -345,6 +349,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -407,6 +412,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -473,6 +479,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
@@ -529,6 +536,7 @@ exports.run = async(client, message, args, prefix) => {
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
+                ongoing = false;
                 await res.delete();
                 break;
             };
