@@ -55,7 +55,7 @@ module.exports = async(client, message, setting) => {
         else channel = message.guild.channels.cache.get(setting.levelings.destination);
         if (!channel || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return;
         if (setting.levelings.content.type === 'plain') levelMessage = await channel.send(varReplace.replaceText(setting.levelings.content.content, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp }));
-        else levelMessage = await channel.send({ embed: varReplace.replaceEmbed(setting.levelings.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp }) });
+        else levelMessage = await channel.send({ embed: varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp }) });
         if (channel.id === message.channel.id) levelMessage.delete({ timeout: 5000 });
     };
 
