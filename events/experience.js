@@ -16,8 +16,8 @@ module.exports = async(client, message, setting) => {
     if (verifychannel && message.channel.id === verifychannel) return;
     if (message.content.match(prefixRegex)) return;
 
-    // let recent = client.recent;
-    // if (recent.has(message.author.id)) return;
+    let recent = client.recent;
+    if (recent.has(message.author.id)) return;
 
     let userprof = await client.dbleveling.findOneAndUpdate({
         guildId: message.guild.id,
@@ -59,11 +59,11 @@ module.exports = async(client, message, setting) => {
         if (channel.id === message.channel.id) levelMessage.delete({ timeout: 5000 });
     };
 
-    // let randomTimer = getRandomInt(65000, 80000);
-    // recent.add(message.author.id);
-    // client.setTimeout(() => {
-    //     recent.delete(message.author.id)
-    // }, randomTimer);
+    let randomTimer = getRandomInt(65000, 80000);
+    recent.add(message.author.id);
+    client.setTimeout(() => {
+        recent.delete(message.author.id)
+    }, randomTimer);
 }
 
 function getRandomInt(min, max) {
