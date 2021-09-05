@@ -8,7 +8,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!message.channel.nsfw) module = module.filter(x => !x.adult);
         const embed1 = new MessageEmbed()
             .setColor("#bee7f7")
-            .setAuthor('my command list (p`･ω･´) q', client.user.displayAvatarURL())
+            .setAuthor('my command list (p`･ω･´) q')
             .setDescription(`run the command below each features to get more information!\nif you are using a mobile device, click the **hover for info** button to see descriptions!\nif you ran into any trouble, use \`${prefix}invite\` to get more info about support servers.`)
             .setTitle('hey, how can i help?')
             .setThumbnail(client.user.displayAvatarURL())
@@ -40,7 +40,7 @@ exports.run = async(client, message, args, prefix) => {
 
             let embed = new MessageEmbed()
                 .setColor('#bee7f7')
-                .setAuthor('command information (=^･ω･^=)', client.user.displayAvatarURL())
+                .setAuthor('command information (=^･ω･^=)')
                 .setTitle(`${prefix}${name}`)
                 .setDescription(desc)
                 .setThumbnail(client.user.displayAvatarURL())
@@ -61,7 +61,7 @@ exports.run = async(client, message, args, prefix) => {
             const [first, ...rest] = Util.splitMessage(cmd, { maxLength: 2000, char: '\n' });
             let embed = new MessageEmbed()
                 .setColor("#bee7f7")
-                .setAuthor('feature information (=･ω･=)', client.user.displayAvatarURL())
+                .setAuthor('feature information (=･ω･=)')
                 .setThumbnail(client.user.displayAvatarURL())
             if (rest.length) {
                 embed.setTitle(`commands list for ${feature.displayName}`)
