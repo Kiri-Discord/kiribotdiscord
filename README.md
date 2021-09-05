@@ -6,11 +6,13 @@ DO NOT SPAM GENERAL ASKING FOR HELP, DM ME INSTEAD
 
 # Sefy
 
-this is a bot i made for fun for my friends, and is written in discord.js of course :)
+This is a bot i made for fun for my friends, and is written in discord.js of course :)
 
 
-if you find any bugs please make a issue so i can look into it and fix it.
+If you find any bugs please make a issue so i can look into it and fix it
+
+PR are welcome!
 
 # Info
 
-check out sliverblaze where i will host it: https://discord.gg/D6rWrvS
+Check out Sefiria where i will host it: https://discord.gg/D6rWrvS
