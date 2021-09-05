@@ -33,10 +33,10 @@ module.exports = async(client, member) => {
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${__baseURL}verify?valID=${code}`)}`)
             try {
                 await member.send(dm);
-                verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`).then(i => i.delete({ timeout: 60000 }));
+                verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`).then(i => i.delete({ timeout: 600000 }));
             } catch {
                 verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
-                    .then(i => i.delete({ timeout: 10000 }));
+                    .then(i => i.delete({ timeout: 600000 }));
             };
         };
     };
