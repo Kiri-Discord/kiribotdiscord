@@ -22,7 +22,7 @@ module.exports = async(client, message) => {
                 return message.channel.send('check your DM :grin:').then(i => i.delete({ timeout: 10000 }));
             } catch {
                 return message.channel.send('your DM is still locked. unlock your DM first then type \`resend\` here :D')
-                    .then(i => i.delete({ timeout: 10000 }));
+                    .then(i => i.delete({ timeout: 20000 }));
             };
         } else {
             if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();
