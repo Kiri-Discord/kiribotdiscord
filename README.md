@@ -37,7 +37,8 @@ exports.help = {
 ```
 
 ## Legal
-This repo is protected under [MIT License](https://github.com/ryzenix/sefybotdiscord/blob/master/LICENSE)
+This repo is protected under [MIT License](https://github.com/ryzenix/sefybotdiscord/blob/master/LICENSE)  
 
 ## Website
-The offical site: https://kiri.daztopia.xyz/
+The offical site: https://kiri.daztopia.xyz/  
+Site repo: https://github.com/ryzenix/sefy_website  
