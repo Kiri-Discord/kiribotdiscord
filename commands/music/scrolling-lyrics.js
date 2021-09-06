@@ -14,7 +14,7 @@ exports.run = async(client, message, args, prefix) => {
         await Guild.findOneAndUpdate({
             guildId: message.guild.id,
         }, {
-            KaraokeChannelID: undefined
+            KaraokeChannelID: null
         }, {
             upsert: true,
             new: true,
@@ -73,8 +73,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "scrolling-lyrics",
     description: "set up the auto scrolling lyrics feature",
-    usage: ["scrolling-lyrics `set <#channel>`", "scrolling-lyrics `set <channel id>`", "scrolling-lyrics `off`", "scrolling-lyrics `-lang <language code>`"],
-    example: ["scrolling-lyrics `set #singing`", "scrolling-lyrics `set 4545455454644`", "scrolling-lyrics `off`", "scrolling-lyrics `-lang english`"]
+    usage: ["scrolling-lyrics `set <#channel>`", "scrolling-lyrics `set <channel ID>`", "scrolling-lyrics `off`", "scrolling-lyrics `lang <language code>`"],
+    example: ["scrolling-lyrics `set #singing`", "scrolling-lyrics `set 4545455454644`", "scrolling-lyrics `off`", "scrolling-lyrics `lang english`"]
 };
 
 exports.conf = {

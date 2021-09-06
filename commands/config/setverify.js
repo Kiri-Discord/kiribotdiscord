@@ -6,8 +6,8 @@ exports.run = async(client, message, args, prefix) => {
         await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
-            verifyChannelID: undefined,
-            verifyRole: undefined
+            verifyChannelID: null,
+            verifyRole: null
         })
         return message.channel.send({ embed: { color: "f3f3f3", description: `❌ verify feature has been disabled for all upcoming new members` } });
     };

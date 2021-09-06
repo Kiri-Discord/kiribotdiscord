@@ -1,6 +1,6 @@
 const Pagination = require('discord-paginationembed');
 const { millify } = require('millify');
-const ordinal = require('ordinal')
+const ordinal = require('ordinal');
 
 exports.run = async(client, message, args, prefix) => {
     let data = await client.dbleveling.find({

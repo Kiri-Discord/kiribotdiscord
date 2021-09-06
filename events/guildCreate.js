@@ -24,7 +24,6 @@ module.exports = async(client, guild) => {
     const prefix = client.config.prefix;
     const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
     const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
-    const sefy = client.customEmojis.get('sefy') ? client.customEmojis.get('sefy') : ':smile:';
 
     const channels = guild.channels.cache.filter(x => x.type === 'text').filter(x => x.permissionsFor(guild.me).has('SEND_MESSAGES'))
     const channelbutcansendEmbed = guild.channels.cache.filter(x => x.type === 'text').filter(x => x.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']));
@@ -59,7 +58,8 @@ module.exports = async(client, guild) => {
         if (channel) channel.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     });
     console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-    await client.users.cache.get('617777631257034783').send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    const owner = client.users.cache.get(client.config.ownerID);
+    if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     if (channelbutcansendEmbed.size > 0) {
         channelbutcansendEmbed.first().send(embed);
     } else if (channels.size > 0) {

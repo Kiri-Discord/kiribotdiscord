@@ -1,20 +1,20 @@
 const canvacord = require('canvacord');
 const request = require('node-superfetch');
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
     let rank;
 
     let mention = await getMemberfromMention(args[0], message.guild) || message.member;
 
-    if (mention.user.id === client.user.id) return message.inlineReply('that was me lmao :confused:');
-    if (mention.user.bot) return message.inlineReply('just to make this clear... bots can\'t level up :pensive:')
+    if (mention.user.id === client.user.id) return message.channel.send('that was me lmao :confused:');
+    if (mention.user.bot) return message.channel.send('just to make this clear... bots can\'t level up :pensive:')
 
     let target = await client.dbleveling.findOne({
         guildId: message.guild.id,
         userId: mention.user.id
     });
 
-    if (!target) return message.channel.send("you or that user doesn't have any leveling data yet. chat more to show yours :)");
+    if (!target) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ you or that user doesn't have any leveling data yet!` } });
 
     const res = client.leveling.getLevelBounds(target.level + 1)
 
@@ -26,7 +26,7 @@ exports.run = async(client, message, args) => {
         xp: -1
     });
 
-    if (!result) return message.inlineReply("this guild doesn't have any leveling data yet. chat more to show yours :)");
+    if (!result) return message.inlineReply({ embed: { color: "f3f3f3", description: `❌ this guild doesn't have any leveling data yet!\nto turn on the leveling system, do \`${prefix}leveling on\`!` } });
 
     for (let counter = 0; counter < result.length; ++counter) {
         let member = message.guild.members.cache.get(result[counter].userId)

@@ -1,10 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const ms = require("ms");
 const { embedURL } = require('../util/util');
-const naturalMessages = require('../assets/messages/normal/welcome.json');
-const weebMessages = require('../assets/messages/anime-ish/welcome.json');
-const request = require('node-superfetch');
-const sendHook = require('../features/webhook');
+const varReplace = require('../util/variableReplace');
 
 module.exports = async(client, member) => {
         if (member.user.bot) return;
@@ -36,54 +33,18 @@ module.exports = async(client, member) => {
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${__baseURL}verify?valID=${code}`)}`)
             try {
                 await member.send(dm);
-                verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`).then(i => i.delete({ timeout: 60000 }));
+                verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`).then(i => i.delete({ timeout: 600000 }));
             } catch {
                 verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
-                    .then(i => i.delete({ timeout: 10000 }));
+                    .then(i => i.delete({ timeout: 600000 }));
             };
         };
     };
     if (setting.greetChannelID) {
         const channel = member.guild.channels.cache.get(setting.greetChannelID);
-        if (!channel || !channel.permissionsFor(member.guild.me).has('MANAGE_WEBHOOKS')) return;
-        if (setting.responseType === 'natural') {
-            const message = naturalMessages[Math.floor(Math.random() * naturalMessages.length)]
-                // .toLowerCase()
-                .split('{username}').join(`**${member.user.username}**`)
-                .split('{amount}').join(member.guild.memberCount)
-                .split('{guild}').join(member.guild.name);
-            const embed = new MessageEmbed()
-                .setColor('#bee7f7')
-                .setDescription(`\\➕ ${message}`)
-                // .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
-            const instance = new sendHook(client, channel, {
-                username: member.guild.me.displayName,
-                avatarURL: client.user.displayAvatarURL(),
-                embeds: [embed],
-                // content: message
-            })
-            return instance.send();
-        };
-        if (setting.responseType === 'weeb') {
-            const message = weebMessages[Math.floor(Math.random() * weebMessages.length)]
-                // .toLowerCase()
-                .split('{username}').join(`**${member.user.username}**`)
-                .split('{amount}').join(member.guild.memberCount)
-                .split('{guild}').join(member.guild.name);
-            const embed = new MessageEmbed()
-                .setColor('#bee7f7')
-                .setDescription(`\\➕ ${message}`)
-                // .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
-            const { body } = await request.get('https://waifu-generator.vercel.app/api/v1');
-            const user = body[Math.floor(Math.random() * body.length)]
-            const instance = new sendHook(client, channel, {
-                username: user.name,
-                avatarURL: user.image,
-                embeds: [embed],
-                // content: message
-            })
-            return instance.send();
-        };
+        if (!channel || !channel.permissionsFor(member.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return;
+        if (setting.greetContent.type === 'plain') return channel.send(varReplace.replaceText(setting.greetContent.content, member, member.guild, { event: 'join', type: setting.responseType }));
+        else return channel.send({ embed: varReplace.replaceEmbed(setting.greetContent.content.embed, member, member.guild, { event: 'join', type: setting.responseType })});
     };
 };
 

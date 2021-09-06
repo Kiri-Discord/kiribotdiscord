@@ -239,6 +239,10 @@ module.exports = class util {
 			{
 				text: `life in ${client.ws.ping}ms`,
 				type: 'WATCHING'
+			},
+			{
+				text: 'kiribot.xyz',
+				type: 'PLAYING'
 			}
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];

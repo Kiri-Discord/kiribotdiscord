@@ -6,7 +6,7 @@ exports.run = async(client, message, args, prefix) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.channel.send({ embed: { color: "f3f3f3", description: `:x: there isn't any ongoing music queue` } });
     if (!canModifyQueue(message.member)) return message.channel.send({ embed: { color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` } });
-
+    if (!queue.songs.length) return message.channel.send({ embed: { color: "f3f3f3", description: `there isn't any song left in the queue :pensive:` } });
     if (!args.length) return message.channel.send({ embed: { color: "f3f3f3", description: `you must to tell me what song you want to remove! use \`${prefix}help remove\` to learn more :wink:` } });
 
     const arguments = args.join(" ");

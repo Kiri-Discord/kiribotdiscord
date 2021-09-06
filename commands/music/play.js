@@ -92,7 +92,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         }
     } else if (scRegex.test(url) || mobileScRegex.test(url)) {
         try {
-            [song] = await fetchInfo(client, url, false, 'sc');
+            [song] = await fetchInfo(client, url, false, 'yt');
             if (!song) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found (SoundCloud tends to break things as we are working on our end. try again later!)` } });
             song.type = 'sc';
             song.requestedby = message.author;

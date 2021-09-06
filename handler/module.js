@@ -12,7 +12,7 @@ module.exports = client => {
             moduleConf.cmds = [];
             if (!moduleConf) return;
             client.helps.set(moduleConf.name, moduleConf);
-            if (!moduleConf.adult && !moduleConf.hide) {
+            if (!moduleConf.hide) {
                 client.allNameFeaturesSlash.push({ name: moduleConf.name, value: moduleConf.name })
                 client.allNameFeatures.push(moduleConf.name);
             }

@@ -90,11 +90,11 @@ module.exports = class ScrollingLyrics {
     }
     error(type) {
         if (type === 'sc') {
-            this.channel.send({ embed: { description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:*` } });
+            this.channel.send({ embed: { description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` } });
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
-                .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}al lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric`)
+                .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric`)
                 .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
             this.channel.send(embed);
         }
