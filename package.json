@@ -29,7 +29,7 @@
         "compression": "^1.7.4",
         "dateformat": "^4.5.1",
         "discord-buttons": "^4.0.0",
-        "discord-giveaways": "^4.5.1",
+        "discord-giveaways": "^5.0.1",
         "discord-paginationembed": "^2.1.0",
         "discord.js": "^12.5.3",
         "dotenv": "^10.0.0",
