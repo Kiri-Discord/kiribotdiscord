@@ -13,4 +13,5 @@ soundcloudkey=
 reCaptchaKey=
 reCaptchaToken=
 baseURL=
-dblToken=
+publicKey=
+tmdbKey=

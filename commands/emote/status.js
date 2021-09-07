@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild) || message.member;
     if (!member) return message.inlineReply("i couldn't find that user in this server :pensive:");
     const user = member.user;
@@ -61,14 +61,14 @@ exports.run = async (client, message, args) => {
 }
 
 exports.help = {
-	name: "status",
-	description: "check a person's relationship status",
-	usage: ["status `<@mention>`", "status `<ID>`"],
-	example: ["status `@someone`", "status `4475447457745`"]
+    name: "status",
+    description: "check a person's relationship status",
+    usage: ["status `<@mention>`", "status `<ID>`"],
+    example: ["status `@someone`", "status `4475447457745`"]
 };
-  
+
 exports.conf = {
-	aliases: ["check-relationship", "relationship"],
+    aliases: ["check-relationship", "relationship"],
     cooldown: 3,
     guildOnly: true,
 };

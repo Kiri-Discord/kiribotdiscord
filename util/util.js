@@ -6,6 +6,7 @@ const ms = require('ms');
 const fetch = require('node-fetch');
 // const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
+const { create } = require('../model/vote');
 
 module.exports = class util {
         static shortenText(text, maxLength) {
@@ -198,7 +199,7 @@ module.exports = class util {
 				return res(buffer);
 			});
 		});
-	}
+	};
 	static async verifyLanguage(channel, user, { time = 30000 } = {}) {
 		const filter = res => {
 			const value = res.content.toLowerCase();
@@ -228,7 +229,7 @@ module.exports = class util {
 	static randomStatus(client) {
 		const activities = [
 			{
-				text: `teaching physics for ${ms(client.uptime)}`,
+				text: `awake for ${ms(client.uptime)}`,
 				type: 'PLAYING'
 			},
 			{
@@ -238,6 +239,10 @@ module.exports = class util {
 			{
 				text: `life in ${client.ws.ping}ms`,
 				type: 'WATCHING'
+			},
+			{
+				text: 'kiribot.xyz',
+				type: 'PLAYING'
 			}
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];

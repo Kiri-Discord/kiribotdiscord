@@ -1,16 +1,45 @@
-Attention: Join my friend's Discord server where i will host it: https://discord.gg/D6rWrvS if you want to host this on your own.
 
-I will do my best to help out if you are having issues hosting but i'm also not gonna spoonfeed you either
+# Kiri bot
 
-DO NOT SPAM GENERAL ASKING FOR HELP, DM ME INSTEAD
+## Info
+>This is a bot i made for fun for my friends, and is written in discord.js of course :)  
+>If you find any bugs please make a issue so i can look into it and fix it.  
 
-# Sefy
+***
 
-this is a bot i made for fun for my friends, and is written in discord.js of course :)
+Check out [Sefiria discord server](https://discord.gg/D6rWrvS "Sefiria community") where i will host it  
+Support for forking / bugs can be found here  
+DM **r3zenix#3895** for help with technical issues, will do my best to help you host but only to an extent.
 
+## Overview
+A bot for moderation and fun ultilities  
 
-if you find any bugs please make a issue so i can look into it and fix it.
+***
+  
+Examples:  
 
-# Info
+|**Command**| **Usage**                            |
+|:---------:|--------------------------------------|
+|help       |Shows usage and syntax of commands    |
+|rank       |Shows activity rank based on EXP      |
+|quiz       |Gives random trivia question          |  
+  
+*Export of help command on **8ball** utility:*  
+  
+```js
 
-check out sliverblaze where i will host it: https://discord.gg/D6rWrvS
+exports.help = {
+	name: "8ball",
+	description: "Your life depends on this one.",
+	usage: "8ball `<question>`",
+	example: "8ball `do you love me?`"
+};
+
+```
+
+## Legal
+This repo is protected under [MIT License](https://github.com/ryzenix/sefybotdiscord/blob/master/LICENSE)  
+
+## Website
+The offical site: https://kiri.daztopia.xyz/  
+Site repo: https://github.com/ryzenix/sefy_website  

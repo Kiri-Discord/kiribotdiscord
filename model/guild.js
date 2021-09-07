@@ -19,7 +19,37 @@ const guildSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    verifyTimeout: Number
+    verifyTimeout: Number,
+    responseType: {
+        type: String,
+        default: 'natural'
+    },
+    greetChannelID: String,
+    byeChannelID: String,
+    levelings: {
+        type: Object,
+        default: {
+            destination: null,
+            content: {
+                type: 'plain',
+                content: '{auto}'
+            }
+        }
+    },
+    greetContent: {
+        type: Object,
+        default: {
+            type: 'plain',
+            content: '{auto}'
+        }
+    },
+    byeContent: {
+        type: Object,
+        default: {
+            type: 'plain',
+            content: '{auto}'
+        }
+    }
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');

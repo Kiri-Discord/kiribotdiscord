@@ -2,7 +2,7 @@ const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
 const moment = require('moment-timezone');
 const { today, tomorrow } = require('../../util/util');
-const airingGraphQL = stripIndents`
+const airingGraphQL = stripIndents `
 	query AiringSchedule($greater: Int, $lower: Int) {
 		anime: Page {
 			results: airingSchedules(airingAt_greater: $greater, airingAt_lesser: $lower) {
@@ -19,7 +19,7 @@ const airingGraphQL = stripIndents`
 	}
 `;
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     try {
         const anime = await getList();
         if (!anime) return message.channel.send('no anime is airing today...');
@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
             const airingAt = moment(ani.airingAt * 1000).tz('Asia/Tokyo').format('h:mm A');
             return `• ${title} (@${airingAt} JST)`;
         });
-        return message.channel.send(stripIndents`
+        return message.channel.send(stripIndents `
             **these is/are anime(s) airing on ${moment().tz('Asia/Tokyo').format('dddd, MMMM Do, YYYY')}**
             ${mapped.join('\n')}
         `);
@@ -53,7 +53,7 @@ async function getList() {
 
 exports.help = {
     name: "ani-airing",
-    description: "i will responds with a list of the anime that air today with this :D",
+    description: "responds with a list of the anime that air today :)",
     usage: "ani-airing",
     example: "ani-airing"
 };

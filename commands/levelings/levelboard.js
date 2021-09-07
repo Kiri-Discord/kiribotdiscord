@@ -1,6 +1,6 @@
 const Pagination = require('discord-paginationembed');
 const { millify } = require('millify');
-const ordinal = require('ordinal')
+const ordinal = require('ordinal');
 
 exports.run = async(client, message, args, prefix) => {
     let data = await client.dbleveling.find({
@@ -34,22 +34,6 @@ exports.run = async(client, message, args, prefix) => {
             arr.push(`\`${index + 1}\` ${emoji[index + 1] ? emoji[index + 1] : ':reminder_ribbon:'} **${member.user.username}** — Level: \`${user.level}\` | XP: \`${millify(user.xp)}\``);
         }
     });
-    // for (let counter = 0; counter < data.length; ++counter) {
-
-    //     let member = message.guild.members.cache.get(data[counter].userId)
-
-    //     if (!member) {
-    //         client.dbleveling.findOneAndDelete({
-    //             userId: data[counter].userId,
-    //             guildId: message.guild.id,
-    //         }, (err) => {
-    //             if (err) console.error(err)
-    //         });
-
-    //     } else if (member.user.id === message.author.id) {
-    //         rank = counter + 1
-    //     }
-    // };
 
     const FieldsEmbed = new Pagination.FieldsEmbed()
         .setArray(arr)

@@ -4,7 +4,7 @@ const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let image;
     let attachments = message.attachments.array();
     if (args[0]) {
@@ -14,17 +14,31 @@ exports.run = async (client, message, args) => {
             return message.inlineReply("that isn't a correct URL!");
         }
     } else {
-        if (attachments.length === 0) return message.inlineReply("can you paste any URL or upload any screenshot for me to analyze along with that command?");
-        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        if (attachments.length === 0) {
+            try {
+                const caches = message.channel.messages.cache.filter(msg => msg.attachments.size > 0);
+                if (!caches.size) {
+                    const fetchs = await message.channel.messages.fetch({ limit: 10 });
+                    const fetch = fetchs.filter(msg => msg.attachments.size > 0);
+                    const target = fetch.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+                    image = target.first().attachments.first().url;
+                } else {
+                    const cache = caches.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+                    image = cache.last().attachments.first().url;
+                };
+            } catch (error) {
+                image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+            }
+        } else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
-    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")
+    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
         const { body } = await request
             .get('https://api.qrserver.com/v1/read-qr-code/')
             .query({ fileurl: image });
         const data = body[0].symbol[0];
-        if (!data.data) return message.inlineReply(`i couldn't get a link from this qr code. are you sure that this is the right image?`);
+        if (!data.data) return message.inlineReply(`i couldn't get a link from this QR code. are you sure that this is the right image?`);
         return message.channel.send(`here is your link: \n||${shorten(data.data, 2000 - (message.author.toString().length + 2))}||`);
     } catch (err) {
         return message.channel.send(`sorry :( i got an error. try again later! can you check the image files?`);
@@ -37,7 +51,7 @@ exports.help = {
     usage: "qr-reader `<image>`",
     example: "qr-reader `<image>`"
 };
-  
+
 exports.conf = {
     aliases: ["qr-read", "readqr"],
     cooldown: 5,

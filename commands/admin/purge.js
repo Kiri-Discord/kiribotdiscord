@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
     const guildDB = client.guildsStorage.get(message.guild.id)
@@ -20,7 +21,12 @@ exports.run = async(client, message, args) => {
         if (!logChannel) {
             return
         } else {
-            return logChannel.send(logembed);
+            const instance = new sendHook(client, logChannel, {
+                username: message.guild.me.displayName,
+                avatarURL: client.user.displayAvatarURL(),
+                embeds: [logembed],
+            })
+            return instance.send();
         };
     } catch (error) {
         return message.channel.send('there was an error when i tried to prune messages in this channel! can you check my perms?');

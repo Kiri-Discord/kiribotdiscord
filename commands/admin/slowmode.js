@@ -1,5 +1,6 @@
 const ms = require("ms");
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
+const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
     const guildDB = client.guildsStorage.get(message.guild.id);
@@ -24,7 +25,7 @@ exports.run = async(client, message, args) => {
     if (!toSecond || toSecond == undefined) return message.inlineReply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
 
     if (toSecond > 21600) return message.inlineReply("the timer should be more than or equal to 1 second or less than 6 hours!");
-    const rolelog = new Discord.MessageEmbed()
+    const rolelog = new MessageEmbed()
         .setAuthor(client.user.username, client.user.displayAvatarURL())
         .setDescription(`Slowmode is set on <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)
         .addField('Moderator', message.author)
@@ -36,7 +37,12 @@ exports.run = async(client, message, args) => {
         if (!logChannel) {
             return
         } else {
-            return logChannel.send(rolelog);
+            const instance = new sendHook(client, logChannel, {
+                username: message.guild.me.displayName,
+                avatarURL: client.user.displayAvatarURL(),
+                embeds: [rolelog],
+            })
+            return instance.send();
         }
     }).catch(err => {
         return message.inlineReply("ouch, i bumped by an error :( can you check my perms?");

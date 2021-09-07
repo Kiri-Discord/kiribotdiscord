@@ -59,7 +59,7 @@ exports.run = async(client, message, args, prefix) => {
             .setColor('#bee7f7')
 
         if (winner) {
-            let amount = getRandomInt(5, 8);
+            let amount = getRandomInt(20, 40);
             const storageAfter = await client.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: winner.id
@@ -106,6 +106,5 @@ exports.conf = {
     aliases: ["quiz"],
     cooldown: 5,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 };

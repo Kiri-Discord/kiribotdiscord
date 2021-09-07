@@ -8,7 +8,7 @@ exports.run = async(client, message, args, prefix) => {
     }).sort({
         balance: -1
     });
-    if (!data || !data.length) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ i can't find any money data for this guild :pensive: use \`${prefix}help currency\` for more info :smile:` } });
+    if (!data || !data.length) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ i can't find any money data for this guild :pensive: use \`${prefix}help economy\` for more info :smile:` } });
 
     const emoji = {
         "1": ":crown:",
@@ -66,7 +66,7 @@ exports.run = async(client, message, args, prefix) => {
         .setAuthor(`richest user in ${message.guild.name}:`, message.author.displayAvatarURL())
         .setFooter(`you are ranked ${ordinal(rank)} in this guild :)`)
         .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
-        .setDescription(`token (⏣) can be claimed by winning games, betting and economy related features. (\`${prefix}help currency\`)`)
+        .setDescription(`token (⏣) can be claimed by winning games, betting and economy related features. (\`${prefix}help economy\`)`)
     FieldsEmbed.build();
 }
 

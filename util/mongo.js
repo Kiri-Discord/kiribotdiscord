@@ -1,21 +1,16 @@
 const mongoose = require('mongoose');
 
 module.exports = {
-    init: () => {
+    init: async() => {
         const dbOptions = {
             keepAlive: true,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             autoIndex: false,
-            poolSize: 5,
             connectTimeoutMS: 10000,
-            family: 4
+            family: 4,
         };
-
-        mongoose.connect(process.env.mongourl, dbOptions);
-        mongoose.set('useFindAndModify', false);
         mongoose.Promise = global.Promise;
-
+        mongoose.set('bufferCommands', false);
+        // mongoose.set('cloneSchemas', true);
         mongoose.connection.on('connected', () => {
             console.log('[MONGO] Mongoose has successfully connected!');
         });
@@ -27,5 +22,7 @@ module.exports = {
         mongoose.connection.on('disconnected', () => {
             console.warn('[MONGO] Mongoose connection lost');
         });
+        await mongoose.connect(process.env.mongourl, dbOptions);
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const ms = require("ms");
+const sendHook = require('../../features/webhook.js');
 module.exports = class VerifyTimer {
     constructor(client) {
         Object.defineProperty(this, 'client', { value: client });
@@ -7,16 +8,13 @@ module.exports = class VerifyTimer {
     }
 
     async fetchAll() {
-        const timers = await this.client.redis.hgetall('verifytimer');
-        for (let data of Object.values(timers)) {
-            data = JSON.parse(data);
-            await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, false);
-        }
+        const timers = await this.client.dbverify.find({});
+        if (!timers || !timers.length) return;
+        for (let data of timers) await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, data.valID, false);
         return this;
     }
 
-    async setTimer(guildID, time, userID, updateRedis = true) {
-        const data = { time: new Date(Date.now() + time).toISOString(), guildID, userID };
+    async setTimer(guildID, time, userID, code, update = true) {
         const timeout = setTimeout(async() => {
             try {
                 let reason = 'Kiri verification timeout (step 2)';
@@ -35,7 +33,6 @@ module.exports = class VerifyTimer {
                 const logembed = new MessageEmbed()
                     .setAuthor(`Verification`, this.client.user.displayAvatarURL())
                     .setTitle(`${member.user.tag} was kicked`)
-                    .addField(`Progress`, `Step 2`)
                     .setColor("#ff0000")
                     .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
                     .addField('Username', member.user.tag)
@@ -46,17 +43,29 @@ module.exports = class VerifyTimer {
                 const logerror = new MessageEmbed()
                     .setAuthor(`Verification`, this.client.user.displayAvatarURL())
                     .setTitle(`Failed while kicking ${member.user.tag}`)
-                    .addField(`Progress`, `Step 2`)
                     .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
                     .setColor('#ff0000')
                     .setTimestamp()
                     .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
                 if (!member.kickable) {
-                    if (logChannel) return logChannel.send(logerror);
-                    else return;
+                    if (logChannel) {
+                        const instance = new sendHook(this.client, logChannel, {
+                            username: member.guild.me.displayName,
+                            avatarURL: this.client.user.displayAvatarURL(),
+                            embeds: [logerror],
+                        });
+                        return instance.send();
+                    } else return;
                 }
-                if (logChannel) await logChannel.send(logembed);
-                await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** (at verification step 2) :pensive:`).catch(() => {
+                if (logChannel) {
+                    const instance = new sendHook(this.client, logChannel, {
+                        username: member.guild.me.displayName,
+                        avatarURL: this.client.user.displayAvatarURL(),
+                        embeds: [logembed],
+                    })
+                    return instance.send();
+                }
+                await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** :pensive:`).catch(() => {
                     null
                 });
                 await member.kick(reason);
@@ -65,11 +74,23 @@ module.exports = class VerifyTimer {
                     guildID: guildID,
                     userID: userID,
                 });
-                await this.client.redis.hdel('verifytimer', `${guildID}-${userID}`);
             }
         }, time);
-        if (updateRedis) await this.client.redis.hset('verifytimer', {
-            [`${guildID}-${userID}`]: JSON.stringify(data) });
+        if (update) {
+            await this.client.dbverify.findOneAndUpdate({
+                guildID,
+                userID,
+            }, {
+                guildID,
+                userID,
+                valID: code,
+                endTimestamp: new Date(Date.now() + time),
+                time: new Date(Date.now() + time).toISOString()
+            }, {
+                upsert: true,
+                new: true
+            });
+        }
         this.timeouts.set(`${guildID}-${userID}`, timeout);
         return timeout;
     }
@@ -81,10 +102,13 @@ module.exports = class VerifyTimer {
             guildID: guildID,
             userID: userID,
         });
-        return this.client.redis.hdel('verifytimer', `${guildID}-${userID}`);
     }
 
-    exists(guildID, userID) {
-        return this.client.redis.hexists('verifytimer', `${guildID}-${userID}`);
+    async exists(guildID, userID) {
+        const exist = await this.client.dbverify.findOne({
+            guildID: guildID,
+            userID: userID,
+        });
+        return exist ? true : false;
     }
 };

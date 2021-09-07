@@ -52,7 +52,6 @@ module.exports = async(client, message) => {
         const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
         const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
         const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
-        const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
 
         let execute = message.content.slice(matchedPrefix.length).trim();
         if (!execute) {
@@ -61,8 +60,8 @@ module.exports = async(client, message) => {
                 return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${duh}`).then(m => m.delete({ timeout: 5000 }));
             } else {
                 return;
-            }
-        }
+            };
+        };
         let args = execute.split(/ +/g);
         let cmd = args.shift().toLowerCase();
         let sender = message.author;
@@ -76,7 +75,7 @@ module.exports = async(client, message) => {
         let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
         if (!commandFile) {
             const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-            return message.channel.send(`i don't remember having that commmand installed ${looking} maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
+            return message.channel.send(`:grey_question: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
         };
 
         if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.inlineReply(`\`${prefix}${cmd}\` is being maintained ${sed} try again later!`)
@@ -90,40 +89,35 @@ module.exports = async(client, message) => {
                 setTimeout(() => {
                     return msg.edit(`https://www.youtube.com/watch?v=rTgj1HxmUbg\n*seriously, turn to a nsfw channel pls*`);
                 }, 5000);
-            }
-            const embed2 = new MessageEmbed()
-                .setColor(0x7289DA)
-                .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
-                .setTitle('say hi to my uncle')
-                .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
-            return message.channel.send(embed2).catch(() => null)
+            } else {
+                const embed2 = new MessageEmbed()
+                    .setColor(0x7289DA)
+                    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
+                    .setTitle('say hi to my uncle')
+                    .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
+                return message.channel.send(embed2).catch(() => null)
+            };
         };
 
-        if (commandFile.conf.userPerms && message.channel.type !== "dm") {
-            if (commandFile.conf.userPerms.length) {
-                for (permission in commandFile.conf.userPerms) {
-                    if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-                        return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${stare}`);
-                    }
+        if (commandFile.conf.userPerms && message.channel.type !== "dm" && commandFile.conf.userPerms.length) {
+            for (permission in commandFile.conf.userPerms) {
+                if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
+                    return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${stare}`);
                 }
             }
         }
-        if (commandFile.conf.channelPerms && message.channel.type !== 'dm') {
-            if (commandFile.conf.channelPerms.length) {
-                for (permission in commandFile.conf.channelPerms) {
-                    if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
-                        return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}`);
-                    };
-                }
+        if (commandFile.conf.channelPerms && message.channel.type !== 'dm' && commandFile.conf.channelPerms.length) {
+            for (permission in commandFile.conf.channelPerms) {
+                if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
+                    return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}`);
+                };
             }
         }
-        if (commandFile.conf.clientPerms && message.channel.type !== "dm") {
-            if (commandFile.conf.clientPerms.length) {
-                for (permission in commandFile.conf.clientPerms) {
-                    if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-                        return message.channel.send(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission across the server to do that ${sed}`)
-                    };
-                }
+        if (commandFile.conf.clientPerms && message.channel.type !== "dm" && commandFile.conf.clientPerms.length) {
+            for (permission in commandFile.conf.clientPerms) {
+                if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
+                    return message.channel.send(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission across the server to do that ${sed}`)
+                };
             }
         };
 
@@ -173,7 +167,7 @@ module.exports = async(client, message) => {
         if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
         const cooldownID = message.channel.type === "dm" ? message.author.id : message.author.id + message.guild.id
-        
+
         const now = Date.now();
         const timestamps = cooldowns.get(commandFile.help.name);
         const cooldownAmount = (commandFile.conf.cooldown || 3) * 1000;

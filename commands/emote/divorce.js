@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const author = await client.love.findOne({
         userID: message.author.id,
         guildID: message.guild.id
@@ -45,25 +45,25 @@ exports.run = async (client, message, args) => {
                 return message.channel.send("your partner isn't married to you in my database! i will just change you to single instead...")
             }
         }
-        
+
     }
 }
 async function divorce(client, message, member) {
-    const msg = await message.channel.send({embed: {color: "a65959", description: `
+    const msg = await message.channel.send({ embed: { color: "a65959", description: `
     ${member}, it seems like ${message.author} is asking for a divorce...
     
     do you accept this request? please react with ✅ for yes, and ❌ for no.
 
     *i will be going in a minute.*
-    `}});
+    ` } });
     await msg.react('✅');
     await msg.react('❌');
     let answered;
     const filter = (reaction, user) => {
         return ['✅', '❌'].includes(reaction.emoji.name) && user.id === member.user.id;
     };
-    const collector = msg.createReactionCollector(filter, {time: 60000});
-    collector.on('collect', async (reaction, user) => {
+    const collector = msg.createReactionCollector(filter, { time: 60000 });
+    collector.on('collect', async(reaction, user) => {
         if (reaction.emoji.name === '❌') {
             answered = true;
             message.channel.send(`**${member.user.username}** declined your request :(`);
@@ -97,6 +97,6 @@ exports.conf = {
     aliases: ['breakup'],
     cooldown: 4,
     guildOnly: true,
-    
+
     channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
 };

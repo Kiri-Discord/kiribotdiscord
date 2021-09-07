@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 .map((video) => {
                         result.push({
                                     type: 'yt',
-                                    title: shortenText(video.info.title, 22),
+                                    title: shortenText(video.info.title, 80),
                                     url: video.info.uri,
                                     desc: `${shortenText(video.info.author, 12)} ${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'))}`}`
                 });
@@ -38,7 +38,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             .map((track) => {
                 result.push({
                     type: 'sc',
-                    title: shortenText(track.title, 22),
+                    title: shortenText(track.title, 80),
                     url: track.permalink_url,
                     desc: `${shortenText(track.user.username, 12)} | ${shortenText(moment.duration(track.duration).format('H[h] m[m] s[s]'))}`
                 })
