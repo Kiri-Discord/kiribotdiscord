@@ -3,7 +3,7 @@ const ISO6391 = require('iso-639-1');
 
 exports.run = async(client, message, args, prefix) => {
     const serverQueue = client.queue.get(message.guild.id);
-    if (!args.length) return message.channel.send(`uh seems like that's a wrong usage :pensive: check out \`${prefix}help scrolling-lyrics\`!`)
+    if (!args.length) return message.channel.send(`uh seems like that's a wrong usage! check out \`${prefix}help scrolling-lyrics\` for avaliable usage of my command :pensive:`)
     if (args[0] === "off") {
         if (serverQueue) {
             if (serverQueue.karaoke.isEnabled && serverQueue.karaoke.instance) {
@@ -45,7 +45,7 @@ exports.run = async(client, message, args, prefix) => {
         const code = ISO6391.getCode(query.toLowerCase());
         if (!ISO6391.validate(code)) return message.channel.send({ embed: { color: "f3f3f3", description: `❌ sorry, \`${query}\` is not a valid language :pensive:` } });
         serverQueue.karaoke.languageCode = code;
-        return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ the lyric language has been set to \`${ISO6391.getName(code)}\`\n\ndo \`${prefix}scrolling-lyrics -on\` to enable it :wink:` } });
+        return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ the lyric language has been set to \`${ISO6391.getName(code)}\`\n\ndo \`${prefix}scrolling-lyrics on\` to enable it :wink:` } });
     };
     if (args[0] === 'set') {
         const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
