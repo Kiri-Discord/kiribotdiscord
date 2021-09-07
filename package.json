@@ -14,7 +14,6 @@
     "author": "ryzenix",
     "license": "MIT",
     "dependencies": {
-        "@discord-player/extractor": "^3.0.2",
         "@lavacord/discord.js": "0.0.7",
         "@vitalets/google-translate-api": "^7.0.0",
         "aki-api": "^6.0.5",
