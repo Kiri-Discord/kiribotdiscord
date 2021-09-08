@@ -296,7 +296,6 @@ module.exports = class util {
         seconds = (seconds < 10) ? '0' + seconds : seconds;
         return hours + ':' + minutes + ':' + seconds;
 	}
-	};
 	static async purgeDbGuild(client, id) {
 		client.guildsStorage.delete(id);
 		client.queue.delete(id);
