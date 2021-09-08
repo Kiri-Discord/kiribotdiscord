@@ -3,7 +3,7 @@ const { askString } = require('../../util/util');
 const varReplace = require('../../util/variableReplace');
 
 exports.run = async(client, message, args, prefix) => {
-        if (!args.length) return message.channel.send({ embed: { color: "RED", description: `you haven't provided a sub command \`${prefix}${exports.help.name} <subcommand>\` :pensive:\nall avaliable sub-command for setting up goodbye message are: \`-off, channel, content, test\`!` } })
+        if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `you haven't provided a sub command \`${prefix}${exports.help.name} <subcommand>\` :pensive:\nall avaliable sub-command for setting up goodbye message are: \`-off, channel, content, test\`!` }] })
         const db = client.guildsStorage.get(message.guild.id);
         if (message.flags[0] === "off") {
             db.byeChannelID = undefined;
@@ -15,7 +15,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed = new MessageEmbed()
                 .setColor("f3f3f3")
                 .setDescription(`❌ goodbye feature has been disabled`);
-            return message.channel.send(embed);
+            return message.channel.send({ embeds: [embed] });
         };
         if (args[0].toLowerCase() === 'channel') {
             const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
