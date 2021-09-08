@@ -106,7 +106,7 @@ module.exports = class util {
                 res.react('✅').catch(() => null);
                 return true;
             };
-            const verify = await message.channel.awaitMessages(filter, { max: max - 1, time: 60000 });
+            const verify = await message.channel.awaitMessages({ filter, max: max - 1, time: 60000 });
             verify.set(message.id, message);
             if (verify.size < min) return false;
             return verify.map(player => player.author.id);
@@ -172,7 +172,8 @@ module.exports = class util {
 			return (user ? res.author.id === user.id : true)
 				&& (yes.includes(value) || no.includes(value) || extraYes.includes(value) || extraNo.includes(value));
 		};
-		const verify = await channel.awaitMessages(filter, {
+		const verify = await channel.awaitMessages({
+			filter,
 			max: 1,
 			time
 		});
@@ -183,7 +184,8 @@ module.exports = class util {
 		return false;
 	}
 	static async askString(channel, filter, { time = 20000 } = {}) {
-		const verify = await channel.awaitMessages(filter, {
+		const verify = await channel.awaitMessages({
+			filter,
 			max: 1,
 			time
 		});
@@ -206,7 +208,8 @@ module.exports = class util {
 			const code = ISO6391.getCode(value);
 			if (res.author.id === user.id && ISO6391.validate(code)) return true;
 		};
-		const verify = await channel.awaitMessages(filter, {
+		const verify = await channel.awaitMessages({
+			filter,
 			max: 1,
 			time
 		});
@@ -276,7 +279,7 @@ module.exports = class util {
 			if (!num) return false;
 			return num > 0 && num <= arr.length;
 		};
-		const messages = await message.channel.awaitMessages(filter, { max: 1, time });
+		const messages = await message.channel.awaitMessages({filter, max: 1, time });
 		if (!messages.size) return defalt;
 		return arr[Number.parseInt(messages.first().content, 10) - 1];
 	};
@@ -289,7 +292,141 @@ module.exports = class util {
         minutes = (minutes < 10) ? '0' + minutes : minutes;
         seconds = (seconds < 10) ? '0' + seconds : seconds;
         return hours + ':' + minutes + ':' + seconds;
-	}
+	};
+	static async purgeDbGuild(client, id) {
+		client.guildsStorage.delete(id);
+		client.queue.delete(id);
+	
+		await client.dbguilds.findOneAndDelete({
+			guildID: id
+		});
+	
+		await client.dbverify.deleteMany({
+			guildID: id,
+		});
+			
+		await client.dbembeds.deleteMany({
+			guildID: id,
+		});
+		
+		await client.dbleveling.deleteMany({
+			guildId: id,
+		});
+		await client.cooldowns.deleteMany({
+			guildId: id
+		});
+	
+		await client.garden.deleteMany({
+			guildId: id
+		});
+
+		await client.inventory.deleteMany({
+			guildId: id
+		});
+
+		await client.money.deleteMany({
+			guildId: id
+		});
+	
+	
+		await client.love.deleteMany({
+			guildID: id
+		});
+	
+		await client.gameStorage.deleteMany({
+			guildId: id
+		});
+	
+		await hugSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await punchSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await musicSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await slapSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await cuddleSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await kissSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await patSchema.deleteMany({
+			guildId: id,
+		});
+		return true;
+	};
+	static async purgeDbUser(client, guildId, userId) {
+		await client.dbleveling.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+	
+		await client.dbverify.findOneAndDelete({
+			guildID: guildId,
+			userID: userId,
+		});
+		await client.cooldowns.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.garden.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.gameStorage.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.money.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.inventory.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+
+		await client.love.findOneAndDelete({
+			guildID: guildId,
+		    userID: userId,
+		});
+		await hugSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await punchSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await slapSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await cuddleSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await kissSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await patSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		return true;
+	};
 };
 
 const inGame = [];
