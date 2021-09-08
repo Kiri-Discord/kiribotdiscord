@@ -6,7 +6,13 @@ const ms = require('ms');
 const fetch = require('node-fetch');
 // const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
-const { create } = require('../model/vote');
+const hugSchema = require('../model/hug');
+const punchSchema = require('../model/punch');
+const slapSchema = require('../model/slap');
+const patSchema = require('../model/pat');
+const cuddleSchema = require('../model/cuddle');
+const kissSchema = require('../model/kiss');
+const musicSchema = require('../model/music');
 
 module.exports = class util {
         static shortenText(text, maxLength) {
@@ -245,7 +251,7 @@ module.exports = class util {
 			},
 			{
 				text: 'kiribot.xyz',
-				type: 'PLAYING'
+				type: 'WATCHING'
 			}
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];
@@ -292,7 +298,7 @@ module.exports = class util {
         minutes = (minutes < 10) ? '0' + minutes : minutes;
         seconds = (seconds < 10) ? '0' + seconds : seconds;
         return hours + ':' + minutes + ':' + seconds;
-	};
+	}
 	static async purgeDbGuild(client, id) {
 		client.guildsStorage.delete(id);
 		client.queue.delete(id);
