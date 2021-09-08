@@ -1,10 +1,10 @@
 const { findBestMatch } = require("string-similarity");
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
-const agreed = new Collection();
+// const agreed = new Collection();
 const { MessageEmbed } = require('discord.js');
-const { embedURL } = require('../util/util');
-const { stripIndents } = require('common-tags');
+// const { embedURL } = require('../util/util');
+// const { stripIndents } = require('common-tags');
 
 module.exports = async(client, message) => {
         if (!client.finished) return;
@@ -13,10 +13,9 @@ module.exports = async(client, message) => {
         let prefix;
         let setting;
 
-        if (message.channel.type === "dm") {
+        if (message.channel.type === "DM") {
             prefix = client.config.prefix
         } else {
-            if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
             setting = client.guildsStorage.get(message.guild.id);
             if (!setting) {
                 const dbguilds = client.dbguilds;
@@ -29,16 +28,21 @@ module.exports = async(client, message) => {
             } else {
                 prefix = setting.prefix;
             }
-            const alreadyHasVerifyRole = message.member._roles.includes(setting.verifyRole);
+            if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
+            const alreadyHasVerifyRole = message.member.roles.cache.has(setting.verifyRole);
             if (message.channel.id === setting.verifyChannelID) {
                 if (alreadyHasVerifyRole) {
                     if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
-                    return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(m => m.delete({ timeout: 4000 }));
+                    return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(m => {
+                        setTimeout(() => {
+                            m.delete();
+                        }, 4000);
+                    });
                 } else {
                     return client.emit('verify', message);
                 }
             };
-            if (setting.enableLevelings && message.channel.type === "text") {
+            if (setting.enableLevelings && message.channel.type === "GUILD_TEXT") {
                 client.emit('experience', message, setting);
             };
         };
@@ -57,7 +61,11 @@ module.exports = async(client, message) => {
         if (!execute) {
             const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
             if (prefixMention.test(matchedPrefix)) {
-                return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${duh}`).then(m => m.delete({ timeout: 5000 }));
+                return message.channel.send(`you just summon me! to use some command, either ping me or use \`${prefix}\` as a prefix! to get help, use \`${prefix}help\`! cya ${duh}`).then(m => {
+                    setTimeout(() => {
+                        m.delete()
+                    }, 5000);
+                });
             } else {
                 return;
             };
@@ -75,11 +83,14 @@ module.exports = async(client, message) => {
         let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
         if (!commandFile) {
             const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-            return message.channel.send(`:grey_question: maybe you mean \`${prefix}${matches}\` ?`).then(m => m.delete({ timeout: 4000 }));
+            return message.channel.send(`:grey_question: maybe you mean \`${prefix}${matches}\` ?`)
+                .then(m => setTimeout(() => {
+                    m.delete();
+                }, 5000));
         };
 
-        if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.inlineReply(`\`${prefix}${cmd}\` is being maintained ${sed} try again later!`)
-        if (message.channel.type === "dm" && commandFile.conf.guildOnly) return message.inlineReply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
+        if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.reply(`\`${prefix}${cmd}\` is being maintained. try again later ${sed}`)
+        if (message.channel.type === "DM" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 
         if (!client.config.owners.includes(message.author.id) && commandFile.conf.owner) return;
 
@@ -100,73 +111,67 @@ module.exports = async(client, message) => {
         };
 
         if (commandFile.conf.userPerms && message.channel.type !== "dm" && commandFile.conf.userPerms.length) {
-            for (permission in commandFile.conf.userPerms) {
-                if (!message.member.hasPermission(commandFile.conf.userPerms[permission])) {
-                    return message.channel.send(`are you a mod? you don't seems to have the \`${commandFile.conf.userPerms[permission]}\` permission for this ${stare}`);
-                }
+            if (!message.member.permissions.has(commandFile.conf.userPerms)) {
+                return message.channel.send(`are you a mod? you don't seems to have the ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission for this ${stare}`);
             }
-        }
+        };
         if (commandFile.conf.channelPerms && message.channel.type !== 'dm' && commandFile.conf.channelPerms.length) {
-            for (permission in commandFile.conf.channelPerms) {
-                if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms[permission])) {
-                    return message.channel.send(`ouch! bruh it seems like i don't have the \`${commandFile.conf.channelPerms[permission]}\` permission in this channel to properly do that for you ${stare}`);
-                };
-            }
+            if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms)) {
+                return message.channel.send(`ouch! bruh it seems like i don't have the ${commandFile.conf.channelPerms.map(x => `\`${x}\``).join(" and ")} permission in this channel to properly do that for you ${stare}`);
+            };
         }
         if (commandFile.conf.clientPerms && message.channel.type !== "dm" && commandFile.conf.clientPerms.length) {
-            for (permission in commandFile.conf.clientPerms) {
-                if (!message.guild.me.hasPermission(commandFile.conf.clientPerms[permission])) {
-                    return message.channel.send(`sorry, i don't have \`${commandFile.conf.clientPerms[permission]}\` permission across the server to do that ${sed}`)
-                };
-            }
+            if (!message.guild.me.permissions.has(commandFile.conf.clientPerms)) {
+                return message.channel.send(`sorry, i don't have the ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission across the server to do that ${sed}`)
+            };
         };
 
-        let globalStorage = client.globalStorage;
-        let storage = await globalStorage.findOne();
-        if (!storage) storage = new globalStorage();
+    //     let globalStorage = client.globalStorage;
+    //     let storage = await globalStorage.findOne();
+    //     if (!storage) storage = new globalStorage();
 
-        const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
+    //     const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
 
-        if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
-            if (message.channel.type === 'text') {
-                if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you ask me to do a command for the first time, but this channel has blocked me from showing embed ${sed} can you try it again in an another channel?`)
-            };
-            const agreedCount = storage.acceptedRules.toObject();
-            let key;
+    //     if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
+    //         if (message.channel.type === 'GUILD_TEXT') {
+    //             if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you call me for the first time, but this channel has blocked me from showing embed ${sed}\ncan you try it again in an another channel?`);
+    //         };
+    //         const agreedCount = storage.acceptedRules.toObject();
+    //         let key;
 
-            if (message.channel.type === 'dm') key = message.author.id;
-            else key = `${message.author.id}-${message.guild.id}`;
+    //         if (message.channel.type === 'dm') key = message.author.id;
+    //         else key = `${message.author.id}-${message.guild.id}`;
 
-            const verifyEmbed = new MessageEmbed()
-                .setColor('#81c42f')
-                .addField(`if you have any questions come ask us in:`, `${embedURL('Sefiria (community server)', 'https://discord.gg/kJRAjMyEkY')}\n${embedURL('kiri support (support server)', 'https://discord.gg/D6rWrvS')}`)
-                .setDescription(stripIndents `
-                • any actions performed to give other users a bad experience are explicitly against the rules ${sed}
-                this includes but not limited to:
-                > using macros/scripts for commands (make me slower in serving other users)
-                > use any of my features for actions that is against the ${embedURL('Discord Terms of Service', 'https://discord.com/terms')}
-                • do not use any exploits and report any found in the bot in our server!
-                • you can not sell/trade token or any bot goods for real money
-    `)
-                .setFooter(`${agreedCount.length} user have agreed to those rules :)`);
+    //         const verifyEmbed = new MessageEmbed()
+    //             .setColor('#81c42f')
+    //             .addField(`if you have any questions come ask us in:`, `${embedURL('Sefiria (community server)', 'https://discord.gg/kJRAjMyEkY')}\n${embedURL('kiri support (support server)', 'https://discord.gg/D6rWrvS')}`)
+    //             .setDescription(stripIndents `
+    //             • any actions performed to give other users a bad experience are explicitly against the rules ${sed}
+    //             this includes but not limited to:
+    //             > using macros/scripts for commands (make me slower in serving other users)
+    //             > use any of my features for actions that is against the ${embedURL('Discord Terms of Service', 'https://discord.com/terms')}
+    //             • do not use any exploits and report any found in the bot in our server!
+    //             • you can not sell/trade token or any bot goods for real money
+    // `)
+    //             .setFooter(`${agreedCount.length} user have agreed to those rules :)`);
 
-            const existingCollector = agreed.get(key);
+    //         const existingCollector = agreed.get(key);
 
-            if (existingCollector) {
-                await existingCollector.stop();
-            };
-            const filter = (reaction, user) => {
-                return reaction.emoji.name === '👍' && user.id === message.author.id;
-            };
-            const verifyMessage = await message.inlineReply(`:warning: you must accept these rules below before using me by reacting with the hands up emojis ${duh}`, verifyEmbed);
-            await verifyMessage.react('👍');
-            const collectedEmojis = verifyMessage.createReactionCollector(filter, { max: 1, time: 20000, errors: ['time'] });
-            agreed.set(key, collectedEmojis);
-            return agreeCollector(storage, collectedEmojis, message, key);
-        };
+    //         if (existingCollector) {
+    //             await existingCollector.stop();
+    //         };
+    //         const filter = (reaction, user) => {
+    //             return reaction.emoji.name === '👍' && user.id === message.author.id;
+    //         };
+    //         const verifyMessage = await message.reply(`:warning: you must accept these rules below before using me by reacting with the hands up emojis ${duh}`, verifyEmbed);
+    //         await verifyMessage.react('👍');
+    //         const collectedEmojis = verifyMessage.createReactionCollector(filter, { max: 1, time: 20000, errors: ['time'] });
+    //         agreed.set(key, collectedEmojis);
+    //         return agreeCollector(storage, collectedEmojis, message, key);
+    //     };
         if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
-        const cooldownID = message.channel.type === "dm" ? message.author.id : message.author.id + message.guild.id
+        const cooldownID = message.channel.type === "DM" ? message.author.id : message.author.id + message.guild.id
 
         const now = Date.now();
         const timestamps = cooldowns.get(commandFile.help.name);
@@ -182,9 +187,11 @@ module.exports = async(client, message) => {
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${stare}`).then(m => m.delete({ timeout: 5000 }));
-            }
-
+                return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${stare}`)
+                    .then(m => setTimeout(() => {
+                        m.delete();
+                    }, 5000));
+            };
             timestamps.set(cooldownID, now);
             setTimeout(() => timestamps.delete(cooldownID), cooldownAmount);
         }
@@ -198,14 +205,14 @@ module.exports = async(client, message) => {
   }
 };
 
-async function agreeCollector(storage, collector, message, key) {
-  collector.on('collect', async () => {
-    await collector.stop();
-    storage.acceptedRules.push(message.author.id);
-    await storage.save();
-  });
+// async function agreeCollector(storage, collector, message, key) {
+//   collector.on('collect', async () => {
+//     await collector.stop();
+//     storage.acceptedRules.push(message.author.id);
+//     await storage.save();
+//   });
   
-  collector.on('end', () => {
-    agreed.delete(key);
-  });
-}
+//   collector.on('end', () => {
+//     agreed.delete(key);
+//   });
+// }

@@ -27,7 +27,7 @@ module.exports = class VerifyTimer {
                 if (!member) return;
                 const roleExist = guild.roles.cache.get(setting.verifyRole);
                 const verifyChannel = guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
-                const verifyRole = member._roles.includes(setting.verifyRole);
+                const verifyRole = member.roles.cache.has(setting.verifyRole);
                 if (verifyRole || !verifyChannel || !roleExist) return;
                 const logChannel = await guild.channels.cache.get(setting.logChannelID);
                 const logembed = new MessageEmbed()

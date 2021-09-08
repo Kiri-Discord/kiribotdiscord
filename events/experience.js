@@ -1,8 +1,6 @@
 const varReplace = require('../util/variableReplace');
 
 module.exports = async(client, message, setting) => {
-    if (message.channel.type === "dm") return;
-
     let prefix = setting.prefix;
 
     const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -55,15 +53,20 @@ module.exports = async(client, message, setting) => {
         else channel = message.guild.channels.cache.get(setting.levelings.destination);
         if (!channel || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return;
         if (setting.levelings.content.type === 'plain') levelMessage = await channel.send(varReplace.replaceText(setting.levelings.content.content, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp }));
-        else levelMessage = await channel.send({ embed: varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp }) });
-        if (channel.id === message.channel.id) levelMessage.delete({ timeout: 5000 });
+        else levelMessage = await channel.send({ embeds: [varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp })] });
+        if (channel.id === message.channel.id) {
+            setTimeout(() => {
+                levelMessage.delete();
+            }, 5000);
+        }
     };
 
     let randomTimer = getRandomInt(65000, 80000);
     recent.add(message.author.id);
-    client.setTimeout(() => {
+    const timeout = setTimeout(() => {
         recent.delete(message.author.id)
     }, randomTimer);
+    timeout.unref();
 }
 
 function getRandomInt(min, max) {
