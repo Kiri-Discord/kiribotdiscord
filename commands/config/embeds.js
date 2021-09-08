@@ -26,8 +26,8 @@ exports.run = async(client, message, args, prefix) => {
         };
         let ongoing = false;
         async function ending(reason) {
-            if (setupMessage) await setupMessage.delete();
-            if (displayMessage) await displayMessage.delete();
+            if (!setupMessage.deleted) await setupMessage.delete();
+            if (!displayMessage.deleted) await displayMessage.delete();
             if (reason === 1) {
                 const angry = client.customEmojis.get('dead');
                 return message.channel.send(`the embed creation was cancelled! try again whenever you want to talk with me ${angry}`);
@@ -52,7 +52,7 @@ exports.run = async(client, message, args, prefix) => {
             .setTimestamp()
             .setImage('https://i.imgur.com/XnDAHF9.png');
         while (!name) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             const filter = res => res.author.id === message.author.id;
             const res = await askString(message.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
@@ -74,15 +74,15 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
             name = id;
         };
         while (!targetEmbed.color) {
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 2 of 9 (optional)')
@@ -123,18 +123,18 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `)
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
             await res.delete();
             targetEmbed.color = res.content.toUpperCase();
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         while (!targetEmbed.author) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 3 of 9 (optional)')
@@ -181,7 +181,7 @@ exports.run = async(client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
@@ -203,7 +203,7 @@ exports.run = async(client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
@@ -214,11 +214,11 @@ exports.run = async(client, message, args, prefix) => {
             if (iconUrl) targetEmbed.author.icon_url = iconUrl.trim();
             if (url) targetEmbed.author.url = url.trim();
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         while (!targetEmbed.title) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 4 of 9 (optional)')
@@ -260,7 +260,7 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
@@ -268,11 +268,11 @@ exports.run = async(client, message, args, prefix) => {
             if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.title = text;
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         while (!targetEmbed.description || targetEmbed.description === empty) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 5 of 9 (optional)')
@@ -322,12 +322,12 @@ exports.run = async(client, message, args, prefix) => {
             // if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.description = text;
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             break;
         };
         while (!targetEmbed.thumbnail) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 6 of 9 (optional)')
@@ -370,7 +370,7 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
@@ -379,12 +379,12 @@ exports.run = async(client, message, args, prefix) => {
                 url: iconUrl
             };
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         while (!targetEmbed.fields) {
             let fieldsArray = [];
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 7 of 9 (optional)')
@@ -445,7 +445,7 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
@@ -453,11 +453,11 @@ exports.run = async(client, message, args, prefix) => {
             // if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.fields = fieldsArray;
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         while (!targetEmbed.image) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 7 of 9 (optional)')
@@ -500,7 +500,7 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
@@ -509,11 +509,11 @@ exports.run = async(client, message, args, prefix) => {
                 url: iconUrl
             };
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         while (!targetEmbed.footer) {
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 8 of 9 (optional)')
@@ -559,12 +559,12 @@ exports.run = async(client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 await setupMessage.edit(embed);
                 continue;
             };
             if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
-                if (!setupMessage) setupMessage = await message.channel.send(embed);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
                 ongoing = true;
                 await res.delete();
                 embed
@@ -591,12 +591,11 @@ exports.run = async(client, message, args, prefix) => {
             };
             if (iconUrl) targetEmbed.footer.icon_url = iconUrl.trim();
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild, null, { level: 50, xp: 50 }) });
         };
         while (!targetEmbed.timestamp) {
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
-            if (!setupMessage) setupMessage = await message.channel.send(embed);
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send(embed);
             if (!ongoing) {
                 embed
                     .setAuthor('step 9 of 9 (optional)')
@@ -624,7 +623,7 @@ exports.run = async(client, message, args, prefix) => {
             await res.delete();
             targetEmbed.timestamp = true;
             ongoing = false;
-            if (!displayMessage) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
             else await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild) });
         };
         const embed2 = new MessageEmbed()
