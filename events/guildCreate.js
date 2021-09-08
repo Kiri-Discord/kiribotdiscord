@@ -31,27 +31,27 @@ module.exports = async(client, guild) => {
     const embed = new MessageEmbed()
         .setTitle("thanks for inviting me to your server :)")
         .setDescription(stripIndents `
-  hi, i'm Kiri! formerly a custom bot, i am a new bot which is hoping to bring new perks and fun to your server!
-  my default prefix is \`${prefix}\`, but mention also works!
+            hi, i'm Kiri! formerly a custom bot, i am a new bot which is hoping to bring new perks and fun to your server!
+            my default prefix is \`${prefix}\`, but mention also works!
 
-  type \`${prefix}help\` to get started! have fun!
-  before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
+            type \`${prefix}help\` to get started! have fun!
+            before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
 
-  changes are updated quite frequently within the bot such as restarts, updates, etc...
-  if you have any questions come ask us in our support server ${duh}
-  [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
-  [kiri support (support server)](https://discord.gg/D6rWrvS)
-  `)
-        .addField(`some of my suggestion for you to get started: ${blush}`, `
-  \`${prefix}help\` - display my command list
-  \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
-  \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
-  
-  *and many more to come...*
-  `)
+            changes are updated quite frequently within the bot such as restarts, updates, etc...
+            if you have any questions come ask us in our support server ${duh}
+            [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
+            [kiri support (support server)](https://discord.gg/D6rWrvS)
+        `)
+        .addField(stripIndents `some of my suggestion for you to get started: ${blush}`, `
+            \`${prefix}help\` - display my command list
+            \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
+            \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
+            
+            *and many more to come...*
+        `)
         .setColor('#DAF7A6')
         .setTimestamp()
-        .setAuthor(`hi i'm Kiri!`)
+        .setAuthor(`hi i'm kiri!`)
         .setThumbnail(client.user.displayAvatarURL())
     client.config.logChannels.forEach(id => {
         const channel = client.channels.cache.get(id);
@@ -61,27 +61,27 @@ module.exports = async(client, guild) => {
     const owner = client.users.cache.get(client.config.ownerID);
     if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     if (channelbutcansendEmbed.size > 0) {
-        channelbutcansendEmbed.first().send(embed);
+        channelbutcansendEmbed.first().send({ embeds: [embed] });
     } else if (channels.size > 0) {
         channels.first().send(stripIndents `
-    **thanks you for inviting me to your server** :tada:
-  
-    hi, i'm **kiri**! formerly a custom bot, i am a new bot which is hoping to bring new perks and fun to your server!
-    my default prefix is \`${prefix}\`, but mention also works!
-    type \`${prefix}help\` to get started! have fun!
-    before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
-  
-    changes are updated quite frequently within the bot such as restarts, updates, etc...
-    if you have any questions come ask us in our support server by typing \`${prefix}invite\`
-  
-    **some of my suggestion for you to get started:** ${blush}
-  
-    \`${prefix}help\` - display my command list
-    \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
-    \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
-    
-    *and many more to come...*
-    `)
+            **thanks you for inviting me to your server** :tada:
+        
+            hi, i'm **kiri**! formerly a custom bot, i am a new bot which is hoping to bring new perks and fun to your server!
+            my default prefix is \`${prefix}\`, but mention also works!
+            type \`${prefix}help\` to get started! have fun!
+            before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
+        
+            changes are updated quite frequently within the bot such as restarts, updates, etc...
+            if you have any questions come ask us in our support server by typing \`${prefix}invite\`
+        
+            **some of my suggestion for you to get started:** ${blush}
+        
+            \`${prefix}help\` - display my command list
+            \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
+            \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
+            
+            *and many more to come...*
+        `)
     } else {
         return;
     }

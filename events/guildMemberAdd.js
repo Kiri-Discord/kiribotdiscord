@@ -10,12 +10,14 @@ module.exports = async(client, member) => {
             guildID: member.guild.id
         });
 
+        if (!setting) return;
 
         if (setting.verifyRole && setting.verifyChannelID) {
             const roleExist = member.guild.roles.cache.get(setting.verifyRole);
             const verifyChannel = member.guild.channels.cache.get(setting.verifyChannelID);
 
             const alreadyHasRole = member._roles.includes(setting.verifyRole);
+            const alreadyHasRole = member.roles.cache.has(setting.verifyRole);
             if (roleExist && verifyChannel && !alreadyHasRole) {
                 const timeMs = setting.verifyTimeout || ms('10m');
                 const exists = await client.verifytimers.exists(member.guild.id, member.user.id);

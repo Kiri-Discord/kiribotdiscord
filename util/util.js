@@ -6,7 +6,13 @@ const ms = require('ms');
 const fetch = require('node-fetch');
 // const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
-const { create } = require('../model/vote');
+const hugSchema = require('../model/hug');
+const punchSchema = require('../model/punch');
+const slapSchema = require('../model/slap');
+const patSchema = require('../model/pat');
+const cuddleSchema = require('../model/cuddle');
+const kissSchema = require('../model/kiss');
+const musicSchema = require('../model/music');
 
 module.exports = class util {
         static shortenText(text, maxLength) {
@@ -242,7 +248,7 @@ module.exports = class util {
 			},
 			{
 				text: 'kiribot.xyz',
-				type: 'PLAYING'
+				type: 'WATCHING'
 			}
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];
@@ -290,6 +296,141 @@ module.exports = class util {
         seconds = (seconds < 10) ? '0' + seconds : seconds;
         return hours + ':' + minutes + ':' + seconds;
 	}
+	};
+	static async purgeDbGuild(client, id) {
+		client.guildsStorage.delete(id);
+		client.queue.delete(id);
+	
+		await client.dbguilds.findOneAndDelete({
+			guildID: id
+		});
+	
+		await client.dbverify.deleteMany({
+			guildID: id,
+		});
+			
+		await client.dbembeds.deleteMany({
+			guildID: id,
+		});
+		
+		await client.dbleveling.deleteMany({
+			guildId: id,
+		});
+		await client.cooldowns.deleteMany({
+			guildId: id
+		});
+	
+		await client.garden.deleteMany({
+			guildId: id
+		});
+
+		await client.inventory.deleteMany({
+			guildId: id
+		});
+
+		await client.money.deleteMany({
+			guildId: id
+		});
+	
+	
+		await client.love.deleteMany({
+			guildID: id
+		});
+	
+		await client.gameStorage.deleteMany({
+			guildId: id
+		});
+	
+		await hugSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await punchSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await musicSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await slapSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await cuddleSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await kissSchema.deleteMany({
+			guildId: id,
+		});
+	
+		await patSchema.deleteMany({
+			guildId: id,
+		});
+		return true;
+	};
+	static async purgeDbUser(client, guildId, userId) {
+		await client.dbleveling.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+	
+		await client.dbverify.findOneAndDelete({
+			guildID: guildId,
+			userID: userId,
+		});
+		await client.cooldowns.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.garden.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.gameStorage.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.money.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+		await client.inventory.findOneAndDelete({
+			guildId: guildId,
+			userId: userId,
+		});
+
+		await client.love.findOneAndDelete({
+			guildID: guildId,
+		    userID: userId,
+		});
+		await hugSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await punchSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await slapSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await cuddleSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await kissSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		await patSchema.findOneAndDelete({
+			userId: userId,
+			guildId: guildId,
+		});
+		return true;
+	};
 };
 
 const inGame = [];
