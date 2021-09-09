@@ -9,7 +9,7 @@ exports.run = async(client, message, args) => {
 
     let createdate = moment.utc(mem.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss");
 
-    const Embed = new MessageEmbed()
+    const embed = new MessageEmbed()
         .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
         .setFooter(client.user.username, client.user.displayAvatarURL())
         .setColor(message.member.displayHexColor)
