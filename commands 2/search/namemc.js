@@ -65,7 +65,7 @@ exports.run = async(client, message, args) => {
         embed.addField('Cape', `[Here](${user.skins.renders.cape})`, true)
     }
     await message.channel.stopTyping(true);
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 }
 exports.help = {
     name: "namemc",

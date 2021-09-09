@@ -18,7 +18,7 @@ exports.run = async(client, message, args, prefix) => {
         .setTimestamp()
         .setFooter(`${onServer.filter(g => !g.ended).length} ongoing giveaway`)
 
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 };
 
 exports.help = {

@@ -30,7 +30,7 @@ exports.run = async(client, message, args) => {
                 .setColor("RANDOM")
                 .setTimestamp(allowed[randomnumber].data.created_utc * 1000)
                 .setFooter(`⬆ ${allowed[randomnumber].data.ups} 💬 ${allowed[randomnumber].data.num_comments}`)
-            return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed] })
         });
 }
 

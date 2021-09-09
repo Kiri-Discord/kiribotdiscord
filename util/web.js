@@ -1,7 +1,7 @@
 const express = require('express');
 const helmet = require("helmet");
 const compression = require("compression");
-// const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Permissions } = require("discord.js");
 // const { stripIndents } = require('common-tags');
 module.exports = {
     init: (client) => {
@@ -29,7 +29,7 @@ module.exports = {
                 const verifyRole = guild.roles.cache.get(setting.verifyRole);
                 if (!verifyRole) return res.json({ code: 204, message: 'ROLE_NOT_EXIST' });
                 res.json({ code: 200, message: 'SUCCESS' });
-                if (!guild.me.permissions.has('MANAGE_ROLES')) {
+                if (!guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
                     try {
                         return member.send(`oof, so mods from **${guild.name}** forgot to give me the role \`MANAGE_ROLES\` to gain you access to the server :pensive: can you ask them to verify you instead?\nyou will not be kicked after this message`);
                     } catch (error) {
@@ -88,7 +88,7 @@ module.exports = {
         //             userID: user.id
         //         });
         //         await vote.save();
-        //         return user.send(embed).catch(() => null);
+        //         return user.send({ embeds: [embed] }).catch(() => null);
         //     } else {
         //         return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
         //     }

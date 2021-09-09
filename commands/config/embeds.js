@@ -699,7 +699,7 @@ exports.run = async(client, message, args, prefix) => {
             .setColor(message.guild.me.displayHexColor)
             .setAuthor(`all embeds created in ${message.guild.name}:`)
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }));
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } else return message.channel.send({ embeds: [{ color: "RED", description: `wrong sub command :pensive: \nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
 };
 

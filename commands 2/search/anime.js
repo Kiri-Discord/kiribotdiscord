@@ -84,7 +84,7 @@ exports.run = async(client, message, args, prefix) => {
                 anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') :
                 'None');
         await message.channel.stopTyping(true);
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (err) {
         await message.channel.stopTyping(true);
         return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`)

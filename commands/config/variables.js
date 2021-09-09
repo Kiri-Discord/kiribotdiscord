@@ -28,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
         `, true)
         .addField(`default response (${prefix}response)`, "\`{auto}\`")
 
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 }
 
 

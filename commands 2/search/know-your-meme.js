@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
             .setImage(data.thumbnail);
         if (data.description) embed.setDescription(shorten(data.description));
         await message.channel.stopTyping(true);
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (err) {
         await message.channel.stopTyping(true);
         return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`)

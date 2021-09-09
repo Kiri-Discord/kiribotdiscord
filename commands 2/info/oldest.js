@@ -17,7 +17,7 @@ exports.run = async(client, message, args) => {
         .setImage(mem.user.displayAvatarURL({ size: 4096, dynamic: true }))
         .setTitle(`The oldest user in ${message.guild.name} is ${mem.user.tag}!`)
         .setDescription(`That user joined Discord in \`${createdate}\`!`);
-    message.channel.send(Embed);
+    message.channel.send({ embeds: [embed] });
 };
 
 

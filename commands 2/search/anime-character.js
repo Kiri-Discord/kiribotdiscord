@@ -60,7 +60,7 @@ exports.run = async(client, message, args) => {
                 const title = edge.node.title.english || edge.node.title.romaji;
                 return embedURL(`${title} (${types[edge.node.type]})`, edge.node.siteUrl);
             }), 5).join(', '));
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (err) {
         return message.channel.send('sorry :( i got no result. the server might be down tho.')
     }

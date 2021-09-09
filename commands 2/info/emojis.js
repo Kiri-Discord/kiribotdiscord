@@ -26,7 +26,7 @@ exports.run = async(client, message, args) => {
         .setThumbnail(icon)
         .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
     if (rest.length) {
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
         const lastContent = rest.splice(rest.length - 1, 1);
         for (const text of rest) {
             const embed1 = new MessageEmbed()
@@ -41,7 +41,7 @@ exports.run = async(client, message, args) => {
         return message.channel.send(embed3);
     } else {
         embed.setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     }
 }
 exports.help = {

@@ -21,7 +21,7 @@ exports.run = async(client, message, args) => {
             .setTitle('you have 15 seconds, who\'s that Pokémon?')
             .attachFiles(image)
             .setImage(`attachment://${image.name}`);
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
         const msgs = await message.channel.awaitMessages({
             filter: res => res.author.id === message.author.id,
             max: 1,

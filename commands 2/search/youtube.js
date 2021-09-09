@@ -26,7 +26,7 @@ exports.run = async(client, message, args) => {
             .setURL(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`)
             .setThumbnail(body.items[0].snippet.thumbnails.default.url)
             .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        message.channel.send(embed).catch(console.error);
+        message.channel.send({ embeds: [embed] }).catch(console.error);
     } catch (err) {
         if (err.status === 404) return message.reply('i cant find any results for that video :(');
         console.log(err);

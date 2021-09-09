@@ -65,7 +65,7 @@ module.exports = {
                             const embed = new MessageEmbed()
                                 .setDescription(`${emoji[song.type] ? `${client.customEmojis.get(emoji[song.type])} ` : ''}Now playing **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** [${song.requestedby}]`);
                     if (success) embed.setFooter(`displaying scrolling lyrics (${ISO6391.getName(queue.karaoke.languageCode)}) for this track `)
-                    queue.playingMessage = await queue.textChannel.send(embed);
+                    queue.playingMessage = await queue.textChannel.send({ embeds: [embed] });
                 } catch (error) {
                     console.error(error);
                 }

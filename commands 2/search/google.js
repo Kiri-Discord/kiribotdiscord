@@ -33,7 +33,7 @@ exports.run = async(client, message, args) => {
     if (href.pagemap.cse_image) {
         embed.setImage(href.pagemap.cse_image[0].src)
     }
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 }
 
 

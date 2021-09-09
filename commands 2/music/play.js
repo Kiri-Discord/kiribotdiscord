@@ -110,7 +110,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const embed = new MessageEmbed()
             .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`)
         return serverQueue.textChannel
-            .send(embed)
+            .send({ embeds: [embed] })
             .catch(console.error);
     };
     queueConstruct.songs.push(song);

@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
     if (result.tags.length > 0 && result.tags.join(" ").length < 1024) {
         embed.addField("Tags", result.tags.join(", "), true);
     }
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 }
 
 exports.help = {

@@ -37,7 +37,7 @@ exports.run = async(client, message, args) => {
             .addField('🎭 Genres', body.genres.length ? body.genres.map(genre => genre.name).join(', ') : '???')
             .addField('🏢 Companies', body.production_companies.length ? body.production_companies.map(c => c.name).join(', ') : '???');
         await message.channel.stopTyping(true);
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (error) {
         await message.channel.stopTyping(true);
         return message.channel.send("opps, there was an error while fetching the movie's information :pensive: can you try it later?")

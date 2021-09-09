@@ -10,7 +10,7 @@ exports.run = async(client, message, args, prefix) => {
 
     if (!toSecond || toSecond == undefined) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
 
-    if (toSecond > 21600 || toSecond < 1) return message.reply("the timer should be more than or equal to 1 second or less than 6 hours!");
+    if (toSecond > 21600 || toSecond < 60) return message.reply("the timer should be more than or equal to 1 minute or less than 6 hours!");
     db.verifyTimeout = convert;
     await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,

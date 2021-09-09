@@ -52,7 +52,7 @@ exports.run = async(client, message, args) => {
 
     if (rest.length) {
         embed.setDescription(first)
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
         const lastContent = rest.splice(rest.length - 1, 1);
         for (const text of rest) {
             const embed1 = new MessageEmbed()
@@ -72,7 +72,7 @@ exports.run = async(client, message, args) => {
             .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
             .setColor(message.member.displayHexColor)
             .setDescription(first)
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     }
 }
 

@@ -25,7 +25,7 @@ exports.run = async(client, message, args, prefix) => {
             .addField('🤒 Active cases', formatNumber(data.active), true)
             .addField('🤢 Active critical cases', formatNumber(data.critical), true)
             .addField('💉 Tests', formatNumber(data.tests), true);
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (err) {
         const blessEmoji = client.customEmojis.get('bless') ? client.customEmojis.get('bless') : ':slight_smile:';
         const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';

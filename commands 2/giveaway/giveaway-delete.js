@@ -1,4 +1,5 @@
 const { reactIfAble } = require('../../util/util');
+const { Permissions } = require('discord.js');
 
 exports.run = async(client, message, args, prefix, cmd) => {
     if (!args[0]) {
@@ -17,7 +18,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
         if (!onServer || !onServer.length) return message.reply(`:boom: there isn't any ongoing giveaway on the server :pensive:`);
         const giveaway = onServer.find(g => g.messageId === args[0]);
         if (!giveaway) return message.reply("there isn't any giveaway with that message ID :pensive:")
-        if (giveaway.extraData.hostedByID !== message.author.id && !message.member.permissions.has('ADMINISTRATOR')) return message.reply('that isn\'t your giveaway, or you don\'t have the \`ADMINISTRATOR\` permission to take full control over that giveaway :pensive:');
+        if (giveaway.extraData.hostedByID !== message.author.id && !message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply('that isn\'t your giveaway, or you don\'t have the \`ADMINISTRATOR\` permission to take full control over that giveaway :pensive:');
         await reactIfAble(message, client.user, '✅');
         await client.giveaways.delete(giveaway.messageId, true);
         return message.reply(`the giveaway ${giveaway.prize} was deleted :pensive:`)

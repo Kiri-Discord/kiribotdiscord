@@ -19,7 +19,7 @@ exports.run = async(client, message, args) => {
             .setTimestamp()
             .setDescription(`${event.year}: ${event.text}`)
             .addField(':arrow_right: More events:', event.links.map(link => embedURL(link.title, link.link)).join(', '));
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (err) {
         if (err.status === 404 || err.status === 500) return message.reply('you give me an invaild date :(');
         return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`);
