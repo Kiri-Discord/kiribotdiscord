@@ -250,7 +250,7 @@ module.exports = class util {
 				type: 'WATCHING'
 			},
 			{
-				text: 'kiribot.xyz',
+				text: 'over you',
 				type: 'WATCHING'
 			}
 		];
