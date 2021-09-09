@@ -61,7 +61,7 @@ module.exports = async(client, guild) => {
     const owner = client.users.cache.get(client.config.ownerID);
     if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     if (channelbutcansendEmbed.size > 0) {
-        channelbutcansendEmbed.first().send({ embeds: [embed] });
+        channelbutcansendEmbed.first().send(embed);
     } else if (channels.size > 0) {
         channels.first().send(stripIndents `
             **thanks you for inviting me to your server** :tada:

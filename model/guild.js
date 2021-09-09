@@ -9,7 +9,7 @@ const guildSchema = mongoose.Schema({
     guildID: reqString,
     prefix: {
         type: String,
-        default: '>'
+        default: 'k!'
     },
     logChannelID: String,
     verifyChannelID: String,
