@@ -1,8 +1,10 @@
 const { purgeDbUser } = require('../util/util');
+const varReplace = require('../util/variableReplace');
 
 module.exports = async(client, member) => {
     await purgeDbUser(client, member.guild.id, member.user.id);
     await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
+    if (member.user.bot) return;
     const setting = await client.dbguilds.findOne({
         guildID: member.guild.id
     });
