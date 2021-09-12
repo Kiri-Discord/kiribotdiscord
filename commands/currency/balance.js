@@ -48,7 +48,7 @@ exports.run = async(client, message, args) => {
         time until next daily collect: **${lastDaily}**
         `)
         .setTimestamp()
-    return message.channel.send({ embed: [embed] });
+    return message.channel.send({ embeds: [embed] });
 };
 
 exports.help = {

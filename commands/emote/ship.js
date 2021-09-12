@@ -11,7 +11,7 @@ exports.run = async(client, message, args) => {
         second = await getMemberfromMention(args[0], message.guild)
     };
 
-    if (!second) return message.reply('you must to mention someone in this server!');
+    if (!second) return message.reply('you got to mention a member in this server!');
     if (first.user.id === client.user.id) return message.channel.send('well you decide it yourself tho');
     if (second.user.id === client.user.id) return message.channel.send('well you decide it yourself tho');
     if (first.user.bot) return message.reply('well, a relationship between an user and a bot is always great :)\n||*most of the time*||');

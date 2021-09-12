@@ -9,7 +9,7 @@ exports.run = async(client, message, args) => {
     let embedPoll = new MessageEmbed()
         .setTitle(`${message.member.displayName} started a new poll!`)
         .setDescription(pollDescription)
-        .setColor('RANDOM')
+        .setColor("#7DBBEB")
         .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
         .setTimestamp(new Date())
 

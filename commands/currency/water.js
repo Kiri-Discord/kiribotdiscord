@@ -175,8 +175,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "water",
     description: "water your tree in the garden",
-    usage: "water",
-    example: "water"
+    usage: ["water"],
+    example: ["water"]
 };
 
 exports.conf = {

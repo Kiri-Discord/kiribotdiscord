@@ -8,8 +8,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "beep",
     description: "very self-explanatory",
-    usage: `beep`,
-    example: `beep`
+    usage: [`beep`],
+    example: [`beep`]
 }
 
 exports.conf = {

@@ -43,7 +43,7 @@ exports.run = async(client, message, args) => {
     const data = await sfw.slap();
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} slap ${target.username} 😔 they was slapped ${amount} time${addS}!`, message.author.displayAvatarURL())
         .setImage(data.url)
 
@@ -52,13 +52,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "slap",
     description: "slap someone with your best",
-    usage: "slap `<@mention>`",
-    example: "slap `@bell`"
+    usage: ["slap `<@mention>`"],
+    example: ["slap `@bell`"]
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 4,
+    cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 }

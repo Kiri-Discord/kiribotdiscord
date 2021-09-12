@@ -151,8 +151,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "harvest",
     description: "harvest your plant after they grow",
-    usage: "harvest `<slot>`",
-    example: "harvest `2`"
+    usage: ["harvest `<slot>`"],
+    example: ["harvest `2`"]
 };
 
 exports.conf = {

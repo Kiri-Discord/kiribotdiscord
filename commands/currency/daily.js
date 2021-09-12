@@ -105,8 +105,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "daily",
     description: "collect your daily credits. (reseted after 24 hours)",
-    usage: 'daily',
-    example: 'daily'
+    usage: ['daily'],
+    example: ['daily']
 }
 
 exports.conf = {

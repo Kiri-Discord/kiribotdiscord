@@ -30,8 +30,8 @@ exports.run = async(client, message, args, prefix) => {
             let desc = command.help.description;
             let cooldown = command.conf.cooldown + " second(s)";
             let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
-            let usage = command.help.usage ? command.help.usage : "no usage provided.";
-            let example = command.help.example ? command.help.example : "no example provided.";
+            let usage = command.help.usage ? command.help.usage.join(", ") : "no usage provided.";
+            let example = command.help.example ? command.help.example.join(", ") : "no example provided.";
             let userperms = command.conf.userPerms ? command.conf.userPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let botperms = command.conf.clientPerms ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let channelperms = command.conf.channelPerms ? command.conf.channelPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";

@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} hugged ${target.username} ❤️ they was hugged ${amount} time${addS}!`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -53,14 +53,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "hug",
     description: "why are you still seeing this page? just do it lmao",
-    usage: "hug <@mention>",
-    example: "hug @Somebody"
+    usage: ["hug <@mention>"],
+    example: ["hug @somebody"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
-}
+};

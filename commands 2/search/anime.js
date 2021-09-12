@@ -63,8 +63,7 @@ const statuses = {
 exports.run = async(client, message, args, prefix) => {
     let query = args.join(" ");
     if (!query) return message.reply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
-    try {
-        message.channel.startTyping(true);
+    try {;
         const id = await search(query);
         if (!id) return message.channel.send(`i could not find any results with **${query}** :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`).then(() => message.channel.stopTyping(true));
         const anime = await fetchAnime(id);
@@ -82,11 +81,9 @@ exports.run = async(client, message, args, prefix) => {
             .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
             .addField('ℹ️ Links', anime.externalLinks.length ?
                 anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') :
-                'None');
-        await message.channel.stopTyping(true);
+                'None');;
         return message.channel.send({ embeds: [embed] });
-    } catch (err) {
-        await message.channel.stopTyping(true);
+    } catch (err) {;
         return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`)
     }
 }

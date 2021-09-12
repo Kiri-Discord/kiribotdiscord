@@ -120,8 +120,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "buy",
     description: "buy an item from the store",
-    usage: "buy `<amount> <items>`",
-    example: "buy `seeds 10`"
+    usage: ["buy `<amount> <items>`"],
+    example: ["buy `seeds 10`"]
 };
 
 exports.conf = {

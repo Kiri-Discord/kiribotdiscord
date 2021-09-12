@@ -86,11 +86,9 @@ exports.run = async(client, message, args) => {
                 return message.reply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in https://www.buymeacoffee.com/r3zenix if you want to increase my limit :pensive:`);
             } else if (!status.status) {
                 return message.reply("the anime fetching server seems down... :pensive:")
-            };
-            message.channel.startTyping(true);
+            };;
             let { body } = await request.get(image);
-            if (Buffer.byteLength(body) > 1e+7) {
-                await message.channel.stopTyping(true);
+            if (Buffer.byteLength(body) > 1e+7) {;
                 return message.reply('the file is way too big for me to handle lol. remember not to upload any image or gif larger than 10MB please :slight_smile:');
             }
             const result = await search(image);
@@ -113,13 +111,13 @@ exports.run = async(client, message, args) => {
                 .setImage(result.preview);
 
             const title = `${anime.title.english || anime.title.romaji}${result.episode ? ` (episode ${result.episode})` : ''}`;
-        await message.channel.stopTyping(true);
+        ;
         return message.channel.send(stripIndents`
             i'm pretty ${result.prob}% sure this is from ${title} 
             ${result.prob < 87 ? '_i think this probablity is kinda low, try using a higher quality image_' : ''}
         `, embed);
     } catch (err) {
-        await message.channel.stopTyping(true);
+        ;
         return message.reply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
     }
 };

@@ -91,19 +91,19 @@ exports.run = async(client, message, args) => {
             .setFooter(`current balance: ${storageAfter.balance}`)
             .setTitle(`yeeet! you won, ${message.member.displayName}!`)
         return message.channel.send({ embeds: [embed] });
-    }
-}
+    };
+};
 
 exports.help = {
     name: "gamble",
     description: "double your token. in an effficent way ¯\\_(ツ)_/¯",
-    usage: "gamble `<bet/amount>`",
-    example: "gamble `50`"
-}
+    usage: ["gamble `<bet/amount>`"],
+    example: ["gamble `50`"]
+};
 
 exports.conf = {
     aliases: ["gambling", "bet"],
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};

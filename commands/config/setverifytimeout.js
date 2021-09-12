@@ -23,7 +23,7 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "setverifytimeout",
     description: "how long do you want unverified people to stay in your guild?",
-    usage: "setverifytimeout <time>",
+    usage: ["setverifytimeout <time>"],
     example: ["setverify `5hrs`", "setverify `10m`"]
 };
 

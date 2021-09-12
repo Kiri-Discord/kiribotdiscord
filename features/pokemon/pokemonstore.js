@@ -8,7 +8,7 @@ module.exports = class PokemonStore extends Map {
         if (!query) return null;
         const num = Number.parseInt(query, 10);
         if (this.has(num)) return this.get(num);
-        const found = this.find(pokemon => pokemon.slug === query);
+        const found = [...this.values()].find(pokemon => pokemon.slug === query);
         if (found) return found;
         if (query === 'missingno' || num === 0) {
             const pokemon = new Pokemon(this, missingno);
@@ -24,7 +24,7 @@ module.exports = class PokemonStore extends Map {
             if (err.status === 404) return null;
             throw err;
         }
-    }
+    };
 
     makeSlug(query) {
         return encodeURIComponent(query.toLowerCase().split(' ').join('-').replace(/[^a-zA-Z0-9-]/g, ''));

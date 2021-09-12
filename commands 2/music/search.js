@@ -14,8 +14,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         let result = [];
         let options = [];
         try {
-            const loadingMessage = await message.channel.send({ embed: { description: `looking for \`${search}\`` } })
-            message.channel.startTyping(true);
+            const loadingMessage = await message.channel.send({ embed: { description: `looking for \`${search}\`` } });
             const ytRes = await fetchInfo(client, search, true);
             const scRes = await scdl.search({
                 query: search,
@@ -60,7 +59,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const embed = new MessageEmbed()
             .setDescription('choose the song that you want to add in:')
             .setFooter('deleting this in 30 seconds')
-        await message.channel.stopTyping(true);
+        ;
         let resultsMessage = await message.channel.send(embed, menu);
         let executed = false;
         setTimeout(async() => {
@@ -88,7 +87,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             }
         })
     } catch (error) {
-        await message.channel.stopTyping(true);
+        ;
         console.error(error);
         return message.reply('there was an error while processing your search, sorry :pensive:').catch(console.error);
     }

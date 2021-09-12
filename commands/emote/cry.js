@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 exports.run = async(client, message, args) => {
     const embed = new MessageEmbed()
-        .setColor('RANDOM')
+        .setColor('#7DBBEB')
         .setAuthor(`${message.author.username} cried :(`, message.author.displayAvatarURL())
 
     fetch('https://neko-love.xyz/api/v1/cry')
@@ -19,8 +19,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "cry",
     description: "just let it all out :pensive:",
-    usage: "cry",
-    example: "cry"
+    usage: ["cry"],
+    example: ["cry"]
 };
 
 exports.conf = {

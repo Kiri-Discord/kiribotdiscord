@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
     };
     const data = await sfw.tickle();
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} tickled ${target.username}!`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -31,14 +31,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "tickle",
     description: "tickle somebody to death",
-    usage: "tickle <@mention>",
-    example: "tickle @Somebody"
+    usage: ["tickle `<@mention>`"],
+    example: ["tickle `@someone`"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
-}
+};

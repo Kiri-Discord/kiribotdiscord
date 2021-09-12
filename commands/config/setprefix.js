@@ -22,9 +22,9 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "set-prefix",
-    description: "change my prefix.. pretty self-explanatory.",
-    usage: "set-prefix `<prefix>`",
-    example: "set-prefix `s!`"
+    description: "change my prefix throughout the server",
+    usage: ["set-prefix `<prefix>`"],
+    example: ["set-prefix `k!`"]
 }
 
 exports.conf = {

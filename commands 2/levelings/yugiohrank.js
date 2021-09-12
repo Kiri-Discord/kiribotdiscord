@@ -89,8 +89,7 @@ exports.run = async(client, message, args) => {
     const attribute = list2[randomattribute]
     const id = Math.floor(Math.random() * 100000000);
 
-    const setID = Math.floor(Math.random() * 1000);
-    message.channel.startTyping(true);
+    const setID = Math.floor(Math.random() * 1000);;
     try {
         const name = `${mention.user.tag}`
         const species = "species"

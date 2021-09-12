@@ -3,11 +3,9 @@ const { MessageEmbed } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 
 exports.run = async(client, message, args) => {
-    if (!args[0]) return message.reply('provide me a Minecraft username or UUID to search for :(');
-    message.channel.startTyping(true);
+    if (!args[0]) return message.reply('provide me a Minecraft username or UUID to search for :(');;
     const users = await lookupName(args[0]);
-    if (!users) {
-        await message.channel.stopTyping(true);
+    if (!users) {;
         return message.reply("i can't find any Minecraft user with that name :(\n*btw, that name is avaliable for you to choose! good news for you :)*");
     }
     let user;
@@ -63,8 +61,7 @@ exports.run = async(client, message, args) => {
 
     if (user.skins.renders.cape) {
         embed.addField('Cape', `[Here](${user.skins.renders.cape})`, true)
-    }
-    await message.channel.stopTyping(true);
+    };
     return message.channel.send({ embeds: [embed] });
 }
 exports.help = {

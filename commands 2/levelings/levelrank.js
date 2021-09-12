@@ -40,8 +40,7 @@ exports.run = async(client, message, args, prefix) => {
         } else if (member.user.id === mention.user.id) {
             rank = counter + 1
         }
-    }
-    message.channel.startTyping(true);
+    };
 
     const rankboard = new canvacord.Rank()
         .renderEmojis(true)

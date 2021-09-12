@@ -33,8 +33,7 @@ exports.run = async(client, message, args) => {
         else image = attachments[0].url;
     };
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
-    try {
-        message.channel.startTyping(true);
+    try {;
         const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
@@ -42,14 +41,11 @@ exports.run = async(client, message, args) => {
         ctx.drawImage(data, 0, 0);
         desaturate(ctx, 30, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
+        };;
         return message.channel.send({ files: [{ attachment, name: "desaturate.png" }] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
+    } catch (error) {;
         return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };

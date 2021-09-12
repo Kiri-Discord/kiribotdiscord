@@ -53,8 +53,7 @@ exports.run = async(client, message, args, prefix) => {
         distort_level = args[0];
     };
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")
-    try {
-        message.channel.startTyping(true);
+    try {;
         if (isNaN(distort_level)) return message.reply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``);
         const { body } = await request.get(image);
         const data = await loadImage(body);
@@ -63,14 +62,11 @@ exports.run = async(client, message, args, prefix) => {
         ctx.drawImage(data, 0, 0);
         distort(ctx, distort_level, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
+        };;
         return message.channel.send({ files: [{ attachment, name: 'greyscale.png' }] });
-    } catch (err) {
-        await message.channel.stopTyping(true);
+    } catch (err) {;
         return message.reply(`sorry :( i got an error. try again later! can you check the image files?`);
     }
 };

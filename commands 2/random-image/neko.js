@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 exports.run = async(client, message, args) => {
     const embed = new MessageEmbed()
-        .setColor('RANDOM')
+        .setColor("#7DBBEB")
         .setDescription(`powered by bell's homework folder`)
 
     fetch('https://neko-love.xyz/api/v1/neko')

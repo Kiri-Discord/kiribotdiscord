@@ -57,11 +57,9 @@ exports.run = async(client, message, args) => {
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     let query = args.join(" ");
     if (!query) return message.reply(`pls enter something so i can search ${sedEmoji}`);
-    try {
-        message.channel.startTyping(true);
+    try {;
         const id = await search(query);
-        if (!id) {
-            await message.channel.stopTyping(true);
+        if (!id) {;
             return message.reply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
         }
         const manga = await fetchManga(id);
@@ -78,11 +76,9 @@ exports.run = async(client, message, args) => {
             .addField('🧨 Year', manga.startDate.year || '???', true)
             .addField('💯 Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
             .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
-            .addField('ℹ️ Links', manga.externalLinks.length ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') : 'None');
-        await message.channel.stopTyping(true);
+            .addField('ℹ️ Links', manga.externalLinks.length ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') : 'None');;
         return message.channel.send({ embeds: [embed] });
-    } catch (err) {
-        await message.channel.stopTyping(true);
+    } catch (err) {;
         return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`);
     }
 }

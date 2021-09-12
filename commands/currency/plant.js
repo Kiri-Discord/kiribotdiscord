@@ -112,8 +112,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "plant",
     description: "plant seeds in your garden.",
-    usage: "plant `<slot>`",
-    example: "plant `2`"
+    usage: ["plant `<slot>`"],
+    example: ["plant `2`"]
 };
 
 exports.conf = {

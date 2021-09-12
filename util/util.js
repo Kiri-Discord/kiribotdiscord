@@ -116,7 +116,7 @@ module.exports = class util {
             verify.set(message.id, message);
             if (verify.size < min) return false;
             return verify.map(player => player.author.id);
-        }
+        };
 
         static delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));

@@ -15,7 +15,7 @@ exports.run = async(client, message, args) => {
         let output = clean(evaled);
         if (output.length > 1024) {
             const { body } = await post("https://hastebin.com/documents").send(output);
-            embed.addField("output", `https://hastebin.com/${body.key}.js`).setColor('RANDOM').setColor(0x7289DA);
+            embed.addField("output", `https://hastebin.com/${body.key}.js`).setColor("#7DBBEB").setColor(0x7289DA);
         } else {
             embed.addField("output", "```js\n" + output + "```").setColor(0x7289DA);
         }

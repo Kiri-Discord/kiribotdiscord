@@ -42,7 +42,7 @@ exports.run = async(client, message, args) => {
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} kissed ${target.username} ❤️ they was kissed ${amount} time${addS}!`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -51,14 +51,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "kiss",
     description: "make her yours man.",
-    usage: "kiss `<@mention>`",
-    example: "kiss `@Somebody`"
+    usage: ["kiss `<@mention>`"],
+    example: ["kiss `@someone`"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 }

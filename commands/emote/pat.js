@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} pat ${target.username} ❤️ they was pat ${amount} time${addS}!`, message.author.displayAvatarURL())
         .setImage(data.url)
 
@@ -54,14 +54,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "pat",
     description: "this is super duper self-explanatory",
-    usage: "pat `<@mention>`",
-    example: "pat `@somebody`"
+    usage: ["pat `<@mention>`"],
+    example: ["pat `@somebody`"]
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 4,
+    cooldown: 2,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 };

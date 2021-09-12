@@ -35,8 +35,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "variables",
     description: "gives you a list of valid placeholders for embeds, response, and more!",
-    usage: "variables",
-    example: "variables"
+    usage: ["variables"],
+    example: ["variables"]
 };
 
 exports.conf = {

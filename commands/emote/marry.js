@@ -29,7 +29,7 @@ exports.run = async(client, message, args, prefix) => {
         });
         await storage.save();
     };
-    if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
+    // if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: message.guild.id
@@ -55,19 +55,19 @@ exports.run = async(client, message, args, prefix) => {
         });
         await newUser.save();
     };
-    const msg = await message.channel.send({ embed: { color: "a65959", description: `
+    const msg = await message.channel.send({ embeds: [{ color: "a65959", description: `
     ${member}, it seems like ${message.author} is interested in taking you as their loved one...
     
     do you accept this proposal? please react with ✅ for yes, and ❌ for no.
     *this proposal will expire in a minute.*
-    ` } });
+    ` }] });
     await msg.react('✅');
     await msg.react('❌');
     let answered;
     const filter = (reaction, user) => {
         return ['✅', '❌'].includes(reaction.emoji.name) && user.id === member.user.id;
     };
-    const collector = msg.createReactionCollector(filter, { time: 60000 });
+    const collector = msg.createReactionCollector({ filter, time: 60000 });
     collector.on('collect', async(reaction, user) => {
         if (reaction.emoji.name === '❌') {
             answered = true;
@@ -126,8 +126,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "marry",
     description: "propose somebody and marry them *(if they ever accept)*",
-    usage: "marry `<@mention>`",
-    example: "marry `@somebody`"
+    usage: ["marry `<@mention>`"],
+    example: ["marry `@somebody`"]
 };
 
 exports.conf = {

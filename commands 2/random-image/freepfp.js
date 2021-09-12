@@ -5,7 +5,7 @@ const { sfw } = new neko();
 exports.run = async(client, message, args) => {
     let data = await sfw.waifu();
     const embed = new MessageEmbed()
-        .setColor('RANDOM')
+        .setColor("#7DBBEB")
         .setDescription(`powered by bell's homework folder`)
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })

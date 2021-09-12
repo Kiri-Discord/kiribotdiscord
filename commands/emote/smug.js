@@ -7,7 +7,7 @@ exports.run = async(client, message, args) => {
     let data = await sfw.smug();
 
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} just smugged 😏`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -16,13 +16,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "smug",
     description: "smug on somebody 🤔",
-    usage: "smug",
-    example: "smug"
+    usage: ["smug"],
+    example: ["smug"]
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 4,
+    cooldown: 2,
     guildOnly: true,
     clientPerms: ["EMBED_LINKS"]
 }

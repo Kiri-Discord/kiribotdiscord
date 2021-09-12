@@ -49,13 +49,13 @@ exports.run = async(client, message, args) => {
     }
 }
 async function divorce(client, message, member) {
-    const msg = await message.channel.send({ embed: { color: "a65959", description: `
+    const msg = await message.channel.send({ embeds: [{ color: "a65959", description: `
     ${member}, it seems like ${message.author} is asking for a divorce...
     
     do you accept this request? please react with ✅ for yes, and ❌ for no.
 
     *i will be going in a minute.*
-    ` } });
+    ` }] });
     await msg.react('✅');
     await msg.react('❌');
     let answered;
@@ -89,14 +89,13 @@ async function divorce(client, message, member) {
 exports.help = {
     name: "divorce",
     description: "divorce with somebody after marry them :pensive:",
-    usage: "divorce `<@mention>`",
-    example: "divorce `@somebody`"
+    usage: ["divorce `<@mention>`"],
+    example: ["divorce `@somebody`"]
 };
 
 exports.conf = {
     aliases: ['breakup'],
     cooldown: 4,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
 };

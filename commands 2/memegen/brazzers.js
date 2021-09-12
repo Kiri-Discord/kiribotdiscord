@@ -33,8 +33,7 @@ exports.run = async(client, message, args) => {
         else image = attachments[0].url;
     };
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
-    try {
-        message.channel.startTyping(true);
+    try {;
         const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'brazzers.png'));
         const { body } = await request.get(image);
         const data = await loadImage(body);
@@ -46,14 +45,11 @@ exports.run = async(client, message, args) => {
         const height = Math.round(width / ratio);
         ctx.drawImage(base, 0, data.height - height, width, height);
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
+        };;
         return message.channel.send({ files: [{ attachment, name: "brazzers.png" }] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
+    } catch (error) {;
         return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };

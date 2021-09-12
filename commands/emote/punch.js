@@ -42,7 +42,7 @@ exports.run = async(client, message, args) => {
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} punch ${target.username} 😔 they was punched ${amount} time${addS}!`, message.author.displayAvatarURL())
 
     await fetch('https://neko-love.xyz/api/v1/punch')
@@ -57,14 +57,14 @@ exports.run = async(client, message, args) => {
 }
 exports.help = {
     name: "punch",
-    description: "feeling triggered? do this.\ni won't judge you tho 😏",
-    usage: "punch `<@mention>`",
-    example: "punch `@Dyno`"
+    description: "punch somebody in the face",
+    usage: ["punch `<@mention>`"],
+    example: ["punch `@Bell`"]
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 4,
+    cooldown: 2,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 }

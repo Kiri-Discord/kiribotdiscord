@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
     };
     const data = await sfw.feed();
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} fed ${target.username}!`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -31,14 +31,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "feed",
     description: "feed someone full :confused:",
-    usage: "feed <@mention>",
-    example: "feed @Somebody"
+    usage: ["feed <@mention>"],
+    example: ["feed @somebody"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 }

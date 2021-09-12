@@ -27,7 +27,7 @@ exports.run = async(client, message, args) => {
                 .setTitle(allowed[randomnumber].data.title)
                 .setURL(url)
                 .setImage(allowed[randomnumber].data.url)
-                .setColor("RANDOM")
+                .setColor("#7DBBEB")
                 .setTimestamp(allowed[randomnumber].data.created_utc * 1000)
                 .setFooter(`⬆ ${allowed[randomnumber].data.ups} 💬 ${allowed[randomnumber].data.num_comments}`)
             return message.channel.send({ embeds: [embed] })

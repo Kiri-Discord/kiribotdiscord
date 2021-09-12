@@ -20,8 +20,6 @@ exports.run = async(client, message, args) => {
     const guildId = guild.id
     const targetId = target.id
     const authorId = message.author.id
-    const now = new Date()
-
     if (targetId === authorId) {
         return message.reply(`is the world too harsh for you? ${sedEmoji}`);
     };
@@ -43,7 +41,7 @@ exports.run = async(client, message, args) => {
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} cuddled ${target.username} ❤️ they was cuddled ${amount} time${addS}!`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -52,14 +50,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "cuddle",
     description: "cuddle someone with care",
-    usage: "cuddle `<@mention>`",
-    example: "cuddle `@Somebody`"
+    usage: ["cuddle `<@mention>`"],
+    example: ["cuddle `@someone`"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
-}
+};

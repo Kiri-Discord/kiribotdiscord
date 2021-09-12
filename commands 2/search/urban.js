@@ -15,7 +15,7 @@ exports.run = async(client, message, args) => {
     const embed = new MessageEmbed()
         .setTimestamp(new Date())
         .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setTitle(result.word)
         .setURL(result.urbanURL)
         .setDescription(`**Definition:** \n*${result.definition}* \n\n**Example:** \n*${result.example}*`)
@@ -30,15 +30,14 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "urban",
-    description: "get the definition for a word\n*but in urban dictionary*😂",
-    usage: "urban <word>",
+    description: "get the definition for a word in urban dictionary",
+    usage: "urban `<word>`",
     example: "urban `google`"
 }
 
 exports.conf = {
     aliases: [],
-    cooldown: 5,
+    cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 }

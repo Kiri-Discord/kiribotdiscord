@@ -145,8 +145,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "fish",
     description: "go fishing :tropical_fish:",
-    usage: "fish",
-    example: "fish"
+    usage: ["fish"],
+    example: ["fish"]
 }
 
 exports.conf = {

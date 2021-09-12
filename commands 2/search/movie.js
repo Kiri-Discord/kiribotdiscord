@@ -5,8 +5,7 @@ const { shorten, pickWhenMany } = require('../../util/util');
 exports.run = async(client, message, args) => {
     const query = args.join(" ");
     if (!query) return message.reply('what movie you would like me to search for?')
-    try {
-        message.channel.startTyping(true);
+    try {;
         const search = await request
             .get('http://api.themoviedb.org/3/search/movie')
             .query({
@@ -14,8 +13,7 @@ exports.run = async(client, message, args) => {
                 include_adult: message.channel.nsfw || false,
                 query
             });
-        if (!search.body.results.length) {
-            await message.channel.stopTyping(true);
+        if (!search.body.results.length) {;
             return message.reply('no result was found for that movie :pensive: better check if there is typo?');
         }
         let find = search.body.results.find(m => m.title.toLowerCase() === query.toLowerCase()) || search.body.results[0];
@@ -35,11 +33,9 @@ exports.run = async(client, message, args) => {
             .addField(':timer: Runtime', body.runtime ? `${body.runtime} minutes` : 'Not avaliable', true)
             .addField(':calendar_spiral: Release date', body.release_date || '???', true)
             .addField('🎭 Genres', body.genres.length ? body.genres.map(genre => genre.name).join(', ') : '???')
-            .addField('🏢 Companies', body.production_companies.length ? body.production_companies.map(c => c.name).join(', ') : '???');
-        await message.channel.stopTyping(true);
+            .addField('🏢 Companies', body.production_companies.length ? body.production_companies.map(c => c.name).join(', ') : '???');;
         return message.channel.send({ embeds: [embed] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
+    } catch (error) {;
         return message.channel.send("opps, there was an error while fetching the movie's information :pensive: can you try it later?")
     }
 }

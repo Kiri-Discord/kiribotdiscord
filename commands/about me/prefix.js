@@ -10,8 +10,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "prefix",
     description: "display my current prefix in the server.",
-    usage: "prefix",
-    example: "prefix"
+    usage: ["prefix"],
+    example: ["prefix"]
 };
 
 exports.conf = {

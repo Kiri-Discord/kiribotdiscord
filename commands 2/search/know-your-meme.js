@@ -7,11 +7,9 @@ const { shorten } = require('../../util/util');
 exports.run = async(client, message, args) => {
     try {
         const query = args.join(' ');
-        if (!query) return message.reply('what meme to you want to search? :eyes:')
-        message.channel.startTyping(true);
+        if (!query) return message.reply('what meme to you want to search? :eyes:');
         const res = await search(query);
-        if (!res) {
-            await message.channel.stopTyping(true);
+        if (!res) {;
             return message.channel.send('no results was found for that meme :pensive:');
         }
         const data = await fetchMeme(res);
@@ -20,11 +18,9 @@ exports.run = async(client, message, args) => {
             .setTitle(data.name)
             .setURL(data.url)
             .setImage(data.thumbnail);
-        if (data.description) embed.setDescription(shorten(data.description));
-        await message.channel.stopTyping(true);
+        if (data.description) embed.setDescription(shorten(data.description));;
         return message.channel.send({ embeds: [embed] });
-    } catch (err) {
-        await message.channel.stopTyping(true);
+    } catch (err) {;
         return message.reply(`sorry :( i got an error. try again later! the server might be down tho.`)
     };
 

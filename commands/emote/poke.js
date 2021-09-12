@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
     };
     const data = await sfw.poke();
     const embed = new MessageEmbed()
-        .setColor("RANDOM")
+        .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} poke at ${target.username}!`, message.author.displayAvatarURL())
         .setImage(data.url)
     return message.channel.send({ embeds: [embed] })
@@ -31,14 +31,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "poke",
     description: "poke somebody",
-    usage: "poke <@mention>",
-    example: "poke @Somebody"
+    usage: ["poke <@mention>"],
+    example: ["poke @someone"]
 };
 
 exports.conf = {
     aliases: [],
-    cooldown: 3,
+    cooldown: 2,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
-}
+};

@@ -44,14 +44,11 @@ exports.run = async(client, message, args) => {
         const { x, y, width, height } = centerImagePart(data, 169, 169, 167, 330);
         ctx.drawImage(data, x, y, width, height);
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
+        };;
         return message.channel.send({ files: [{ attachment, name: "ifearnoman.png" }] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
+    } catch (error) {;
         return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };

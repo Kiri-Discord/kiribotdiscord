@@ -40,8 +40,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "garden",
     description: "shows your garden",
-    usage: "garden",
-    example: "garden"
+    usage: ["garden"],
+    example: ["garden"]
 };
 
 exports.conf = {
