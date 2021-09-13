@@ -58,7 +58,7 @@ exports.run = async(client, message, args, prefix) => {
                 .setDescription(`plain it is! so what content do you want to put in the welcome message?\ntips: variable is supported! feel free to check out at \`${prefix}variables\`.`)
                 .setFooter('this message will be timed out in 20 seconds');
             await message.channel.send({embeds: [embed2]})
-            const content = await askString(message.channel, res => res.author.id === message.author.id);
+            const content = await askString(message.channel, res => res.author.id === message.author.id, { time: 120000 });
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);
             if (!content) return message.channel.send("you didn't say anything :pensive:");
             contentObject = {

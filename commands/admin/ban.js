@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
     try {
         if (!member.user.bot) member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}`);
         await member.ban({ reason });
-        await message.channel.send(banembed);
+        await message.channel.send({ embeds: [banembed] });
         if (!logChannel) {
             return;
         } else {

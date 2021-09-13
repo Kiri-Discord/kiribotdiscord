@@ -14,7 +14,7 @@ exports.run = async(client, message, args, prefix) => {
         .catch(err => console.error(err));
 
 
-    return message.channel.send({ embed: [{ color: "f3f3f3", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` }] });
+    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` }] });
 
 
 };

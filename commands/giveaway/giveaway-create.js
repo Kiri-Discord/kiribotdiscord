@@ -14,7 +14,7 @@ exports.run = async(client, message, args, prefix) => {
     let ongoing = false;
 
     async function ending(reason) {
-        await setupMessage.delete();
+        if (setupMessage && !setupMessage.deleted) await setupMessage.delete();
         if (reason === 1) return message.channel.send(`:boom: the giveaway setup was cancelled due to inactivity :pensive:`);
         if (reason === 2) return message.channel.send(`alright i cancelled the command :wink:`);
     };
@@ -28,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
 	> not responding in any required step for over 30 seconds will cancel this setup. typing \`cancel\` also help too!`)
         .setTimestamp()
     while (!targetChannel) {
-        if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+        if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
         if (res === 0) return ending(1);
@@ -36,20 +36,21 @@ exports.run = async(client, message, args, prefix) => {
         const channel = res.mentions.channels.first();
         if (!channel) {
             await res.delete();
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             embed
                 .setTitle('oops, that doesn\'t seems right...')
                 .setDescription(stripIndents `
 			:boom: that wasn't an existing channel in this server! mention a channel like this ${message.channel.toString()}
 			
 			> not responding in any required step for over 30 seconds will cancel this setup. typing \`cancel\` also help too!`);
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
             continue;
         };
         await res.delete();
         targetChannel = channel;
     };
     while (!duration) {
-        if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+        if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
         if (!ongoing) {
             embed
                 .setAuthor('step 2 of 5')
@@ -60,7 +61,7 @@ exports.run = async(client, message, args, prefix) => {
 			
 			> not responding in any required step for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
 			`);
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
         };
         const filter = msg => msg.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
@@ -70,7 +71,7 @@ exports.run = async(client, message, args, prefix) => {
         const convert = ms(time);
         const toSecond = Math.floor(convert / 1000);
         if (!toSecond || toSecond == undefined || toSecond < 1 || toSecond > 2592000) {
-            if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             ongoing = true;
             await res.delete();
             embed
@@ -81,7 +82,7 @@ exports.run = async(client, message, args, prefix) => {
 			
 			> not responding in any required step for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
 			`)
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
             continue;
         };
         await res.delete();
@@ -89,6 +90,7 @@ exports.run = async(client, message, args, prefix) => {
         duration = convert;
     };
     while (!winners) {
+        if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
         if (!ongoing) {
             embed
                 .setAuthor('step 3 of 5')
@@ -98,7 +100,7 @@ exports.run = async(client, message, args, prefix) => {
 			
 			> not responding in any required step for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
 			`);
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
         };
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
@@ -106,7 +108,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!res) return ending(2);
         const number = parseInt(res.content);
         if (isNaN(number) || number < 1 || number > 40) {
-            if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             ongoing = true;
             await res.delete();
             embed
@@ -116,7 +118,7 @@ exports.run = async(client, message, args, prefix) => {
 			
 			> not responding in any required step for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
 			`);
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
             continue;
         };
         await res.delete();
@@ -124,7 +126,7 @@ exports.run = async(client, message, args, prefix) => {
         winners = number;
     };
     while (!pingRole) {
-        if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+        if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
         if (!ongoing) {
             embed
                 .setAuthor('step 4 of 5 (optional)')
@@ -135,7 +137,7 @@ exports.run = async(client, message, args, prefix) => {
 			> not responding for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
             > for this optional step, you can type \`skip\` to pass this step.
 			`);
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
         };
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
@@ -148,7 +150,7 @@ exports.run = async(client, message, args, prefix) => {
         }
         const role = message.guild.roles.cache.find(r => (r.name === res.content) || (r.id === res.content.replace(/[^\w\s]/gi, '')));
         if (!role) {
-            if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             ongoing = true;
             await res.delete();
             embed
@@ -158,7 +160,7 @@ exports.run = async(client, message, args, prefix) => {
 			:boom: that was not a valid role on this server :pensive: you can use an ID, name or mention the role directly!
 			
 			> not responding for over 30 seconds will cancel this **step**. typing \`cancel\` also help too!`);
-            await setupMessage.edit(embed);
+            await setupMessage.edit({ embeds: [embed] });
             continue;
         };
         await res.delete();
@@ -166,7 +168,7 @@ exports.run = async(client, message, args, prefix) => {
         pingRole = role;
     };
     while (!prize) {
-        if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+        if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
         embed
             .setAuthor('step 5 of 5')
             .setTitle('finally, what do you want to giveaway?')
@@ -175,7 +177,7 @@ exports.run = async(client, message, args, prefix) => {
 		
 		> not responding for over 30 seconds will cancel this setup. typing \`cancel\` also help too!
 		`);
-        await setupMessage.edit(embed);
+        await setupMessage.edit({ embeds: [embed] });
         const filter = res => res.author.id === message.author.id;
         const res = await askString(message.channel, filter, { time: 30000 });
         if (res === 0) return ending(1);
@@ -208,17 +210,17 @@ exports.run = async(client, message, args, prefix) => {
         }
     });
     embed
-        .setAuthor('step 5 of 5', 'https://i.imgur.com/agWK351.png')
+        .setAuthor('step 5 of 5')
         .setTitle('success!')
         .setDescription(`:tada: done! the giveaway for **${prize}** is starting in ${targetChannel.toString()}!\n${embedURL('jump to message :arrow_upper_right:', giveaway.messageURL)}`);
-    return setupMessage.edit(embed);
+    return setupMessage.edit({ embeds: [embed] });
 };
 
 exports.help = {
     name: "giveaway-create",
     description: "create a new giveaway on the server with interactive setup",
-    usage: "giveaway-create",
-    example: "giveaway-create"
+    usage: ["giveaway-create"],
+    example: ["giveaway-create"]
 };
 
 exports.conf = {

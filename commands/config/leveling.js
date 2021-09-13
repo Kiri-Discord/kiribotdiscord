@@ -63,9 +63,9 @@ exports.run = async(client, message, args, prefix) => {
         if (type.content.toLowerCase() === 'plain') {
             const embed2 = new MessageEmbed()
                 .setDescription(`plain it is! so what content do you want to put in the goodbye message?\ntips: variable is supported! feel free to check out at \`${prefix}variables\`.`)
-                .setFooter('this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"');
+                .setFooter('this message will be timed out in 2 minutes. you can also cancel this setup by "cancel"');
             await message.channel.send({embeds: [embed2]})
-            const content = await askString(message.channel, res => res.author.id === message.author.id);
+            const content = await askString(message.channel, res => res.author.id === message.author.id, { time: 120000 });
             if (!content) return message.channel.send(`the setup is cancelled :pensive:`);
             if (content === 0) return message.channel.send("you didn't say anything :pensive:");
             contentObject = {
@@ -100,6 +100,7 @@ exports.run = async(client, message, args, prefix) => {
         });
         setting.levelings.content = contentObject;
         db.levelings.content = contentObject;
+        setting.markModified('levelings');
         await setting.save();
         return message.channel.send({ embeds: [{ 
             color: "f3f3f3", 

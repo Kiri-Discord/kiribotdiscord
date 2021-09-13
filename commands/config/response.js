@@ -1,13 +1,14 @@
 const types = ["cute", "natural"]
 
 exports.run = async(client, message, args) => {
-    if (!types.includes(args[0])) return message.reply({ embeds: [{ color: "f3f3f3", description: `\`${args[0]}\` isn't a valid response mode :pensive: all the avaliable response are \`${types.join(', ')}\`` }] })
+    const type = args[0].toLowerCase();
+    if (!types.includes(type)) return message.reply({ embeds: [{ color: "f3f3f3", description: `\`${args[0]}\` isn't a valid response mode :pensive: all the avaliable response are \`${types.join(', ')}\`` }] })
     const db = client.guildsStorage.get(message.guild.id);
     db.responseType = args[0];
     await client.dbguilds.findOneAndUpdate({
         guildID: message.guild.id,
     }, {
-        responseType: args[0]
+        responseType: type
     });
     return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ my message response type was changed to \`${args[0]}\` mode` }] });
 }

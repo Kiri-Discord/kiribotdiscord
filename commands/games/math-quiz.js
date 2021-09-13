@@ -6,7 +6,7 @@ const maxValues = {
     medium: 100,
     hard: 500,
     extreme: 1000,
-    impossible: Number.MAX_SAFE_INTEGER
+    impossible: 50000
 };
 const maxMultiplyValues = {
     baby: 5,
@@ -14,7 +14,7 @@ const maxMultiplyValues = {
     medium: 30,
     hard: 50,
     extreme: 100,
-    impossible: Number.MAX_SAFE_INTEGER
+    impossible: 10000
 };
 
 const toName = {

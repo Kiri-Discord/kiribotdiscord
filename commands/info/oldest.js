@@ -17,21 +17,20 @@ exports.run = async(client, message, args) => {
         .setImage(mem.user.displayAvatarURL({ size: 4096, dynamic: true }))
         .setTitle(`The oldest user in ${message.guild.name} is ${mem.user.tag}!`)
         .setDescription(`That user joined Discord in \`${createdate}\`!`);
-    message.channel.send({ embeds: [embed] });
+    return message.channel.send({ embeds: [embed] });
 };
 
 
 exports.help = {
     name: "oldest",
     description: "get the oldest account creation date in the guild!",
-    usage: `oldest`,
-    example: `oldest`
+    usage: [`oldest`],
+    example: [`oldest`]
 }
 
 exports.conf = {
     aliases: [],
     cooldown: 2,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 }

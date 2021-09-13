@@ -5,7 +5,12 @@ const humanizeDuration = require("humanize-duration");
 exports.run = async(client, message, args, prefix) => {
     const onServer = client.giveaways.giveaways
         .filter(g => g.guildId === message.guild.id);
-    if (!onServer || !onServer.length) return message.channel.send(":boom: sorry, there isn't any existing giveaway for your server :pensive:");
+    if (!onServer || !onServer.length) return message.channel.send({
+        embeds: [{
+            description: ":boom: sorry, there isn't any existing giveaway for your server :pensive:",
+            color: 'RED'
+        }]
+    });
     const all = onServer.sort((a, b) => b.startAt - a.startAt);
     let list = [];
     all.map((giveaway) => list.push(!giveaway.ended ?
@@ -24,8 +29,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "giveaway-list",
     description: "show a list of existing giveaways on your server",
-    usage: "giveaway-list",
-    example: "giveaway-list"
+    usage: ["giveaway-list"],
+    example: ["giveaway-list"]
 };
 
 exports.conf = {

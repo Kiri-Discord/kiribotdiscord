@@ -18,7 +18,7 @@ exports.run = async(client, message, args, prefix) => {
             verifyTimeout: convert
         })
         .catch(err => console.error(err));
-    return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` } });
+    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` }] });
 }
 exports.help = {
     name: "setverifytimeout",

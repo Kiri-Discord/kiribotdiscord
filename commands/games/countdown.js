@@ -1,10 +1,11 @@
 const fetch = require('node-fetch');
 
 class Game {
-    constructor(message) {
+    constructor(message, client) {
         this.vowels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'U'];
         this.consenants = ['B', 'B', 'C', 'C', 'C', 'D', 'D', 'D', 'D', 'D', 'D', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'J', 'K', 'L', 'L', 'L', 'L', 'L', 'M', 'M', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'P', 'P', 'P', 'P', 'Q', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'V', 'W', 'X', 'Y', 'Z'];
         this.message = message;
+        this.client = client;
         this.letters = '';
         this.text = '**countdown anagrams:** you must choose nine letters by pressing either the vowel or constenant button. i recomend at least 3 vowels. you will then have 30 seconds to find the largest word you can.\n**your letters:**';
     };
@@ -63,9 +64,10 @@ class Game {
                 this.top = '';
                 for (let i = 0; i <= 4; i++) {
                     if (i < 3) this.top += `${this.solved.all[i]}, `;
-                    else if (i === 3) this.top += `${this.solved.all[i]} and`;
+                    else if (i === 3) this.top += `${this.solved.all[i]} and `;
                     else this.top += this.solved.all[i];
                 };
+                this.client.games.delete(this.message.guild.id);
                 this.msg.edit(`${this.text} ${this.letters}. your choice of ${this.winMessage} the top five solutions are ${this.top}. for a full list of solutions go to https://word.tips/words-for/${this.letters}/?dictionary=wwf`);
             }, 30000);
         } else {
@@ -75,7 +77,10 @@ class Game {
 };
 
 exports.run = async(client, message, args) => {
-    const game = new Game(message);
+    const current = client.games.get(message.channel.id);
+    if (current) return message.reply(current.prompt);
+    client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
+    const game = new Game(message, client);
     game.init();
 };
 

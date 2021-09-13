@@ -4,10 +4,11 @@ const rep = ['r', 'p', 's'];
 
 
 class Game {
-    constructor(message, challenged, args) {
+    constructor(message, challenged, args, client) {
         this.message = message;
         this.challenged = challenged;
         this.args = args;
+        this.client = client;
     };
 
     async run() {
@@ -54,7 +55,7 @@ class Game {
         if (p1Choise === 'p' && p2Choise === 'r') return this.win('p1', p1Choise, p2Choise);
         else if (p2Choise === 'p' && p1Choise === 'r') return this.win('p2', p1Choise, p2Choise);
         else if (p2Choise === 'p' && p1Choise === 'p') return this.win('draw', p1Choise, p2Choise); // Paper checks
-        if (p1Choise === 's' && p2Choise === 'p') return this.win('p1'), p1Choise, p2Choise;
+        if (p1Choise === 's' && p2Choise === 'p') return this.win('p1', p1Choise, p2Choise);
         else if (p2Choise === 's' && p1Choise === 'p') return this.win('p2', p1Choise, p2Choise);
         else if (p2Choise === 's' && p1Choise === 's') return this.win('draw', p1Choise, p2Choise); // Scissors checks
     };
@@ -150,7 +151,7 @@ exports.run = async(client, message, args) => {
     if (!verification) return message.channel.send(`looks like they declined... ${sedEmoji}`);
 
     utils.inGame.push(challenged.id, message.author.id);
-    const game = new Game(message, challenged, args);
+    const game = new Game(message, challenged, args, client);
     game.run();
 }
 
