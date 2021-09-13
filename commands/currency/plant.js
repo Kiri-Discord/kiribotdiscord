@@ -39,7 +39,7 @@ exports.run = async(client, message, args, prefix) => {
 
             const random = Math.floor(Math.random() * choices.length);
             plant = choices[random];
-        } else (d < 0.99) {
+        } else {
             const choices = ["bone", "skull", "t_rex", "sauropod"];
 
             const random = Math.floor(Math.random() * choices.length);
