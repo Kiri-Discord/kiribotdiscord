@@ -55,7 +55,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "spotify",
-    description: "wondering what is that member listening to on Spotify? run this :D\nthis works on yourself as well",
+    description: "Wondering what a member is listening to on Spotify? >:D",
     usage: "spotify `[@user]`",
     example: ["spotify `@bell#9999`", "spotify"]
 };

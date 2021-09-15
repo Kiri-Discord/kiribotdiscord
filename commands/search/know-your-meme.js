@@ -69,7 +69,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "know-your-meme",
-	description: "get info about a meme on Know Your Meme",
+	description: "Get info about a meme on Know Your Meme",
 	usage: "know-your-meme `<query>`",
 	example: "know-your-meme `amogus`"
 };

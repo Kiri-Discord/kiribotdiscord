@@ -128,7 +128,7 @@ async function fetchMALScore(id) {
 
 exports.help = {
 	name: "anime",
-	description: "search for an anime.\nonly character from official release will be searched :)\n*tips: you can use my other command* `what-anime` *to find an anime using pictures!*",
+	description: "Search for an officially released anime.\n*tips: you can use my other command* `what-anime` *to find an anime using pictures!*",
 	usage: "anime `<name>`",
 	example: "anime `One Piece`"
 };

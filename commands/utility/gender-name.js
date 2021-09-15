@@ -16,7 +16,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "gender-name",
-    description: "give me a name and i will try to guess the gender 😄",
+    description: "Give me a name and i will try to guess the gender 😄",
     usage: "gender-name `<name>`",
     example: "gender-name Kiri"
 };

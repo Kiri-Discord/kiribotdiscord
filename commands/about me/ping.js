@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
 };
 exports.help = {
 	name: "ping",
-	description: "very self-explanatory",
+	description: "Very self-explanatory",
 	usage: "ping",
 	example: "ping"
 };

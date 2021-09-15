@@ -37,7 +37,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "youtube",
-    description: "get you a youtube video.",
+    description: "Get you a youtube video based on input.",
     usage: "youtube `<query>`",
     example: "youtube `rickroll`"
 };

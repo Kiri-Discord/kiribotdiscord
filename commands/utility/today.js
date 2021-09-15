@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
 };
 exports.help = {
     name: "today",
-    description: "get you an event that occurred today or any day in history.",
+    description: "Get a random event that happens today.",
     usage: "today `[<month> <day>]`",
     example: ["today `12 24`", "today"]
 };

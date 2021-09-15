@@ -91,7 +91,7 @@ async function fetchCharacter(id) {
 
 exports.help = {
 	name: "anime-character",
-	description: "search an anime character.\nonly character from official release will be searched :)",
+	description: "Search for an officially released anime character",
 	usage: "anime-character `<name>`",
 	example: "anime-character `Bell`"
 };

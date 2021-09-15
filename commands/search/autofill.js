@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "autofill",
-	description: "show a list of suggestions from Google for a keyword you choose",
+	description: "Show a list of suggestions from Google for a keyword you choose",
 	usage: "autofill `<query>`",
 	example: "autofill `discord`"
 };

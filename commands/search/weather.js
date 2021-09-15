@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "weather",
-    description: "responds with weather information for a specific location.",
+    description: "Responds with weather information for a specific location.",
     usage: "weather `<city/zipcode>`",
     example: "weather `Da Nang`"
 };

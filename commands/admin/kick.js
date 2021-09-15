@@ -54,7 +54,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "kick",
-    description: "kick someone out of the guild.",
+    description: "Kick someone.",
     usage: ["kick `<mention | user ID> [reason]`", "kick `<mention | user ID>`"],
     example: ["kick `@Bell because it has to be`", "kick `@kuru`"]
 }

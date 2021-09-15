@@ -10,7 +10,7 @@ exports.run = async(client, message, args) => {
 };
 exports.help = {
     name: "invite",
-    description: "more info about how to invite me.",
+    description: "More info on how to invite me.",
     usage: "invite",
     example: "invite"
 }

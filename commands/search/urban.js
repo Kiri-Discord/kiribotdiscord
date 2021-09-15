@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "urban",
-    description: "get the definition for a word\n*but in urban dictionary*😂",
+    description: "Get the definition for a word\n*but in urban dictionary*😂",
     usage: "urban <word>",
     example: "urban `google`"
 }

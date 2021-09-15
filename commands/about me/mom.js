@@ -4,7 +4,7 @@ exports.run = async (client, message, args) => {
 };
 exports.help = {
 	name: "mom",
-	description: "more info about my mom :)",
+	description: "More info about my mom :)",
 	usage: "mom",
 	example: "mom"
 };

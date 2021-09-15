@@ -37,7 +37,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "binary",
-    description: "convert text to binary or otherwise.",
+    description: "Convert text to binary and vice versa.",
     usage: "binary `<encode | decode> <text>`",
     example: "binary `encode i love you`"
 };

@@ -98,7 +98,7 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "help",
-    description: "show the help message for using me, with all the features and commands for it",
+    description: "Gives descriptions and usage of input command.",
     usage: ["help `[command]`", "help `[feature]`", "help"],
     example: ["help `ping`", "help `memeify`", "help"]
 }

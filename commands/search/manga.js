@@ -124,7 +124,7 @@ async function fetchMALScore(id) {
 };
 exports.help = {
 	name: "manga",
-	description: "search for a manga.\nonly official release will be searched :)",
+	description: "Search for offcially released manga",
 	usage: "manga <name>",
 	example: "manga `one piece`"
 };

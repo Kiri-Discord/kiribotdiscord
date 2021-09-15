@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
   name: "wikipedia",
-  description: "searches Wikipedia! right on Discord!",
+  description: "Searches Wikipedia! right on Discord!",
   usage: ["wikipedia `<query>`"],
   example: ["wikipedia `One Piece`"]
 }

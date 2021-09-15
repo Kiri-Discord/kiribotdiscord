@@ -53,7 +53,7 @@ async function getList() {
 
 exports.help = {
     name: "ani-airing",
-    description: "responds with a list of the anime that air today :)",
+    description: "Responds with a list of the anime that air today :)",
     usage: "ani-airing",
     example: "ani-airing"
 };

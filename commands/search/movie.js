@@ -48,7 +48,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
 	name: "movie",
-	description: "fetch a movie's information for your keyword",
+	description: "Fetch info on a movie based on input",
 	usage: "movie <name>",
 	example: "movie `Saw`"
 };

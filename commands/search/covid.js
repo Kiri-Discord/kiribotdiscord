@@ -45,7 +45,7 @@ async function fetchStats(country) {
 
 exports.help = {
 	name: "covid",
-	description: "track a country or worldwide COVID-19 cases",
+	description: "Display COVID-19 data of a specific country or the whole world",
 	usage: "covid `[country]`",
 	example: ["covid `uk`", "covid `us`"]
 };

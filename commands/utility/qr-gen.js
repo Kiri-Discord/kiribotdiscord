@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: "qr-gen",
-    description: "generate a qr code!",
+    description: "Generate a qr code!",
     usage: "qr-gen `<text>`",
     example: "qr-gen `hello`"
 };

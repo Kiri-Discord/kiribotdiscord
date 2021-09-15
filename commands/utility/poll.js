@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "poll",
-    description: "create a poll in an defined channel",
+    description: "Create a poll in a predefined channel",
     usage: "poll `<#channel> <topic>`",
     example: "poll #test `yes or no`"
 }

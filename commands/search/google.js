@@ -57,7 +57,7 @@ async function search(googleKey, csx, query, safesearch) {
 
 exports.help = {
 	name: "google",
-	description: "search something for you on Google 👀",
+	description: "Look up something on Google 👀",
 	usage: "google `<query>`",
 	example: "google `discord`"
 };

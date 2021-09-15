@@ -61,7 +61,7 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "removerole",
-    description: "take away a role from someone",
+    description: "Confiscate a certain role from a certain member.",
     usage: ["removerole `<@user> <@role>`", "removerole `<@user> <role ID>`", "removerole `<user ID> <role ID>`", "removerole `<user ID> <@role>`", "removerole `<@user> <role name>`", "removerole `<user ID> <role name>"],
     example: ["removerole `@bach @pvp`", "removerole `@kuru 584484488877`", "removerole `5575557852 Member`"]
 };

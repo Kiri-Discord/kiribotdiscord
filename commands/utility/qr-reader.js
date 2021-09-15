@@ -47,7 +47,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "qr-reader",
-    description: "get the link from a qr code right on Discord!",
+    description: "Get the text-formatted link from a qr code!",
     usage: "qr-reader `<image>`",
     example: "qr-reader `<image>`"
 };
