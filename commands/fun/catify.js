@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!query) {
             const cache = message.channel.messages.cache.filter(msg => !msg.author.bot && !msg.content.startsWith(prefix)).last();
             if (!cache) {
-                const messages = await message.channel.messages.fetch({ limit: 5 });
+                const messages = await message.channel.messages.fetch({ limit: 10 });
                 const msg = messages.filter(msg => !msg.author.bot && !msg.content.startsWith(prefix)).last();
                 query = msg.cleanContent;
                 author = msg.author;

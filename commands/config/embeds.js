@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { askString } = require('../../util/util');
+const { askString, deleteIfAble } = require('../../util/util');
 const validUrl = require('valid-url');
 const { stripIndents } = require('common-tags');
 const parseColor = require("color-parse");
@@ -59,7 +59,7 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             const id = res.content.trim().split(/ +/g)[0];
             if (storage.embeds.toObject().find(x => x._id === id)) {
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setAuthor('step 1 of 9')
                     .setTitle('oops, that doesn\'t seems right...')
@@ -75,14 +75,13 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
             name = id;
         };
         while (!targetEmbed.color) {
             if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [targetEmbed] });
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 2 of 9 (optional)')
@@ -96,6 +95,7 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
                 await setupMessage.edit({ embeds: [embed] });
             };
             const filter = msg => msg.author.id === message.author.id;
@@ -104,13 +104,13 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res);
                 break;
             };
             const color = parseColor(res.content.toLowerCase());
             if (!color.space) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -124,17 +124,16 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `)
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res);
             targetEmbed.color = res.content.toUpperCase();
             ongoing = false;
             if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
             else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
         };
         while (!targetEmbed.author) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 3 of 9 (optional)')
@@ -150,7 +149,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id && res.content.trim().split("/\\").every(x => x.length > 0);
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -158,7 +158,7 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res);
                 break;
             };
             const field = res.content.trim().split("/\\");
@@ -167,7 +167,7 @@ exports.run = async(client, message, args, prefix) => {
             const url = field[2];
             if (!text || varReplace.replaceText(text.trim(), message.member, message.guild).length > 256) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res)
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -182,13 +182,13 @@ exports.run = async(client, message, args, prefix) => {
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
             if ((iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) ||
                 (url && !validUrl.isWebUri(url.trim()))) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -204,10 +204,10 @@ exports.run = async(client, message, args, prefix) => {
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res);
             if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.author = {};
             targetEmbed.author.name = text.trim();
@@ -218,7 +218,6 @@ exports.run = async(client, message, args, prefix) => {
             else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
         };
         while (!targetEmbed.title) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 4 of 9 (optional)')
@@ -233,7 +232,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id;
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -241,13 +241,13 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res)
                 break;
             };
             const text = res.content.trim();
             if (varReplace.replaceText(text, message.member, message.guild).length > 256) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res)
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -261,10 +261,10 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res)
             if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.title = text;
             ongoing = false;
@@ -272,7 +272,6 @@ exports.run = async(client, message, args, prefix) => {
             else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
         };
         while (!targetEmbed.description || targetEmbed.description === empty) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 5 of 9 (optional)')
@@ -287,7 +286,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id;
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -295,13 +295,13 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res);
                 break;
             };
             const text = res.content.trim();
             if (varReplace.replaceText(text, message.member, message.guild).length > 4096) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res)
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -315,10 +315,10 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res);
             // if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.description = text;
             ongoing = false;
@@ -327,7 +327,6 @@ exports.run = async(client, message, args, prefix) => {
             break;
         };
         while (!targetEmbed.thumbnail) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 6 of 9 (optional)')
@@ -342,7 +341,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id;
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -350,13 +350,13 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res)
                 break;
             };
             const iconUrl = res.content.trim().split(/ +/g)[0];
             if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -371,10 +371,10 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res);
             targetEmbed.thumbnail = {
                 url: iconUrl
             };
@@ -384,7 +384,6 @@ exports.run = async(client, message, args, prefix) => {
         };
         while (!targetEmbed.fields) {
             let fieldsArray = [];
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 7 of 9 (optional)')
@@ -405,7 +404,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id && res.content.trim().split("\n").every(line => line.trim().split("/\\").every(field => field.length > 0))
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -413,7 +413,7 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res);
                 break;
             };
             const lines = res.content.trim().split("\n");
@@ -431,7 +431,7 @@ exports.run = async(client, message, args, prefix) => {
             })
             if (!check) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -446,18 +446,16 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
-            // if (targetEmbed.description === empty) targetEmbed.description = null;
+            await deleteIfAble(res)
             targetEmbed.fields = fieldsArray;
             ongoing = false;
             if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
             else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
         };
         while (!targetEmbed.image) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 7 of 9 (optional)')
@@ -472,7 +470,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id;
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -480,13 +479,13 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res)
                 break;
             };
             const iconUrl = res.content.trim().split(/ +/g)[0];
             if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res)
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -501,10 +500,10 @@ exports.run = async(client, message, args, prefix) => {
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res);
             targetEmbed.image = {
                 url: iconUrl
             };
@@ -513,7 +512,6 @@ exports.run = async(client, message, args, prefix) => {
             else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
         };
         while (!targetEmbed.footer) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 8 of 9 (optional)')
@@ -529,7 +527,8 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = res => res.author.id === message.author.id && res.content.trim().split("/\\").every(x => x.length > 0);
             const res = await askString(message.channel, filter, { time: 180000 });
@@ -537,7 +536,7 @@ exports.run = async(client, message, args, prefix) => {
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
                 ongoing = false;
-                await res.delete();
+                await deleteIfAble(res);
                 break;
             };
             const field = res.content.trim().split("/\\");
@@ -545,7 +544,7 @@ exports.run = async(client, message, args, prefix) => {
             const iconUrl = field[1];
             if (!text || varReplace.replaceText(text, message.member, message.guild).length > 500) {
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -560,13 +559,12 @@ exports.run = async(client, message, args, prefix) => {
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
                 if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-                await setupMessage.edit({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
             if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
                 ongoing = true;
-                await res.delete();
+                await deleteIfAble(res);
                 embed
                     .setTitle('oops, that doesn\'t seems right...')
                     .setDescription(stripIndents `
@@ -581,10 +579,11 @@ exports.run = async(client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            await res.delete();
+            await deleteIfAble(res);
             // if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.footer = {
                 text
@@ -595,7 +594,6 @@ exports.run = async(client, message, args, prefix) => {
             await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild, null, { level: 50, xp: 50 }) });
         };
         while (!targetEmbed.timestamp) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 9 of 9 (optional)')
@@ -610,17 +608,18 @@ exports.run = async(client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                await setupMessage.edit({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                else await setupMessage.edit({ embeds: [embed] });
             };
             const filter = msg => msg.author.id === message.author.id;
             const res = await askString(message.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip' || res.content.trim().toLowerCase() === 'no') {
-                await res.delete();
+                await deleteIfAble(res);
                 break;
             };
-            await res.delete();
+            await deleteIfAble(res);
             targetEmbed.timestamp = true;
             ongoing = false;
             if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });

@@ -17,7 +17,7 @@ exports.run = async(client, message, args) => {
         })
         .catch(err => {
             message.reply("i can't seem to be able to give you a fact :( here is a hug for now 🤗");
-            return console.error(err);
+            return logger.log('error', err);
         });
 };
 

@@ -90,7 +90,7 @@ module.exports = class ScrollingLyrics {
     }
     error(type) {
         if (type === 'sc') {
-            this.channel.send({ embed: { description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` } });
+            this.channel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')

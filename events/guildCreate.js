@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const { MessageEmbed } = require('discord.js');
 const { stripIndents } = require('common-tags');
 
@@ -9,80 +8,61 @@ module.exports = async(client, guild) => {
     });
 
     if (guildexist) return;
-    const data = {
-        _id: mongoose.Types.ObjectId(),
-        guildID: guild.id,
-        prefix: client.config.prefix,
-        enableLevelings: false
-    };
-    client.guildsStorage.set(guild.id, data);
     const Guild = client.dbguilds;
-    const newGuild = new Guild(data);
+    const newGuild = new Guild({
+        guildID: guild.id
+    });
+
+    client.guildsStorage.set(guild.id, newGuild);
 
     await newGuild.save();
 
     const prefix = client.config.prefix;
-    const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
-    const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
-
-    const channels = guild.channels.cache.filter(x => x.type === 'text').filter(x => x.permissionsFor(guild.me).has('SEND_MESSAGES'))
-    const channelbutcansendEmbed = guild.channels.cache.filter(x => x.type === 'text').filter(x => x.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']));
+    const channels = guild.channels.cache.filter(x => x.type === 'GUILD_TEXT').filter(x => x.permissionsFor(guild.me).has('SEND_MESSAGES'))
+    const channelbutcansendEmbed = guild.channels.cache.filter(x => x.type === 'GUILD_TEXT').filter(x => x.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']));
 
     const embed = new MessageEmbed()
         .setTitle("thanks for inviting me to your server :)")
         .setDescription(stripIndents `
-            hi, i'm Kiri! formerly a custom bot, i am a new bot which is hoping to bring new perks and fun to your server!
-            my default prefix is \`${prefix}\`, but mention also works!
+        with a variety of memes and minigames, music, karaoke, utilities and moderation tools, i will try my best to help you around as best as i can :)
+        my default prefix is \`${prefix}\`, but mention also works!
 
-            type \`${prefix}help\` to get started! have fun!
-            before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
+        type \`${prefix}help\` to get started! have fun!
+        before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
 
-            changes are updated quite frequently within the bot such as restarts, updates, etc...
-            if you have any questions come ask us in our support server ${duh}
-            [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
-            [kiri support (support server)](https://discord.gg/D6rWrvS)
-        `)
-        .addField(stripIndents `some of my suggestion for you to get started: ${blush}`, `
-            \`${prefix}help\` - display my command list
-            \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
-            \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
-            
-            *and many more to come...*
+        changes are updated quite frequently within the bot such as restarts, updates, etc...
+        if you have any questions come ask us in our support server:
+        [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
+        [kiri support (support server)](https://discord.gg/D6rWrvS)
         `)
         .setColor('#DAF7A6')
+        .setAuthor("hi, i'm Kiri!")
         .setTimestamp()
-        .setAuthor(`hi i'm kiri!`)
         .setThumbnail(client.user.displayAvatarURL())
     client.config.logChannels.forEach(id => {
         const channel = client.channels.cache.get(id);
         if (channel) channel.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     });
-    console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    logger.log('info', `New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
     const owner = client.users.cache.get(client.config.ownerID);
     if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     if (channelbutcansendEmbed.size > 0) {
         channelbutcansendEmbed.first().send({ embeds: [embed] });
     } else if (channels.size > 0) {
         channels.first().send(stripIndents `
-            **thanks you for inviting me to your server** :tada:
-        
-            hi, i'm **kiri**! formerly a custom bot, i am a new bot which is hoping to bring new perks and fun to your server!
-            my default prefix is \`${prefix}\`, but mention also works!
-            type \`${prefix}help\` to get started! have fun!
-            before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some command)
-        
-            changes are updated quite frequently within the bot such as restarts, updates, etc...
-            if you have any questions come ask us in our support server by typing \`${prefix}invite\`
-        
-            **some of my suggestion for you to get started:** ${blush}
-        
-            \`${prefix}help\` - display my command list
-            \`${prefix}leveling\` and \`${prefix}levelingignore\` - set up levelings, and set a channel to ignore messages from leveling up!
-            \`${prefix}set-verify\` - set your server's own verification portal, powered by Google reCAPTCHA.
-            
-            *and many more to come...*
+        **hi, i'm Kiri! thanks for inviting me to your server :)**
+
+        with a variety of memes and minigames, music, karaoke, utilities and moderation tools, i will try my best to help you around as best as i can :)
+        my default prefix is \`${prefix}\`, but mention also works!
+        type \`${prefix}help\` to get started! have fun!
+        before doing any commands, check if i have the crucial permission to work properly, like sending embed or manage messages (for some commands)
+
+        changes are updated quite frequently within the bot such as restarts, updates, etc...
+        if you have any questions come ask us in our support server:
+        [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
+        [kiri support (support server)](https://discord.gg/D6rWrvS)
         `)
     } else {
         return;
-    }
+    };
 };

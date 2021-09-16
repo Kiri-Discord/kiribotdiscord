@@ -7,7 +7,7 @@ exports.run = async(client, message, args) => {
         .then(json => message.channel.send(json.text.toLowerCase().replace('`', "'")))
         .catch(err => {
             message.channel.send("i can't seem to be able to give you a fact :( here is a hug for now 🤗");
-            return console.error(err);
+            return logger.log('error', err);
         });
 };
 

@@ -95,7 +95,12 @@ module.exports = class util {
                 }
             }
             return null;
-        }
+        };
+        static async deleteIfAble(message) {
+            if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
+                await message.delete();
+            } else return null;
+        };
         static async awaitPlayers(message, max, min = 1) {
             if (max === 1) return [message.author.id];
             const addS = min - 1 === 1 ? '' : 's';
@@ -199,6 +204,81 @@ module.exports = class util {
 		const choice = verify.first().content.toLowerCase();
 		if (choice === 'cancel') return false;
 		return verify.first();
+	};
+
+	static async paginateEmbed(array, msg, row, filter, initialMsg, { time = 60000 } = {}) {
+		let currentPage = 0;
+		const collector = msg.createMessageComponentCollector({
+			componentType: 'BUTTON',
+			filter,
+			time
+		});
+		collector.on('end', async() => {
+			row.components.forEach(button => button.setDisabled(true));
+			return msg.edit({
+				content: `page ${currentPage + 1} of ${array.length}`,
+				components: [row],
+				embeds: [array[currentPage]]
+			});
+		})
+		collector.on('collect', async(res) => {
+			switch (res.customId) {
+				case 'previousbtn':
+					if (currentPage !== 0) {
+						--currentPage;
+						await res.editReply({
+							content: `page ${currentPage + 1} of ${array.length}`,
+							components: [row],
+							embeds: [array[currentPage]]
+						});
+					};
+					break;
+				case 'nextbtn':
+					if (currentPage < array.length - 1) {
+						currentPage++;
+						await res.editReply({
+							content: `page ${currentPage + 1} of ${array.length}`,
+							components: [row],
+							embeds: [array[currentPage]]
+						})
+					};
+					break;
+				case 'jumpbtn':
+					const prompt = await res.followUp({
+						embeds: [{
+							description: `to what page would you like to jump? (1 - ${array.length}) :slight_smile:`,
+							footer: {
+								text: "type 'cancel' to cancel the jumping"
+							}
+						}]
+					});
+					const filter = async res => {
+						if (res.author.id === initialMsg.author.id) {
+							const number = res.content;
+							await res.delete();
+							if (isNaN(number) || number > array.length || number < 1) {
+								return false;
+							}
+							else return true;
+						} else return false;
+					};
+					const number = await util.askString(initialMsg.channel, filter, { time: 15000 });
+					if (number === 0 || !number) return prompt.delete();
+					else {
+						currentPage = parseInt(number) - 1;
+						await res.editReply({
+							content: `page ${number} of ${array.length}`,
+							components: [row],
+							embeds: [array[currentPage]]
+						})
+				    };
+					await prompt.delete();
+					break;
+				case 'clearbtn':
+					collector.stop();
+					break;
+			};
+		});
 	};
 	static async magikToBuffer(magik) {
 		return new Promise((res, rej) => {
@@ -372,6 +452,7 @@ module.exports = class util {
 		});
 		return true;
 	};
+
 	static async purgeDbUser(client, guildId, userId) {
 		await client.dbleveling.findOneAndDelete({
 			guildId: guildId,

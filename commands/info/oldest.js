@@ -1,13 +1,11 @@
 const { MessageEmbed } = require('discord.js')
-const moment = require('moment');
 
 exports.run = async(client, message, args) => {
     let mem = message.guild.members.cache
         .filter((m) => !m.user.bot)
         .sort((a, b) => a.user.createdAt - b.user.createdAt)
         .first();
-
-    let createdate = moment.utc(mem.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss");
+    let createdate = `<t:${Math.floor(mem.user.createdAt.getTime()/1000)}:F> (<t:${Math.floor(mem.user.createdAt.getTime()/1000)}:R>)`;
 
     const embed = new MessageEmbed()
         .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
@@ -16,7 +14,7 @@ exports.run = async(client, message, args) => {
         .setTimestamp()
         .setImage(mem.user.displayAvatarURL({ size: 4096, dynamic: true }))
         .setTitle(`The oldest user in ${message.guild.name} is ${mem.user.tag}!`)
-        .setDescription(`That user joined Discord in \`${createdate}\`!`);
+        .setDescription(`${mem.toString()} joined Discord in ${createdate} !`);
     return message.channel.send({ embeds: [embed] });
 };
 

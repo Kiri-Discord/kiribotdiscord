@@ -1,6 +1,7 @@
 const { findBestMatch } = require("string-similarity");
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
+const { deleteIfAble } = require('../util/util');
 // const agreed = new Collection();
 const { MessageEmbed } = require('discord.js');
 // const { embedURL } = require('../util/util');
@@ -32,7 +33,7 @@ module.exports = async(client, message) => {
             const alreadyHasVerifyRole = message.member.roles.cache.has(setting.verifyRole);
             if (message.channel.id === setting.verifyChannelID) {
                 if (alreadyHasVerifyRole) {
-                    if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
+                    await deleteIfAble(message);
                     return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(m => {
                         setTimeout(() => {
                             m.delete();
@@ -40,7 +41,7 @@ module.exports = async(client, message) => {
                     });
                 } else {
                     return client.emit('verify', message);
-                }
+                };
             };
             if (setting.enableLevelings && message.channel.type === "GUILD_TEXT") {
                 client.emit('experience', message, setting);
@@ -199,9 +200,9 @@ module.exports = async(client, message) => {
         try {
             if (!commandFile) return;
             commandFile.run(client, message, args, prefix, cmd);
-            console.log(`${sender.tag} (${sender.id}) from ${message.channel.type === 'dm' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd}`);
+            logger.log('info', `${sender.tag} (${sender.id}) from ${message.channel.type === 'dm' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd}`);
   } catch (error) {
-    console.error(error);
+    logger.log('error', error);
   }
 };
 

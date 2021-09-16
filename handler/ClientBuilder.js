@@ -8,7 +8,7 @@ const ownGiveaway = require('../features/giveaway');
 
 module.exports = class kiri extends Client {
         constructor(options) {
-            super(options)
+            super(options);
             this.nodes = require('../lavalinkNodes.json');
             this.vote = require('../model/vote');
             this.globalStorage = require('../model/global');
@@ -34,8 +34,8 @@ module.exports = class kiri extends Client {
             this.love = require('../model/love');
             this.dbguilds = require('../model/guild');
             this.leveling = require("../util/LevelingUtil.js");
-            this.dbleveling = require("../model/leveling")
-            this.dbverify = require("../model/verify")
+            this.dbleveling = require("../model/leveling");
+            this.dbverify = require("../model/verify");
             this.games = new Collection();
             this.pokemon = new PokemonStore();
             this.verifytimers = new VerifyTimer(this);
@@ -47,25 +47,24 @@ module.exports = class kiri extends Client {
                             endedGiveawaysLifetime: 1209600000,
                             default: {
                                 botsCanWin: false,
-                                embedColor: '#ba6363',
-                                embedColorEnd: '#67cc60',
+                                embedColor: '#bee7f7',
+                                embedColorEnd: '#EDE7D3',
                                 reaction: tada.id,
                                 winnerCount: 1,
                                 messages: {
                                     winMessage: {
-                                        content: `{winners}, you have won a giveaway by {this.hostedBy}!`,
-                                        embed: new MessageEmbed()
-                                            .setDescription(`There was **{this.winnerIds.length}** winner(s) for your giveaway **{this.prize}** (${embedURL(`jump to message`, '{this.messageURL}')})`)
-                    .setFooter('if you want to reroll please do so now since all giveaway will be deleted in 14 days after they are finished') },
-                    giveaway: `${tada} **GIVEAWAY** ${tada}`,
-                    inviteToParticipate: `Enter the giveaway by reacting to ${tada}!`,
-                    drawing: `Drawing: **{timestamp}**`,
-                    embedFooter: `started in:`,
-                    giveawayEnded: `${tada} **GIVEAWAY ENDED** ${tada}`,
-                    noWinner: `the giveaway above was ended because there was no enough participant :pensive:`,
-                    units: {
-                        pluralS: true
-                    },
+                                        content: `{winners}, you have won a giveaway by {this.hostedBy}! :tada:`,
+                                        embed: new MessageEmbed().setDescription(`there was **{this.winnerIds.length}** winner(s) for your giveaway **{this.prize}** (${embedURL(`jump to message`, '{this.messageURL}')})`).setFooter('if you want to reroll please do so now since all giveaway will be deleted in 14 days after they are finished') 
+                        },
+                        giveaway: `${tada} **GIVEAWAY** ${tada}`,
+                        inviteToParticipate: `Enter the giveaway by reacting to ${tada}!`,
+                        drawing: `remaining: {timestamp}`,
+                        embedFooter: `started in:`,
+                        giveawayEnded: `${tada} **GIVEAWAY ENDED** ${tada}`,
+                        noWinner: `the giveaway above was ended because there was no enough participant :pensive:`,
+                        units: {
+                            pluralS: true
+                        },
                 },
                 lastChance: {
                     enabled: true,
@@ -73,5 +72,5 @@ module.exports = class kiri extends Client {
                 }
             }
         });
-    }
+    };
 }

@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
         .then(json => message.reply(json.compliment.toLowerCase()))
         .catch(err => {
             message.reply("i can't seem to be able to praise you :( here is a hug for now 🤗");
-            return console.error(err);
+            return logger.log('error', err);
         });
 };
 

@@ -39,7 +39,7 @@ exports.run = async(client, message, args, prefix) => {
             verifyChannelID: channel.id,
             verifyRole: role.id
         })
-        .catch(err => console.error(err));
+        .catch(err => logger.log('error', err));
     return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ the verification guiding channel has been set to ${channel} and user will be given the verify role \`${role.name}\` after verifying!\nunverified people won't get kicked by default. use \`${prefix}setverifytimeout <time>\` to set your own duration!` }] });
 
 }

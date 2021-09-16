@@ -12,7 +12,7 @@ exports.run = async(client, message, args) => {
         .then(() => message.channel.send({ embeds: [embed] }))
         .catch(err => {
             message.channel.send("i can't seem to be able to do that :( here is a hug for now 🤗");
-            return console.error(err);
+            return logger.log('error', err);
         });
 
 }

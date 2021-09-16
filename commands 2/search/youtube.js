@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const request = require("node-superfetch");
 
-
 exports.run = async(client, message, args) => {
     try {
         const query = args.join(` `);
@@ -25,27 +24,24 @@ exports.run = async(client, message, args) => {
             .setAuthor('YouTube', 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png')
             .setURL(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`)
             .setThumbnail(body.items[0].snippet.thumbnails.default.url)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        message.channel.send({ embeds: [embed] }).catch(console.error);
+        message.channel.send({ embeds: [embed] }).catch(err => logger.log('error', err));
     } catch (err) {
         if (err.status === 404) return message.reply('i cant find any results for that video :(');
-        console.log(err);
+        logger.log('error', err);
         return message.channel.send(`sorry :( i got an error while trying to get you a result. try again later!`);
-    }
+    };
 };
-
 
 exports.help = {
     name: "youtube",
-    description: "get you a youtube video.",
+    description: "search for a YouTube video from a query given",
     usage: "youtube `<query>`",
     example: "youtube `rickroll`"
 };
 
 exports.conf = {
     aliases: ["yt"],
-    cooldown: 5,
+    cooldown: 4,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 }

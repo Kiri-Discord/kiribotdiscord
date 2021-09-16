@@ -10,7 +10,7 @@ exports.run = async(client, message, args) => {
                 .setImage(json.link)
             message.channel.send({ embeds: [embed] })
         })
-        .catch(err => console.error(err))
+        .catch(err => logger.log('error', err))
 
 };
 

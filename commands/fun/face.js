@@ -8,7 +8,7 @@ const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 's
 
 exports.run = async(client, message, args) => {
     let image;
-    let attachments = message.attachments.array();
+    let attachments = [...message.attachments.values()];
     if (args[0]) {
         if (validUrl.isUri(args[0])) {
             image = args[0];
@@ -69,7 +69,7 @@ exports.help = {
     name: "face",
     description: "give me a portrait and i will try to guess the race, gender, and age of that face 😄",
     usage: ["face `<image attachment or URL>`"],
-    example: ["face `https://example.com/girl.jpg`"]
+    example: ["face `https://example.com/cat.jpg`"]
 };
 
 exports.conf = {

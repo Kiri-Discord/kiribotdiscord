@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { embedURL } = require('../util/util');
+const { embedURL, deleteIfAble } = require('../util/util');
 const ms = require('ms');
 
 module.exports = async(client, message) => {
@@ -9,7 +9,7 @@ module.exports = async(client, message) => {
             userID: message.author.id,
         });
         if (message.content.trim().toLowerCase().startsWith('resend')) {
-            if (!verifydb && message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();
+            if (!verifydb) return deleteIfAble(message);
             let valID = verifydb.valID;
             await message.delete();
             const dm = new MessageEmbed()

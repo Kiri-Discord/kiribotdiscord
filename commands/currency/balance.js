@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
     let msLastDaily = cooldownStorage.lastDaily;
     let balance = storage.balance;
     if (msLastDaily && cooldown - (Date.now() - msLastDaily) > 0) {
-        lastDaily = `\`${humanizeDuration(cooldown - (Date.now() - msLastDaily))}\` left`
+        lastDaily = `<t:${Math.floor(Date.now() + (cooldown - (Date.now() - msLastDaily)) / 1000)}:R>`
     } else {
         lastDaily = 'ready to collect';
     }

@@ -1,7 +1,7 @@
 const { MessageCollector } = require('discord.js');
 exports.run = async(client, message, args) => {
     const yes = "y";
-    let attachments = message.attachments.array()
+    let attachments = [...message.attachments.values()]
     if (attachments.length === 0) return message.reply("please upload some images!");
     await message.reply('this action is irreversible :( do you want to continue? \`y/n\`');
 

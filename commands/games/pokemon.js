@@ -55,9 +55,9 @@ exports.run = async(client, message, args) => {
         })
     } catch (err) {
         client.games.delete(message.channel.id);
-        return console.log(err)
-    }
-}
+        return logger.log('error', err);
+    };
+};
 async function createImage(pokemon, hide) {
     const name = `${pokemon.id}${hide ? '-hidden' : ''}.png`;
     const image = await request.get(pokemon.spriteImageURL);

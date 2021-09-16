@@ -50,7 +50,7 @@ exports.run = async(client, message, args) => {
         .then(json => embed.setImage(json.url))
         .catch(err => {
             message.channel.send(`an error happened on my side and you wasn't able to punch that person ${stare} here is a hug for now 🤗`);
-            return console.error(err);
+            return logger.log('error', err);
         });
 
     return message.channel.send({ embeds: [embed] })

@@ -83,7 +83,7 @@ exports.run = async(client, message, args) => {
         return message.channel.send(`the game is over! the winner is ${winner}!`);
     } catch (err) {
         client.games.delete(message.channel.id);
-        console.log(err)
+        logger.log('error', err);
     };
 };
 

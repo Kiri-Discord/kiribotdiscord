@@ -1,5 +1,3 @@
-const humanizeDuration = require("humanize-duration");
-
 exports.run = async(client, message, args, prefix) => {
     let garden = await client.garden.findOne({
         userId: message.author.id,
@@ -32,7 +30,8 @@ exports.run = async(client, message, args, prefix) => {
     const p2 = garden.plantTwo;
     const p3 = garden.plantThree;
     if (!p1 && !p2 && !p3) return message.reply(`:x: you don't have any plants to water :pensive: check \`${prefix}shop\` to buy some!`);
-    if (lastWater !== null && cooldown - (Date.now() - lastWater) > 0) return message.reply(`💦 you just watered your plant today! you can water it again in **${humanizeDuration(cooldown - (Date.now() - lastWater))}**!`);
+    const timeLeft = cooldown - (Date.now() - lastWater);
+    if (lastWater !== null && timeLeft > 0) return message.reply(`💦 you just watered your plant today! you can water it again <t:${Math.floor((Date.now() + timeLeft) / 1000)}:R>!`);
     var s1 = garden.plantOneStage;
     var s2 = garden.plantTwoStage;
     var s3 = garden.plantThreeStage;

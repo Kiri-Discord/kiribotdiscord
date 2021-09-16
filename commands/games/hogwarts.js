@@ -1,5 +1,5 @@
 const { stripIndents } = require('common-tags');
-const { shuffle } = require('../../util/util');
+const { shuffle, deleteIfAble } = require('../../util/util');
 const { questions, houses, descriptions } = require('../../assets/sorting-hat.json');
 const choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
 const { MessageEmbed } = require('discord.js');
@@ -45,7 +45,7 @@ exports.run = async(client, message, args) => {
                 });
                 else await displayMessage.edit({ embeds: [embed]})
             const filter = async res => {
-                await res.delete().catch(() => null);
+                await deleteIfAble(res);
                 if (res.author.id === message.author.id && choices.slice(0, answers.length).includes(res.content.toUpperCase())) return true;
                 else return false;
             };

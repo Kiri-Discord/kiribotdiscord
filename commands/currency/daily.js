@@ -30,16 +30,18 @@ exports.run = async(client, message, args) => {
         let lastDaily = cooldownStorage.lastDaily;
         try {
             if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
-                let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
+                let finalTime = cooldown - (Date.now() - lastDaily);
+
                 const embed = new MessageEmbed()
                     .setColor("#bee7f7")
                     .setDescription(stripIndents `
                     sorry, you cannot collect your daily too early :pensive:
-                    your next collect is ready in: **${finalTime}**
+                    your next collect is ready <t:${Math.floor((Date.now() + finalTime) / 1000)}:R>
 
-                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/sefy)~~ (currently in maintenance)`)
+                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/kiri)~~ (currently in maintenance)`)
                     .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
-                    .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
+                    .setFooter(`each daily is reseted after 24 hours, regardless of timezone.
+                    `)
                 return message.channel.send({ embeds: [embed] });
             } else {
                 let bonus;
@@ -97,8 +99,8 @@ exports.run = async(client, message, args) => {
             return message.channel.send({embeds: [embed]});
         }
     } catch (error) {
-        console.log(error);
-        return message.reply(`sorry :( i got an error. try again later!`);
+        logger.log('error', error);
+        return message.reply(`sorry, i got an error! try again later! :pensive:`);
     }
 }
 
@@ -119,7 +121,7 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 function calcBonus(value) {
     return parseInt((value / 2).toFixed(0))
 };

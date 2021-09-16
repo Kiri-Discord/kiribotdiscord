@@ -31,16 +31,16 @@ module.exports = async(client, member) => {
                     .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
                     .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${__baseURL}verify?valID=${code}`)}`)
-            try {
-            await member.send({embeds: [dm]});
-                verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`)
+            try { 
+                await member.send({embeds: [dm]});
+                return verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`)
                 .then(i => {
                     setTimeout(() => {
                         i.delete()
                     }, 600000);
                 });
             } catch {
-                verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
+                return verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
                     .then(i => setTimeout(() => {
                         i.delete()
                     }, 600000));

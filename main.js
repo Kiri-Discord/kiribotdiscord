@@ -1,6 +1,15 @@
+const winston = require('winston');
+
+global.logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console(),
+    ],
+    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
+});
+
 require('dotenv').config();
 process.on('unhandledRejection', error => {
-    console.error('Unhandled promise rejection:', error);
+    logger.log('error', 'Unhandled promise rejection:', error);
 });
 
 global._port = process.env.PORT || 80;
@@ -11,7 +20,9 @@ const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const { Intents, Options } = require('discord.js');
 const intents = new Intents();
-intents.add(Intents.FLAGS.GUILDS,
+
+intents.add(
+    Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MEMBERS,
     Intents.FLAGS.GUILD_BANS,
     Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
@@ -45,10 +56,12 @@ require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);
 require("./handler/getMemberfromMention.js")();
 client.package = require("./package.json");
-client.on("warn", console.warn);
-client.on("error", console.error);
+client.on("warn", warn => logger.log('warn', warn));
+client.on("error", err => {
+    logger.log('error', err)
+});
 (async() => {
     await mongo.init();
-    client.login(process.env.token).catch(console.error);
+    client.login(process.env.token).catch(err => logger.log('error', err));
 })();
 module.exports = client;

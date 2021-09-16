@@ -40,7 +40,7 @@ module.exports = {
                                 m.delete()
                             }, 6000);
                         });
-                    }
+                    };
                 } else {
                     await member.roles.add(setting.verifyRole);
                     try {
@@ -52,11 +52,11 @@ module.exports = {
                                 m.delete()
                             }, 6000);
                         });
-                    }
-                }
+                    };
+                };
             } else {
                 return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
-            }
+            };
         });
         // client.webapp.post('/vote', authenticateToken, async(req, res) => {
         //     if ("userID" in req.query) {
@@ -97,7 +97,7 @@ module.exports = {
             res.status(404).send('wrong call bruh')
         });
         client.webapp.listen(_port);
-        console.log(`[WEB] Listening at port ${_port}`);
+        logger.log('info', `[WEB] Listening at port ${_port}`);
     }
 };
 

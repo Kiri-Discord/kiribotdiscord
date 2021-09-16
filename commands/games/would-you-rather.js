@@ -18,7 +18,7 @@ exports.run = async(client, message, args) => {
                     new MessageButton()
                     .setCustomId('2')
                     .setLabel('2')
-                    .setStyle('DANGER')
+                    .setStyle('SECONDARY')
                 );
             const msg = await message.channel.send({
                         content: stripIndents `
@@ -31,7 +31,15 @@ exports.run = async(client, message, args) => {
     });
         const filter = async res => {
             await res.deferUpdate();
-            if (res.user.id !== message.author.id) return false;
+            if (res.user.id !== message.author.id) {
+                await res.reply({
+                    embeds: [{
+                        description: `those buttons are for ${message.author.toString()} :pensive:`
+                    }],
+                    ephemeral: true
+                });
+                return false;
+            };
             row.components.forEach(button => button.setDisabled(true));
             await res.editReply({
                 content: stripIndents `

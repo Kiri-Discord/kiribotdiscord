@@ -3,7 +3,6 @@ const { MessageEmbed } = require('discord.js');
 const { formatNumber } = require('../../util/util');
 const questions = require('../../assets/google-feud');
 
-
 exports.run = async(client, message, args) => {
     const question = args.join(" ") || questions[Math.floor(Math.random() * questions.length)];
     const current = client.games.get(message.channel.id);

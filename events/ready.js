@@ -3,10 +3,10 @@ const { randomStatus, botSitePost, purgeDbGuild } = require('../util/util');
 const music = require('../util/music');
 
 module.exports = async client => {
-    console.log(`[DISCORD] Logged in as ${client.user.tag}!`);
+    logger.log('info', `[DISCORD] Logged in as ${client.user.tag}!`);
     client.finished = false;
     client.user.setPresence({ activities: [{ name: 'waking up' }], status: 'dnd' });
-    console.log('[DISCORD] Fetching server...');
+    logger.log('info', '[DISCORD] Fetching server...');
     const allServer = await client.dbguilds.find({});
     if (!allServer || !allServer.length) return;
     for (const guild of allServer) {
@@ -21,24 +21,24 @@ module.exports = async client => {
             });
             const owner = client.users.cache.get(client.config.ownerID);
             if (owner) owner.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
-            console.log(`Kicked from an undefined server (id: ${guild.guildID}).`)
+            logger.log('info', `Kicked from an undefined server (id: ${guild.guildID}).`);
         };
     }
     if (!client.config.development) {
-        botSitePost(client);
-        setInterval(() => botSitePost(client), 1200000);
+        // botSitePost(client);
+        // setInterval(() => botSitePost(client), 1200000);
     };
     const staffsv = client.guilds.cache.get(client.config.supportServerID);
     if (staffsv) {
         await staffsv.emojis.cache.forEach(async emoji => {
             client.customEmojis.set(emoji.name, emoji);
         });
-        console.log(`[DISCORD] Added ${client.customEmojis.size} custom emojis`)
+        logger.log('info', `[DISCORD] Added ${client.customEmojis.size} custom emojis`);
     };
-    console.log(`[DISCORD] Fetching all unverified members..`);
+    logger.log('info', `[DISCORD] Fetching all unverified members..`)
     await client.verifytimers.fetchAll();
     web.init(client);
-    client.initGiveaway();
+    await client.initGiveaway();
     await music.init(client);
     client.finished = true;
     const activity = randomStatus(client);

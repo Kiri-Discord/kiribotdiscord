@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { embedURL } = require('../../util/util');
-const humanizeDuration = require("humanize-duration");
 
 exports.run = async(client, message, args, prefix) => {
     const onServer = client.giveaways.giveaways
@@ -14,8 +13,8 @@ exports.run = async(client, message, args, prefix) => {
     const all = onServer.sort((a, b) => b.startAt - a.startAt);
     let list = [];
     all.map((giveaway) => list.push(!giveaway.ended ?
-        `${giveaway.hostedBy} • **${giveaway.prize}** | ends in: **${humanizeDuration(giveaway.endAt - new Date())}** | ${embedURL('Jump to giveaway', giveaway.messageURL)} (message ID: \`${giveaway.messageId})\`` :
-        `**ENDED** ${giveaway.hostedBy} • **${giveaway.prize}** | ${embedURL('Jump to giveaway', giveaway.messageURL)} (message ID: \`${giveaway.messageId})\``));
+        `${giveaway.hostedBy} • **${giveaway.prize}** | ends in: <t:${giveaway.endAt}:R> | ${embedURL('Jump to giveaway', giveaway.messageURL)} (message ID: \`${giveaway.messageId})\`` :
+        `**ENDED** ${giveaway.hostedBy} • **${giveaway.prize}** | ${embedURL('Jump to giveaway', giveaway.messageURL)} (message ID: \`${giveaway.messageId}\``));
 
     const embed = new MessageEmbed()
         .setDescription(list.join('\n'))

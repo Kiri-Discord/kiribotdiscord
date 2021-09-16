@@ -56,7 +56,7 @@ class Game {
                     .then(json => { this.solved = json; })
                     .catch(err => {
                         this.message.channel.send('there was a problem while solving that anagram :(');
-                        console.error(err);
+                        logger.log('error', err);
                     });
                 if (this.solved.all.includes(response.toLowerCase())) { this.winMessage = `${response} is a valid and has ${response.letters} letters.`; } else {
                     this.winMessage = `${response} is not valid.`;

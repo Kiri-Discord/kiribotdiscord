@@ -1,10 +1,7 @@
 const { MessageEmbed } = require('discord.js')
-const moment = require('moment');
 const { trimArray } = require('../../util/util');
 
-
 exports.run = async(client, message, args) => {
-
     const member = await getMemberfromMention(args[0], message.guild) || message.member;
     const presences = {
         "dnd": "Do not disturb",
@@ -17,7 +14,7 @@ exports.run = async(client, message, args) => {
         let game;
         if (member.presence.activities.length >= 1) {
             if (member.presence.activities[0].type === "CUSTOM") {
-                game = `Custom: ${member.presence.activities[0].details}`
+                game = `That user is displaying a custom status!`
             } else {
                 game = `${member.presence.activities[0].type} ${member.presence.activities[0].name}`
             }
@@ -58,10 +55,8 @@ exports.run = async(client, message, args) => {
 
     const userFlags = member.user.flags ? member.user.flags.toArray() : [];
 
-    let x = Date.now() - member.user.createdAt;
-    let y = Date.now() - member.joinedAt;
-    let created = Math.floor(x / 86400000);
-    let joined = Math.floor(y / 86400000);
+    let created = `<t:${Math.floor(member.user.createdAt.getTime()/1000)}:R>`;
+    let joined = `<t:${Math.floor(member.joinedAt.getTime()/1000)}:R>`;
 
     let highestrole = member.roles.highest !== undefined && member.roles.highest !== null ? member.roles.highest : "None";
     let roles = member.roles.cache
@@ -69,8 +64,9 @@ exports.run = async(client, message, args) => {
         .sort((a, b) => b.position - a.position)
         .map(role => role.toString());
     let nickname = member.nickname !== undefined && member.nickname !== null ? member.nickname : "None";
-    let createdate = moment.utc(member.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss");
-    let joindate = moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss");
+
+    let createdate = `<t:${Math.floor(member.user.createdAt.getTime()/1000)}:F>`;
+    let joindate = `<t:${Math.floor(member.joinedAt.getTime()/1000)}:F>`;
     let status = presences[member.presence.status];
     let avatar = member.user.displayAvatarURL({ size: 4096, dynamic: true });
     let dots;
@@ -88,8 +84,8 @@ exports.run = async(client, message, args) => {
         .addField("\`👑\` Highest role", highestrole.toString(), true)
         .addField("\`ℹ️\` ID", `\`${member.user.id}\``, true)
         .addField("\`💬\` Nickname", nickname, true)
-        .addField("\`📅\` Account creation date", `${createdate} \n${created} day(s) ago`, true)
-        .addField("\`➡️\` Guild join date", `${joindate} \n${joined} day(s) ago`, true)
+        .addField("\`📅\` Account creation date", `${createdate}\n${created}`, true)
+        .addField("\`➡️\` Guild join date", `${joindate}\n${joined}`, true)
         .addField('\`🤖\` Bot?', member.user.bot ? 'True' : 'False', true)
         .addField("\`👀\` Status", status, true)
         .addField('\`⛳\` Flags', userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None')
@@ -102,13 +98,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "user-info",
     description: "fetch an user's information on the guild. if no user is given, your own information will be displayed.",
-    usage: "user-info `[@user]`",
-    example: "user-info `@Bell`"
-}
+    usage: ["user-info `[@user]`"],
+    example: ["user-info `@Bell`"]
+};
 
 exports.conf = {
     aliases: ["userinfo", "whois", 'user'],
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};

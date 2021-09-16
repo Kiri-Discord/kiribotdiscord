@@ -1,4 +1,3 @@
-const dateformat = require('dateformat');
 const { MessageEmbed } = require('discord.js');
 const { trimArray } = require('../../util/util');
 
@@ -36,9 +35,8 @@ exports.run = async(client, message, args) => {
             vc = channels.cache.filter(r => r.type === "voice").size,
             category = channels.cache.filter(r => r.type === "category").size,
             totalchan = text + vc;
-        let x = Date.now() - guild.createdAt;
-        let h = Math.floor(x / 86400000)
-        let created = dateformat(guild.createdAt);
+        let h = `<t:${Math.floor(guild.createdAt.getTime()/1000)}:R>`
+        let created = `<t:${Math.floor(guild.createdAt.getTime()/1000)}:F>`;
         let dots;
         if (roles.length) {
             if (roles.length > 5) dots = '...';
@@ -50,7 +48,7 @@ exports.run = async(client, message, args) => {
             .setThumbnail(icon)
             .setAuthor(`Information for ${guild.name}:`, client.user.displayAvatarURL())
             .setDescription(`**ID:** \`${guild.id}\``)
-            .addField("\`📅\` Date created", `${created} \n**${h}** day(s) ago`, true)
+            .addField("\`📅\` Date created", `${created}\n${h}`, true)
             .addField("\`👑\` Owner", `<@${guild.ownerId}>\n\`${guild.ownerId}\``, true)
             .addField(`\`👤\` Members [${total}]`, `Online: ${online} \nIdle: ${idle} \nDND: ${dnd} \nOffline: ${offline} \nBots: ${robot}`, true)
             .addField(`\`💬\` Channels [${totalchan}]`, `Text: ${text} \nVoice: ${vc} \nCategory: ${category}`, true)
@@ -64,8 +62,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "server-info",
     description: "fetch the guild's information",
-    usage: "server-info",
-    example: "server-info"
+    usage: ["server-info"],
+    example: ["server-info"]
 };
 
 exports.conf = {

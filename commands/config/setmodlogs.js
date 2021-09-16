@@ -21,7 +21,7 @@ exports.run = async(client, message, args, prefix) => {
         }, {
             logChannelID: channel.id
         })
-        .catch(err => console.error(err));
+        .catch(err => logger.log('error', err));
     return message.channel.send(({ embeds: [{ color: "f3f3f3", description: `☑️ the mod logs channel has been set to ${channel}!` }] }));
 }
 

@@ -9,11 +9,11 @@ module.exports = {
         });
         try {
             const success = await client.lavacordManager.connect();
-            console.log(`[LAVALINK] Connected to ${success.filter(ws => ws != null).length} lavalink node(s) out of ${client.nodes.length} total node(s).`);
+            logger.log('info', `[LAVALINK] Connected to ${success.filter(ws => ws != null).length} lavalink node(s) out of ${client.nodes.length} total node(s).`);
             return true;
         } catch (err) {
-            console.error(`Error connecting to lavalink.`, err);
+            logger.log('error', `Error connecting to lavalink.`, err);
             process.exit(1);
         };
     }
-}
+};

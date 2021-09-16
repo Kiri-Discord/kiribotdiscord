@@ -52,7 +52,7 @@ const statuses = {
 
 exports.run = async(client, message, args) => {
         let image;
-        let attachments = message.attachments.array();
+        let attachments = [...message.attachments.values()];
         if (args[0]) {
             if (validUrl.isWebUri(args[0])) {
                 image = args[0];

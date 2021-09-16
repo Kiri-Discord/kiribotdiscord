@@ -18,7 +18,7 @@ exports.run = async(client, message, args) => {
         }, {
             ignoreLevelingsChannelID: channel.id
         })
-        .catch(err => console.error(err));
+        .catch(err => logger.log('error', err));
     return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ i will ignore levelings from ${channel} starting from now.` }] });
 }
 

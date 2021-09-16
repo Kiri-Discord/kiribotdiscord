@@ -18,7 +18,7 @@ module.exports = {
                     if (!message.guild.me.voice.channel) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
-                    queue.textChannel.send({ embed: { description: `i'm leaving the voice channel... ${waveEmoji}` } });
+                    queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
                 }, STAY_TIME * 1000);
                 await Guild.findOneAndUpdate({
                     guildId: message.guild.id
@@ -67,12 +67,12 @@ module.exports = {
                     if (success) embed.setFooter(`displaying scrolling lyrics (${ISO6391.getName(queue.karaoke.languageCode)}) for this track `)
                     queue.playingMessage = await queue.textChannel.send({ embeds: [embed] });
                 } catch (error) {
-                    console.error(error);
+                    logger.log('error', error);
                 }
             });
 
             if (queue.karaoke.isEnabled) {
-                queue.textChannel.send({ embed: { description: `fetching lyrics... :mag_right:` } });
+                queue.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
                 queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
                 success = await queue.karaoke.instance.init();
                 if (!success) queue.karaoke.instance = null;
@@ -86,7 +86,7 @@ module.exports = {
                 if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                 await client.lavacordManager.leave(queue.textChannel.guild.id);
                 client.queue.delete(message.guild.id);
-                return queue.textChannel.send({ embed: { description: `**there was an error while playing the music** :pensive:` } });
+                return queue.textChannel.send({ embeds: [{ description: `**there was an error while playing the music** :pensive:` }] });
             };
 
 
