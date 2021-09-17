@@ -11,13 +11,11 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save()
     };
-
     if (!storage.seeds >= 1) return message.reply(`:x: you don't have enough 🌱 **seeds** in your inventory to plant in your garden! buy one at \`${prefix}shop\`!`);
 
     if (args[0] === '1' || args[0] === '2' || args[0] === '3') {
-        var d = Math.random()
+        var d = Math.random();
         let plant;
         if (d < 0.5) {
             const choices = ["hibiscus", "ear_of_rice", "blossom", "rose"];

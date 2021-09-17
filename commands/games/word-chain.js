@@ -8,23 +8,27 @@ const { webster_key } = process.env;
 exports.run = async(client, message, args) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(current.prompt);
+    if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
     const member = await getMemberfromMention(args[0], message.guild);
     if (!member) return message.reply('you should tag someone to play with :(');
     const opponent = member.user;
     let time = args[1] || 10;
+    if (client.isPlaying.get(opponent.id)) return message.reply('that user is already in a game. try again in a minute.');
     if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
     if (opponent.id === client.user.id) return message.reply('i really want to but i\'m busy :pensive:');
     if (opponent.bot) return message.reply('since bots are too smart, i can\'t allow that :(');
     if (isNaN(time) || time > 15 || time < 3) return message.reply('the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(');
-    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finished playing their game :pensive:` });
+    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finish playing their game :pensive:` });
 
     try {
         await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
         const verification = await verify(message.channel, opponent);
         if (!verification) {
             client.games.delete(message.channel.id);
-            return message.reply('looks like they declined...');
+            return message.channel.send('looks like they declined...');
         };
+        client.isPlaying.set(message.author.id, true);
+        client.isPlaying.set(opponent.id, true);
         time = parseInt(time);
         const startWord = startWords[Math.floor(Math.random() * startWords.length)];
         const embed = new MessageEmbed()
@@ -80,12 +84,50 @@ exports.run = async(client, message, args) => {
         };
         client.games.delete(message.channel.id);
         if (!winner) return message.channel.send('oh... no one won.');
-        return message.channel.send(`the game is over! the winner is ${winner}!`);
+        const lost = winner.id === message.author.id ? opponent : message.author;
+        let amount = getRandomInt(10, 25);
+        await client.money.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: lost.id
+        }, {
+            guildId: message.guild.id,
+            userId: lost.id,
+            $inc: {
+                matchPlayed: 1,
+                lose: 1
+            },
+        }, {
+            upsert: true,
+            new: true,
+        });
+        const storageAfter = await client.money.findOneAndUpdate({
+            guildId: message.guild.id,
+            userId: winner.id
+        }, {
+            guildId: message.guild.id,
+            userId: winner.id,
+            $inc: {
+                balance: amount,
+                matchPlayed: 1,
+                win: 1
+            },
+        }, {
+            upsert: true,
+            new: true,
+        });
+        return message.channel.send(`the game is over! the winner is ${winner}!\n⏣ __**${amount}**__ token was placed in your wallet as a reward!\ncurrent balance: \`${storageAfter.balance}\``);
     } catch (err) {
         client.games.delete(message.channel.id);
         logger.log('error', err);
     };
 };
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 
 async function verifyWord(word) {
     if (startWords.includes(word.toLowerCase())) return true;

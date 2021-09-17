@@ -11,6 +11,7 @@ module.exports = class kiri extends Client {
             super(options);
             this.nodes = require('../lavalinkNodes.json');
             this.vote = require('../model/vote');
+            this.isPlaying = new Collection();
             this.globalStorage = require('../model/global');
             this.gameStorage = require('../model/game');
             this.webapp = app;

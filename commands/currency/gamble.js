@@ -14,7 +14,6 @@ exports.run = async(client, message, args) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save();
     };
     let cooldownStorage = await client.cooldowns.findOne({
         userId: message.author.id,
@@ -26,7 +25,6 @@ exports.run = async(client, message, args) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await cooldownStorage.save();
     };
     let lastGamble = cooldownStorage.lastGamble;
     let balance = storage.balance;

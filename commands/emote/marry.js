@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
     if (author) {
         if (author.marriedID) {
             return message.reply('you are already married! *cheater*');
-        }
+        };
     };
     if (!args[0]) return message.reply('who do you want to propose to?');
     const member = await getMemberfromMention(args[0], message.guild);
@@ -27,9 +27,8 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await storage.save();
     };
-    // if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
+    if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: message.guild.id
@@ -37,24 +36,8 @@ exports.run = async(client, message, args, prefix) => {
     if (marry) {
         if (marry.marriedID) {
             return message.reply('that user is already married!');
-        }
+        };
     }
-    if (!author) {
-        const model = client.love
-        const newUser = new model({
-            userID: message.author.id,
-            guildID: message.guild.id
-        });
-        await newUser.save();
-    };
-    if (!marry) {
-        const model = client.love
-        const newUser = new model({
-            userID: member.user.id,
-            guildID: message.guild.id
-        });
-        await newUser.save();
-    };
     const msg = await message.channel.send({ embeds: [{ color: "a65959", description: `
     ${member}, it seems like ${message.author} is interested in taking you as their loved one...
     

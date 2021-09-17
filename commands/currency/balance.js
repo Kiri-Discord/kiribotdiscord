@@ -1,42 +1,48 @@
 const { MessageEmbed } = require("discord.js");
-const humanizeDuration = require("humanize-duration");
 const { stripIndents } = require('common-tags');
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild) || message.member;
     const user = member.user;
-    if (user.id === client.user.id) return message.reply("that's me :( you think i have any money? :pensive:");
-    if (user.bot) return message.reply("duh you can't ask money out of a bot. we are broke enough :pensive:");
+    if (user.id === client.user.id) return message.reply({
+        embeds: [{
+            description: "that's me! did you think i have any money? :pensive:"
+        }]
+    });
+    if (user.bot) return message.reply({
+        embeds: [{
+            description: "duh you can't ask money out of a bot. we are broke enough :pensive:"
+        }]
+    });
     let cooldown = 8.64e+7;
     let storage = await client.money.findOne({
         userId: user.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.money
+        const model = client.money;
         storage = new model({
             userId: user.id,
             guildId: message.guild.id
         });
-        await storage.save();
     };
     let cooldownStorage = await client.cooldowns.findOne({
         userId: user.id,
         guildId: message.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns
+        const model = client.cooldowns;
         cooldownStorage = new model({
             userId: user.id,
             guildId: message.guild.id
         });
-        await cooldownStorage.save();
     };
     let lastDaily;
     let msLastDaily = cooldownStorage.lastDaily;
     let balance = storage.balance;
-    if (msLastDaily && cooldown - (Date.now() - msLastDaily) > 0) {
-        lastDaily = `<t:${Math.floor(Date.now() + (cooldown - (Date.now() - msLastDaily)) / 1000)}:R>`
+    if (msLastDaily !== null && cooldown - (Date.now() - msLastDaily) > 0) {
+        let finalTime = cooldown - (Date.now() - msLastDaily);
+        lastDaily = `<t:${Math.floor((Date.now() + finalTime) / 1000)}:R>`
     } else {
         lastDaily = 'ready to collect';
     }

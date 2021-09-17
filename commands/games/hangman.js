@@ -1,4 +1,3 @@
-const utils = require('../../util/util');
 const { verify } = require('../../util/util');
 
 class Game {
@@ -17,6 +16,11 @@ class Game {
         this.letters = 0;
         this.stage = 0;
         this.client = client;
+    };
+    getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
     async init() {
         try {
@@ -81,11 +85,71 @@ class Game {
 
         if (this.correct === this.word.length) {
             this.end();
-            return this.msg.edit(`${this.stages[this.stage]}\nyou won! \`\`${this.word}\`\`\n wrong guesses: ${this.guesses}`);
+            let amount = this.getRandomInt(10, 15);
+            await this.client.money.findOneAndUpdate({
+                guildId: this.message.guild.id,
+                userId: this.challenged.id
+            }, {
+                guildId: this.message.guild.id,
+                userId: this.challenged.id,
+                $inc: {
+                    matchPlayed: 1,
+                    win: 1,
+                    balance: amount
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
+            await this.client.money.findOneAndUpdate({
+                guildId: this.message.guild.id,
+                userId: this.message.author.id
+            }, {
+                guildId: this.message.guild.id,
+                userId: this.message.author.id,
+                $inc: {
+                    matchPlayed: 1,
+                    lose: 1
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
+            return this.msg.edit(`${this.stages[this.stage]}\nyou won! \`\`${this.word}\`\`\n wrong guesses: ${this.guesses}\n⏣ __${amount}__ token was placed in your wallet as a reward!`);
         };
 
         if (this.stage === 5) {
             this.end();
+            let amount = this.getRandomInt(10, 15);
+            await this.client.money.findOneAndUpdate({
+                guildId: this.message.guild.id,
+                userId: this.message.author.id
+            }, {
+                guildId: this.message.guild.id,
+                userId: this.message.author.id,
+                $inc: {
+                    matchPlayed: 1,
+                    win: 1,
+                    balance: amount
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
+            await this.client.money.findOneAndUpdate({
+                guildId: this.message.guild.id,
+                userId: this.challenged.id
+            }, {
+                guildId: this.message.guild.id,
+                userId: this.challenged.id,
+                $inc: {
+                    matchPlayed: 1,
+                    lose: 1
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
             return this.msg.edit(`${this.stages[this.stage]}\nyou lost! the word was \`\`${this.word}\`\`\n wrong guesses: ${this.guesses}`);
         };
         this.run();
@@ -93,8 +157,8 @@ class Game {
 
     end() {
         this.client.games.delete(this.message.channel.id);
-        utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
-        utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
+        this.client.isPlaying.delete(this.message.author.id);
+        this.client.isPlaying.delete(this.challenged.id);
         this.game = null;
     };
 };
@@ -112,8 +176,8 @@ exports.run = async(client, message, args) => {
     if (challenged.id === client.user.id) return message.reply("you can't play against me!");
     if (challenged.bot) return message.reply("you can't play against bots!");
 
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
-    if (utils.inGame.includes(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
+    if (client.isPlaying.get(message.author.id)) return message.reply('you are allready in a game. please finish that first.');
+    if (client.isPlaying.get(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
 
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     await message.channel.send(`${challenged}, do you accept this challenge? \`y/n\``);
@@ -124,9 +188,8 @@ exports.run = async(client, message, args) => {
         client.games.delete(message.channel.id)
         return message.channel.send(`looks like they declined... ${sedEmoji}`);
     };
-
-    utils.inGame.push(challenged.id, message.author.id);
-
+    client.isPlaying.set(challenged.id, true);
+    client.isPlaying.set(message.author.id, true);
     const game = new Game(client, message, challenged);
     game.init();
 };

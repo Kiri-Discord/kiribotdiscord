@@ -1,29 +1,16 @@
 const { MessageEmbed } = require('discord.js')
 
 exports.run = async(client, message, args, prefix) => {
-    let storage = await client.inventory.findOne({
-        userId: message.author.id,
-        guildId: message.guild.id
-    });
-    if (!storage) {
-        const model = client.inventory
-        storage = new model({
-            userId: message.author.id,
-            guildId: message.guild.id,
-        });
-        await storage.save();
-    };
     let garden = await client.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!garden) {
-        const model = client.garden
-        money = new model({
+        const model = client.garden;
+        garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await garden.save();
     };
     if (args[0] === '1' || args[0] === '2' || args[0] === '3') {
         let getPlant;

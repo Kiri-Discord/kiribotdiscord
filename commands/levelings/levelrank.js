@@ -28,7 +28,6 @@ exports.run = async(client, message, args, prefix) => {
 
     message.channel.sendTyping();
     let rank;
-    result
     for (let counter = 0; counter < result.length; ++counter) {
         let member = message.guild.members.cache.get(result[counter].userId);
         if (!member) {

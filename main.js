@@ -9,7 +9,7 @@ global.logger = winston.createLogger({
 
 require('dotenv').config();
 process.on('unhandledRejection', error => {
-    logger.log('error', 'Unhandled promise rejection:', error);
+    console.error('Unhandled promise rejection:', error);
 });
 
 global._port = process.env.PORT || 80;

@@ -23,7 +23,7 @@ module.exports = async(client, message) => {
                 setting = new dbguilds({
                     guildID: message.guild.id
                 });
-                client.guildsStorage.set(message.guild.id, setting)
+                client.guildsStorage.set(message.guild.id, setting);
                 await setting.save();
                 prefix = setting.prefix;
             } else {

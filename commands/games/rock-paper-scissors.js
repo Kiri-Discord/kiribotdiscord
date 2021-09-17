@@ -1,4 +1,3 @@
-const utils = require('../../util/util');
 const { verify } = require('../../util/util');
 const rep = ['r', 'p', 's'];
 
@@ -101,6 +100,22 @@ class Game {
                     userId: this.message.author.id,
                     $inc: {
                         balance: amount,
+                        matchPlayed: 1,
+                        win: 1
+                    },
+                }, {
+                    upsert: true,
+                    new: true,
+                });
+                await this.client.money.findOneAndUpdate({
+                    guildId: this.message.guild.id,
+                    userId: this.challenged.id
+                }, {
+                    guildId: this.message.guild.id,
+                    userId: this.challenged.id,
+                    $inc: {
+                        matchPlayed: 1,
+                        lose: 1
                     },
                 }, {
                     upsert: true,
@@ -112,12 +127,28 @@ class Game {
                 winMessage = `**${this.challenged.username}** wins!`;
                 await this.client.money.findOneAndUpdate({
                     guildId: this.message.guild.id,
+                    userId: this.message.author.id
+                }, {
+                    guildId: this.message.guild.id,
+                    userId: this.message.author.id,
+                    $inc: {
+                        matchPlayed: 1,
+                        lose: 1
+                    },
+                }, {
+                    upsert: true,
+                    new: true,
+                });
+                await this.client.money.findOneAndUpdate({
+                    guildId: this.message.guild.id,
                     userId: this.challenged.id
                 }, {
                     guildId: this.message.guild.id,
                     userId: this.challenged.id,
                     $inc: {
-                        balance: amount,
+                        matchPlayed: 1,
+                        win: 1,
+                        balance: amount
                     },
                 }, {
                     upsert: true,
@@ -130,8 +161,8 @@ class Game {
                 break;
         };
         this.message.channel.send(`game was ended! ${type ? winMessage : ''}`);
-        utils.inGame = utils.inGame.filter(i => i !== this.message.author.id);
-        utils.inGame = utils.inGame.filter(i => i !== this.challenged.id);
+        this.client.isPlaying.delete(this.message.author.id);
+        this.client.isPlaying.delete(this.challenged.id);
     };
 };
 
@@ -142,15 +173,16 @@ exports.run = async(client, message, args) => {
     if (challenged.id === message.author.id) return message.reply("you can't play against yourself!");
     if (challenged.id === client.user.id) return message.reply("you can't play against me!");
     if (challenged.bot) return message.reply("you can't play against bots!");
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    if (utils.inGame.includes(challenged.id)) return message.reply('that user is already in a game. try again in a minute.');
+    if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
+    if (client.isPlaying.get(challenged.id)) return message.reply('that user is already in a game. try again in a minute.');
 
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     await message.channel.send(`${challenged}, do you accept this challenge? \`y/n\``);
     const verification = await verify(message.channel, challenged);
     if (!verification) return message.channel.send(`looks like they declined... ${sedEmoji}`);
 
-    utils.inGame.push(challenged.id, message.author.id);
+    client.isPlaying.set(challenged.id, true);
+    client.isPlaying.set(message.author.id, true);
     const game = new Game(message, challenged, args, client);
     game.run();
 }

@@ -11,7 +11,6 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await garden.save();
     };
     const p1 = garden.plantOne;
     const p2 = garden.plantTwo;

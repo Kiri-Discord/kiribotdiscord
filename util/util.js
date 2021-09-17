@@ -515,6 +515,3 @@ module.exports = class util {
 		return true;
 	};
 };
-
-const inGame = [];
-module.exports.inGame = inGame;

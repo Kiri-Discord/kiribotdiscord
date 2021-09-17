@@ -20,7 +20,6 @@ exports.run = async(client, message, args) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save();
     };
     let balance = storage.balance;
 

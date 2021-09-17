@@ -4,12 +4,13 @@ const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const { verify, verifyLanguage, embedURL } = require('../../util/util');
+const spotifyToYT = require("spotify-to-yt");
 
 exports.run = async(client, message, args, prefix, cmd, internal) => {
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
-    if (!channel) return message.channel.send({ embed: { color: "f3f3f3", description: `⚠️ you are not in a voice channel!` } });
-    if (!channel.joinable) return message.reply({ embed: { color: "f3f3f3", description: "i can't join the voice channel where you are in. can you check my permission?" } })
+    if (!channel) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `⚠️ you are not in a voice channel!` }] });
+    if (!channel.joinable) return message.reply({ embeds: [{ color: "f3f3f3", description: "i can't join the voice channel where you are in. can you check my permission?" }] })
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music in your server! join ${voicechannel} to listen :smiley:`).catch(err => logger.log('error', err));
@@ -19,20 +20,25 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         guildId: message.guild.id
     });
 
-    if (!args.length) return message.reply({ embed: { color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` } });
+    if (!args.length) return message.reply({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` }] });
     const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
     const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
+    const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode)(?::|\/)((?:[0-9a-zA-Z]){22})/;
     const mobileScRegex = /^https?:\/\/(soundcloud\.app\.goo\.gl)\/(.*)$/;
     const url = args[0];
-    const urlValid = videoPattern.test(args[0]);
+    const urlValid = videoPattern.test(url);
 
-    if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
+    if (!videoPattern.test(url) && playlistPattern.test(url)) {
         return client.commands.get("playlist").run(client, message, args);
     } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
         return client.commands.get("playlist").run(client, message, args);
-    }
+    } else if (url.match(spotifyRegex)) {
+        const match = url.match(spotifyRegex);
+        const albumOrTrack = match[1];
+        if (albumOrTrack === 'album' || albumOrTrack === 'track') return client.commands.get("playlist").run(client, message, args);
+    };
     let queueConstruct = {
         playingMessage: null,
         textChannel: message.channel,
@@ -56,10 +62,10 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         queueConstruct.volume = musicSettings.volume;
         const channel = message.guild.channels.cache.get(musicSettings.KaraokeChannelID);
         if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-            message.channel.send({ embed: { color: "f3f3f3", description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\ntype \`no\` or leave this for 10 second to bypass this. you only have to do this **ONCE** only for this queue :wink:` }, footer: { text: `don\'t want to see this again? turn this off by using ${prefix}scrolling-lyrics -off` } });
+            message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type \`no\` or leave this for 10 second to bypass` } }] });
             const verification = await verify(message.channel, message.author, { time: 10000 });
             if (verification) {
-                await message.channel.send({ embed: { color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } } });
+                await message.channel.send({ embeds: [{ color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
                 const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
                 if (response.isVerify) {
                     queueConstruct.karaoke.languageCode = response.choice;
@@ -70,7 +76,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                     message.channel.send('you didn\'t answer anything! i will just play the song now...')
                 }
             }
-        }
+        };
     } else {
         queueConstruct.karaoke.isEnabled = false;
         queueConstruct.volume = DEFAULT_VOLUME;
@@ -83,21 +89,36 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     if (urlValid) {
         try {
             [song] = await fetchInfo(client, url, false);
-            if (!song) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } });
+            if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             song.type = 'yt';
             song.requestedby = message.author;
         } catch (error) {
             logger.log('error', error);
-            return message.channel.send({ embed: { color: "RED", description: `:x: no match were found. try again later :pensive:` } });
+            return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
         }
     } else if (scRegex.test(url) || mobileScRegex.test(url)) {
         try {
             [song] = await fetchInfo(client, url, false, 'yt');
-            if (!song) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found (SoundCloud tends to break things as we are working on our end. try again later!)` } });
+            if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
             song.type = 'sc';
             song.requestedby = message.author;
         } catch (error) {
-            return message.channel.send({ embed: { color: "RED", description: `:x: no match were found. try again later :pensive:` } });
+            return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
+        }
+    } else if (url.match(spotifyRegex)) {
+        const matchs = url.match(spotifyRegex);
+        if (matchs[1] === 'episode') {
+            const logo = client.custonEmojis.get('spotify') ? client.custonEmojis.get('spotify').toString() : '⚠️';
+            return message.channel.send({ embeds: [{ color: "f3f3f3", description: `${logo} sorry, i don't support podcast link from Spotify :pensive:` }] });
+        };
+        try {
+            const ytUrl = await spotifyToYT.trackGet(url);
+            [song] = await fetchInfo(client, ytUrl.url, false, 'yt');
+            song.type = 'sp';
+            song.requestedby = message.author;
+        } catch (error) {
+            logger.log('error', error);
+            return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
         }
     } else {
         return client.commands
@@ -115,15 +136,14 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     };
     queueConstruct.songs.push(song);
     client.queue.set(message.guild.id, queueConstruct);
-
     try {
         play(queueConstruct.songs[0], message, client, prefix);
     } catch (error) {
         logger.log('error', error);
         client.queue.delete(message.guild.id);
-        return message.channel.send({ embed: { color: "RED", description: `:x: there was an error when i tried to join your voice channel` } }).catch(err => logger.log('error', err));
-    }
-}
+        return message.channel.send({ embeds: [{ color: "RED", description: `:x: there was an error when i tried to join your voice channel` }] }).catch(err => logger.log('error', err));
+    };
+};
 
 exports.help = {
     name: "play",

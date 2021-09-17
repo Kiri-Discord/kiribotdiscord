@@ -11,8 +11,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "loop",
     description: "loop the whole queue",
-    usage: "loop",
-    example: "loop"
+    usage: ["loop"],
+    example: ["loop"]
 };
 
 exports.conf = {

@@ -17,7 +17,7 @@ module.exports = class VerifyTimer {
     async setTimer(guildID, time, userID, code, update = true) {
         const timeout = setTimeout(async() => {
             try {
-                let reason = 'Kiri verification timeout (step 2)';
+                let reason = 'Kiri verification timeout';
                 const setting = await this.client.dbguilds.findOne({
                     guildID: guildID
                 });
@@ -37,7 +37,7 @@ module.exports = class VerifyTimer {
                     .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
                     .addField('Username', member.user.tag)
                     .addField('User ID', member.id)
-                    .addField('Kicked by', this.client.user)
+                    .addField('Kicked by', this.client.user.toString())
                     .addField('Reason', reason)
                     .setTimestamp()
                 const logerror = new MessageEmbed()

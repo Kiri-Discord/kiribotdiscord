@@ -27,7 +27,6 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await moneyStorage.save();
     };
     const money = moneyStorage.balance;
 

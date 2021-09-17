@@ -4,7 +4,6 @@ const Guild = require('../../model/music');
 const ScrollingLyrics = require("./karaoke");
 const request = require('node-superfetch');
 const { embedURL } = require('../../util/util');
-const ISO6391 = require('iso-639-1');
 
 module.exports = {
         async play(song, message, client, prefix) {
@@ -59,16 +58,17 @@ module.exports = {
                         if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.start();
                         const emoji = {
                             'yt': 'youtube',
-                            'sc': 'soundcloud'
+                            'sc': 'soundcloud',
+                            'sp': 'spotify'
                         };
                         try {
                             const embed = new MessageEmbed()
                                 .setDescription(`${emoji[song.type] ? `${client.customEmojis.get(emoji[song.type])} ` : ''}Now playing **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** [${song.requestedby}]`);
-                    if (success) embed.setFooter(`displaying scrolling lyrics (${ISO6391.getName(queue.karaoke.languageCode)}) for this track `)
+                    if (success) embed.setFooter(success);
                     queue.playingMessage = await queue.textChannel.send({ embeds: [embed] });
                 } catch (error) {
                     logger.log('error', error);
-                }
+                };
             });
 
             if (queue.karaoke.isEnabled) {

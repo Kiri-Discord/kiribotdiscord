@@ -11,8 +11,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "force-skip",
     description: "skip the currently playing song forcefully",
-    usage: "force-skip",
-    example: "force-skip"
+    usage: ["force-skip"],
+    example: ["force-skip"]
 };
 
 exports.conf = {

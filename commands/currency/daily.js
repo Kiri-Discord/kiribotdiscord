@@ -1,20 +1,7 @@
 const { MessageEmbed } = require("discord.js");
-const humanizeDuration = require("humanize-duration");
 const { stripIndents } = require('common-tags');
 exports.run = async(client, message, args) => {
         let cooldown = 8.64e+7;
-        let money = await client.money.findOne({
-            userId: message.author.id,
-            guildId: message.guild.id
-        });
-        if (!money) {
-            const model = client.money
-            money = new model({
-                userId: message.author.id,
-                guildId: message.guild.id
-            });
-            await money.save();
-        };
         let cooldownStorage = await client.cooldowns.findOne({
             userId: message.author.id,
             guildId: message.guild.id
@@ -25,7 +12,6 @@ exports.run = async(client, message, args) => {
                 userId: message.author.id,
                 guildId: message.guild.id
             });
-            await cooldownStorage.save();
         };
         let lastDaily = cooldownStorage.lastDaily;
         try {
@@ -109,14 +95,14 @@ exports.help = {
     description: "collect your daily credits. (reseted after 24 hours)",
     usage: ['daily'],
     example: ['daily']
-}
+};
 
 exports.conf = {
     aliases: ["dailies", 'claim', 'collect'],
     cooldown: 10,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);

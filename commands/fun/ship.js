@@ -18,22 +18,22 @@ exports.run = async(client, message, args) => {
     if (self) {
         level = 100;
     } else {
-        const calculated = -Math.abs(Number.parseInt(BigInt(first.user.id) - BigInt(second.user.id), 10));
+        const calculated = Math.abs(Number.parseInt(BigInt(first.user.id) - BigInt(second.user.id), 10));
         const random = MersenneTwister19937.seed(calculated);
         level = integer(0, 100)(random);
-    }
-    return message.channel.send(`the friendship between **${first.user.username}** and **${second.user.username}** is **${level}%**!`);
+    };
+    return message.channel.send(`there is ${level}% love between **${first.user.username}** and **${second.user.username}**!`);
 };
 
 exports.help = {
-    name: "friendship",
-    description: "determines how good you and a user are.",
-    usage: ["friendship `<@mention>`", "friendship `<@mention> [@mention]`"],
+    name: "ship",
+    description: "ship two user together and calculate their love meter",
+    usage: ["ship `<@mention>`", "ship `<@mention> [@mention]`"],
     example: ["friendship `@someone`", "friendship `@someone @anotherone`"]
 };
 
 exports.conf = {
-    aliases: ["friendmeter", "ratefriendship"],
+    aliases: ["love-test", "rateship"],
     cooldown: 3,
     guildOnly: true,
 };

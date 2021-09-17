@@ -5,7 +5,6 @@ const validateFEN = require('fen-validator').default;
 const path = require('path');
 const { stripIndents } = require('common-tags');
 const { verify, reactIfAble } = require('../../util/util');
-const utils = require('../../util/util');
 const { centerImagePart } = require('../../util/canvas');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=([QRNB]))?)|(?:0-0(?:-0)?)$/;
@@ -44,24 +43,24 @@ exports.run = async(client, message, args, prefix, cmd) => {
         const valid = validateFEN(fen);
         if (!valid) return message.reply("invalid FEN for the start board :pensive: try it again!");
     };
-    if (utils.inGame.includes(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    utils.inGame.push(message.author.id);
+    if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
+    client.isPlaying.set(message.author.id, true);
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${opponent.username}** finish their chess game!` });
     try {
         if (!opponent.bot) {
-            if (utils.inGame.includes(opponent.id)) {
-                client.games.delete(message.guild.id);
-                utils.inGame.filter(x => x !== message.author.id);
+            if (client.isPlaying.get(opponent.id)) {
+                client.isPlaying.delete(message.author.id);
+                client.games.delete(message.channel.id);
                 return message.reply('that user is already in a game. try again in a minute.');
             };
             await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
             const verification = await verify(message.channel, opponent);
             if (!verification) {
+                client.isPlaying.delete(message.author.id);
                 client.games.delete(message.channel.id);
-                utils.inGame.filter(x => x !== message.author.id);
-                return message.channel.send(`looks like they declined... ${sedEmoji}`);
+                return message.channel.send(`looks like they declined..`);
             };
-            utils.inGame.push(opponent.id);
+            client.isPlaying.set(opponent.id, true);
         };
         let images = null;
         if (!images) await loadImages();
@@ -167,8 +166,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 if (!turn.size) {
                     const timeTaken = new Date() - now;
                     client.games.delete(message.channel.id);
-                    utils.inGame.filter(x => x !== message.author.id);
-                    utils.inGame.filter(x => x !== opponent.id);
+                    client.isPlaying.delete(message.author.id);
+                    client.isPlaying.delete(opponent.id);
                     if (userTime - timeTaken <= 0) {
                         return message.channel.send(`${user.id === message.author.id ? opponent : message.author} wins from timeout!`);
                     } else {
@@ -214,8 +213,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 if (gameState.turn === 'white') whiteTime -= timeTaken - 5000;
             };
         };
-        utils.inGame.filter(x => x !== message.author.id);
-        utils.inGame.filter(x => x !== opponent.id);
+        client.isPlaying.delete(message.author.id);
+        client.isPlaying.delete(opponent.id);
         client.games.delete(message.channel.id);
         if (saved) {
             return message.channel.send(stripIndents `
@@ -243,7 +242,24 @@ exports.run = async(client, message, args, prefix, cmd) => {
         const EndEmbed = new MessageEmbed()
             .setTitle(`${winner.username} won!`)
             .setColor('#34e363')
-            .setImage(`attachment://chess.png`)
+            .setImage(`attachment://chess.png`);
+        const lost = winner.id === message.author.id ? opponent : message.author;
+        if (!lost.bot) {
+            await client.money.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: lost.id
+            }, {
+                guildId: message.guild.id,
+                userId: lost.id,
+                $inc: {
+                    matchPlayed: 1,
+                    lose: 1
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
+        };
         if (!winner.bot) {
             let amount = getRandomInt(5, 15);
             const storageAfter = await client.money.findOneAndUpdate({
@@ -254,6 +270,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 userId: winner.id,
                 $inc: {
                     balance: amount,
+                    matchPlayed: 1,
+                    win: 1
                 },
             }, {
                 upsert: true,
@@ -262,7 +280,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
             EndEmbed
                 .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
                 .setFooter(`your current balance: ${storageAfter.balance} token`)
-        }
+        };
         return message.channel.send({
             embeds: [EndEmbed],
             content: `checkmate! congratulations, **${winner.username}**!`,

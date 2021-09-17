@@ -8,8 +8,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "disconnect",
     description: "disconnect from the current music voice channel and clear the queue",
-    usage: "disconnect",
-    example: "disconnect"
+    usage: ["disconnect"],
+    example: ["disconnect"]
 };
 
 exports.conf = {

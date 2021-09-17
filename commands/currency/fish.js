@@ -11,7 +11,6 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save();
     };
     if (storage.worms < 1) return message.reply(`:x: you don't have enough 🪱 **worms** in your inventory to go fishing! buy one at \`${prefix}shop\`!`);
     var d = 0

@@ -4,12 +4,11 @@ exports.run = async(client, message, args, prefix) => {
         guildId: message.guild.id
     });
     if (!garden) {
-        const model = client.garden
+        const model = client.garden;
         garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await garden.save();
     };
     let cooldownStorage = await client.cooldowns.findOne({
         userId: message.author.id,

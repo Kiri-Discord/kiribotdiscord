@@ -48,7 +48,7 @@ exports.run = async(client, message, args) => {
                     guildID: message.guild.id,
                     userID: user.id,
                 });
-                return message.channel.send(`**${user.username}** is single!`);
+                return message.channel.send("can't find your partner in this server! i will just change you to single instead...")
             } else {
                 return message.channel.send(`**${user.username}** is married to **${married.user.username}** :sparkling_heart:`);
             }
@@ -57,8 +57,8 @@ exports.run = async(client, message, args) => {
         }
     } else {
         return message.channel.send(`**${user.username}** is single!`);
-    }
-}
+    };
+};
 
 exports.help = {
     name: "status",
