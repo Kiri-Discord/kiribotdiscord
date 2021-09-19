@@ -17,7 +17,7 @@ module.exports = class VerifyTimer {
     async setTimer(guildID, time, userID, code, update = true) {
         const timeout = setTimeout(async() => {
             try {
-                let reason = 'Kiri verification timeout (step 2)';
+                let reason = 'Kiri verification timeout';
                 const setting = await this.client.dbguilds.findOne({
                     guildID: guildID
                 });
@@ -27,7 +27,7 @@ module.exports = class VerifyTimer {
                 if (!member) return;
                 const roleExist = guild.roles.cache.get(setting.verifyRole);
                 const verifyChannel = guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
-                const verifyRole = member._roles.includes(setting.verifyRole);
+                const verifyRole = member.roles.cache.has(setting.verifyRole);
                 if (verifyRole || !verifyChannel || !roleExist) return;
                 const logChannel = await guild.channels.cache.get(setting.logChannelID);
                 const logembed = new MessageEmbed()
@@ -37,7 +37,7 @@ module.exports = class VerifyTimer {
                     .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
                     .addField('Username', member.user.tag)
                     .addField('User ID', member.id)
-                    .addField('Kicked by', this.client.user)
+                    .addField('Kicked by', this.client.user.toString())
                     .addField('Reason', reason)
                     .setTimestamp()
                 const logerror = new MessageEmbed()

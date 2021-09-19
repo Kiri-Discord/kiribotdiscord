@@ -1,9 +1,9 @@
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild) || message.member;
-    if (!member) return message.inlineReply("i couldn't find that user in this server :pensive:");
+    if (!member) return message.reply("i couldn't find that user in this server :pensive:");
     const user = member.user;
-    if (user.id === client.user.id) return message.inlineReply('i am just a bot :(');
-    if (user.bot) return message.inlineReply('that user is a bot :(');
+    if (user.id === client.user.id) return message.reply('i am just a bot :(');
+    if (user.bot) return message.reply('that user is a bot :(');
     if (user.id === message.author.id) {
         const author = await client.love.findOne({
             userID: message.author.id,
@@ -33,9 +33,9 @@ exports.run = async(client, message, args) => {
                 }
             } else {
                 return message.channel.send(`you are single!`);
-            }
-        }
-    }
+            };
+        };
+    };
     const target = await client.love.findOne({
         userID: user.id,
         guildID: message.guild.id
@@ -48,7 +48,7 @@ exports.run = async(client, message, args) => {
                     guildID: message.guild.id,
                     userID: user.id,
                 });
-                return message.channel.send(`**${user.username}** is single!`);
+                return message.channel.send("can't find your partner in this server! i will just change you to single instead...")
             } else {
                 return message.channel.send(`**${user.username}** is married to **${married.user.username}** :sparkling_heart:`);
             }
@@ -57,8 +57,8 @@ exports.run = async(client, message, args) => {
         }
     } else {
         return message.channel.send(`**${user.username}** is single!`);
-    }
-}
+    };
+};
 
 exports.help = {
     name: "status",

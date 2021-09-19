@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
@@ -9,13 +9,13 @@ exports.run = async(client, message, args) => {
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
-    const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':pensive:';
+    const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare').toString() : ':pensive:';
 
-    if (!member) return message.channel.send({ embed: { color: "RED", description: `i can't find that user! please mention a valid member or user ID in this guild ${stareEmoji}` } });
+    if (!member) return message.channel.send({ embeds: [{ color: "RED", description: `i can't find that user! please mention a valid member or user ID in this guild ${stareEmoji}` }] });
 
-    if (!member.bannable) return message.inlineReply({ embed: { color: "RED", description: 'this user can\'t be banned. it\'s either because they are a mod/admin, or their highest role is equal or higher than mine 😔' } });
+    if (!member.bannable) return message.reply({ embeds: [{ color: "RED", description: 'this user can\'t be banned. it\'s either because they are a mod/admin, or their highest role is equal or higher than mine 😔' }] });
 
-    if (message.member.roles.highest.position <= member.roles.highest.position) return message.inlineReply({ embed: { color: "RED", description: 'you cannot ban someone with a higher role than you!' } });
+    if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) && message.member.roles.highest.position <= member.roles.highest.position) return message.reply({ embeds: [{ color: "RED", description: 'you cannot ban someone with a higher role than you!' }] });
 
 
     let reason = 'No reason specified';
@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
         .setThumbnail(member.user.displayAvatarURL())
         .addField('Username', member.user.username)
         .addField('User ID', member.id)
-        .addField('Moderator', message.author)
+        .addField('Moderator', message.author.toString())
         .setFooter('Banned at')
         .addField('Reason', reason)
         .setTimestamp()
@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
     try {
         if (!member.user.bot) member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}`);
         await member.ban({ reason });
-        await message.channel.send(banembed);
+        await message.channel.send({ embeds: [banembed] });
         if (!logChannel) {
             return;
         } else {

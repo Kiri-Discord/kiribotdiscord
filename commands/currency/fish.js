@@ -11,9 +11,8 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save();
     };
-    if (storage.worms < 1) return message.inlineReply(`:x: you don't have enough 🪱 **worms** in your inventory to go fishing! buy one at \`${prefix}shop\`!`);
+    if (storage.worms < 1) return message.reply(`:x: you don't have enough 🪱 **worms** in your inventory to go fishing! buy one at \`${prefix}shop\`!`);
     var d = 0
     d = Math.random()
 
@@ -139,14 +138,14 @@ exports.run = async(client, message, args, prefix) => {
             .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
             .setDescription(`you really did found **NOTHING**! take a deep breath, grind, and try again :pensive:`)
-        return message.channel.send(embed2)
-    } else return message.channel.send(embed)
+        return message.channel.send({ embeds: [embed2] })
+    } else return message.channel.send({ embeds: [embed] })
 }
 exports.help = {
     name: "fish",
     description: "go fishing :tropical_fish:",
-    usage: "fish",
-    example: "fish"
+    usage: ["fish"],
+    example: ["fish"]
 }
 
 exports.conf = {

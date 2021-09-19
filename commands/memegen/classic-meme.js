@@ -7,7 +7,7 @@ const { wrapText } = require('../../util/canvas');
 const { askString } = require('../../util/util');
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Impact.ttf'), { family: 'Impact' });
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const filter = res => res.author.id === message.author.id;
     await message.channel.send('what should the top text be? jot it down below :wink:\ni will be leaving in 20 second. type \`cancel\` to cancel this command');
     const top = await askString(message.channel, filter);
@@ -17,12 +17,12 @@ exports.run = async (client, message, args) => {
     if (!bottom) return message.channel.send('i cancelled the command :pensive:');
 
     let image;
-    let attachments = message.attachments.array();
+    let attachments = [...message.attachments.values()];
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
-            return message.inlineReply("that isn't a correct URL!");
+            return message.reply("that isn't a correct URL!");
         }
     } else {
         if (attachments.length === 0) {
@@ -38,15 +38,14 @@ exports.run = async (client, message, args) => {
                     image = cache.last().attachments.first().url;
                 };
             } catch (error) {
-                image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+                image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
             }
-        }
-        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
-    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
+    if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
-        message.channel.startTyping(true);
+        message.channel.sendTyping();
         const { body } = await request.get(image);
         const base = await loadImage(body);
         const canvas = createCanvas(base.width, base.height);
@@ -80,15 +79,12 @@ exports.run = async (client, message, args) => {
             ctx.fillText(bottomLines[i], base.width / 2, textHeight);
         }
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
-        return message.channel.send({files: [{attachment, name: "classic.png"}] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
-        return message.inlineReply(`sorry i got an error :pensive: try again later!`)
+        };;
+        return message.channel.send({ files: [{ attachment, name: "classic.png" }] });
+    } catch (error) {;
+        return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };
 
@@ -96,12 +92,12 @@ exports.help = {
     name: "classic-meme",
     description: "generate a classic meme with text and photo of your liking",
     usage: ["classic-meme `[URL]`", "classic-meme `[image attachment]`"],
-    example:  ["classic-meme `image attachment`", "classic-meme `https://example.com/girl.jpg`", "classic-meme"]
+    example: ["classic-meme `image attachment`", "classic-meme `https://example.com/girl.jpg`", "classic-meme"]
 };
 
 exports.conf = {
     aliases: ["classicmeme", "classic"],
     cooldown: 5,
     guildOnly: true,
-	channelPerms: ["ATTACH_FILES"]
+    channelPerms: ["ATTACH_FILES"]
 };

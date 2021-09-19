@@ -28,15 +28,15 @@ exports.run = async(client, message, args, prefix) => {
         `, true)
         .addField(`default response (${prefix}response)`, "\`{auto}\`")
 
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 }
 
 
 exports.help = {
     name: "variables",
     description: "gives you a list of valid placeholders for embeds, response, and more!",
-    usage: "variables",
-    example: "variables"
+    usage: ["variables"],
+    example: ["variables"]
 };
 
 exports.conf = {

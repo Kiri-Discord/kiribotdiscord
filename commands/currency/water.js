@@ -1,17 +1,14 @@
-const humanizeDuration = require("humanize-duration");
-
 exports.run = async(client, message, args, prefix) => {
     let garden = await client.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!garden) {
-        const model = client.garden
+        const model = client.garden;
         garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await garden.save();
     };
     let cooldownStorage = await client.cooldowns.findOne({
         userId: message.author.id,
@@ -31,8 +28,9 @@ exports.run = async(client, message, args, prefix) => {
     const p1 = garden.plantOne;
     const p2 = garden.plantTwo;
     const p3 = garden.plantThree;
-    if (!p1 && !p2 && !p3) return message.inlineReply(`:x: you don't have any plants to water :pensive: check \`${prefix}shop\` to buy some!`);
-    if (lastWater !== null && cooldown - (Date.now() - lastWater) > 0) return message.inlineReply(`💦 you just watered your plant today! you can water it again in **${humanizeDuration(cooldown - (Date.now() - lastWater))}**!`);
+    if (!p1 && !p2 && !p3) return message.reply(`:x: you don't have any plants to water :pensive: check \`${prefix}shop\` to buy some!`);
+    const timeLeft = cooldown - (Date.now() - lastWater);
+    if (lastWater !== null && timeLeft > 0) return message.reply(`💦 you just watered your plant today! you can water it again <t:${Math.floor((Date.now() + timeLeft) / 1000)}:R>!`);
     var s1 = garden.plantOneStage;
     var s2 = garden.plantTwoStage;
     var s3 = garden.plantThreeStage;
@@ -170,13 +168,13 @@ exports.run = async(client, message, args, prefix) => {
         upsert: true,
         new: true,
     });
-    return message.inlineReply(`💦 your plant was watered! check \`${prefix}garden\` to watch the progress or \`${prefix}harvest\` to collect the weed!`)
+    return message.reply(`💦 your plant was watered! check \`${prefix}garden\` to watch the progress or \`${prefix}harvest\` to collect the weed!`)
 };
 exports.help = {
     name: "water",
     description: "water your tree in the garden",
-    usage: "water",
-    example: "water"
+    usage: ["water"],
+    example: ["water"]
 };
 
 exports.conf = {

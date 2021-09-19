@@ -1,5 +1,5 @@
 const scdl = require("soundcloud-downloader").default;
-const { MessageMenuOption, MessageMenu } = require("discord-buttons");
+const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../util/util');
 const { fetchInfo } = require('../../features/music/play');
@@ -7,21 +7,20 @@ const moment = require('moment');
 require('moment-duration-format');
 
 exports.run = async(client, message, args, prefix, cmd, internal) => {
-        if (!args.length) return message.channel.send({ embed: { color: "f3f3f3", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` } });
-        if (!message.member.voice.channel) return message.channel.send({ embed: { color: "f3f3f3", description: `⚠️ you are not in a voice channel!` } });
+        if (!args.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` }] });
+        if (!message.member.voice.channel) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `⚠️ you are not in a voice channel!` }] });
 
         const search = args.join(" ");
         let result = [];
         let options = [];
         try {
-            const loadingMessage = await message.channel.send({ embed: { description: `looking for \`${search}\`` } })
-            message.channel.startTyping(true);
+            let loadingMessage = await message.channel.send({ embeds: [{ color: "#bee7f7", description: `looking for \`${search}\`` }] });
             const ytRes = await fetchInfo(client, search, true);
             const scRes = await scdl.search({
                 query: search,
                 resourceType: 'tracks'
             });
-            if (!(ytRes.length + scRes.total_results) > 0) return message.channel.send({ embed: { color: "RED", description: `:x: no match were found` } })
+            if (!(ytRes.length + scRes.total_results) > 0) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] })
             ytRes
                 .splice(0, 10)
                 .map((video) => {
@@ -29,8 +28,8 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                                     type: 'yt',
                                     title: shortenText(video.info.title, 80),
                                     url: video.info.uri,
-                                    desc: `${shortenText(video.info.author, 12)} ${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'))}`}`
-                });
+                                    desc: `${shortenText(video.info.author, 12)} ${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'))}`}`,
+                })
             });
         scRes.collection
             .filter(x => x.streamable)
@@ -44,54 +43,91 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 })
             })
         result.map((song, index) => {
-            options.push(new MessageMenuOption()
-                .setLabel(song.title)
-                .setValue(index)
-                .setDescription(song.desc)
-                .setDefault()
-                .setEmoji(song.type === 'yt' ? client.customEmojis.get('youtube').id : client.customEmojis.get('soundcloud').id, false))
-        })
-        const menu = new MessageMenu()
-            .setID("search")
-            .setMaxValues(options.length)
-            .setMinValues(1)
-            .addOptions(options)
-            .setPlaceholder('choose a song <3')
+            options.push({
+                label: song.title,
+                description: song.desc,
+                value: index.toString(),
+                emoji: song.type === 'yt' ? client.customEmojis.get('youtube').id : client.customEmojis.get('soundcloud').id
+            })
+        });
+        const menu = new MessageSelectMenu()
+        .setCustomId('search')
+        .setMaxValues(options.length)
+        .setMinValues(1)
+        .addOptions(options)
+        .setPlaceholder('choose a song <3');
+        const row = new MessageActionRow()
+        .addComponents(menu)
         const embed = new MessageEmbed()
-            .setDescription('choose the song that you want to add in:')
-            .setFooter('deleting this in 30 seconds')
-        await message.channel.stopTyping(true);
-        let resultsMessage = await message.channel.send(embed, menu);
-        let executed = false;
-        setTimeout(async() => {
-            if (!executed) {
-                await loadingMessage.edit({ embed: { description: `this command is now inactive :pensive:` } })
-                return resultsMessage.delete();
-            }
-        }, 30000);
+            .setDescription('select all the song that you want to add in with the menu below! (multiple choices are supported)')
+            .setColor("#bee7f7")
+            .setFooter('timing out in 30 seconds');
+        
+        if (!loadingMessage || loadingMessage.deleted) {
+            loadingMessage = await message.channel.send({
+                embeds: [embed], 
+                components: [row],
+            });
+        } else {
+            await loadingMessage.edit({
+                embeds: [embed], 
+                components: [row],
+            })
+        };
+        const filter = async (res) => {
+            await res.deferUpdate();
+            if (res.user.id !== message.author.id) {
+                await res.reply({
+                    embeds: [{
+                        description: `this menu isn't belong to you :pensive:`
+                    }],
+                    ephemeral: true
+                });
+                return false;
+            } else {
+                row.components.forEach(component => component.setDisabled(true));
+                await res.editReply({ 
+                    embeds: [{ 
+                        color: '#bee7f7', 
+                        description: `this command is now inactive :pensive:` 
+                    }],
+                    components: [row]
+                });
+                return true;
+            };
+        };
+            
+        const collected = await loadingMessage.awaitMessageComponent({
+			componentType: 'SELECT_MENU',
+			filter,
+			time: 30000
+		});
+        if (!collected) {
+            row.components.forEach(component => component.setDisabled(true));
+            await res.edit({ 
+                embeds: [{ 
+                    color: '#bee7f7', 
+                    description: `this command is now inactive :pensive:` 
+                }],
+                components: [row]
+            });
+        };
+        if (collected.values.length > 1) {
+            const bulk = collected.values.map(song => result[song]);
+            await client.commands
+                .get("playlist")
+                .run(client, message, bulk, prefix, true);
+        } else {
+            const url = result[parseInt(collected.values[0])].url;
+            await client.commands
+                .get("play")
+                .run(client, message, [url], prefix, cmd, internal);
 
-        client.on("clickMenu", async(menu) => {
-            if (menu.message.id == resultsMessage.id) {
-                if (menu.clicker.user.id == message.author.id) {
-                    executed = true;
-                    await menu.message.delete();
-                    await loadingMessage.edit({ embed: { description: `this command is now inactive :pensive:` } })
-                    for (let song of menu.values) {
-                        const url = result[song].url;
-                        await client.commands
-                            .get("play")
-                            .run(client, message, [url], prefix, cmd, internal);
-                    };
-                } else {
-                    menu.reply.send(":x: you are not the one who executed the command :(", true)
-                }
-            }
-        })
+        };
     } catch (error) {
-        await message.channel.stopTyping(true);
         console.error(error);
-        return message.inlineReply('there was an error while processing your search, sorry :pensive:').catch(console.error);
-    }
+        return message.reply('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));
+    };
 };
 
 exports.help = {

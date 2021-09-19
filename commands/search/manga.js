@@ -3,7 +3,7 @@ const request = require('node-superfetch');
 const cheerio = require('cheerio');
 const { stripIndents } = require('common-tags');
 const { cleanAnilistHTML, embedURL } = require('../../util/util');
-const searchGraphQL = stripIndents`
+const searchGraphQL = stripIndents `
 	query ($search: String, $type: MediaType, $isAdult: Boolean) {
 		anime: Page (perPage: 10) {
 			results: media (type: $type, isAdult: $isAdult, search: $search) {
@@ -16,7 +16,7 @@ const searchGraphQL = stripIndents`
 		}
 	}
 `;
-const resultGraphQL = stripIndents`
+const resultGraphQL = stripIndents `
 	query media($id: Int, $type: MediaType) {
 		Media(id: $id, type: $type) {
 			id
@@ -47,43 +47,39 @@ const resultGraphQL = stripIndents`
 	}
 `;
 const statuses = {
-	FINISHED: 'Finished',
-	RELEASING: 'Releasing',
-	NOT_YET_RELEASED: 'Unreleased',
-	CANCELLED: 'Cancelled'
+    FINISHED: 'Finished',
+    RELEASING: 'Releasing',
+    NOT_YET_RELEASED: 'Unreleased',
+    CANCELLED: 'Cancelled'
 };
 
-exports.run = async (client, message, args) => {
-    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:' ;
+exports.run = async(client, message, args) => {
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     let query = args.join(" ");
-    if (!query) return message.inlineReply(`pls enter something so i can search ${sedEmoji}`);
-    try {
-        message.channel.startTyping(true);
+    if (!query) return message.reply(`pls enter something so i can search ${sedEmoji}`);
+    try {;
         const id = await search(query);
-        if (!id) {
-            await message.channel.stopTyping(true);
-            return message.inlineReply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
+        if (!id) {;
+            return message.reply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
         }
         const manga = await fetchManga(id);
         const malScore = await fetchMALScore(manga.idMal);
         const malURL = `https://myanimelist.net/manga/${manga.idMal}`;
         const embed = new MessageEmbed()
-        .setColor(message.member.displayHexColor)
-        .setURL(manga.siteUrl)
-        .setThumbnail(manga.coverImage.large || manga.coverImage.medium || null)
-        .setTitle(manga.title.english || manga.title.romaji)
-        .setDescription(manga.description ? cleanAnilistHTML(manga.description) : 'No description.')
-        .addField('📜 Status', statuses[manga.status], true)
-        .addField('📚 Chapters / volumes', `${manga.chapters || '???'}/${manga.volumes || '???'}`, true)
-        .addField('🧨 Year', manga.startDate.year || '???', true)
-        .addField('💯 Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
-        .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
-        .addField('ℹ️ Links', manga.externalLinks.length ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') : 'None');
-        await message.channel.stopTyping(true);
-        return message.channel.send(embed);
-    } catch (err) {
-        await message.channel.stopTyping(true);
-        return message.inlineReply(`sorry :( i got an error. try again later! the server might be down tho.`);
+            .setColor(message.member.displayHexColor)
+            .setURL(manga.siteUrl)
+            .setThumbnail(manga.coverImage.large || manga.coverImage.medium || null)
+            .setTitle(manga.title.english || manga.title.romaji)
+            .setDescription(manga.description ? cleanAnilistHTML(manga.description) : 'No description.')
+            .addField('📜 Status', statuses[manga.status], true)
+            .addField('📚 Chapters / volumes', `${manga.chapters || '???'}/${manga.volumes || '???'}`, true)
+            .addField('🧨 Year', manga.startDate.year || '???', true)
+            .addField('💯 Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
+            .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
+            .addField('ℹ️ Links', manga.externalLinks.length ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') : 'None');;
+        return message.channel.send({ embeds: [embed] });
+    } catch (err) {;
+        return message.reply(`sorry! i got an error so try again later! the server might be down tho.`);
     }
 }
 
@@ -123,18 +119,15 @@ async function fetchMALScore(id) {
     }
 };
 exports.help = {
-	name: "manga",
-	description: "search for a manga.\nonly official release will be searched :)",
-	usage: "manga <name>",
-	example: "manga `one piece`"
+    name: "manga",
+    description: "search for a manga.\nonly official release will be searched :)",
+    usage: "manga <name>",
+    example: "manga `one piece`"
 };
-  
+
 exports.conf = {
-	aliases: [],
+    aliases: [],
     cooldown: 4,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 };
-
-
-

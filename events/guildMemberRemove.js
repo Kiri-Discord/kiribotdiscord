@@ -13,6 +13,6 @@ module.exports = async(client, member) => {
         const channel = member.guild.channels.cache.get(setting.byeChannelID);
         if (!channel || !channel.permissionsFor(member.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return;
         if (setting.byeContent.type === 'plain') return channel.send(varReplace.replaceText(setting.byeContent.content, member, member.guild, { event: 'leave', type: setting.responseType }));
-        else return channel.send({ embed: varReplace.replaceEmbed(setting.byeContent.content.embed, member, member.guild, { event: 'leave', type: setting.responseType }) });
+        else return channel.send({ embeds: [varReplace.replaceEmbed(setting.byeContent.content.embed, member, member.guild, { event: 'leave', type: setting.responseType })] });
     };
 };

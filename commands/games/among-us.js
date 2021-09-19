@@ -1,34 +1,38 @@
 const words = require('../../assets/imposter.json');
 const { stripIndents, oneLine } = require('common-tags');
-const Collection = require('@discordjs/collection');
+const { Collection } = require('@discordjs/collection');
 const { delay, awaitPlayers, list } = require('../../util/util');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
         let playersCount = args[0];
         if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
         const current = client.games.get(message.channel.id);
-        if (current) return message.inlineReply(current.prompt);
-        client.games.set(message.channel.id, { prompt: `please wait until players here finish playing **among us** :(` });
+        if (current) return message.reply(current.prompt);
+        client.games.set(message.channel.id, { prompt: `please wait until the ongoing Among Us game is finished :(` });
         try {
             const awaitedPlayers = await awaitPlayers(message, playersCount, 3);
             if (!awaitedPlayers) {
                 client.games.delete(message.channel.id);
                 return message.channel.send('game could not be started...');
-            }
+            };
             const word = words[Math.floor(Math.random() * words.length)];
             const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
             const players = new Collection();
             const imposter = awaitedPlayers[Math.floor(Math.random() * awaitedPlayers.length)];
-            await message.channel.send(oneLine `
-            welcome to **among us**! 
-            
-            in this game, you will have to figure out who the imposter is!
-            all you have to do is watch what other players say in 4 minutes. 
-            there's a special word called a **kill word**, which is sent to the imposter's DM!
-            only the imposter can say it, and if anyone else does, they die! to win, figure out what the kill
-            word is, and try to catch the imposter saying it. as for the imposter, you know the word, try to get
-            everyone to say it!
-        `);
+            const embed = new MessageEmbed()
+                .setTitle('welcome to Among Us!')
+                .setDescription(oneLine `
+                in this game, you will have to figure out who the imposter is!
+
+                all you have to do is watch what other players say in 4 minutes. 
+                there's a special word called a **kill word**, which is sent to the imposter's DM!
+                only the **imposter** can say it, and if anyone else does, they **die**!
+                to win, figure out what the kill word is, and try to catch the imposter saying it. 
+                
+                as for the imposter, you know the word, try to get everyone to say it!
+                `)
+            await message.channel.send({ embeds: [embed] });
             for (const player of awaitedPlayers) {
                 players.set(player, {
                     id: player,
@@ -37,14 +41,13 @@ exports.run = async(client, message, args, prefix) => {
                     imposter: imposter === player
                 });
                 const newPlayer = players.get(player);
-                if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is ${word}.`).catch(async() => {
+                try {
+                    if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is **${word}**.`);
+                    else newPlayer.user.send('you are not the imposter. be careful what you say!')
+                } catch (error) {
                     await client.games.delete(message.channel.id);
                     return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
-                });
-                else newPlayer.user.send('you are not the imposter. be careful what you say!').catch(async() => {
-                    await client.games.delete(message.channel.id);
-                    return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
-                });
+                };
             }
             let lastTurnTimeout = false;
             const winners = [];
@@ -57,7 +60,8 @@ exports.run = async(client, message, args, prefix) => {
                     if (res.content && wordRegex.test(res.content)) return true;
                     return false;
                 };
-                const msgs = await message.channel.awaitMessages(filter, {
+                const msgs = await message.channel.awaitMessages({
+                    filter,
                     max: 1,
                     time: 240000
                 });
@@ -105,7 +109,8 @@ exports.run = async(client, message, args, prefix) => {
                 }
                 return false;
             };
-            const vote = await message.channel.awaitMessages(voteFilter, {
+            const vote = await message.channel.awaitMessages({
+                filter: voteFilter,
                 max: players.filter(player => !player.killed).size,
                 time: 60000
             });
@@ -125,7 +130,7 @@ exports.run = async(client, message, args, prefix) => {
                 await message.channel.send(`**${kicked.user.tag}** was the imposter.`);
                 winners.push(...players.filter(player => !player.killed).map(player => player.user.tag));
                 break;
-            }
+            };
             const amountLeft = players.filter(player => !player.killed);
             await message.channel.send(stripIndents`
                 **${kicked.user.tag}** was not the imposter.
@@ -137,26 +142,25 @@ exports.run = async(client, message, args, prefix) => {
             } else {
                 winners.push(players.find(player => player.imposter).user.tag);
                 break;
-            }
-        }
+            };
+        };
         client.games.delete(message.channel.id);
         return message.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
     } catch (error) {
         return;
-    }
-}
+    };
+};
 
 exports.help = {
 	name: "among-us",
 	description: "who is the imposter among us?",
-	usage: "among-us `<number of players>`",
-	example: "among-us `4`"
+	usage: ["among-us `<number of players>`"],
+	example: ["among-us `4`"]
 };
   
 exports.conf = {
 	aliases: ["imposter", "amongus"],
-    cooldown: 10,
+    cooldown: 6,
     guildOnly: true,
-    
-	channelPerms: ["ADD_REACTIONS"]
+	channelPerms: ["ADD_REACTIONS", "EMBED_LINKS"]
 };

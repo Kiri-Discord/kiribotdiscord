@@ -1,29 +1,16 @@
 const { MessageEmbed } = require('discord.js')
 
 exports.run = async(client, message, args, prefix) => {
-    let storage = await client.inventory.findOne({
-        userId: message.author.id,
-        guildId: message.guild.id
-    });
-    if (!storage) {
-        const model = client.inventory
-        storage = new model({
-            userId: message.author.id,
-            guildId: message.guild.id,
-        });
-        await storage.save();
-    };
     let garden = await client.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!garden) {
-        const model = client.garden
-        money = new model({
+        const model = client.garden;
+        garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await garden.save();
     };
     if (args[0] === '1' || args[0] === '2' || args[0] === '3') {
         let getPlant;
@@ -41,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
             getStage = garden.plantThreeStage;
         };
 
-        if (getStage !== "4") return message.inlineReply(':x: the plant in the slot you choose is not ripe enough to be harvested yet.');
+        if (getStage !== "4") return message.reply(':x: the plant in the slot you choose is not ripe enough to be harvested yet.');
         if (args[0] === '1') {
             await client.garden.findOneAndUpdate({
                 guildId: message.guild.id,
@@ -142,17 +129,17 @@ exports.run = async(client, message, args, prefix) => {
                 .setColor("#bee7f7")
                 .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
                 .setDescription(`you harvested and sold **${rarity}** ${chest} **${names[getPlant]}** that worth ⏣ **${worth}**!`)
-            return message.channel.send(embed2)
-        } else return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed2] })
+        } else return message.channel.send({ embeds: [embed] })
     } else {
-        return message.inlineReply(`:x: you have to specify the garden slot that you want to harvest!`)
+        return message.reply(`:x: you have to specify the garden slot that you want to harvest!`)
     }
 };
 exports.help = {
     name: "harvest",
     description: "harvest your plant after they grow",
-    usage: "harvest `<slot>`",
-    example: "harvest `2`"
+    usage: ["harvest `<slot>`"],
+    example: ["harvest `2`"]
 };
 
 exports.conf = {

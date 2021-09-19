@@ -1,61 +1,72 @@
 const jsChess = require('js-chess-engine');
 const { createCanvas, loadImage } = require('canvas');
-const moment = require('moment');
+const { msToHMS } = require('../../util/util');
 const validateFEN = require('fen-validator').default;
 const path = require('path');
 const { stripIndents } = require('common-tags');
-const { verify, reactIfAble } = require('../../util/util');
+const { buttonVerify, reactIfAble } = require('../../util/util');
 const { centerImagePart } = require('../../util/canvas');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=([QRNB]))?)|(?:0-0(?:-0)?)$/;
 const pieces = ['pawn', 'rook', 'knight', 'king', 'queen', 'bishop'];
 const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
 exports.run = async(client, message, args, prefix, cmd) => {
-    const current = client.games.get(message.channel.id);
-    if (current) return message.inlineReply(current.prompt);
-    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
+            const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
             const data = await client.gameStorage.findOne({
                 guildId: message.guild.id,
                 userId: message.author.id
             });
             if (data) {
                 const foundGameSave = data.storage.find(storage => storage.type === 'chess');
-                if (!foundGameSave) return message.inlineReply(`you don\'t have any saved chess game ${sedEmoji}`);
+                if (!foundGameSave) return message.reply(`you don\'t have any saved chess game ${sedEmoji}`);
                 data.storage.splice(data.storage.indexOf(x => x.type === 'chess'), 1);
                 await data.save();
-                return message.inlineReply(`your saved game has been deleted ${sedEmoji}`);
+                return message.reply(`your saved game has been deleted ${sedEmoji}`);
             } else {
-                return message.inlineReply(`you don\'t have any saved chess game ${sedEmoji}`);
+                return message.reply(`you don\'t have any saved chess game ${sedEmoji}`);
             }
         };
     };
+    const current = client.games.get(message.channel.id);
+    if (current) return message.reply(current.prompt);
     const member = await getMemberfromMention(args[0], message.guild);
-    if (!member) return message.inlineReply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
+    if (!member) return message.reply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
     const opponent = member.user;
-    if (opponent.id === message.author.id) return message.inlineReply("you can't play with yourself!");
-    if (opponent.bot && opponent.id !== client.user.id) return message.inlineReply("those bot are busy doing their jobs anyway. wanna play with me instead?");
-    if (!args[1] || isNaN(args[1]) || args[1] < 0 || args[1] > 120) return message.inlineReply(`how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`);
+    if (opponent.id === message.author.id) return message.reply("you can't play with yourself!");
+    if (!args[1] || isNaN(args[1]) || args[1] < 0 || args[1] > 120) return message.reply({
+        embeds: [{
+            description: `how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`
+        }]
+    });
     let time = parseInt(args[1]);
     let fen = args.slice(2).join(' ');
     if (fen) {
         const valid = validateFEN(fen);
-        if (!valid) return message.inlineReply("invalid FEN for the start board :pensive: try it again!");
-    }
-    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${opponent.username}** finish playing chess :(` });
-    let images = null;
-    if (!images) await loadImages();
+        if (!valid) return message.reply("invalid FEN for the start board :pensive: try it again!");
+    };
+    if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
+    client.isPlaying.set(message.author.id, true);
+    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${opponent.username}** finish their chess game!` });
     try {
         if (!opponent.bot) {
-            await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
-            const verification = await verify(message.channel, opponent);
-            if (!verification) {
+            if (client.isPlaying.get(opponent.id)) {
+                client.isPlaying.delete(message.author.id);
                 client.games.delete(message.channel.id);
-                return message.channel.send(`looks like they declined... ${sedEmoji}`);
-            }
+                return message.reply('that user is already in a game. try again in a minute.');
+            };
+            const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
+            if (!verification) {
+                client.isPlaying.delete(message.author.id);
+                client.games.delete(message.channel.id);
+                return message.channel.send(`looks like they declined..`);
+            };
+            client.isPlaying.set(opponent.id, true);
         };
+        let images = null;
+        if (!images) await loadImages();
         let gameStorage = client.gameStorage;
         let resumeGame = await gameStorage.findOne({
             guildId: message.guild.id,
@@ -72,12 +83,11 @@ exports.run = async(client, message, args, prefix, cmd) => {
         let blackPlayer = opponent;
         let foundGameSave = resumeGame.storage.chess;
         if (foundGameSave) {
-            await message.channel.send(stripIndents `
+            const verification = await buttonVerify(message.channel, message.author, stripIndents `
             you already have a saved game, do you want to resume it? \`y/n\`
 
             *this will delete your currently saved game*
             `);
-            const verification = await verify(message.channel, message.author);
             if (verification) {
                 try {
                     const data = foundGameSave;
@@ -92,7 +102,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     client.games.delete(message.channel.id);
                     resumeGame.storage.chess = undefined;
                     await resumeGame.save();
-                    return message.inlineReply(`there was an error while reading your saved game... try again please ${sedEmoji}`);
+                    return message.reply(`there was an error while reading your saved game... try again please ${sedEmoji}`);
                 }
             } else {
                 game = new jsChess.Game(fen || undefined);
@@ -114,20 +124,23 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 if (gameState.turn === 'black') blackTime -= timeTaken - 5000;
                 if (gameState.turn === 'white') whiteTime -= timeTaken - 5000;
             } else {
-                const displayTime = userTime === Infinity ? 'infinite' : moment.duration(userTime).format();
+                const displayTime = userTime === Infinity ? 'infinite' : msToHMS(userTime);
                 const GameEmbed = new MessageEmbed()
                     .setDescription(stripIndents `
-                type \`end\` to forfeit.
+                    type \`end\` to forfeit.
 
-                save your game by typing \`save\`
-                can't think of a move? use \`help\` *coward*
-                `)
+                    save your game by typing \`save\`
+                    can't think of a move? use \`help\` *coward*
+                    `)
                     .setTitle(`${message.author.username} vs ${opponent.username}`)
                     .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
                     .setColor('#34e363')
-                    .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
                     .setImage(`attachment://chess.png`)
-                await message.channel.send(`**${user.username}**, what move do you want to make? (ex. A1A2 or NC3)?\n_you are ${gameState.check ? '**in check!**' : 'not in check.'}_`, GameEmbed);
+                await message.channel.send({
+                    content: `**${user.username}**, what move do you want to make? (ex. A1A2 or NC3)?\n_you are ${gameState.check ? '**in check!**' : 'not in check.'}_`,
+                    embeds: [GameEmbed],
+                    files: [new MessageAttachment(displayBoard(gameState, prevPieces), 'chess.png')]
+                })
                 prevPieces = Object.assign({}, game.exportJson().pieces);
                 const moves = game.moves();
                 const pickFilter = res => {
@@ -143,30 +156,32 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     if (!parsed || !moves[parsed[0]] || !moves[parsed[0]].includes(parsed[1])) {
                         reactIfAble(res, res.author, '❌');
                         return false;
-                    }
+                    };
                     return true;
                 };
                 const now = new Date();
-                const turn = await message.channel.awaitMessages(pickFilter, {
+                const turn = await message.channel.awaitMessages({
+                    filter: pickFilter,
                     max: 1,
                     time: Math.min(userTime, 600000)
                 });
                 if (!turn.size) {
                     const timeTaken = new Date() - now;
                     client.games.delete(message.channel.id);
+                    client.isPlaying.delete(message.author.id);
+                    client.isPlaying.delete(opponent.id);
                     if (userTime - timeTaken <= 0) {
                         return message.channel.send(`${user.id === message.author.id ? opponent : message.author} wins from timeout!`);
                     } else {
                         return message.channel.send(`the game was ended, **${user.username}**! you cannot take more than 10 minutes.`);
-                    }
+                    };
                 };
                 if (turn.first().content.toLowerCase() === 'end') break;
                 if (turn.first().content.toLowerCase() === 'save') {
                     const { author } = turn.first();
                     const alreadySaved = resumeGame.storage.chess;
                     if (alreadySaved) {
-                        await message.channel.send('you already have a saved game, do you want to overwrite it? \`y/n\`');
-                        const verification = await verify(message.channel, author);
+                        const verification = await buttonVerify(message.channel, author, 'you already have a saved game, do you want to overwrite it?');
                         if (!verification) continue;
                     };
                     resumeGame.storage.chess = undefined;
@@ -181,7 +196,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     await resumeGame.save();
                     saved = true;
                     break;
-                }
+                };
                 if (turn.first().content.toLowerCase() === 'help') {
                     game.aiMove(0);
                 } else {
@@ -193,12 +208,14 @@ exports.run = async(client, message, args, prefix, cmd) => {
                             choice[2] :
                             choice[2].toLowerCase();
                     };
-                }
+                };
                 const timeTaken = new Date() - now;
                 if (gameState.turn === 'black') blackTime -= timeTaken - 5000;
                 if (gameState.turn === 'white') whiteTime -= timeTaken - 5000;
-            }
-        }
+            };
+        };
+        client.isPlaying.delete(message.author.id);
+        client.isPlaying.delete(opponent.id);
         client.games.delete(message.channel.id);
         if (saved) {
             return message.channel.send(stripIndents `
@@ -212,16 +229,38 @@ exports.run = async(client, message, args, prefix, cmd) => {
         if (gameState.halfMove > 50) return message.channel.send('due to the 50 moves rule, this game is a draw.');
         if (!gameState.isFinished) return message.channel.send('game was ended due to forfeit :pensive:');
         if (!gameState.checkMate && gameState.isFinished) {
-            return message.channel.send('stalemate! this game is a draw!', {
-                files: [{ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' }]
+            const staleEmbed = new MessageEmbed()
+                .setTitle(`this game is a draw!`)
+                .setColor('#34e363')
+                .setImage(`attachment://chess.png`)
+            return message.channel.send({
+                content: 'stalemate!',
+                files: [new MessageAttachment(displayBoard(gameState, prevPieces), 'chess.png')],
+                embeds: [staleEmbed]
             });
         }
         const winner = gameState.turn === 'black' ? whitePlayer : blackPlayer;
         const EndEmbed = new MessageEmbed()
             .setTitle(`${winner.username} won!`)
             .setColor('#34e363')
-            .attachFiles({ attachment: displayBoard(gameState, prevPieces), name: 'chess.png' })
-            .setImage(`attachment://chess.png`)
+            .setImage(`attachment://chess.png`);
+        const lost = winner.id === message.author.id ? opponent : message.author;
+        if (!lost.bot) {
+            await client.money.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: lost.id
+            }, {
+                guildId: message.guild.id,
+                userId: lost.id,
+                $inc: {
+                    matchPlayed: 1,
+                    lose: 1
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
+        };
         if (!winner.bot) {
             let amount = getRandomInt(5, 15);
             const storageAfter = await client.money.findOneAndUpdate({
@@ -232,6 +271,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 userId: winner.id,
                 $inc: {
                     balance: amount,
+                    matchPlayed: 1,
+                    win: 1
                 },
             }, {
                 upsert: true,
@@ -240,12 +281,16 @@ exports.run = async(client, message, args, prefix, cmd) => {
             EndEmbed
                 .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
                 .setFooter(`your current balance: ${storageAfter.balance} token`)
-        }
-        return message.channel.send(`checkmate! congratulations, **${winner.username}**!`, EndEmbed);
+        };
+        return message.channel.send({
+            embeds: [EndEmbed],
+            content: `checkmate! congratulations, **${winner.username}**!`,
+            files: [new MessageAttachment(displayBoard(gameState, prevPieces), 'chess.png')]
+        });
     } catch (err) {
         client.games.delete(message.channel.id);
         throw err;
-    }
+    };
 
     function parseSAN(gameState, moves, move) {
         if (!move) return null;
@@ -257,7 +302,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 if (gameState.castling.blackShort) return ['E8', 'G8'];
                 return null;
             }
-        }
+        };
         if (move[0] === '0-0-0') {
             if (gameState.turn === 'white') {
                 if (gameState.castling.whiteLong) return ['E1', 'C1'];
@@ -266,7 +311,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 if (gameState.castling.blackLong) return ['E8', 'C8'];
                 return null;
             }
-        }
+        };
         if (!move[3]) return null;
         const initial = move[1] || 'P';
         if (gameState.pieces[initial]) return [initial, move[3], move[4] || 'Q'];
@@ -410,7 +455,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
             whiteTime: whiteTime === Infinity ? -1 : whiteTime,
             color: playerColor
         };
-    }
+    };
 
     function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -430,6 +475,5 @@ exports.conf = {
     aliases: ["chess-game", "play-chess"],
     cooldown: 4,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 };

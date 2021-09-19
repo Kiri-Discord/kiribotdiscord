@@ -11,7 +11,6 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await money.save();
     };
     let storage = await client.inventory.findOne({
         userId: message.author.id,
@@ -23,7 +22,6 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save();
     };
     const embed = new MessageEmbed()
         .setAuthor(`${message.author.username}'s inventory 🎒`, message.author.displayAvatarURL())
@@ -32,14 +30,14 @@ exports.run = async(client, message, args, prefix) => {
         .addField(`🌰 seeds`, `\`${storage.seeds}\``, true)
         .addField(`🪱 worms`, `\`${storage.worms}\``, true)
         .setFooter(`your current balance: ⏣ ${money.balance}`)
-    return message.channel.send(embed)
+    return message.channel.send({ embeds: [embed] })
 };
 
 exports.help = {
     name: "inventory",
     description: "shows everything you own in your inventory.",
-    usage: "inventory",
-    example: "inventory"
+    usage: ["inventory"],
+    example: ["inventory"]
 };
 
 exports.conf = {

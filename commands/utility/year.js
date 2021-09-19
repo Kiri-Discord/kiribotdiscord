@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const today = new Date();
     const start = new Date(today.getFullYear(), 0, 1);
     const end = new Date(today.getFullYear() + 1, 0, 1);
@@ -11,10 +11,9 @@ exports.help = {
     usage: "year",
     example: "year"
 };
-  
+
 exports.conf = {
     aliases: [],
     cooldown: 2,
     guildOnly: true,
-    
-}
+};

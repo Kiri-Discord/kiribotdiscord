@@ -1,4 +1,5 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
+const { MessageAttachment } = require('discord.js');
 const request = require('node-superfetch');
 const path = require('path');
 const { firstUpperCase } = require('../../util/util');
@@ -16,7 +17,6 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Stone Serif LT
 
 exports.run = async(client, message, args) => {
     let rank;
-
     let mention = await getMemberfromMention(args[0], message.guild) || message.member;
 
     let target = await client.dbleveling.findOne({
@@ -24,7 +24,7 @@ exports.run = async(client, message, args) => {
         userId: mention.user.id
     });
 
-    if (!target) return message.inlineReply("you or that user doesn't have any leveling data yet. stay here a little longer! :D");
+    if (!target) return message.reply({ embeds: [{ color: "f3f3f3", description: `❌ you or that user doesn't have any leveling data yet! stay around a little longer :D` }] });
 
     const res = client.leveling.getLevelBounds(target.level + 1)
 
@@ -37,29 +37,22 @@ exports.run = async(client, message, args) => {
     })
 
     if (!result) {
-        return message.inlineReply("this guild doesn't have any leveling data yet. stay here a little longer! :D")
-    }
-
+        return message.reply({ embeds: [{ color: "f3f3f3", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :D` }] })
+    };
     for (let counter = 0; counter < result.length; ++counter) {
-
         let member = message.guild.members.cache.get(result[counter].userId)
-
         if (!member) {
             client.dbleveling.findOneAndDelete({
                 userId: result[counter].userId,
                 guildId: message.guild.id,
             }, (err) => {
-                if (err) console.error(err)
+                if (err) logger.log('error', err)
             });
-
         } else if (member.user.id === mention.user.id) {
             rank = counter + 1
-        }
-    }
-
+        };
+    };
     const type = "monster"
-
-
     const list1 = [
         "effect",
         "fusion",
@@ -69,7 +62,7 @@ exports.run = async(client, message, args) => {
         "synchro",
         "token",
         "xyz",
-    ]
+    ];
     const list2 = [
         "dark",
         "divine",
@@ -81,7 +74,7 @@ exports.run = async(client, message, args) => {
         "trap",
         "water",
         "wind",
-    ]
+    ];
     const randommonsterType = Math.floor(Math.random() * (list1.length - 1) + 1);
 
     const randomattribute = Math.floor(Math.random() * (list2.length - 1) + 1);
@@ -89,13 +82,12 @@ exports.run = async(client, message, args) => {
     const attribute = list2[randomattribute]
     const id = Math.floor(Math.random() * 100000000);
 
-    const setID = Math.floor(Math.random() * 1000);
-    message.channel.startTyping(true);
+    const setID = Math.floor(Math.random() * 1000);;
     try {
         const name = `${mention.user.tag}`
         const species = "species"
         const effect = `Originated from ${message.guild.name}. Might hurt you while ranked ${rank} in this guild.`
-        const level = target.level
+        const level = target.level;
         const atk = `${target.xp}`
         const def = `${neededXP}`
         const base = await loadImage(
@@ -119,13 +111,14 @@ exports.run = async(client, message, args) => {
             const levelI = await loadImage(
                 path.join(__dirname, '..', '..', 'assets', 'images', 'yu-gi-oh-gen', `${levelToUse}.png`)
             );
-            for (let i = 0; i < level; i++) {
+            const maxLvl = level > 10 ? 10 : level;
+            for (let i = 0; i < maxLvl; i++) {
                 let levelX;
                 if (monsterType === 'xyz') levelX = 76 + (50 * i) + (5 * i);
                 else levelX = 686 - (50 * i) - (5 * i);
                 ctx.drawImage(levelI, levelX, 141, 50, 50);
-            }
-        }
+            };
+        };
         ctx.fillStyle = monsterType === 'xyz' || monsterType === 'link' ? 'white' : 'black';
         ctx.textBaseline = 'top';
         ctx.font = '87px Matrix';
@@ -153,21 +146,20 @@ exports.run = async(client, message, args) => {
         return message.channel.send(`*i proudly present* **${mention.user.username}** *yugioh card!*`, { files: [{ attachment: canvas.toBuffer(), name: 'yu-gi-oh-gen.png' }] }).then(() => message.channel.stopTyping(true))
     } catch (err) {
         return message.channel.send(`sorry :( i got an error. try again later!`);
-    }
+    };
 }
 
 
 exports.help = {
     name: "yugiohrank",
     description: "generate yours or other's yugioh card 😄",
-    usage: "yugiohrank `[@member]`",
-    example: "yugiohrank `@bell`"
+    usage: ["yugiohrank `[@member]`"],
+    example: ["yugiohrank `@bell`"]
 };
 
 exports.conf = {
     aliases: ["yrank"],
     cooldown: 5,
     guildOnly: true,
-
-    channelPerms: ["ATTACH_FILES"]
+    channelPerms: ["ATTACH_FILES", "EMBED_LINKS"]
 };

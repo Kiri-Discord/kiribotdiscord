@@ -3,6 +3,7 @@ const { parseSync } = require('subtitle');
 const format = 'vtt';
 const request = require('node-superfetch');
 const { MessageEmbed } = require("discord.js");
+const ISO6391 = require('iso-639-1');
 
 module.exports = class ScrollingLyrics {
     constructor(song, channel, lang, queue, prefix) {
@@ -18,14 +19,18 @@ module.exports = class ScrollingLyrics {
         this.pauseTimestamp = null;
     };
     async init() {
+        let notice = `displaying scrolling lyrics (${ISO6391.getName(this.lang)}) for this track`;
         if (this.song.type !== 'yt') return this.error('sc');
         const info = await ytdl.getInfo(this.song.info.uri);
         const foundCaption = info.player_response.captions;
         if (!foundCaption) return this.error();
         const tracks = foundCaption.playerCaptionsTracklistRenderer.captionTracks;
         if (!tracks || !tracks.length) return this.error();
-        const track = tracks.find(t => t.languageCode === this.lang);
-        if (!track) return this.error();
+        let track = tracks.find(t => t.languageCode === this.lang);
+        if (!track) {
+            track = tracks[0];
+            notice = `displaying scrolling lyrics (${ISO6391.getName(track.languageCode)}) for this track (fallback from ${ISO6391.getName(this.lang)})`
+        };
         const { body } = await request
             .get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
         const output = parseSync(body.toString());
@@ -40,7 +45,7 @@ module.exports = class ScrollingLyrics {
                 id: index
             })
         });
-        return true;
+        return notice;
     };
     start() {
         if (this.playing) return false;
@@ -90,13 +95,13 @@ module.exports = class ScrollingLyrics {
     }
     error(type) {
         if (type === 'sc') {
-            this.channel.send({ embed: { description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` } });
+            this.channel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
                 .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric`)
                 .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
-            this.channel.send(embed);
+            this.channel.send({ embeds: [embed] });
         }
         return false;
     }

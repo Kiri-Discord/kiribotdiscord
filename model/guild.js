@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
+const config = require('../config.json');
 
 const reqString = {
     type: String,
     required: true,
-}
+};
 
 const guildSchema = mongoose.Schema({
     guildID: reqString,
     prefix: {
         type: String,
-        default: 'k!'
+        default: config.prefix
     },
     logChannelID: String,
     verifyChannelID: String,

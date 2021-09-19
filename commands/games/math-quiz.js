@@ -6,7 +6,7 @@ const maxValues = {
     medium: 100,
     hard: 500,
     extreme: 1000,
-    impossible: Number.MAX_SAFE_INTEGER
+    impossible: 50000
 };
 const maxMultiplyValues = {
     baby: 5,
@@ -14,7 +14,7 @@ const maxMultiplyValues = {
     medium: 30,
     hard: 50,
     extreme: 100,
-    impossible: Number.MAX_SAFE_INTEGER
+    impossible: 10000
 };
 
 const toName = {
@@ -50,7 +50,8 @@ exports.run = async(client, message) => {
             break;
     }
     await message.channel.send(`you have 10 seconds to answer this math problem: (${toName[difficulty]}) **${value1} ${operation} ${value2} = ?**`);
-    const msgs = await message.channel.awaitMessages(res => res.author.id === message.author.id, {
+    const msgs = await message.channel.awaitMessages({
+        filter: res => res.author.id === message.author.id,
         max: 1,
         time: 10000
     });
@@ -73,20 +74,17 @@ exports.run = async(client, message) => {
     return message.channel.send(`great job! 10/10! ⏣ __${amount}__ token was placed in your wallet as a reward!`);
 };
 
-
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-
-
 exports.help = {
     name: "math-quiz",
     description: "see how fast you can answer a math problem in a given time limit.",
-    usage: "math-quiz",
-    example: "math-quiz"
+    usage: ["math-quiz"],
+    example: ["math-quiz"]
 };
 
 exports.conf = {

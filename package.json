@@ -1,6 +1,6 @@
 {
     "name": "sefydiscordbot",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "description": "duh",
     "main": "main.js",
     "scripts": {
@@ -14,7 +14,6 @@
     "author": "ryzenix",
     "license": "MIT",
     "dependencies": {
-        "@lavacord/discord.js": "0.0.7",
         "@vitalets/google-translate-api": "^7.0.0",
         "aki-api": "^6.0.8",
         "array-move": "^3.0.1",
@@ -28,10 +27,8 @@
         "common-tags": "^1.8.0",
         "compression": "^1.7.4",
         "dateformat": "^4.5.1",
-        "discord-buttons": "^4.0.0",
-        "discord-giveaways": "^4.5.1",
-        "discord-paginationembed": "^2.1.0",
-        "discord.js": "^12.5.3",
+        "discord-giveaways": "^5.0.1",
+        "discord.js": "^13.1.0",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "fen-validator": "^1.4.1",
@@ -44,6 +41,7 @@
         "ini": "^2.0.0",
         "iso-639-1": "^2.1.9",
         "js-chess-engine": "^0.11.3",
+        "lavacord": "^1.1.9",
         "libsodium-wrappers": "^0.7.9",
         "lodash.clonedeep": "^4.5.0",
         "lyrics-finder": "^21.7.0",
@@ -55,7 +53,8 @@
         "mquery": "^4.0.0",
         "namemc": "^1.8.16",
         "nekos.life": "^2.0.7",
-        "node-superfetch": "^0.2.2",
+        "node-gyp": "^8.2.0",
+        "node-superfetch": "^0.2.3",
         "ordinal": "^1.0.3",
         "parse-ms": "^2.1.0",
         "querystring": "^0.2.1",
@@ -64,8 +63,9 @@
         "relevant-urban": "^2.0.0",
         "semver": "^7.3.5",
         "simple-youtube-api": "^5.2.1",
-        "slash-create": "^4.0.1",
         "soundcloud-downloader": "^1.0.0",
+        "spotify-to-yt": "^1.0.5",
+        "spotify-url-info": "^2.2.3",
         "stackblur-canvas": "^2.5.0",
         "string-progressbar": "^1.0.4",
         "string-similarity": "^4.0.4",
@@ -74,6 +74,7 @@
         "utf-8-validate": "^5.0.5",
         "valid-url": "^1.0.9",
         "weather-js": "^2.0.0",
+        "winston": "^3.3.3",
         "ytdl-core": "^4.9.0"
     }
 }

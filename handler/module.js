@@ -3,8 +3,8 @@ const fs = require("fs");
 module.exports = client => {
 
     fs.readdir("./commands/", (err, categories) => {
-        if (err) console.log(err)
-        console.log(`Found total ${categories.length} categories.`);
+        if (err) logger.log('error', err);
+        logger.log('info', `Found total ${categories.length} categories.`);
 
         categories.forEach(category => {
             let moduleConf = require(`../commands/${category}/module.json`);
@@ -12,14 +12,12 @@ module.exports = client => {
             moduleConf.cmds = [];
             if (!moduleConf) return;
             client.helps.set(moduleConf.name, moduleConf);
-            if (!moduleConf.hide) {
-                client.allNameFeaturesSlash.push({ name: moduleConf.name, value: moduleConf.name })
-                client.allNameFeatures.push(moduleConf.name);
-            }
+            client.allNameFeaturesSlash.push({ label: moduleConf.name, value: moduleConf.name })
+            client.allNameFeatures.push(moduleConf.name);
 
             fs.readdir(`./commands/${category}`, (err, files) => {
-                console.log(`Found total ${files.length - 1} command(s) from ${category}.`);
-                if (err) console.log(err);
+                logger.log('info', `Found total ${files.length - 1} command(s) from ${category}.`);
+                if (err) logger.log('error', err);
 
                 files.forEach(file => {
                     if (!file.endsWith(".js")) return;
