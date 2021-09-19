@@ -32,7 +32,7 @@ exports.run = async(client, message, args, prefix) => {
         };
         arrSplitted.map((item, index) => {
             const embed = new MessageEmbed()
-                .setColor(message.guild.me.displayHexColor)
+                .setColor('#bee7f7')
                 .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                 .setDescription(item.join('\n'))
                 .setFooter(`do ${prefix}help <cmd> for more help on a command`)
@@ -117,7 +117,7 @@ exports.run = async(client, message, args, prefix) => {
                     arrEmbeds = [];
                     arrSplitted.map((item, index) => {
                         const embed = new MessageEmbed()
-                            .setColor(message.guild.me.displayHexColor)
+                            .setColor('#bee7f7')
                             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                             .setDescription(item.join('\n'))
                             .setFooter(`do ${prefix}help <cmd> for more help on a command`)
