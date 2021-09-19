@@ -7,9 +7,9 @@ const { YOUTUBE_API_KEY, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
-const spotifyToYT = require("spotify-to-yt");
 
-exports.run = async(client, message, args, prefix) => {
+
+exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
         if (!channel) return message.reply({ embeds: [{ color: "RED", description: '⚠️ you are not in a voice channel!' }] });
@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
             guildId: message.guild.id
         });
         const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
-        const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode)(?::|\/)((?:[0-9a-zA-Z]){22})/;
+        const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode|show)(?::|\/)((?:[0-9a-zA-Z]){22})/;
         const url = args[0];
         const urlValid = pattern.test(url);
         let queueConstruct = {
@@ -53,10 +53,10 @@ exports.run = async(client, message, args, prefix) => {
             queueConstruct.volume = musicSettings.volume;
             const channel = message.guild.channels.cache.get(musicSettings.KaraokeChannelID);
             if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-                message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type \`no\` or leave this for 10 second to bypass` } }] });
+                message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
                 const verification = await verify(message.channel, message.author, { time: 10000 });
                 if (verification) {
-                    await message.channel.send({ embeds: [{ color: "f3f3f3", description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
+                    await message.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
                     const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
                     if (response.isVerify) {
                         queueConstruct.karaoke.languageCode = response.choice;
@@ -65,18 +65,39 @@ exports.run = async(client, message, args, prefix) => {
                     } else {
                         queueConstruct.karaoke.isEnabled = false;
                         message.channel.send('you didn\'t answer anything! i will just play the song now...')
-                    }
-                }
+                    };
+                };
             };
         } else {
             queueConstruct.karaoke.isEnabled = false;
             queueConstruct.volume = DEFAULT_VOLUME;
         };
-
         let newSongs;
+        let notice = null;
         let playlistURL;
-
-        if (urlValid) {
+        if (bulkAdd === true) {
+            let errorCount = 0;
+            newSongs = [];
+            for (let each of args) {
+                try {
+                    if (each.type === 'yt') {
+                        [song] = await fetchInfo(client, each.url, false);
+                        song.type = 'yt';
+                        song.requestedby = message.author;
+                        newSongs.push(song);
+                    } else {
+                        [song] = await fetchInfo(client, each.url, false, 'yt');
+                        song.type = 'sc';
+                        song.requestedby = message.author;
+                        newSongs.push(song);
+                    };
+                } catch (error) {
+                    ++errorCount;
+                    continue;
+                };
+            };
+            if (errorCount > 0) notice = `${errorCount} song${errorCount > 1 ? 's' : ''} couldn't be added due to an error`
+        } else if (urlValid) {
             try {
                 newSongs = await fetchInfo(client, url, false);
                 if (!newSongs) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
@@ -87,7 +108,7 @@ exports.run = async(client, message, args, prefix) => {
                 });
             } catch (error) {
                 return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
-            }
+            };
         } else if (scdl.isValidUrl(url)) {
             try {
                 if (url.includes("/sets/")) {
@@ -104,21 +125,31 @@ exports.run = async(client, message, args, prefix) => {
             };
         } else if (url.match(spotifyRegex)) {
             const fields = url.match(spotifyRegex);
+            const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
+            if (fields[1] === 'episode' || fields[1] === 'show') {
+                return message.channel.send({ embeds: [{ color: "f3f3f3", description: `${logo} sorry, i don't support podcast link from Spotify :pensive:` }] });
+            };
             try {
+                newSongs = [];
                 if (fields[1] === 'playlist' || fields[1] === 'album') {
-                    const logo = client.custonEmojis.get('spotify') ? client.custonEmojis.get('spotify').toString() : '⚠️';
-                    message.channel.send({ embeds: [{ color: "f3f3f3", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
-                    message.channel.sendTyping();
                     const playlist = await getTracks(url);
-                    playlist.splice(0, 30);
+                    if (playlist.length > 30) playlist = playlist.splice(0, 30);
                     for (const data of playlist) {
-                        const ytUrl = await spotifyToYT.trackGet(data.external_urls.spotify);
-                        [song] = await fetchInfo(client, ytUrl.url, false, 'yt');
+                        const song = {
+                            info: {
+                                uri: data.external_urls.spotify,
+                                title: data.name,
+                                author: data.artists.map(x => x.name).join(", "),
+                                length: data.duration_ms
+                            },
+                            type: 'sp',
+                            requestedby: message.author
+                        };
                         newSongs.push(song);
                     };
+                    if (!newSongs) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                     playlistURL = url;
                     newSongs.forEach(song => {
-                        song.type = 'sp';
                         song.requestedby = message.author;
                     });
                 };
@@ -144,6 +175,7 @@ exports.run = async(client, message, args, prefix) => {
         };
         serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
         let playlistEmbed = new MessageEmbed().setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL})` : `[track](${playlistURL})`} to the queue [${message.author}]`);
+        if (notice) playlistEmbed.setFooter(notice);
     message.channel.send({embeds: [playlistEmbed]});
 
     if (!serverQueue) {

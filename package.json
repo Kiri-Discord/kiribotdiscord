@@ -14,7 +14,6 @@
     "author": "ryzenix",
     "license": "MIT",
     "dependencies": {
-        "@lavacord/discord.js": "github:ryzenix/discord.js",
         "@vitalets/google-translate-api": "^7.0.0",
         "aki-api": "^6.0.8",
         "array-move": "^3.0.1",
@@ -43,6 +42,7 @@
         "ini": "^2.0.0",
         "iso-639-1": "^2.1.9",
         "js-chess-engine": "^0.11.3",
+        "lavacord": "^1.1.9",
         "libsodium-wrappers": "^0.7.9",
         "lodash.clonedeep": "^4.5.0",
         "lyrics-finder": "^21.7.0",

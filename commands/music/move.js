@@ -13,8 +13,8 @@ exports.run = async(client, message, args, prefix) => {
     let song = queue.songs[args[0] - 1];
     queue.songs = move(queue.songs, args[0] - 1, args[1] == 1 ? 1 : args[1] - 1);
     const index = args[1] == 1 ? 1 : args[1];
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "f3f3f3", description: `${message.author}, you moved **${song.title}** to position ${index} 🚚` }] });
-    return queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${message.author} moved **${song.title}** to position ${index} 🚚` }] });
+    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "f3f3f3", description: `${message.author}, you moved **${song.info.title}** to position ${index} 🚚` }] });
+    return queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${message.author} moved **${song.info.title}** to position ${index} 🚚` }] });
 }
 
 exports.help = {
@@ -22,11 +22,11 @@ exports.help = {
     description: "move the current playing song around in the queue",
     usage: ["move `<position of track> <position to move>`"],
     example: ["move `4 7`"]
-}
+};
 
 exports.conf = {
     aliases: ["mv"],
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};

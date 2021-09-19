@@ -87,8 +87,7 @@ exports.run = async(client, message, args, prefix) => {
                 ephemeral: true
             });
             return false;
-        };
-        return true;
+        } else return true;
     };
     return paginateEmbed(arrEmbeds, msg, row, filter, message);
 };

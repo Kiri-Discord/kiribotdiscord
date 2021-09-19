@@ -11,7 +11,7 @@ exports.run = async(client, message, args) => {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
-            return message.reply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));
+            return message.reply("that isn't a correct URL!");
         }
     } else {
         if (attachments.length === 0) {
@@ -29,7 +29,7 @@ exports.run = async(client, message, args) => {
             } catch (error) {
                 image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
             }
-        } else if (attachments.length > 1) return message.reply("i only can process one image at one time!").then(m => m.delete({ timeout: 5000 }));
+        } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")

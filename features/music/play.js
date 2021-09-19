@@ -4,6 +4,7 @@ const Guild = require('../../model/music');
 const ScrollingLyrics = require("./karaoke");
 const request = require('node-superfetch');
 const { embedURL } = require('../../util/util');
+const spotifyToYT = require("spotify-to-yt");
 
 module.exports = {
         async play(song, message, client, prefix) {
@@ -34,7 +35,7 @@ module.exports = {
                 queue.player = await client.lavacordManager.join({
                     guild: queue.textChannel.guild.id,
                     channel: queue.channel.id,
-                    node: song.type === 'yt' ? client.lavacordManager.idealNodes[0].id : client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id
+                    node: client.lavacordManager.idealNodes[0].id
                 }, {
                     selfdeaf: true
                 });
@@ -70,7 +71,19 @@ module.exports = {
                     logger.log('error', error);
                 };
             });
-
+            if (song.type === 'sp') {
+                const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
+                const msg = await queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
+                const ytUrl = await spotifyToYT.trackGet(song.info.uri);
+                msg.delete();
+                if (!ytUrl || !ytUrl.url) {
+                    queue.songs.shift();
+                    await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    return module.exports.play(queue.songs[0], message, client, prefix);
+                };
+                const [res] = await module.exports.fetchInfo(client, ytUrl.url, false);
+                song.track = res.track;
+            }
             if (queue.karaoke.isEnabled) {
                 queue.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
                 queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
@@ -78,18 +91,16 @@ module.exports = {
                 if (!success) queue.karaoke.instance = null;
             };
             try {
-                await queue.player.play(song.track);
                 queue.nowPlaying = song;
                 queue.songs.shift();
+                await queue.player.play(song.track);
                 queue.player.volume(queue.volume);
             } catch (error) {
                 if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                 await client.lavacordManager.leave(queue.textChannel.guild.id);
                 client.queue.delete(message.guild.id);
-                return queue.textChannel.send({ embeds: [{ description: `**there was an error while playing the music** :pensive:` }] });
+                return queue.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
             };
-
-
     },
     async fetchInfo(client, query, search, id) {
         const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id)[0] : client.lavacordManager.idealNodes[0];

@@ -28,7 +28,7 @@ module.exports = async(client, oldState, newState) => {
                         .setTitle("it's lonely in here :(")
                         .setDescription(`it's been a while since everyone started leaving the music channel, so i left it too ☹️\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${client.config.prefix}24/7\` for supporters! stay tuned <3`)
                     queue.textChannel.send({ embeds: [embed] });
-                    await queue.karaoke.instance.stop();
+                    if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     return client.queue.delete(message.guild.id);
                 }, 900000);
             };
@@ -39,7 +39,7 @@ module.exports = async(client, oldState, newState) => {
         if (!queue) return;
         if (queue.channel.id !== newState.channelId) return;
         if (queue.dcTimeout && queue.afkPause && !queue.playing) {
-            clearTimeout(queue.dcTimeout)
+            clearTimeout(queue.dcTimeout);
             queue.playing = true;
             queue.pausedAt = undefined;
             if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume(queue.player);

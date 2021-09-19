@@ -20,7 +20,11 @@ class Game {
             p2Message = await this.challenged.send('you have been challenged to a game of rps. please choose \`r, p, s\`');
         } catch (error) {
             this.endGame();
-            return this.message.reply("your DM or your opponent's DM is still locked so i can't get the choice from you :( enable your both DMs.").then(i => i.delete({ timeout: 10000 }))
+            return this.message.reply("your DM or your opponent's DM is still locked so i can't get the choice from you :( enable your both DMs.").then(i => {
+                setTimeout(() => {
+                    i.delete();
+                }, 10000);
+            })
         };
         Promise.all([
             p1Message.channel.awaitMessages({

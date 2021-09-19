@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
     if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` }] });
     queue.loop = !queue.loop;
     if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "f3f3f3", description: `loop is turned ${queue.loop ? "on" : "off"} for the whole queue 🔁` }] })
-    queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${message.author} turn loop ${queue.loop ? "on" : "off"} for the current song 🔁` }] }).catch(err => logger.log('error', err));
+    queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${message.author} turn loop ${queue.loop ? "on" : "off"} for the whole queue 🔁` }] }).catch(err => logger.log('error', err));
 };
 exports.help = {
     name: "loop",

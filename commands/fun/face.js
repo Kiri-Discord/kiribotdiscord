@@ -13,7 +13,7 @@ exports.run = async(client, message, args) => {
         if (validUrl.isUri(args[0])) {
             image = args[0];
         } else {
-            return message.reply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));
+            return message.reply("that isn't a correct URL!");
         }
     } else {
         if (attachments.length === 0) return message.reply("can you upload any face to analyze along with that command?");
