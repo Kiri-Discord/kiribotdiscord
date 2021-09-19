@@ -4,7 +4,7 @@ const { msToHMS } = require('../../util/util');
 const validateFEN = require('fen-validator').default;
 const path = require('path');
 const { stripIndents } = require('common-tags');
-const { verify, reactIfAble } = require('../../util/util');
+const { buttonVerify, reactIfAble } = require('../../util/util');
 const { centerImagePart } = require('../../util/canvas');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const turnRegex = /^(?:((?:[A-H][1-8])|(?:[PKRQBN]))?([A-H]|X)?([A-H][1-8])(?:=([QRNB]))?)|(?:0-0(?:-0)?)$/;
@@ -36,7 +36,11 @@ exports.run = async(client, message, args, prefix, cmd) => {
     if (!member) return message.reply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
     const opponent = member.user;
     if (opponent.id === message.author.id) return message.reply("you can't play with yourself!");
-    if (!args[1] || isNaN(args[1]) || args[1] < 0 || args[1] > 120) return message.reply(`how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`);
+    if (!args[1] || isNaN(args[1]) || args[1] < 0 || args[1] > 120) return message.reply({
+        embeds: [{
+            description: `how long should the chess timers be set for (in minutes)? use 0 for infinite. pick a duration between 0 and 120 by using \`${prefix}chess <@opponent> <time>\`!`
+        }]
+    });
     let time = parseInt(args[1]);
     let fen = args.slice(2).join(' ');
     if (fen) {
@@ -53,8 +57,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 client.games.delete(message.channel.id);
                 return message.reply('that user is already in a game. try again in a minute.');
             };
-            await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
-            const verification = await verify(message.channel, opponent);
+            const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
             if (!verification) {
                 client.isPlaying.delete(message.author.id);
                 client.games.delete(message.channel.id);
@@ -80,12 +83,11 @@ exports.run = async(client, message, args, prefix, cmd) => {
         let blackPlayer = opponent;
         let foundGameSave = resumeGame.storage.chess;
         if (foundGameSave) {
-            await message.channel.send(stripIndents `
+            const verification = await buttonVerify(message.channel, message.author, stripIndents `
             you already have a saved game, do you want to resume it? \`y/n\`
 
             *this will delete your currently saved game*
             `);
-            const verification = await verify(message.channel, message.author);
             if (verification) {
                 try {
                     const data = foundGameSave;
@@ -179,8 +181,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     const { author } = turn.first();
                     const alreadySaved = resumeGame.storage.chess;
                     if (alreadySaved) {
-                        await message.channel.send('you already have a saved game, do you want to overwrite it? \`y/n\`');
-                        const verification = await verify(message.channel, author);
+                        const verification = await buttonVerify(message.channel, author, 'you already have a saved game, do you want to overwrite it?');
                         if (!verification) continue;
                     };
                     resumeGame.storage.chess = undefined;

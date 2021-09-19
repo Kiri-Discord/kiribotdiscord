@@ -1,4 +1,4 @@
-const { verify } = require('../../util/util');
+const { buttonVerify } = require('../../util/util');
 
 class Game {
     constructor(client, message, challenged) {
@@ -180,10 +180,9 @@ exports.run = async(client, message, args) => {
     if (client.isPlaying.get(challenged.id)) return message.reply('that user is allready in a game. try again in a minute.');
 
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
-    await message.channel.send(`${challenged}, do you accept this challenge? \`y/n\``);
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${challenged.username}** finish playing :(` });
 
-    const verification = await verify(message.channel, challenged);
+    const verification = await buttonVerify(message.channel, challenged, `${challenged}, do you accept this challenge?`);
     if (!verification) {
         client.games.delete(message.channel.id)
         return message.channel.send(`looks like they declined... ${sedEmoji}`);

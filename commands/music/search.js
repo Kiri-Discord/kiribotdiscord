@@ -118,15 +118,15 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 .get("playlist")
                 .run(client, message, bulk, prefix, true);
         } else {
-            const url = collected.values[0];
+            const url = result[parseInt(collected.values[0])].url;
             await client.commands
                 .get("play")
                 .run(client, message, [url], prefix, cmd, internal);
 
         };
     } catch (error) {
-        logger.log('error', error);
-        return message.reply('there was an error while processing your search, sorry :pensive:').catch(err => logger.log('error', err));
+        console.error(error);
+        return message.reply('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));
     };
 };
 

@@ -30,8 +30,10 @@ exports.run = async(client, message, args) => {
         components: [row]
     });
         const filter = async res => {
-            await res.deferUpdate();
             if (res.user.id !== message.author.id) {
+                await res.deferReply({
+                    ephemeral: true
+                });
                 await res.reply({
                     embeds: [{
                         description: `those buttons are for ${message.author.toString()} :pensive:`
@@ -40,6 +42,7 @@ exports.run = async(client, message, args) => {
                 });
                 return false;
             };
+            await res.deferUpdate();
             row.components.forEach(button => button.setDisabled(true));
             await res.editReply({
                 content: stripIndents `
@@ -59,6 +62,16 @@ exports.run = async(client, message, args) => {
         });
         if (!res) {
             client.games.delete(message.channel.id);
+            row.components.forEach(button => button.setDisabled(true));
+            await msg.edit({
+                content: stripIndents `
+            ${data.prefix ? `${data.prefix.toLowerCase()}, would you rather...` : 'would you rather...'}
+            **1.** ${data.option_1.toLowerCase()}
+            **2.** ${data.option_2.toLowerCase()}
+            _respond with either **1** or **2** to continue._
+        `,
+                components: [row]
+            });
             return message.reply(stripIndents`
                 no response? :D
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`

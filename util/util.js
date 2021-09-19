@@ -4,7 +4,7 @@ const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck of
 const ISO6391 = require('iso-639-1');
 const ms = require('ms');
 const fetch = require('node-fetch');
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
 // const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
 const hugSchema = require('../model/hug');
@@ -194,6 +194,53 @@ module.exports = class util {
 		if (yes.includes(choice) || extraYes.includes(choice)) return true;
 		if (no.includes(choice) || extraNo.includes(choice)) return false;
 		return false;
+	};
+	static async buttonVerify(channel, user, content, { time = 30000 } = {}) {
+		const row = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+			.setCustomId('yes')
+			.setLabel('yes')
+			.setStyle('PRIMARY'),
+			new MessageButton()
+			.setCustomId('no')
+			.setLabel('no')
+			.setStyle('SECONDARY')
+		);
+		const msg = await channel.send({
+			content,
+			components: [row]
+		})
+		const filter = async res => {
+            if (res.user.id !== user.id) {
+                await res.reply({
+					content: `those buttons are for ${user.toString()}!`,
+                    ephemeral: true
+                });
+                return false;
+            };
+			await res.deferUpdate();
+            row.components.forEach(button => button.setDisabled(true));
+            await res.editReply({
+				content,
+                components: [row]
+            });
+            return true;
+        }
+		const res = await msg.awaitMessageComponent({
+            filter,
+            componentType: 'BUTTON',
+            time
+        });
+
+		if (!res) {
+			row.components.forEach(button => button.setDisabled(true));
+			await msg.edit({
+				content,
+                components: [row]
+            });
+			return false;
+		} else return res.customId === 'yes';
 	}
 	static async askString(channel, filter, { time = 20000 } = {}) {
 		const verify = await channel.awaitMessages({
@@ -363,15 +410,20 @@ module.exports = class util {
         const row = new MessageActionRow()
         .addComponents(menu)
 		const msg = await message.channel.send({
-			content: stripIndents`
-			**${arr.length} results was found, which would you like to get more information?**
-			*this will timeout in 30 seconds*
-			`,
+			embeds: [{ 
+				color: '#bee7f7', 
+				description: `**${arr.length} results was found, which would you like to get more information?**`,
+				footer: {
+					text: `this will timeout in 30 seconds`
+				}
+			}],
 			components: [row]
 		});
 		const filter = async (res) => {
-            await res.deferUpdate();
             if (res.user.id !== message.author.id) {
+				await res.deferReply({
+                    ephemeral: true
+                });
                 await res.reply({
                     embeds: [{
                         description: `this menu isn't belong to you :pensive:`
@@ -380,6 +432,7 @@ module.exports = class util {
                 });
                 return false;
             } else {
+				await res.deferUpdate();
                 row.components.forEach(component => component.setDisabled(true));
                 await res.editReply({ 
                     embeds: [{ 
@@ -397,7 +450,7 @@ module.exports = class util {
 			time
 		});
 		if (!response) return defalt;
-		return arr[parseInt(response.values[0]) - 1];
+		return arr[parseInt(response.values[0])];
 	};
 	static msToHMS(duration) {
         var seconds = parseInt((duration / 1000) % 60)

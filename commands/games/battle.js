@@ -1,5 +1,5 @@
 const Battle = require('../../features/battle/battle');
-const { randomRange, verify } = require('../../util/util');
+const { randomRange, buttonVerify } = require('../../util/util');
 
 
 exports.run = async(client, message, args) => {
@@ -18,8 +18,7 @@ exports.run = async(client, message, args) => {
                 client.games.delete(message.channel.id);
                 return message.reply('that user is already in a game. try again in a minute.');
             };
-            await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
-            const verification = await verify(message.channel, opponent);
+            const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
             if (!verification) {
                 client.isPlaying.delete(message.author.id);
                 client.games.delete(message.channel.id);

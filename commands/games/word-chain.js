@@ -1,7 +1,7 @@
 const request = require('node-superfetch');
 const { MessageEmbed } = require('discord.js')
 const { stripIndents } = require('common-tags');
-const { delay, verify } = require('../../util/util');
+const { buttonVerify, delay } = require('../../util/util');
 const startWords = require('../../assets/word-list.json');
 const { webster_key } = process.env;
 
@@ -21,8 +21,7 @@ exports.run = async(client, message, args) => {
     client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finish playing their game :pensive:` });
 
     try {
-        await message.channel.send(`${opponent}, do you accept this challenge? \`y/n\``);
-        const verification = await verify(message.channel, opponent);
+        const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
         if (!verification) {
             client.games.delete(message.channel.id);
             return message.channel.send('looks like they declined...');

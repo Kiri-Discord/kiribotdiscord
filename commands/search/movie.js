@@ -5,7 +5,7 @@ const { shorten, pickWhenMany } = require('../../util/util');
 exports.run = async(client, message, args) => {
     const query = args.join(" ");
     if (!query) return message.reply('what movie you would like me to search for?')
-    try {;
+    try {
         const search = await request
             .get('http://api.themoviedb.org/3/search/movie')
             .query({
@@ -23,7 +23,6 @@ exports.run = async(client, message, args) => {
                 description: movie.release_date || 'TBA',
                 value: i.toString(),
             };
-            // const resultListFunc = (movie, i) => `\`${i + 1}\` · **${movie.title}** (${movie.release_date || 'TBA'})`;
             find = await pickWhenMany(message, search.body.results, find, resultListFunc);
         };
         const { body } = await request
@@ -35,17 +34,15 @@ exports.run = async(client, message, args) => {
             .setURL(`https://www.themoviedb.org/movie/${body.id}`)
             .setDescription(body.overview ? shorten(body.overview) : 'No description available.')
             .setThumbnail(body.poster_path ? `https://image.tmdb.org/t/p/w500${body.poster_path}` : null)
-            .addField(':timer: Runtime', body.runtime ? `${body.runtime} minutes` : 'Not avaliable', true)
-            .addField(':calendar_spiral: Release date', body.release_date || '???', true)
+            .addField('\`⏲️\` Runtime', body.runtime ? `${body.runtime} minutes` : 'Not avaliable', true)
+            .addField('\`🗓️\` Release date', body.release_date || '???', true)
             .addField('\`🎭\` Genres', body.genres.length ? body.genres.map(genre => genre.name).join(', ') : '???')
             .addField('\`🏢\` Companies', body.production_companies.length ? body.production_companies.map(c => c.name).join(', ') : '???');;
         return message.channel.send({ embeds: [embed] });
-    } catch (error) {;
-        return message.channel.send("opps, there was an error while fetching the movie's information. can you try it later? :pensive:")
-    }
-}
-
-
+    } catch (error) {
+        return message.channel.send("Opps, there was an error while fetching the movie's information. Can you try it later? :p")
+    };
+};
 
 exports.help = {
     name: "movie",

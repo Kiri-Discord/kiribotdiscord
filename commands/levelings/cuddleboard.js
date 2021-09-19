@@ -78,8 +78,10 @@ exports.run = async(client, message, args, prefix) => {
         content: `page 1 of ${arrEmbeds.length}`,
     });
     const filter = async res => {
-        await res.deferUpdate();
         if (res.user.id !== message.author.id) {
+            await res.deferReply({
+                ephemeral: true
+            });
             await res.reply({
                 embeds: [{
                     description: `those buttons are for ${message.author.toString()} :pensive:`
@@ -87,7 +89,10 @@ exports.run = async(client, message, args, prefix) => {
                 ephemeral: true
             });
             return false;
-        } else return true;
+        } else {
+            await res.deferUpdate();
+            return true;
+        }
     };
     return paginateEmbed(arrEmbeds, msg, row, filter, message);
 };

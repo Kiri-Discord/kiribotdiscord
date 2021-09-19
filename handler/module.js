@@ -12,10 +12,8 @@ module.exports = client => {
             moduleConf.cmds = [];
             if (!moduleConf) return;
             client.helps.set(moduleConf.name, moduleConf);
-            if (!moduleConf.hide) {
-                client.allNameFeaturesSlash.push({ name: moduleConf.name, value: moduleConf.name })
-                client.allNameFeatures.push(moduleConf.name);
-            }
+            client.allNameFeaturesSlash.push({ label: moduleConf.name, value: moduleConf.name })
+            client.allNameFeatures.push(moduleConf.name);
 
             fs.readdir(`./commands/${category}`, (err, files) => {
                 logger.log('info', `Found total ${files.length - 1} command(s) from ${category}.`);

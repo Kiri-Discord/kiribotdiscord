@@ -16,7 +16,7 @@ exports.run = async(client, message, args, prefix) => {
     const embed = new MessageEmbed()
         .setTitle('the shop 🛒')
         .setColor("#bee7f7")
-        .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <items>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features.\ncheck \`${prefix}help ecomomy\` to get more info :slight_smile:`)
+        .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <items>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features. :slight_smile:`)
         .addField('items list :moneybag:', stripIndents `
         ${list.join('\n')}
         `)

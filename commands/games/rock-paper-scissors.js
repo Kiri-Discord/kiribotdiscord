@@ -1,4 +1,4 @@
-const { verify } = require('../../util/util');
+const { buttonVerify } = require('../../util/util');
 const rep = ['r', 'p', 's'];
 
 
@@ -181,8 +181,7 @@ exports.run = async(client, message, args) => {
     if (client.isPlaying.get(challenged.id)) return message.reply('that user is already in a game. try again in a minute.');
 
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
-    await message.channel.send(`${challenged}, do you accept this challenge? \`y/n\``);
-    const verification = await verify(message.channel, challenged);
+    const verification = await buttonVerify(message.channel, challenged, `${challenged}, do you accept this challenge?`);
     if (!verification) return message.channel.send(`looks like they declined... ${sedEmoji}`);
 
     client.isPlaying.set(challenged.id, true);
