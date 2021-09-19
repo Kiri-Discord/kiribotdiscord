@@ -31,9 +31,6 @@ exports.run = async(client, message, args) => {
     });
         const filter = async res => {
             if (res.user.id !== message.author.id) {
-                await res.deferReply({
-                    ephemeral: true
-                });
                 await res.reply({
                     embeds: [{
                         description: `those buttons are for ${message.author.toString()} :pensive:`
