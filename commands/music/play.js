@@ -96,7 +96,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         } catch (error) {
             logger.log('error', error);
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
-        }
+        };
     } else if (scRegex.test(url) || mobileScRegex.test(url)) {
         try {
             [song] = await fetchInfo(client, url, false, 'yt');
@@ -105,7 +105,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             song.requestedby = message.author;
         } catch (error) {
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
-        }
+        };
     } else if (url.match(spotifyRegex)) {
         const matchs = url.match(spotifyRegex);
         const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
@@ -113,7 +113,9 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             return message.channel.send({ embeds: [{ color: "f3f3f3", description: `${logo} sorry, i don't support podcast link from Spotify :pensive:` }] });
         };
         try {
-            const [info] = await getTracks(url);
+            const results = await getTracks(url);
+            if (!results || !results.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
+            const info = results[0];
             song = {
                 info: {
                     uri: info.external_urls.spotify,
@@ -127,12 +129,12 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         } catch (error) {
             logger.log('error', error);
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
-        }
+        };
     } else {
         return client.commands
             .get("search")
             .run(client, message, [search], prefix, cmd, queueConstruct.karaoke);
-    }
+    };
 
     if (serverQueue) {
         serverQueue.songs.push(song);
