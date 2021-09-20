@@ -11,7 +11,7 @@ module.exports = async(client, oldState, newState) => {
             await client.lavacordManager.leave(queue.textChannel.guild.id);
             return client.queue.delete(queue.textChannel.guild.id);
         };
-        const playerListening = [...queue.channel.members.value()];
+        const playerListening = [...queue.channel.members.values()];
         let listening = playerListening.filter(x => !x.user.bot).length;
         if (listening >= 1) return;
 
