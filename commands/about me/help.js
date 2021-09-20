@@ -9,9 +9,9 @@ exports.run = async(client, message, args, prefix) => {
         const replyEmoji = client.customEmojis.get('following');
         message.channel.sendTyping();
         const optionList = [{
-            label: '📔 all',
+            label: 'all',
             value: 'all',
-            default: true
+            emoji: '📔'
         }];
         let fullCmd = [];
         let list = [];
@@ -21,6 +21,7 @@ exports.run = async(client, message, args, prefix) => {
             optionList.push({
                 label: mod.displayName,
                 value: mod.name,
+                emoji: mod.emoji
             })
             mod.cmds.forEach(x => x.type = mod.name);
             fullCmd.push(...mod.cmds);
@@ -32,7 +33,7 @@ exports.run = async(client, message, args, prefix) => {
         };
         arrSplitted.map((item, index) => {
             const embed = new MessageEmbed()
-                .setColor('#bee7f7')
+                .setColor('#EDE7D3')
                 .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                 .setDescription(item.join('\n'))
                 .setFooter(`do ${prefix}help <cmd> for more help on a command`)
@@ -63,9 +64,8 @@ exports.run = async(client, message, args, prefix) => {
             .addComponents(components);
         const menu = new MessageSelectMenu()
             .setCustomId('menu')
-            .setMaxValues(1)
             .addOptions(optionList)
-            .setPlaceholder('choose a result');
+            .setPlaceholder('choose a category');
         const row1 = new MessageActionRow()
             .addComponents(menu);
         const msg = await message.channel.send({
@@ -117,7 +117,7 @@ exports.run = async(client, message, args, prefix) => {
                     arrEmbeds = [];
                     arrSplitted.map((item, index) => {
                         const embed = new MessageEmbed()
-                            .setColor('#bee7f7')
+                            .setColor('#EDE7D3')
                             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                             .setDescription(item.join('\n'))
                             .setFooter(`do ${prefix}help <cmd> for more help on a command`)
@@ -126,7 +126,7 @@ exports.run = async(client, message, args, prefix) => {
                     currentPage = 0;
                     await res.editReply({
                         content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
-                        components: [row, row1],
+                        // components: [row, row1],
                         embeds: [arrEmbeds[currentPage]]
                     });
                 case 'previousbtn':
@@ -134,7 +134,7 @@ exports.run = async(client, message, args, prefix) => {
                         --currentPage;
                         await res.editReply({
                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
-                            components: [row, row1],
+                            // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         });
                     };
@@ -144,7 +144,7 @@ exports.run = async(client, message, args, prefix) => {
                         currentPage++;
                         await res.editReply({
                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
-                            components: [row, row1],
+                            // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         })
                     };
@@ -173,7 +173,7 @@ exports.run = async(client, message, args, prefix) => {
                         currentPage = parseInt(number) - 1;
                         await res.editReply({
                             content: `page ${number} of ${arrEmbeds.length}`,
-                            components: [row, row1],
+                            // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         })
                     };

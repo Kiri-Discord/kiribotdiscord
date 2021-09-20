@@ -1,6 +1,7 @@
 {
-  "displayName": "🖼️ memeify",
-  "desc": "memeify everything",
-  "name": "memeify",
-  "hide": false
+    "displayName": "memeify",
+    "desc": "memeify everything",
+    "name": "memeify",
+    "hide": false,
+    "emoji": "🖼️"
 }

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const ms = require("ms");
 const { embedURL } = require('../util/util');
 const varReplace = require('../util/variableReplace');
@@ -17,17 +17,17 @@ module.exports = async(client, member) => {
 
             const alreadyHasRole = member.roles.cache.has(setting.verifyRole);
             if (roleExist && verifyChannel && !alreadyHasRole) {
-                const timeMs = setting.verifyTimeout || ms('10m');
+                const timeMs = setting.verifyTimeout;
                 const exists = await client.verifytimers.exists(member.guild.id, member.user.id);
                 let code = randomText(10);
                 if (exists) {
                     await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
-                    await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id, code);
+                    await client.verifytimers.setTimer(member.guild.id, timeMs === null ? 900000 : timeMs, member.user.id, code, true, timeMs === null ? true : false);
                 } else {
-                    await client.verifytimers.setTimer(member.guild.id, timeMs, member.user.id, code);
+                    await client.verifytimers.setTimer(member.guild.id, timeMs === null ? 900000 : timeMs, member.user.id, code, true, timeMs === null ? true : false);
                 };
                 const dm = new MessageEmbed()
-                    .setFooter(`you will be kicked from the server in ${ms(timeMs, {long: true})} to prevent bots and spams`)
+                    .setFooter(timeMs !== null ? `you will be kicked from the server in ${ms(timeMs, {long: true})} to prevent bots and spams` : `this link is expiring in ${ms(900000, {long: true})}`)
                     .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
                     .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${__baseURL}verify?valID=${code}`)}`)

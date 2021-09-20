@@ -276,7 +276,7 @@ module.exports = class util {
 						--currentPage;
 						await res.editReply({
 							content: `page ${currentPage + 1} of ${array.length}`,
-							components: [row],
+							// components: [row],
 							embeds: [array[currentPage]]
 						});
 					};
@@ -286,7 +286,7 @@ module.exports = class util {
 						currentPage++;
 						await res.editReply({
 							content: `page ${currentPage + 1} of ${array.length}`,
-							components: [row],
+							// components: [row],
 							embeds: [array[currentPage]]
 						})
 					};
@@ -316,7 +316,7 @@ module.exports = class util {
 						currentPage = parseInt(number) - 1;
 						await res.editReply({
 							content: `page ${number} of ${array.length}`,
-							components: [row],
+							// components: [row],
 							embeds: [array[currentPage]]
 						})
 				    };

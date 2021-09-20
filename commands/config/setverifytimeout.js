@@ -1,6 +1,15 @@
 const ms = require("ms");
 exports.run = async(client, message, args, prefix) => {
     const db = client.guildsStorage.get(message.guild.id);
+    if (message.flags[0] === "off") {
+        db.verifyTimeout = undefined;
+        await client.dbguilds.findOneAndUpdate({
+            guildID: message.guild.id,
+        }, {
+            verifyTimeout: null
+        });
+        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ verify timeout has been disabled` }] });
+    };
     let time = args.join(" ");
 
     if (!time) return message.reply("please includes the time format. all valid time format are \`s, m, hrs\`!");
@@ -23,8 +32,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "setverifytimeout",
     description: "how long do you want unverified people to stay in your guild?",
-    usage: ["setverifytimeout <time>"],
-    example: ["setverify `5hrs`", "setverify `10m`"]
+    usage: ["setverifytimeout `<time>`", "setverifytimeout `-off`"],
+    example: ["setverifytimeout `5hrs`", "setverifytimeout `10m`", "setverifytimeout `-off`"]
 };
 
 exports.conf = {

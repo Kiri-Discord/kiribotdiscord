@@ -111,17 +111,17 @@ module.exports = async(client, message) => {
             };
         };
 
-        if (commandFile.conf.userPerms && message.channel.type !== "dm" && commandFile.conf.userPerms.length) {
+        if (commandFile.conf.userPerms && message.channel.type !== "DM" && commandFile.conf.userPerms.length) {
             if (!message.member.permissions.has(commandFile.conf.userPerms)) {
                 return message.channel.send(`are you a mod? you don't seems to have the ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission for this ${stare}`);
             }
         };
-        if (commandFile.conf.channelPerms && message.channel.type !== 'dm' && commandFile.conf.channelPerms.length) {
+        if (commandFile.conf.channelPerms && message.channel.type !== 'DM' && commandFile.conf.channelPerms.length) {
             if (!message.channel.permissionsFor(message.guild.me).has(commandFile.conf.channelPerms)) {
                 return message.channel.send(`ouch! bruh it seems like i don't have the ${commandFile.conf.channelPerms.map(x => `\`${x}\``).join(" and ")} permission in this channel to properly do that for you ${stare}`);
             };
         }
-        if (commandFile.conf.clientPerms && message.channel.type !== "dm" && commandFile.conf.clientPerms.length) {
+        if (commandFile.conf.clientPerms && message.channel.type !== "DM" && commandFile.conf.clientPerms.length) {
             if (!message.guild.me.permissions.has(commandFile.conf.clientPerms)) {
                 return message.channel.send(`sorry, i don't have the ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission across the server to do that ${sed}`)
             };
