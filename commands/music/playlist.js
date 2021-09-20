@@ -133,6 +133,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                 newSongs = [];
                 if (fields[1] === 'playlist' || fields[1] === 'album') {
                     const playlist = await getTracks(url);
+                    if (!playlist || !playlist.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                     if (playlist.length > 30) playlist = playlist.splice(0, 30);
                     for (const data of playlist) {
                         const song = {
