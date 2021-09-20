@@ -67,7 +67,7 @@ exports.run = async(client, message, args) => {
 
     let createdate = `<t:${Math.floor(member.user.createdAt.getTime()/1000)}:F>`;
     let joindate = `<t:${Math.floor(member.joinedAt.getTime()/1000)}:F>`;
-    let status = presences[member.presence.status];
+    let status = presences[member.presence ? member.presence.status || 'offline' : 'offline'];
     let avatar = member.user.displayAvatarURL({ size: 4096, dynamic: true });
     let dots;
     if (roles.length) {
