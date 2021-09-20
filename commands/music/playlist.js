@@ -124,7 +124,6 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                 return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             };
         } else if (url.match(spotifyRegex)) {
-            console.log(url)
             const fields = url.match(spotifyRegex);
             const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
             if (fields[1] === 'episode' || fields[1] === 'show') {
@@ -135,7 +134,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                 if (fields[1] === 'playlist' || fields[1] === 'album') {
                     const playlist = await getTracks(url);
                     if (!playlist || !playlist.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
-                    if (playlist.length > 30) playlist = playlist.splice(0, 30);
+                    if (playlist.length > 30) playlist.splice(29, 70);
                     for (const data of playlist) {
                         const song = {
                             info: {
