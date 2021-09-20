@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async(client, oldState, newState) => {
     if ((oldState.member.user.bot && oldState.member.user.id !== client.user.id) ||
         (newState.member.user.bot && newState.member.user.id !== client.user.id)) return;
-    if (newState.channelId === null || oldState.channelId) { //leaving vc
+    if (newState.channelId === null) { //leaving vc
         const queue = client.queue.get(oldState.guild.id);
         if (!queue) return;
         if (queue.channel.id !== oldState.channelId) return;
@@ -35,6 +35,7 @@ module.exports = async(client, oldState, newState) => {
         };
     };
     if (oldState.channelId === null) {
+        if (oldState.member.user.id === client.user.id) return;
         const queue = client.queue.get(newState.guild.id);
         if (!queue) return;
         if (queue.channel.id !== newState.channelId) return;
