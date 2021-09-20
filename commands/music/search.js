@@ -75,7 +75,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             })
         };
         const filter = async (res) => {
-            await res.deferUpdate();
             if (res.user.id !== message.author.id) {
                 await res.reply({
                     embeds: [{
@@ -85,6 +84,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 });
                 return false;
             } else {
+		await res.deferUpdate();
                 row.components.forEach(component => component.setDisabled(true));
                 await res.editReply({ 
                     embeds: [{ 
@@ -104,7 +104,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
 		});
         if (!collected) {
             row.components.forEach(component => component.setDisabled(true));
-            await res.edit({ 
+            await loadingMessage.edit({ 
                 embeds: [{ 
                     color: '#bee7f7', 
                     description: `this command is now inactive :pensive:` 
