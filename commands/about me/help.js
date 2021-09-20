@@ -31,7 +31,7 @@ exports.run = async(client, message, args, prefix) => {
             const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
             arrSplitted.push(toAdd);
         };
-        arrSplitted.map((item, index) => {
+        arrSplitted.forEach((item, index) => {
             const embed = new MessageEmbed()
                 .setColor('#EDE7D3')
                 .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
@@ -115,7 +115,7 @@ exports.run = async(client, message, args, prefix) => {
                         arrSplitted.push(toAdd);
                     };
                     arrEmbeds = [];
-                    arrSplitted.map((item, index) => {
+                    arrSplitted.forEach((item, index) => {
                         const embed = new MessageEmbed()
                             .setColor('#EDE7D3')
                             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
