@@ -84,7 +84,7 @@ exports.run = async(client, message, args, prefix) => {
         .setThumbnail(user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
         .addField(`Leveling`, `✨ XP: \`${xp}\`\n:arrow_up: Level: \`${level}\``)
         .addField(`Currency`, `:moneybag: Balance: ⏣ \`${storage.balance}\`\nOwn \`${item}\` item (total \`${itemTotal}\`) that worth ⏣ ${worth}`)
-        .addField(`Minigames (only multiplayer)`, `:golf: Games played: **${storage.matchPlayed}**\n:tada: Win: ${storage.win}\n:pensive: Lose: ${storage.lose}\nW/L: **${isNaN(winLoseRate.toFixed(2)) ? 'None' : winLoseRate.toFixed(2)}**`)
+        .addField(`Minigames (only multiplayer)`, `:golf: Games played: **${storage.matchPlayed || 0}**\n:tada: Win: ${storage.win}\n:pensive: Lose: ${storage.lose}\nW/L: **${isNaN(winLoseRate.toFixed(2)) ? 'None' : winLoseRate.toFixed(2)}**`)
         .addField('Marriage', `${marriageStatus} \`${prefix}status\` to refresh`)
     return message.channel.send({ embeds: [embed] })
 };
