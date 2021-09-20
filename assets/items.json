@@ -3,7 +3,7 @@
         "price": 50,
         "displayName": "🌱 seed",
         "displayPrice": "⏣ 50",
-        "desc": "used to propose to your partner via `{prefix}marry` <3 (break after each proposal)"
+        "desc": "bait to use for catching `{prefix}fish` {rod}"
     },
     "worms": {
         "price": 150,
@@ -15,6 +15,6 @@
         "price": 1300,
         "displayPrice": "⏣ 1,300",
         "displayName": "💍 wedding ring",
-        "desc": "bait to use for catching `{prefix}fish` {rod}"
+        "desc": "used to propose to your partner via `{prefix}marry` <3 (break after each proposal)"
     }
 }
