@@ -128,7 +128,7 @@ exports.run = async(client, message, args, prefix) => {
                 continue;
             };
             await deleteIfAble(res);
-            targetEmbed.color = res.content.toUpperCase();
+            targetEmbed.color = color.values;
             ongoing = false;
             if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
             else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
