@@ -9,6 +9,7 @@ global.logger = winston.createLogger({
 
 require('dotenv').config();
 process.on('unhandledRejection', error => {
+    client.channels.cache.get('833003165565583362').send(`${error}`)
     console.error('Unhandled promise rejection:', error);
 });
 
