@@ -75,6 +75,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             })
         };
         const filter = async (res) => {
+	    res.deferUpdate();
             if (res.user.id !== message.author.id) {
                 await res.reply({
                     embeds: [{
@@ -84,7 +85,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 });
                 return false;
             } else {
-		await res.deferUpdate();
                 row.components.forEach(component => component.setDisabled(true));
                 await res.editReply({ 
                     embeds: [{ 
