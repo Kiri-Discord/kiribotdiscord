@@ -124,6 +124,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                 return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             };
         } else if (url.match(spotifyRegex)) {
+            console.log(url)
             const fields = url.match(spotifyRegex);
             const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
             if (fields[1] === 'episode' || fields[1] === 'show') {
