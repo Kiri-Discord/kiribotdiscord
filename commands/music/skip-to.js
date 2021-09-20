@@ -40,11 +40,11 @@ exports.run = async(client, message, args, prefix) => {
 async function skip(queue, message, args) {
     queue.playing = true;
     if (queue.loop) {
-        for (let i = 0; i < args[0] - 2; i++) {
+        for (let i = 0; i < args[0] - 1; i++) {
             queue.songs.push(queue.songs.shift());
         }
     } else {
-        queue.songs = queue.songs.slice(args[0] - 2);
+        queue.songs = queue.songs.slice(args[0] - 1);
     };
     await queue.player.stop();
     const number = args[0] - 1;
