@@ -99,26 +99,29 @@ exports.run = async(client, message, args) => {
             const embed = new MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setThumbnail(anime.coverImage.large || anime.coverImage.medium || null)
-                .setTitle(anime.title.english || anime.title.romaji)
-                .setDescription(anime.description ? cleanAnilistHTML(anime.description) : '*No description found???*')
-                .addField('📜 Status', statuses[anime.status], true)
-                .addField('📺 Episodes', anime.episodes || '*not found???*', true)
-                .addField('🍁 Season', anime.season ? `${seasons[anime.season]} ${anime.startDate.year}` : '???', true)
-                .addField('💯 Average score', anime.averageScore ? `${anime.averageScore}%` : '???', true)
-                .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
-                .addField('ℹ️ Links', anime.externalLinks.length ?
+                .setTitle(`${anime.title.english || anime.title.romaji}`)
+                .setDescription(`${anime.description ? cleanAnilistHTML(anime.description) : '*No description found???*'}`)
+                .addField('📜 Status', `${statuses[anime.status]}`, true)
+                .addField('📺 Episodes', `${anime.episodes || '???'}`, true)
+                .addField('🍁 Season', `${anime.season ? `${seasons[anime.season]} ${anime.startDate.year}` : '???'}`, true)
+                .addField('💯 Average score', `${anime.averageScore ? `${anime.averageScore}%` : '???'}`, true)
+                .addField(`🧪 MAL score`, `${malScore ? embedURL(malScore, malURL) : '???'}`, true)
+                .addField('ℹ️ Links', `${anime.externalLinks.length ?
                     anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') :
-                    'None')
-                .setImage(result.preview);
+                    'None'}`)
+                .setImage(`${result.preview}`);
 
             const title = `${anime.title.english || anime.title.romaji}${result.episode ? ` (episode ${result.episode})` : ''}`;
         ;
-        return message.channel.send(stripIndents`
+        return message.channel.send({
+            content: stripIndents`
             i'm pretty ${result.prob}% sure this is from ${title} 
             ${result.prob < 87 ? '_i think this probablity is kinda low, try using a higher quality image_' : ''}
-        `, embed);
+        `,
+        embeds: [embed]
+        });
     } catch (err) {
-        ;
+        console.error(err);
         return message.reply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
     }
 };

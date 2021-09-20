@@ -56,13 +56,15 @@ exports.run = async(client, message, args) => {
     if (rest.length) {
         embed.setDescription(first)
         await message.channel.send({ embeds: [embed] });
-        const lastContent = rest.splice(rest.length - 1, 1);
-        for (const text of rest) {
-            const embed1 = new MessageEmbed()
-                .setColor(message.member.displayHexColor)
-                .setDescription(text)
-            await message.channel.send({ embeds: [embed1] })
-        };
+        const lastContent = rest.pop();
+        if (rest.length) {
+            for (const text of rest) {
+                const embed1 = new MessageEmbed()
+                    .setColor(message.member.displayHexColor)
+                    .setDescription(text)
+                await message.channel.send({ embeds: [embed1] })
+            };
+        }
         const embed3 = new MessageEmbed()
             .setColor(message.member.displayHexColor)
             .setDescription(lastContent)

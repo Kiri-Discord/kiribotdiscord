@@ -244,7 +244,7 @@ module.exports = class util {
 	}
 	static async askString(channel, filter, { time = 20000 } = {}) {
 		const verify = await channel.awaitMessages({
-			filter,
+			filter: filter,
 			max: 1,
 			time
 		});

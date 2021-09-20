@@ -13,7 +13,7 @@ exports.run = async(client, message, args) => {
         const event = events[Math.floor(Math.random() * events.length)];
         const embed = new MessageEmbed()
             .setTitle(body.date)
-            .setAuthor(`On this day...`, client.user.displayAvatarURL())
+            .setAuthor(`On this day...`)
             .setColor(message.guild.me.displayHexColor)
             .setURL(body.url)
             .setTimestamp()

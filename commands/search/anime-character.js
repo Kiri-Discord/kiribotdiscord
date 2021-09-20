@@ -62,6 +62,7 @@ exports.run = async(client, message, args) => {
             }), 5).join(', '));
         return message.channel.send({ embeds: [embed] });
     } catch (err) {
+        console.error(err)
         return message.channel.send('sorry! i got no result. the server might be down tho. :pensive:')
     }
 }

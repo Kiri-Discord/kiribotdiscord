@@ -1,6 +1,6 @@
 exports.run = async(client, message, args) => {
     const res = client.leveling.getLevelBounds(args[0])
-    message.channel.send(`${res.lowerBound}, ${res.upperBound}`)
+    return message.channel.send(`${res.lowerBound}, ${res.upperBound}`)
 };
 
 exports.help = {

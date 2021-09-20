@@ -1,10 +1,23 @@
+const { Util } = require('discord.js');
+
 exports.run = async(client, message, args) => {
     if (!args[0]) {
         let listGuild = [];
         client.guilds.cache.each(guild => {
             listGuild.push(`${guild.name} - ${guild.id} (owner: ${guild.ownerID})`)
         });
-        return message.channel.send(`these are all guilds being connected to me. use this command with it's id to generate an invite:\n${listGuild.join('\n')}`, { split: true })
+        const [first, ...rest] = Util.splitMessage(listGuild.join('\n'), { maxLength: 1900, char: '\n' });
+        if (rest.length) {
+            await message.channel.send(first);
+            for (const text of rest) {
+                const embed1 = new MessageEmbed()
+                    .setColor(message.member.displayHexColor)
+                    .setDescription(text)
+                await message.channel.send(text);
+            };
+        } else {
+            return message.channel.send(first);
+        };
     }
     const guild = client.guilds.cache.get(args[0]);
     if (!guild) return message.channel.send('guild not found.');
@@ -13,7 +26,7 @@ exports.run = async(client, message, args) => {
     const invite = await channels.createInvite();
     if (!invite) return message.channel.send('NO PERMISSION AT ALL');
     return message.channel.send(`here is your invite to ${guild.name}: ${invite.url}`)
-}
+};
 
 exports.help = {
     name: "guilds-invite",

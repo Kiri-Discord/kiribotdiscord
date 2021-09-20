@@ -61,29 +61,30 @@ const statuses = {
 };
 
 exports.run = async(client, message, args, prefix) => {
-    let query = args.join(" ");
-    if (!query) return message.reply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
-    try {;
-        const id = await search(query);
-        if (!id) return message.channel.send(`i could not find any results with **${query}** :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`).then(() => message.channel.stopTyping(true));
-        const anime = await fetchAnime(id);
-        const malScore = await fetchMALScore(anime.idMal);
-        const malURL = `https://myanimelist.net/anime/${anime.idMal}`;
-        const embed = new MessageEmbed()
-            .setColor(message.member.displayHexColor)
-            .setThumbnail(anime.coverImage.large || anime.coverImage.medium || null)
-            .setTitle(anime.title.english || anime.title.romaji)
-            .setDescription(anime.description ? cleanAnilistHTML(anime.description) : '*No description found???*')
-            .addField('📜 Status', statuses[anime.status], true)
-            .addField('📺 Episodes', anime.episodes || '*not found???*', true)
-            .addField('🍁 Season', anime.season ? `${seasons[anime.season]} ${anime.startDate.year}` : '???', true)
-            .addField('💯 Average score', anime.averageScore ? `${anime.averageScore}%` : '???', true)
-            .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
-            .addField('ℹ️ Links', anime.externalLinks.length ?
+        let query = args.join(" ");
+        if (!query) return message.reply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
+        try {;
+            const id = await search(query);
+            if (!id) return message.channel.send(`i could not find any results with **${query}** :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`).then(() => message.channel.stopTyping(true));
+            const anime = await fetchAnime(id);
+            const malScore = await fetchMALScore(anime.idMal);
+            const malURL = `https://myanimelist.net/anime/${anime.idMal}`;
+            const embed = new MessageEmbed()
+                .setColor(message.member.displayHexColor)
+                .setThumbnail(`${anime.coverImage.large || anime.coverImage.medium || null}`)
+                .setTitle(`${anime.title.english || anime.title.romaji}`)
+                .setDescription(`${anime.description ? cleanAnilistHTML(anime.description) : '*No description found???*'}`)
+                .addField('📜 Status', `${statuses[anime.status]}`, true)
+                .addField('📺 Episodes', `${anime.episodes || '???'}`, true)
+                .addField('🍁 Season', `${anime.season ? `${seasons[anime.season]} ${anime.startDate.year}` : '???'}`, true)
+            .addField('💯 Average score', `${anime.averageScore ? `${anime.averageScore}%` : '???'}`, true)
+            .addField(`🧪 MAL score`, `${malScore ? embedURL(malScore, malURL) : '???'}`, true)
+            .addField('ℹ️ Links', `${anime.externalLinks.length ?
                 anime.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') :
-                'None');;
+                'None'}`);;
         return message.channel.send({ embeds: [embed] });
-    } catch (err) {;
+    } catch (err) {
+        console.error(err)
         return message.reply(`sorry! i got an error so try again later! the server might be down tho.`)
     }
 }

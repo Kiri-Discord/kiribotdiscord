@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
                 return message.channel.send('gotcha.')
             }
         } catch (error) {
-            message.channel.send('i couldn\'t set my avatar with that image. can you check the image format?')
+            return message.channel.send('i couldn\'t set my avatar with that image. can you check the image format?')
         }
     });
 }

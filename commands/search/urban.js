@@ -14,7 +14,6 @@ exports.run = async(client, message, args) => {
 
     const embed = new MessageEmbed()
         .setTimestamp(new Date())
-        .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
         .setColor("#7DBBEB")
         .setTitle(result.word)
         .setURL(result.urbanURL)
