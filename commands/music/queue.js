@@ -13,8 +13,9 @@ exports.run = async(client, message, args) => {
         });
         let queueFields = [];
         const nowPlaying = queue.nowPlaying;
-        let totalDuration = 0;
-        queue.songs.map((track, index) => {
+        let totalDuration = nowPlaying.info.length;
+        queueFields.push(`**NOW**: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)
+        queue.songs.forEach((track, index) => {
             totalDuration = totalDuration + track.info.length;
             queueFields.push(`\`${index + 1}\` - [${track.info.title}](${track.info.uri}) - ${track.info.author} [${track.requestedby}]`)
         });
@@ -27,7 +28,7 @@ exports.run = async(client, message, args) => {
         arrSplitted.map((item, index) => {
                     const embed = new MessageEmbed()
                         .setAuthor(`Music queue for ${message.guild.name}`, message.guild.iconURL({ size: 4096, dynamic: true }))
-                        .setDescription(`**NOW**: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)
+                        .setDescription(`Now playing: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)
                         .setFooter(`${queue.loop ? 'Currently looping the queue' : `${queue.songs.length} song${queue.songs.length === 1 ? '' : 's'} left in queue`} (queue duration: ${moment.duration(totalDuration).format('H[h] m[m] s[s]')})`)
                     .addField('\u200b', item.join('\n'));
     arrEmbeds.push(embed);
