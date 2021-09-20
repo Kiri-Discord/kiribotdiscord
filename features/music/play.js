@@ -81,9 +81,15 @@ module.exports = {
                     await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                     return module.exports.play(queue.songs[0], message, client, prefix);
                 };
-                const [res] = await module.exports.fetchInfo(client, ytUrl.url, false);
-                song.track = res.track;
-            }
+                try {
+                    const [res] = await module.exports.fetchInfo(client, ytUrl.url, false);
+                    song.track = res.track;
+                } catch (error) {
+                    queue.songs.shift();
+                    await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    return module.exports.play(queue.songs[0], message, client, prefix);
+                };
+            };
             if (queue.karaoke.isEnabled) {
                 queue.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
                 queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);

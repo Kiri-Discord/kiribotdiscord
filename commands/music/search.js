@@ -15,7 +15,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         let options = [];
         try {
             let loadingMessage = await message.channel.send({ embeds: [{ color: "#bee7f7", description: `looking for \`${search}\`` }] });
-            const ytRes = await fetchInfo(client, search, true);
+            const ytRes = await fetchInfo(client, search, true, 'yt');
             const scRes = await scdl.search({
                 query: search,
                 resourceType: 'tracks'
@@ -75,7 +75,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             })
         };
         const filter = async (res) => {
-	    res.deferUpdate();
             if (res.user.id !== message.author.id) {
                 await res.reply({
                     embeds: [{
@@ -85,24 +84,17 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 });
                 return false;
             } else {
-                row.components.forEach(component => component.setDisabled(true));
-                await res.editReply({ 
-                    embeds: [{ 
-                        color: '#bee7f7', 
-                        description: `this command is now inactive :pensive:` 
-                    }],
-                    components: [row]
-                });
                 return true;
             };
         };
             
-        const collected = await loadingMessage.awaitMessageComponent({
+        const collector = loadingMessage.createMessageComponentCollector({
 			componentType: 'SELECT_MENU',
 			filter,
-			time: 30000
+			time: 30000,
+            max: 1
 		});
-        if (!collected) {
+        collector.on('end', async(res) => {
             row.components.forEach(component => component.setDisabled(true));
             await loadingMessage.edit({ 
                 embeds: [{ 
@@ -111,19 +103,23 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 }],
                 components: [row]
             });
-        };
-        if (collected.values.length > 1) {
-            const bulk = collected.values.map(song => result[song]);
-            await client.commands
-                .get("playlist")
-                .run(client, message, bulk, prefix, true);
-        } else {
-            const url = result[parseInt(collected.values[0])].url;
-            await client.commands
-                .get("play")
-                .run(client, message, [url], prefix, cmd, internal);
-
-        };
+        })
+        collector.on('collect', async(res) => {
+            res.deferUpdate();
+            collector.stop();
+            if (res.values.length > 1) {
+                const bulk = res.values.map(song => result[song]);
+                await client.commands
+                    .get("playlist")
+                    .run(client, message, bulk, prefix, true);
+            } else {
+                const url = result[parseInt(res.values[0])].url;
+                await client.commands
+                    .get("play")
+                    .run(client, message, [url], prefix, cmd, internal);
+    
+            };
+        })
     } catch (error) {
         console.error(error);
         return message.reply('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));
