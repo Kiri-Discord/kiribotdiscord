@@ -44,6 +44,7 @@ module.exports = async(client, message) => {
                 };
             };
             if (setting.enableLevelings && message.channel.type === "GUILD_TEXT") {
+                console.log('can level up')
                 client.emit('experience', message, setting);
             };
         };
