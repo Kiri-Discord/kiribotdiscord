@@ -46,7 +46,7 @@ exports.run = async(client, message, args, prefix) => {
         .setAvatar(mention.user.displayAvatarURL({ size: 1024, dynamic: false, format: 'png' }))
         .setCurrentXP(target.xp)
         .setRequiredXP(neededXP)
-        .setStatus(mention.presence.status)
+        .setStatus(mention.presence ? mention.presence.status || 'offline' : 'offline')
         .setLevel(target.level)
         .setRank(rank)
         .setDiscriminator(mention.user.discriminator)
