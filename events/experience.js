@@ -63,10 +63,9 @@ module.exports = async(client, message, setting) => {
 
     let randomTimer = getRandomInt(65000, 80000);
     recent.add(message.author.id);
-    const timeout = setTimeout(() => {
+    setTimeout(() => {
         recent.delete(message.author.id)
     }, randomTimer);
-    timeout.unref();
 }
 
 function getRandomInt(min, max) {
