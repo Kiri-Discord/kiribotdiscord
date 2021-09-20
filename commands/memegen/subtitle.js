@@ -9,19 +9,19 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Regular.t
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf'), { family: 'Noto' });
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     await message.channel.send('what should the subtitle be? jot it down below :wink:\ni will be leaving in 10 second. type \`cancel\` to cancel this command');
     const text = await askString(message.channel, message.author);
     if (!text) return message.channel.send('i cancelled the command :pensive:');
-    
+
     let image;
-    let attachments = message.attachments.array();
+    let attachments = [...message.attachments.values()];
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
-            return message.inlineReply("that isn't a correct URL!");
-        }
+            return message.reply("that isn't a correct URL!");
+        };
     } else {
         if (attachments.length === 0) {
             try {
@@ -36,15 +36,14 @@ exports.run = async (client, message, args) => {
                     image = cache.last().attachments.first().url;
                 };
             } catch (error) {
-                image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+                image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
             }
-        }
-        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
-    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
+    if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
-        message.channel.startTyping(true);
+        message.channel.sendTyping();
         const { body } = await request.get(image);
         const base = await loadImage(body);
         const canvas = createCanvas(base.width, base.height);
@@ -55,7 +54,7 @@ exports.run = async (client, message, args) => {
         ctx.fillStyle = 'yellow';
         ctx.textAlign = 'center';
         const lines = await wrapText(ctx, text, base.width - 10);
-        if (!lines) return message.channel.send('there\'s not enough width to subtitle that image :grimacing:');
+        if (!lines) return message.channel.send("your subtitle won't fit that meme :grimacing:");
         ctx.textBaseline = 'bottom';
         const initial = base.height - ((lines.length - 1) * fontSize) - (fontSize / 2) - ((lines.length - 1) * 10);
         for (let i = 0; i < lines.length; i++) {
@@ -68,15 +67,12 @@ exports.run = async (client, message, args) => {
             ctx.fillText(lines[i], base.width / 2, textHeight);
         }
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
-        return message.channel.send({files: [{attachment, name: "modern.png"}] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
-        return message.inlineReply(`sorry i got an error :pensive: try again later!`)
+        };;
+        return message.channel.send({ files: [{ attachment, name: "modern.png" }] });
+    } catch (error) {;
+        return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };
 
@@ -84,12 +80,12 @@ exports.help = {
     name: "subtitle",
     description: "add subtitle to your image",
     usage: ["subtitle `[URL]`", "subtitle `[image attachment]`"],
-    example:  ["subtitle `image attachment`", "subtitle `https://example.com/girl.jpg`", "subtitle"]
+    example: ["subtitle `image attachment`", "subtitle `https://example.com/girl.jpg`", "subtitle"]
 };
 
 exports.conf = {
     aliases: ["sub"],
     cooldown: 5,
     guildOnly: true,
-	channelPerms: ["ATTACH_FILES"]
+    channelPerms: ["ATTACH_FILES"]
 };

@@ -1,30 +1,39 @@
 const ms = require("ms");
 exports.run = async(client, message, args, prefix) => {
     const db = client.guildsStorage.get(message.guild.id);
+    if (message.flags[0] === "off") {
+        db.verifyTimeout = undefined;
+        await client.dbguilds.findOneAndUpdate({
+            guildID: message.guild.id,
+        }, {
+            verifyTimeout: null
+        });
+        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ verify timeout has been disabled` }] });
+    };
     let time = args.join(" ");
 
-    if (!time) return message.inlineReply("please includes the time format. all valid time format are \`s, m, hrs\`!");
+    if (!time) return message.reply("please includes the time format. all valid time format are \`s, m, hrs\`!");
 
     let convert = ms(time);
     let toSecond = Math.floor(convert / 1000);
 
-    if (!toSecond || toSecond == undefined) return message.inlineReply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
+    if (!toSecond || toSecond == undefined) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
 
-    if (toSecond > 21600 || toSecond < 1) return message.inlineReply("the timer should be more than or equal to 1 second or less than 6 hours!");
+    if (toSecond > 21600 || toSecond < 60) return message.reply("the timer should be more than or equal to 1 minute or less than 6 hours!");
     db.verifyTimeout = convert;
     await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyTimeout: convert
         })
-        .catch(err => console.error(err));
-    return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` } });
+        .catch(err => logger.log('error', err));
+    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` }] });
 }
 exports.help = {
     name: "setverifytimeout",
     description: "how long do you want unverified people to stay in your guild?",
-    usage: "setverifytimeout <time>",
-    example: ["setverify `5hrs`", "setverify `10m`"]
+    usage: ["setverifytimeout `<time>`", "setverifytimeout `-off`"],
+    example: ["setverifytimeout `5hrs`", "setverifytimeout `10m`", "setverifytimeout `-off`"]
 };
 
 exports.conf = {

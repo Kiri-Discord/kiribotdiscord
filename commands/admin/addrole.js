@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args, prefix) => {
@@ -9,24 +9,23 @@ exports.run = async(client, message, args, prefix) => {
 
     const roleName = args.slice(1).join(' ');
 
-    if (!member || !roleName) return message.channel.send({ embed: { color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}addrole <@user || user ID> <role name || role ID>\`` } });
+    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}addrole <@user || user ID> <role name || role ID>\`` }] });
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
-    if (!role) return message.channel.send({ embed: { color: "RED", description: `no valid role was provided :pensive: i can only accept role mention, role name and role ID` } })
+    if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `no valid role was provided :pensive: i can only accept role mention, role name and role ID` }] })
 
-    if (role.name === "@everyone") return message.channel.send({ embed: { color: "RED", description: `\`@everyone\` is not a valid role!` } });
-    if (role.name === "@here") return message.channel.send({ embed: { color: "RED", description: `\`@here\` is not a valid role!` } });
+    if (role.name === "@everyone") return message.channel.send({ embeds: [{ color: "RED", description: `\`@everyone\` is not a valid role!` }] });
+    if (role.name === "@here") return message.channel.send({ embeds: [{ color: "RED", description: `\`@here\` is not a valid role!` }] });
 
-    if (!message.member.hasPermission('ADMINISTRATOR')) {
-        if (message.member.roles.highest.position <= role.position) return message.channel.send({ embed: { color: "RED", description: `that role is higher or equal your highest role!` } });
-        if (message.guild.me.roles.highest.position <= role.position) return message.inlineReply({ embed: { color: "RED", description: `that role is higher or equal my highest role!` } });
-    };
+    if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) && message.member.roles.highest.position <= role.position) return message.channel.send({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }] });
+
+    if (message.guild.me.roles.highest.position <= role.position) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
 
-    const alreadyHasRole = member._roles.includes(role.id);
+    const alreadyHasRole = member.roles.cache.has(role.id);
 
-    if (alreadyHasRole) return message.inlineReply({ embed: { color: "RED", description: `that user already has that role!` } });
+    if (alreadyHasRole) return message.reply({ embeds: [{ color: "RED", description: `that user already has that role!` }] });
 
     const embed = new MessageEmbed()
         .setDescription(`☑️ i have successfully given the role \`${role.name}\` to **${member.user.tag}**`)
@@ -34,16 +33,15 @@ exports.run = async(client, message, args, prefix) => {
 
     const rolelog = new MessageEmbed()
         .setAuthor(client.user.username, client.user.displayAvatarURL())
-        .setDescription(`Role added to ${member.user}`)
+        .setDescription(`Role added to ${member.user.toString()}`)
         .setThumbnail(member.user.displayAvatarURL())
-        .addField('Role added', role)
-        .addField('Username', member.user.username)
-        .addField('User ID', member.id)
-        .addField('Moderator', message.author)
+        .addField('Role added', role.toString())
+        .addField('User', member.user.toString())
+        .addField('Moderator', message.author.toString())
         .setTimestamp()
     try {
         await member.roles.add(role);
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
         if (!logChannel) {
             return
         } else {
@@ -55,7 +53,7 @@ exports.run = async(client, message, args, prefix) => {
             return instance.send();
         }
     } catch (error) {
-        return message.inlineReply("ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.");
+        return message.reply({ embeds: [{ color: "RED", description: `ouch, i was bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me.` }] })
     }
 };
 

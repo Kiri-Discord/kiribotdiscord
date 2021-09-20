@@ -4,9 +4,9 @@ exports.run = async(client, message, args) => {
         guildID: message.guild.id
     });
     if (!author) {
-        return message.inlineReply('you are not married!');
+        return message.reply('you are not married!');
     } else {
-        if (!author.marriedID) return message.inlineReply('you are not married!');
+        if (!author.marriedID) return message.reply('you are not married!');
         const marry = await client.love.findOne({
             userID: author.marriedID,
             guildID: message.guild.id
@@ -49,20 +49,20 @@ exports.run = async(client, message, args) => {
     }
 }
 async function divorce(client, message, member) {
-    const msg = await message.channel.send({ embed: { color: "a65959", description: `
+    const msg = await message.channel.send({ embeds: [{ color: "a65959", description: `
     ${member}, it seems like ${message.author} is asking for a divorce...
     
     do you accept this request? please react with ✅ for yes, and ❌ for no.
 
     *i will be going in a minute.*
-    ` } });
+    ` }] });
     await msg.react('✅');
     await msg.react('❌');
     let answered;
     const filter = (reaction, user) => {
         return ['✅', '❌'].includes(reaction.emoji.name) && user.id === member.user.id;
     };
-    const collector = msg.createReactionCollector(filter, { time: 60000 });
+    const collector = msg.createReactionCollector({ filter, time: 60000 });
     collector.on('collect', async(reaction, user) => {
         if (reaction.emoji.name === '❌') {
             answered = true;
@@ -89,14 +89,13 @@ async function divorce(client, message, member) {
 exports.help = {
     name: "divorce",
     description: "divorce with somebody after marry them :pensive:",
-    usage: "divorce `<@mention>`",
-    example: "divorce `@somebody`"
+    usage: ["divorce `<@mention>`"],
+    example: ["divorce `@somebody`"]
 };
 
 exports.conf = {
     aliases: ['breakup'],
     cooldown: 4,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
 };

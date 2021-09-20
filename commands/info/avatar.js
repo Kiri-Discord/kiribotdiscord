@@ -15,7 +15,7 @@ exports.run = async(client, message, args) => {
   `)
         .setColor(member.displayHexColor)
         .setImage(avatar)
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
 }
 
 exports.help = {

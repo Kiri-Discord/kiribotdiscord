@@ -10,11 +10,20 @@ const moneySchema = mongoose.Schema({
     guildId: reqString,
     balance: {
         type: Number,
-        default: 10,
+        default: 0,
     },
-    lastDaily: Date,
-    lastWater: Date,
-    lastGamble: Date
+    win: {
+        type: Number,
+        default: 0
+    },
+    lose: {
+        type: Number,
+        default: 0
+    },
+    matchPlayed: {
+        type: Number,
+        default: 0
+    },
 });
 
 module.exports = mongoose.model(

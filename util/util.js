@@ -4,6 +4,7 @@ const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck of
 const ISO6391 = require('iso-639-1');
 const ms = require('ms');
 const fetch = require('node-fetch');
+const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
 // const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
 const hugSchema = require('../model/hug');
@@ -95,7 +96,12 @@ module.exports = class util {
                 }
             }
             return null;
-        }
+        };
+        static async deleteIfAble(message) {
+            if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
+                await message.delete();
+            } else return null;
+        };
         static async awaitPlayers(message, max, min = 1) {
             if (max === 1) return [message.author.id];
             const addS = min - 1 === 1 ? '' : 's';
@@ -112,11 +118,11 @@ module.exports = class util {
                 res.react('✅').catch(() => null);
                 return true;
             };
-            const verify = await message.channel.awaitMessages(filter, { max: max - 1, time: 60000 });
+            const verify = await message.channel.awaitMessages({ filter, max: max - 1, time: 60000 });
             verify.set(message.id, message);
             if (verify.size < min) return false;
             return verify.map(player => player.author.id);
-        }
+        };
 
         static delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -178,7 +184,8 @@ module.exports = class util {
 			return (user ? res.author.id === user.id : true)
 				&& (yes.includes(value) || no.includes(value) || extraYes.includes(value) || extraNo.includes(value));
 		};
-		const verify = await channel.awaitMessages(filter, {
+		const verify = await channel.awaitMessages({
+			filter,
 			max: 1,
 			time
 		});
@@ -187,9 +194,57 @@ module.exports = class util {
 		if (yes.includes(choice) || extraYes.includes(choice)) return true;
 		if (no.includes(choice) || extraNo.includes(choice)) return false;
 		return false;
+	};
+	static async buttonVerify(channel, user, content, { time = 30000 } = {}) {
+		const row = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+			.setCustomId('yes')
+			.setLabel('yes')
+			.setStyle('PRIMARY'),
+			new MessageButton()
+			.setCustomId('no')
+			.setLabel('no')
+			.setStyle('SECONDARY')
+		);
+		const msg = await channel.send({
+			content,
+			components: [row]
+		})
+		const filter = async res => {
+            if (res.user.id !== user.id) {
+                await res.reply({
+					content: `those buttons are for ${user.toString()}!`,
+                    ephemeral: true
+                });
+                return false;
+            };
+			await res.deferUpdate();
+            row.components.forEach(button => button.setDisabled(true));
+            await res.editReply({
+				content,
+                components: [row]
+            });
+            return true;
+        }
+		const res = await msg.awaitMessageComponent({
+            filter,
+            componentType: 'BUTTON',
+            time
+        });
+
+		if (!res) {
+			row.components.forEach(button => button.setDisabled(true));
+			await msg.edit({
+				content,
+                components: [row]
+            });
+			return false;
+		} else return res.customId === 'yes';
 	}
 	static async askString(channel, filter, { time = 20000 } = {}) {
-		const verify = await channel.awaitMessages(filter, {
+		const verify = await channel.awaitMessages({
+			filter,
 			max: 1,
 			time
 		});
@@ -197,6 +252,81 @@ module.exports = class util {
 		const choice = verify.first().content.toLowerCase();
 		if (choice === 'cancel') return false;
 		return verify.first();
+	};
+
+	static async paginateEmbed(array, msg, row, filter, initialMsg, { time = 60000 } = {}) {
+		let currentPage = 0;
+		const collector = msg.createMessageComponentCollector({
+			componentType: 'BUTTON',
+			filter,
+			time
+		});
+		collector.on('end', async() => {
+			row.components.forEach(button => button.setDisabled(true));
+			return msg.edit({
+				content: `page ${currentPage + 1} of ${array.length}`,
+				components: [row],
+				embeds: [array[currentPage]]
+			});
+		})
+		collector.on('collect', async(res) => {
+			switch (res.customId) {
+				case 'previousbtn':
+					if (currentPage !== 0) {
+						--currentPage;
+						await res.editReply({
+							content: `page ${currentPage + 1} of ${array.length}`,
+							// components: [row],
+							embeds: [array[currentPage]]
+						});
+					};
+					break;
+				case 'nextbtn':
+					if (currentPage < array.length - 1) {
+						currentPage++;
+						await res.editReply({
+							content: `page ${currentPage + 1} of ${array.length}`,
+							// components: [row],
+							embeds: [array[currentPage]]
+						})
+					};
+					break;
+				case 'jumpbtn':
+					const prompt = await res.followUp({
+						embeds: [{
+							description: `to what page would you like to jump? (1 - ${array.length}) :slight_smile:`,
+							footer: {
+								text: "type 'cancel' to cancel the jumping"
+							}
+						}]
+					});
+					const filter = async res => {
+						if (res.author.id === initialMsg.author.id) {
+							const number = res.content;
+							await res.delete();
+							if (isNaN(number) || number > array.length || number < 1) {
+								return false;
+							}
+							else return true;
+						} else return false;
+					};
+					const number = await util.askString(initialMsg.channel, filter, { time: 15000 });
+					if (number === 0 || !number) return prompt.delete();
+					else {
+						currentPage = parseInt(number) - 1;
+						await res.editReply({
+							content: `page ${number} of ${array.length}`,
+							// components: [row],
+							embeds: [array[currentPage]]
+						})
+				    };
+					await prompt.delete();
+					break;
+				case 'clearbtn':
+					collector.stop();
+					break;
+			};
+		});
 	};
 	static async magikToBuffer(magik) {
 		return new Promise((res, rej) => {
@@ -212,7 +342,8 @@ module.exports = class util {
 			const code = ISO6391.getCode(value);
 			if (res.author.id === user.id && ISO6391.validate(code)) return true;
 		};
-		const verify = await channel.awaitMessages(filter, {
+		const verify = await channel.awaitMessages({
+			filter,
 			max: 1,
 			time
 		});
@@ -271,20 +402,55 @@ module.exports = class util {
 	}
 	static async pickWhenMany(message, arr, defalt, arrListFunc, { time = 30000 } = {}) {
 		const resultsList = arr.map(arrListFunc);
-		await message.channel.send(stripIndents`
-			**${arr.length} results was found, which would you like to get more information?**
-			${resultsList.join('\n')}
-			*this will timeout in 30 seconds*
-		`);
-		const filter = res => {
-			if (res.author.id !== message.author.id) return false;
-			const num = Number.parseInt(res.content, 10);
-			if (!num) return false;
-			return num > 0 && num <= arr.length;
-		};
-		const messages = await message.channel.awaitMessages(filter, { max: 1, time });
-		if (!messages.size) return defalt;
-		return arr[Number.parseInt(messages.first().content, 10) - 1];
+		const menu = new MessageSelectMenu()
+        .setCustomId('search')
+        .setMaxValues(1)
+        .addOptions(resultsList)
+        .setPlaceholder('choose a result');
+        const row = new MessageActionRow()
+        .addComponents(menu)
+		const msg = await message.channel.send({
+			embeds: [{ 
+				color: '#bee7f7', 
+				description: `**${arr.length} results was found, which would you like to get more information?**`,
+				footer: {
+					text: `this will timeout in 30 seconds`
+				}
+			}],
+			components: [row]
+		});
+		const filter = async (res) => {
+            if (res.user.id !== message.author.id) {
+				await res.deferReply({
+                    ephemeral: true
+                });
+                await res.reply({
+                    embeds: [{
+                        description: `this menu isn't belong to you :pensive:`
+                    }],
+                    ephemeral: true
+                });
+                return false;
+            } else {
+				await res.deferUpdate();
+                row.components.forEach(component => component.setDisabled(true));
+                await res.editReply({ 
+                    embeds: [{ 
+                        color: '#bee7f7', 
+                        description: `this command is now inactive :pensive:` 
+                    }],
+                    components: [row]
+                });
+                return true;
+            };
+        };
+		const response = await msg.awaitMessageComponent({
+			componentType: 'SELECT_MENU',
+			filter, 
+			time
+		});
+		if (!response) return defalt;
+		return arr[parseInt(response.values[0])];
 	};
 	static msToHMS(duration) {
         var seconds = parseInt((duration / 1000) % 60)
@@ -369,6 +535,7 @@ module.exports = class util {
 		});
 		return true;
 	};
+
 	static async purgeDbUser(client, guildId, userId) {
 		await client.dbleveling.findOneAndDelete({
 			guildId: guildId,
@@ -431,6 +598,3 @@ module.exports = class util {
 		return true;
 	};
 };
-
-const inGame = [];
-module.exports.inGame = inGame;

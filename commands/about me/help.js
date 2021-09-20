@@ -1,38 +1,205 @@
-const { MessageEmbed, Util } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton } = require("discord.js");
+const { askString, deleteIfAble } = require('../../util/util');
 const { findBestMatch } = require("string-similarity");
 
 exports.run = async(client, message, args, prefix) => {
     if (!args[0]) {
-        let module = client.helps.array();
-        if (!client.config.owners.includes(message.author.id)) module = await module.filter(x => !x.hide);
-        if (!message.channel.nsfw) module = module.filter(x => !x.adult);
-        const embed1 = new MessageEmbed()
-            .setColor("#bee7f7")
-            .setAuthor('my command list (p`･ω･´) q')
-            .setDescription(`run the command below each features to get more information!\nif you are using a mobile device, click the **hover for info** button to see descriptions!\nif you ran into any trouble, use \`${prefix}invite\` to get more info about support servers.`)
-            .setTitle('hey, how can i help?')
-            .setThumbnail(client.user.displayAvatarURL())
+        let module = [...client.helps.values()];
+        if (!client.config.owners.includes(message.author.id)) module = module.filter(x => !x.hide);
+        const replyEmoji = client.customEmojis.get('following');
+        message.channel.sendTyping();
+        const optionList = [{
+            label: 'all',
+            value: 'all',
+            emoji: '📔'
+        }];
+        let fullCmd = [];
+        let list = [];
+        let arrSplitted = [];
+        let arrEmbeds = [];
         for (const mod of module) {
-            const addS = mod.cmds.length === 1 ? '' : 's';
-            embed1.addField(mod.displayName, `\`${prefix}help ${mod.name}\`\n[hover for info](https://kiri.daztopia.xyz '${mod.desc} (there are ${mod.cmds.length} command${addS} for this feature)')`, true)
-        }
-        return message.channel.send(embed1);
+            optionList.push({
+                label: mod.displayName,
+                value: mod.name,
+                emoji: mod.emoji
+            })
+            mod.cmds.forEach(x => x.type = mod.name);
+            fullCmd.push(...mod.cmds);
+        };
+        list = fullCmd.map(x => `**${x.name}**\n${replyEmoji} ${x.desc}`);
+        while (list.length) {
+            const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
+            arrSplitted.push(toAdd);
+        };
+        arrSplitted.map((item, index) => {
+            const embed = new MessageEmbed()
+                .setColor('#EDE7D3')
+                .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
+                .setDescription(item.join('\n'))
+                .setFooter(`do ${prefix}help <cmd> for more help on a command`)
+            arrEmbeds.push(embed);
+        });
+        const components = [];
+        if (arrEmbeds.length > 1) {
+            components.push(
+                new MessageButton()
+                .setCustomId("previousbtn")
+                .setEmoji(client.customEmojis.get('left') ? client.customEmojis.get('left').id : '⬅️')
+                .setStyle("SECONDARY"),
+                new MessageButton()
+                .setCustomId('jumpbtn')
+                .setEmoji(client.customEmojis.get('jump') ? client.customEmojis.get('jump').id : '↗️')
+                .setStyle('SECONDARY'),
+                new MessageButton()
+                .setCustomId("nextbtn")
+                .setEmoji(client.customEmojis.get('right') ? client.customEmojis.get('right').id : '➡️')
+                .setStyle("SECONDARY")
+            )
+        };
+        components.push(new MessageButton()
+            .setCustomId('clearbtn')
+            .setEmoji(client.customEmojis.get('trash') ? client.customEmojis.get('trash').id : '🗑️')
+            .setStyle('DANGER'));
+        const row = new MessageActionRow()
+            .addComponents(components);
+        const menu = new MessageSelectMenu()
+            .setCustomId('menu')
+            .addOptions(optionList)
+            .setPlaceholder('choose a category');
+        const row1 = new MessageActionRow()
+            .addComponents(menu);
+        const msg = await message.channel.send({
+            embeds: [arrEmbeds[0]],
+            components: [row, row1],
+            content: `page 1 of ${arrEmbeds.length}`,
+        });
+        const filter = async res => {
+            if (res.user.id !== message.author.id) {
+                await res.reply({
+                    embeds: [{
+                        description: `those interaction are not for you :pensive:`
+                    }],
+                    ephemeral: true
+                });
+                return false;
+            } else {
+                await res.deferUpdate();
+                return true;
+            }
+        };
+        let currentPage = 0;
+        const collector = msg.createMessageComponentCollector({
+            filter,
+            time: 30000
+        });
+        collector.on('end', async() => {
+            row.components.forEach(button => button.setDisabled(true));
+            row1.components.forEach(button => button.setDisabled(true));
+            return msg.edit({
+                content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                components: [row, row1],
+                embeds: [arrEmbeds[currentPage]]
+            });
+        })
+        collector.on('collect', async(res) => {
+            switch (res.customId) {
+                case 'menu':
+                    if (res.values[0] !== 'all') {
+                        list = fullCmd.filter(x => x.type === res.values[0]).map(x => `**${x.name}**\n${replyEmoji} ${x.desc}`);
+                    } else {
+                        list = fullCmd.map(x => `**${x.name}**\n${replyEmoji} ${x.desc}`);
+                    };
+                    arrSplitted = [];
+                    while (list.length) {
+                        const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
+                        arrSplitted.push(toAdd);
+                    };
+                    arrEmbeds = [];
+                    arrSplitted.map((item, index) => {
+                        const embed = new MessageEmbed()
+                            .setColor('#EDE7D3')
+                            .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
+                            .setDescription(item.join('\n'))
+                            .setFooter(`do ${prefix}help <cmd> for more help on a command`)
+                        arrEmbeds.push(embed);
+                    });
+                    currentPage = 0;
+                    await res.editReply({
+                        content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                        // components: [row, row1],
+                        embeds: [arrEmbeds[currentPage]]
+                    });
+                case 'previousbtn':
+                    if (currentPage !== 0) {
+                        --currentPage;
+                        await res.editReply({
+                            content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                            // components: [row, row1],
+                            embeds: [arrEmbeds[currentPage]]
+                        });
+                    };
+                    break;
+                case 'nextbtn':
+                    if (currentPage < arrEmbeds.length - 1) {
+                        currentPage++;
+                        await res.editReply({
+                            content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                            // components: [row, row1],
+                            embeds: [arrEmbeds[currentPage]]
+                        })
+                    };
+                    break;
+                case 'jumpbtn':
+                    const prompt = await res.followUp({
+                        embeds: [{
+                            description: `to what page would you like to jump? (1 - ${arrEmbeds.length}) :slight_smile:`,
+                            footer: {
+                                text: "type 'cancel' to cancel the jumping"
+                            }
+                        }]
+                    });
+                    const filter = async res => {
+                        if (res.author.id === message.author.id) {
+                            const number = res.content;
+                            await deleteIfAble(res)
+                            if (isNaN(number) || number > arrEmbeds.length || number < 1) {
+                                return false;
+                            } else return true;
+                        } else return false;
+                    };
+                    const number = await askString(message.channel, filter, { time: 15000 });
+                    if (number === 0 || !number) return prompt.delete();
+                    else {
+                        currentPage = parseInt(number) - 1;
+                        await res.editReply({
+                            content: `page ${number} of ${arrEmbeds.length}`,
+                            // components: [row, row1],
+                            embeds: [arrEmbeds[currentPage]]
+                        })
+                    };
+                    await prompt.delete();
+                    break;
+                case 'clearbtn':
+                    collector.stop();
+                    break;
+            };
+        });
     } else {
         let query = args[0].toLowerCase();
         if (client.commands.has(query) || client.commands.get(client.aliases.get(query))) {
             let command = client.commands.get(query) || client.commands.get(client.aliases.get(query));
-            const dead = client.customEmojis.get('dead') ? client.customEmojis.get('dead') : ':thinking:';
-            if (command.conf.owner) return message.channel.send({ embed: { color: "RED", description: `that command is accessible only by my owner 👑` } });
+            const dead = client.customEmojis.get('dead') ? client.customEmojis.get('dead').toString() : ':thinking:';
+            if (command.conf.owner) return message.channel.send({ embeds: [{ color: "RED", description: `that command is accessible only by my owner 👑` }] });
             if (command.conf.adult && !message.channel.nsfw) {
                 if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
-                return message.channel.send({ embed: { color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel bruh ${dead}` } });
-            }
+                return message.channel.send({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel bruh ${dead}` }] });
+            };
             let name = command.help.name;
             let desc = command.help.description;
             let cooldown = command.conf.cooldown + " second(s)";
             let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
-            let usage = command.help.usage ? command.help.usage : "no usage provided.";
-            let example = command.help.example ? command.help.example : "no example provided.";
+            let usage = command.help.usage ? command.help.usage.join(", ") : "no usage provided.";
+            let example = command.help.example ? command.help.example.join(", ") : "no example provided.";
             let userperms = command.conf.userPerms ? command.conf.userPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let botperms = command.conf.clientPerms ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let channelperms = command.conf.channelPerms ? command.conf.channelPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
@@ -44,57 +211,23 @@ exports.run = async(client, message, args, prefix) => {
                 .setTitle(`${prefix}${name}`)
                 .setDescription(desc)
                 .setThumbnail(client.user.displayAvatarURL())
-                .setFooter("[] optional, <> required. don't includes these things while typing a command :)")
+                .setFooter("[] are optional and <> are required. don't includes these things while typing a command :)")
                 .addField("cooldown", cooldown, true)
                 .addField("aliases", aliases, true)
                 .addField("usage", usage, true)
                 .addField("example", example, true)
-                .addField("user permission(s)", userperms, true)
-                .addField("global permission(s)", botperms, true)
-                .addField(`channel permission(s)`, channelperms, true)
+                .addField("user permission", userperms, true)
+                .addField("global permission", botperms, true)
+                .addField(`channel permission`, channelperms, true)
                 .addField('nsfw?', adult, true)
-            return message.channel.send(embed);
-        } else if (client.helps.has(query)) {
-            const feature = client.helps.get(query);
-            if (feature.hide && !client.config.owners.includes(message.author.id)) return;
-            let cmd = feature.cmds.map(x => `● \`${x.name}\` - ${x.desc}`).join("\n");
-            const [first, ...rest] = Util.splitMessage(cmd, { maxLength: 2000, char: '\n' });
-            let embed = new MessageEmbed()
-                .setColor("#bee7f7")
-                .setAuthor('feature information (=･ω･=)')
-                .setThumbnail(client.user.displayAvatarURL())
-            if (rest.length) {
-                embed.setTitle(`commands list for ${feature.displayName}`)
-                embed.setDescription(first)
-                await message.channel.send(embed);
-                const lastContent = rest.splice(rest.length - 1, 1);
-                for (const text of rest) {
-                    const embed1 = new MessageEmbed()
-                        .setColor("#bee7f7")
-                        .setDescription(text)
-                    await message.channel.send(embed1)
-                };
-                const embed3 = new MessageEmbed()
-                    .setColor("#bee7f7")
-                    .setDescription(lastContent)
-                    .setFooter(`remember to type ${prefix} before each command!`)
-                return message.channel.send(embed3);
-            } else {
-                embed
-                    .setTitle(`commands list for ${feature.displayName}`)
-                    .setFooter(`remember to type ${prefix} before each command!`)
-                    .setColor("#bee7f7")
-                    .setDescription(first + `\n\nif you want to get more help regarding each command, use \`${prefix}help <command>\`!`)
-                return message.channel.send(embed);
-            };
+            return message.channel.send({ embeds: [embed] });
         } else {
-            const list = client.allNameCmds.concat(client.allNameFeatures)
-            const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking') : ':eyes:';
-            const matches = findBestMatch(query, list).bestMatch.target;
-            return message.channel.send({ embed: { color: "RED", description: `i don't remember having that commmand or feature packed ${looking} maybe you mean \`${prefix}help ${matches}\` ?` } });
-        }
-    }
-}
+            const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking').toString() : ':eyes:';
+            const matches = findBestMatch(query, client.allNameCmds).bestMatch.target;
+            return message.channel.send({ embed: { color: "#bee7f7", description: `i don't remember having that commmand or feature packed ${looking} maybe you mean \`${prefix}help ${matches}\` ?` } });
+        };
+    };
+};
 
 exports.help = {
     name: "help",
@@ -106,6 +239,5 @@ exports.help = {
 exports.conf = {
     aliases: ["?"],
     cooldown: 3,
-    guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 };

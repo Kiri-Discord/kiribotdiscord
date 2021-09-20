@@ -11,13 +11,11 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id
         });
-        await storage.save()
     };
-
-    if (!storage.seeds >= 1) return message.inlineReply(`:x: you don't have enough 🌱 **seeds** in your inventory to plant in your garden! buy one at \`${prefix}shop\`!`);
+    if (!storage.seeds >= 1) return message.reply(`:x: you don't have enough 🌱 **seeds** in your inventory to plant in your garden! buy one at \`${prefix}shop\`!`);
 
     if (args[0] === '1' || args[0] === '2' || args[0] === '3') {
-        var d = Math.random()
+        var d = Math.random();
         let plant;
         if (d < 0.5) {
             const choices = ["hibiscus", "ear_of_rice", "blossom", "rose"];
@@ -103,17 +101,17 @@ exports.run = async(client, message, args, prefix) => {
             .setColor("#bee7f7")
             .setDescription(`you have planted seed on slot \`${args[0]}\``)
             .setFooter(`seeds can be grown to tree by watering via ${prefix}water!`)
-        return message.inlineReply(embed)
+        return message.reply({ embeds: [embed] })
     } else {
-        return message.inlineReply(`:seedling: you need to specify which slot you want to plant the seed in (1-3).`)
+        return message.reply(`:seedling: you need to specify which slot you want to plant the seed in (1-3).`)
     }
 }
 
 exports.help = {
     name: "plant",
     description: "plant seeds in your garden.",
-    usage: "plant `<slot>`",
-    example: "plant `2`"
+    usage: ["plant `<slot>`"],
+    example: ["plant `2`"]
 };
 
 exports.conf = {

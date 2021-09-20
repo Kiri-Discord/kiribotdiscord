@@ -4,14 +4,14 @@ const { desaturate } = require('../../util/canvas');
 const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let image;
-    let attachments = message.attachments.array();
+    let attachments = [...message.attachments.values()];
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
-            return message.inlineReply("that isn't a correct URL!");
+            return message.reply("that isn't a correct URL!");
         }
     } else {
         if (attachments.length === 0) {
@@ -27,15 +27,14 @@ exports.run = async (client, message, args) => {
                     image = cache.last().attachments.first().url;
                 };
             } catch (error) {
-                image = message.author.displayAvatarURL({size: 4096, dynamic: false, format: 'png'});
+                image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
             }
-        }
-        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
-    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
+    if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
-        message.channel.startTyping(true);
+        message.channel.sendTyping();
         const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
@@ -43,15 +42,12 @@ exports.run = async (client, message, args) => {
         ctx.drawImage(data, 0, 0);
         desaturate(ctx, 30, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
-        return message.channel.send({files: [{attachment, name: "desaturate.png"}] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
-        return message.inlineReply(`sorry i got an error :pensive: try again later!`)
+        };;
+        return message.channel.send({ files: [{ attachment, name: "desaturate.png" }] });
+    } catch (error) {;
+        return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };
 
@@ -59,12 +55,12 @@ exports.help = {
     name: "desaturate",
     description: "desaturate your image",
     usage: ["desaturate `[URL]`", "desaturate `[image attachment]`"],
-    example:  ["desaturate `image attachment`", "desaturate `https://example.com/girl.jpg`", "desaturate"]
+    example: ["desaturate `image attachment`", "desaturate `https://example.com/girl.jpg`", "desaturate"]
 };
 
 exports.conf = {
     aliases: ['desaturated'],
     cooldown: 5,
     guildOnly: true,
-	channelPerms: ["ATTACH_FILES"]
+    channelPerms: ["ATTACH_FILES"]
 };

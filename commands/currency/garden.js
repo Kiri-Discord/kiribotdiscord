@@ -11,7 +11,6 @@ exports.run = async(client, message, args, prefix) => {
             userId: message.author.id,
             guildId: message.guild.id,
         });
-        await garden.save();
     };
     const p1 = garden.plantOne;
     const p2 = garden.plantTwo;
@@ -35,13 +34,13 @@ exports.run = async(client, message, args, prefix) => {
         .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
         .setDescription(`${f1}${f2}${f3}\n${grass}${grass}${grass}\n\n\nuse \`${prefix}water\` to water your plant or use \`${prefix}plant\` to grow more tree!`)
         .setFooter(`you can only water your plant every 24 hours!`)
-    return message.channel.send(embed)
+    return message.channel.send({ embeds: [embed] })
 };
 exports.help = {
     name: "garden",
     description: "shows your garden",
-    usage: "garden",
-    example: "garden"
+    usage: ["garden"],
+    example: ["garden"]
 };
 
 exports.conf = {

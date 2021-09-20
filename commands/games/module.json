@@ -1,6 +1,7 @@
 {
-  "displayName": "🎲 games",
-  "desc": "entertain yourself or compete with others with those game! you will receive token from winning.",
-  "name": "games",
-  "hide": false
+    "displayName": "games",
+    "desc": "entertain yourself or compete with others with those game! you will receive token from winning.",
+    "name": "games",
+    "hide": false,
+    "emoji": "🎲"
 }

@@ -8,11 +8,11 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Regular.t
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf'), { family: 'Noto' });
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
-    if (!member) return message.inlineReply('who do you want to eject lmao');
+    if (!member) return message.reply('who do you want to eject lol');
     const user = member.user;
-    if (user.bot && user.id !== client.user.id) return message.inlineReply('why are you ejecting that bot :confused:');
+    if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');
     message.channel.startTyping();
     const choices = [1, 2];
     const choice = choices[Math.floor(Math.random() * choices.length)];
@@ -20,6 +20,7 @@ exports.run = async (client, message, args) => {
     if (user.id === client.user.id) random = 6;
     const avatarURL = random < 5 ? user.displayAvatarURL({ format: 'png', size: 512 }) : message.author.displayAvatarURL({ format: 'png', size: 512 });
     try {
+        message.channel.sendTyping();
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
         const imposter = choice === 1;
@@ -63,21 +64,21 @@ exports.run = async (client, message, args) => {
                 } else {
                     ctx.fillText(text, frame.width / 2, frame.height / 2, 300);
                 }
-            }
+            };
             encoder.addFrame(ctx);
-        }
+        };
         encoder.finish();
         const buffer = await streamToArray(stream);
         await message.channel.stopTyping();
-        await message.channel.send(`ejecting...`, { files: [{ attachment: Buffer.concat(buffer), name: 'eject.gif' }] });
+        await message.channel.send({ content: `ejecting...`, files: [{ attachment: Buffer.concat(buffer), name: 'eject.gif' }] });
         if (random >= 5) return setTimeout(() => {
             const smug = client.customEmojis.get('smug') ? client.customEmojis.get('smug') : ':thinking:';
             return message.channel.send(`${message.author.username}, suprised? ${smug}${!imposter ? '\n||i was the imposter||' : ''}`)
         }, 5000);
     } catch (err) {
         await message.channel.stopTyping();
-        return message.inlineReply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
-    }
+        return message.reply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
+    };
 };
 
 exports.help = {
@@ -90,6 +91,6 @@ exports.help = {
 exports.conf = {
     aliases: [],
     cooldown: 5,
-    guildOnly: true,  
-	channelPerms: ["ATTACH_FILES"]
+    guildOnly: true,
+    channelPerms: ["ATTACH_FILES"]
 }

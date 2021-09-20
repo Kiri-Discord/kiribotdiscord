@@ -1,74 +1,89 @@
 const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
-const Collection = require('@discordjs/collection');
+const { Collection } = require('@discordjs/collection');
 const { delay, awaitPlayers, reactIfAble } = require('../../util/util');
 const trueOptions = ['true', 'yes', 'the truth', 't', 'tru', 'tr', 'y', 'ye'];
 const falseOptions = ['false', 'lie', 'no', 'a lie', 'f', 'fals', 'fal', 'fa', 'n', 'l'];
 
-exports.run = async (client, message, args, prefix) => {
-    let players = args[0];
-    if (!players || isNaN(players) || players < 2 || players > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 2 and 20 by using \`${prefix}lie-detector <number of player>\``)
-    const current = client.games.get(message.channel.id);
-    if (current) return message.inlineReply(current.prompt);
-	client.games.set(message.channel.id, { prompt: `please wait until players in this channel has finished their game :(` });
-	try {
-		const awaitedPlayers = await awaitPlayers(message, players, 2);
-		let turn = 0;
-		const pts = new Collection();
-		for (const player of awaitedPlayers) {
-			pts.set(player, {
-				points: 0,
-				id: player,
-				user: await client.users.fetch(player)
-			});
-		}
-		const questions = await fetchQuestions();
-		let lastTurnTimeout = false;
-		while (questions.length) {
-			++turn;
-			const question = questions[0];
-			questions.shift();
-			await message.channel.send(stripIndents`
+exports.run = async(client, message, args, prefix) => {
+        let players = args[0] || 1;
+        if (!players || isNaN(players) || players < 1 || players > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 1 and 20 by using \`${prefix}lie-detector <number of player>\``)
+        const current = client.games.get(message.channel.id);
+        if (current) return message.reply(current.prompt);
+        client.games.set(message.channel.id, { prompt: `please wait until players in this channel has finished their game :(` });
+        try {
+            const pts = new Collection();
+            if (players > 1) {
+                const awaitedPlayers = await awaitPlayers(message, players, 2);
+                for (const player of awaitedPlayers) {
+                    pts.set(player, {
+                        points: 0,
+                        id: player,
+                        user: await client.users.fetch(player)
+                    });
+                };
+            } else {
+                pts.set(message.author.id, {
+                    points: 0,
+                    id: message.author.id,
+                    user: message.author
+                });
+            }
+
+            let turn = 0;
+            const questions = await fetchQuestions();
+            let lastTurnTimeout = false;
+            while (questions.length) {
+                ++turn;
+                const question = questions[0];
+                questions.shift();
+                await message.channel.send(stripIndents `
 				**${turn}. ${question.category.toLowerCase()}**
 				${question.question.toLowerCase()}
 
-				_is it_ **true** _or is it a_ **lie**?
+				is it **true** or is it a **lie**?
 			`);
-			const filter = res => {
-				if (!awaitedPlayers.includes(res.author.id)) return false;
-				const answer = res.content.toLowerCase();
-				if (trueOptions.includes(answer) || falseOptions.includes(answer)) {
-					reactIfAble(res, res.author, '✅');
-					return true;
-				}
-				return false;
-			};
-			const messages = await message.channel.awaitMessages(filter, {
-				max: pts.size,
-				time: 30000
-			});
-			if (!messages.size) {
-				await message.channel.send(`no answers? well, it was ${question.answer ? 'true' : 'a lie'}.`);
-				if (lastTurnTimeout) {
-					break;
-				} else {
-					lastTurnTimeout = true;
-					continue;
-				}
-			}
-			const answers = messages.map(res => {
-				let answer;
-				if (trueOptions.includes(res.content.toLowerCase())) answer = true;
-				else if (falseOptions.includes(res.content.toLowerCase())) answer = false;
-				return { answer, id: res.author.id };
-			});
-			const correct = answers.filter(answer => answer.answer === question.answer);
-			for (const answer of correct) {
-				const player = pts.get(answer.id);
-				if (correct[0].id === answer.id) player.points += 75;
-				else player.points += 50;
-			}
-			await message.channel.send(stripIndents`
+                const filter = res => {
+                    if (!pts.has(res.author.id)) return false;
+                    const answer = res.content.toLowerCase();
+                    if (trueOptions.includes(answer) || falseOptions.includes(answer)) {
+                        reactIfAble(res, res.author, '✅');
+                        return true;
+                    }
+                    return false;
+                };
+                const messages = await message.channel.awaitMessages({
+                    filter,
+                    max: pts.size,
+                    time: 30000
+                });
+                if (!messages.size) {
+                    if (players > 1) {
+                        await message.channel.send(`no answers? well, it was ${question.answer ? 'true' : 'a lie'}.`);
+                        if (lastTurnTimeout) {
+                            break;
+                        } else {
+                            lastTurnTimeout = true;
+                            continue;
+                        }
+                    } else {
+                        message.channel.send(`no answers? well, it was ${question.answer ? 'true' : 'a lie'}.\nthe game has been ended since you are the only player!`);
+                        break;
+                    }
+                }
+                const answers = messages.map(res => {
+                    let answer;
+                    if (trueOptions.includes(res.content.toLowerCase())) answer = true;
+                    else if (falseOptions.includes(res.content.toLowerCase())) answer = false;
+                    return { answer, id: res.author.id };
+                });
+                const correct = answers.filter(answer => answer.answer === question.answer);
+                for (const answer of correct) {
+                    const player = pts.get(answer.id);
+                    if (correct[0].id === answer.id) player.points += 75;
+                    else player.points += 50;
+                }
+                await message.channel.send(stripIndents `
 				it was... **${question.answer ? 'true' : 'a lie'}**!
 				fastest guess was: ${correct.length ? `${pts.get(correct[0].id).user.username} (+75 pts)` : 'no one...'}
 
@@ -125,18 +140,18 @@ function makeLeaderboard(pts) {
 			previousPts = player.points;
 			return `**${i}.** ${player.user.username} (${player.points} point${player.points === 1 ? '' : 's'})`;
 		});
-}
+};
 
 
 exports.help = {
-	name: "lie-detector",
+	name: "lie-guess",
 	description: "you and your opponent will be given a fact and must quickly decide if it\'s **true** or a **lie**.¯\\_(ツ)_/¯",
-	usage: "lie-detector `<number of players>`",
-	example: "lie-detector `4`"
+	usage: ["lie-guess `<number of players>`"],
+	example: ["lie-guess `4`"]
 };
   
 exports.conf = {
-	aliases: ["lie-swatter", "lie-guess"],
+	aliases: ["lie-swatter", "lie-detector"],
     cooldown: 5,
 	guildOnly: true,
 };

@@ -52,12 +52,12 @@ const statuses = {
 
 exports.run = async(client, message, args) => {
         let image;
-        let attachments = message.attachments.array();
+        let attachments = [...message.attachments.values()];
         if (args[0]) {
             if (validUrl.isWebUri(args[0])) {
                 image = args[0];
             } else {
-                return message.inlineReply("that isn't a correct URL!");
+                return message.reply("that isn't a correct URL!");
             }
         } else {
             if (attachments.length === 0) {
@@ -75,23 +75,22 @@ exports.run = async(client, message, args) => {
                 } catch (error) {
                     image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
                 }
-            } else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+            } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
             else image = attachments[0].url;
         };
-        if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
+        if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
 
         try {
+            message.channel.sendTyping();
             const status = await fetchRateLimit();
             if (!status.ok && status.status) {
-                return message.inlineReply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in https://www.buymeacoffee.com/r3zenix if you want to increase my limit :pensive:`);
+                return message.reply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in https://www.patreon.com/kiridiscord if you want to help me in increasing my limit :pensive:`);
             } else if (!status.status) {
-                return message.inlineReply("the anime fetching server seems down... :pensive:")
-            };
-            message.channel.startTyping(true);
+                return message.reply("the anime fetching server seems down... :pensive:")
+            };;
             let { body } = await request.get(image);
             if (Buffer.byteLength(body) > 1e+7) {
-                await message.channel.stopTyping(true);
-                return message.inlineReply('the file is way too big for me to handle lol. remember not to upload any image or gif larger than 10MB please :slight_smile:');
+                return message.reply('the file is way too big for me to handle lol. remember not to upload any image or gif larger than 10MB please :slight_smile:');
             }
             const result = await search(image);
             const anime = await fetchAnime(result.id);
@@ -113,14 +112,14 @@ exports.run = async(client, message, args) => {
                 .setImage(result.preview);
 
             const title = `${anime.title.english || anime.title.romaji}${result.episode ? ` (episode ${result.episode})` : ''}`;
-        await message.channel.stopTyping(true);
+        ;
         return message.channel.send(stripIndents`
             i'm pretty ${result.prob}% sure this is from ${title} 
             ${result.prob < 87 ? '_i think this probablity is kinda low, try using a higher quality image_' : ''}
         `, embed);
     } catch (err) {
-        await message.channel.stopTyping(true);
-        return message.inlineReply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
+        ;
+        return message.reply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
     }
 };
 async function fetchAnime(id) {

@@ -1,33 +1,34 @@
 const { MessageEmbed } = require('discord.js');
 const { embedURL } = require('../../util/util');
 const { stripIndents } = require('common-tags');
+const items = require('../../assets/items.json');
 
 exports.run = async(client, message, args, prefix) => {
     const rod = client.customEmojis.get('rod');
+    const names = Object.keys(items);
+    const list = [];
+
+    names.forEach(x => {
+        list.push(`
+        ${embedURL(items[x].displayName, 'https://youtu.be/do_XXxrWBxQ')} (${items[x].displayPrice})
+        ${items[x].desc.replace('{prefix}', prefix).replace('{rod}', rod)}`)
+    })
     const embed = new MessageEmbed()
         .setTitle('the shop 🛒')
         .setColor("#bee7f7")
-        .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <items>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features.\ncheck \`${prefix}help ecomomy\` to get more info :slight_smile:`)
+        .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <items>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features. :slight_smile:`)
         .addField('items list :moneybag:', stripIndents `
-        ${embedURL('💍 wedding ring', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 1,300)
-        used to propose to your partner via \`${prefix}marry\` <3 (break after each proposal)
-        
-        ${embedURL('🌱 seed', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 50)
-        used for planting trees in your garden via \`${prefix}plant\` :chestnut:
-
-        ${embedURL('🪱 worm', 'https://youtu.be/do_XXxrWBxQ')} (⏣ 150)
-        bait to use for catching \`${prefix}fish\` ${rod}
+        ${list.join('\n')}
         `)
-
-    return message.channel.send(embed);
-}
+    return message.channel.send({ embeds: [embed] });
+};
 
 
 exports.help = {
     name: "shop",
     description: "shows a list of purchasable items.",
-    usage: "shop",
-    example: "shop"
+    usage: ["shop"],
+    example: ["shop"]
 };
 
 exports.conf = {

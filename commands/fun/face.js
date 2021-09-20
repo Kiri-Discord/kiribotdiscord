@@ -6,29 +6,27 @@ const validUrl = require('valid-url');
 const emotions = ['anger', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise'];
 const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 'sad', 'surprised'];
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let image;
-    let attachments = message.attachments.array();
+    let attachments = [...message.attachments.values()];
     if (args[0]) {
         if (validUrl.isUri(args[0])) {
             image = args[0];
         } else {
-            return message.inlineReply("that isn't a correct URL!").then(m => m.delete({ timeout: 5000 }));
+            return message.reply("that isn't a correct URL!");
         }
     } else {
-        if (attachments.length === 0) return message.inlineReply("can you upload any face to analyze along with that command?");
-        else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        if (attachments.length === 0) return message.reply("can you upload any face to analyze along with that command?");
+        else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         image = attachments[0].url;
     }
     try {
-        message.channel.startTyping(true);
+        message.channel.sendTyping();
         const face = await detect(image);
-        if (!face) {
-            await message.channel.stopTyping(true); 
+        if (!face) {;
             return message.channel.send("wait a sec...there isn't any face in this image :frowning:");
         };
-        if (face === 'size') {
-            await message.channel.stopTyping(true); 
+        if (face === 'size') {;
             return message.channel.send("the file is way too big for me to upload lmao");
         };
         const pronoun = face.gender.value === 'Male' ? 'He' : 'She';
@@ -37,20 +35,18 @@ exports.run = async (client, message, args) => {
         )];
         const smile = face.smile.value > face.smile.threshold;
         const beautyScore = face.gender.value === 'Male' ? face.beauty.female_score : face.beauty.male_score;
-        const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':grimacing:';
-        await message.channel.stopTyping(true);
-        return message.inlineReply(oneLine`
+        const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':grimacing:';;
+        return message.reply(oneLine `
             i think this is a photo of a ${face.age.value} year old ${face.gender.value.toLowerCase()} ${stareEmoji}
             
             ${pronoun.toLowerCase()} appears to be ${emotion}, and is ${smile ? 'smiling' : 'not smiling'}. i give this
             face a ${Math.round(beautyScore)} on the 1-100 beauty scale.
             ${beautyScore > 50 ? beautyScore > 70 ? beautyScore > 90 ? 'nice' : 'not bad' : 'not _too_ bad.' : 'nice'}
         `);
-    } catch (err) {
-        await message.channel.stopTyping(true);
+    } catch (err) {;
         if (err.status === 400) return message.channel.send("wait a sec...there isn't any face in this image :frowning:");
         if (err.status === 403) return message.channel.send('hang on! the command is overloaded! try again later pls :(');
-        else return message.inlineReply(`sorry :( i got an error. try again later! can you check the image files?`)
+        else return message.reply(`sorry :( i got an error. try again later! can you check the image files?`)
     }
 }
 
@@ -72,8 +68,8 @@ async function detect(image) {
 exports.help = {
     name: "face",
     description: "give me a portrait and i will try to guess the race, gender, and age of that face 😄",
-    usage: "face `<image attachment or URL>`",
-    example: "face `https://example.com/girl.jpg`"
+    usage: ["face `<image attachment or URL>`"],
+    example: ["face `https://example.com/cat.jpg`"]
 };
 
 exports.conf = {

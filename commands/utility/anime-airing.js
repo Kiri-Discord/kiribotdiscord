@@ -29,13 +29,13 @@ exports.run = async(client, message, args) => {
             return `• ${title} (@${airingAt} JST)`;
         });
         return message.channel.send(stripIndents `
-            **these is/are anime(s) airing on ${moment().tz('Asia/Tokyo').format('dddd, MMMM Do, YYYY')}**
+            **Anime(s) airing on ${moment().tz('Asia/Tokyo').format('dddd, MMMM Do, YYYY')}:**
             ${mapped.join('\n')}
         `);
     } catch (err) {
-        return message.inlineReply(`oh no, an error occurred while i was trying to get the showtime :( try again later!`);
-    }
-}
+        return message.reply(`oh no, an error occurred while i was trying to get the anime showtime today! try again later :pensive:`);
+    };
+};
 
 async function getList() {
     const { body } = await request
@@ -53,13 +53,13 @@ async function getList() {
 
 exports.help = {
     name: "ani-airing",
-    description: "Responds with a list of the anime that air today :)",
-    usage: "ani-airing",
-    example: "ani-airing"
+    description: "get you a list of the anime that air today",
+    usage: ["ani-airing"],
+    example: ["ani-airing"]
 };
 
 exports.conf = {
     aliases: ["airing-anime", "anichart", "aniair"],
     cooldown: 4,
     guildOnly: true,
-}
+};

@@ -1,20 +1,7 @@
 const { MessageEmbed } = require("discord.js");
-const humanizeDuration = require("humanize-duration");
 const { stripIndents } = require('common-tags');
 exports.run = async(client, message, args) => {
         let cooldown = 8.64e+7;
-        let money = await client.money.findOne({
-            userId: message.author.id,
-            guildId: message.guild.id
-        });
-        if (!money) {
-            const model = client.money
-            money = new model({
-                userId: message.author.id,
-                guildId: message.guild.id
-            });
-            await money.save();
-        };
         let cooldownStorage = await client.cooldowns.findOne({
             userId: message.author.id,
             guildId: message.guild.id
@@ -25,22 +12,23 @@ exports.run = async(client, message, args) => {
                 userId: message.author.id,
                 guildId: message.guild.id
             });
-            await cooldownStorage.save();
         };
         let lastDaily = cooldownStorage.lastDaily;
         try {
             if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
-                let finalTime = humanizeDuration(cooldown - (Date.now() - lastDaily))
+                let finalTime = cooldown - (Date.now() - lastDaily);
+
                 const embed = new MessageEmbed()
                     .setColor("#bee7f7")
                     .setDescription(stripIndents `
                     sorry, you cannot collect your daily too early :pensive:
-                    your next collect is ready in: **${finalTime}**
+                    your next collect is ready <t:${Math.floor((Date.now() + finalTime) / 1000)}:R>
 
-                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/sefy)~~ (currently in maintenance)`)
+                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/kiri)~~ (currently in maintenance)`)
                     .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
-                    .setFooter(`each daily is reseted after 24 hours, regardless of timezone.`)
-                return message.channel.send(embed);
+                    .setFooter(`each daily is reseted after 24 hours, regardless of timezone.
+                    `)
+                return message.channel.send({ embeds: [embed] });
             } else {
                 let bonus;
                 let bonusAmount;
@@ -94,32 +82,32 @@ exports.run = async(client, message, args) => {
             .setColor("#bee7f7")
             .setFooter(`current balance: ⏣ ${storageAfter.balance} token`)
             .setTitle(`here are your daily token, ${message.member.displayName}!`)
-            return message.channel.send(embed);
+            return message.channel.send({embeds: [embed]});
         }
     } catch (error) {
-        console.log(error);
-        return message.inlineReply(`sorry :( i got an error. try again later!`);
+        logger.log('error', error);
+        return message.reply(`sorry, i got an error! try again later! :pensive:`);
     }
 }
 
 exports.help = {
     name: "daily",
     description: "collect your daily credits. (reseted after 24 hours)",
-    usage: 'daily',
-    example: 'daily'
-}
+    usage: ['daily'],
+    example: ['daily']
+};
 
 exports.conf = {
     aliases: ["dailies", 'claim', 'collect'],
     cooldown: 10,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 function calcBonus(value) {
     return parseInt((value / 2).toFixed(0))
 };

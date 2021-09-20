@@ -14,26 +14,25 @@ exports.run = async(client, message, args) => {
 
     if (message.flags[0] === "off") {
         channel.setRateLimitPerUser(0);
-        return message.channel.send(`<#${channel.id}> slowmode has been deactivated.`);
-    }
+        return message.channel.send({ embeds: [{ color: "RED", description: `<#${channel.id}> slowmode has been deactivated.` }] });
+    };
 
-    if (!time) return message.inlineReply("please includes the time format. all valid time format are \`s, m, hrs\` <3");
+    if (!time) return message.reply({ embeds: [{ color: "RED", description: "please includes the time format. all valid time format are \`s, m, hrs\` <3" }] });
 
     let convert = ms(time);
     let toSecond = Math.floor(convert / 1000);
 
-    if (!toSecond || toSecond == undefined) return message.inlineReply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
+    if (!toSecond || toSecond == undefined) return message.reply({ embeds: [{ color: "RED", description: "please includes the **valid** time format. all valid time format are \`s, m, hrs\` <3" }] });
 
-    if (toSecond > 21600) return message.inlineReply("the timer should be more than or equal to 1 second or less than 6 hours!");
+    if (toSecond > 21600) return message.reply({ embeds: [{ color: "RED", description: "the cooldown duration must be equal to or more than 6 hours!" }] });
     const rolelog = new MessageEmbed()
         .setAuthor(client.user.username, client.user.displayAvatarURL())
         .setDescription(`Slowmode is set on <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)
-        .addField('Moderator', message.author)
-        .setTimestamp()
-
-    await channel.setRateLimitPerUser(toSecond).then(() => {
-        message.channel.send({ embed: { color: "f3f3f3", description: `☑️ this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.` } });
-    }).then(() => {
+        .addField('Moderator', message.author.toString())
+        .setTimestamp();
+    try {
+        await channel.setRateLimitPerUser(toSecond);
+        await message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.` }] });
         if (!logChannel) {
             return
         } else {
@@ -44,9 +43,9 @@ exports.run = async(client, message, args) => {
             })
             return instance.send();
         }
-    }).catch(err => {
-        return message.inlineReply("ouch, i bumped by an error :( can you check my perms?");
-    });
+    } catch (error) {
+        return message.reply({ embeds: [{ color: 'RED', description: "ouch, i bumped by an error! can you recheck my perms? :pensive:" }] });
+    };
 }
 
 exports.help = {

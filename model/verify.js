@@ -6,7 +6,8 @@ const verifySchema = mongoose.Schema({
     userID: String,
     valID: String,
     endTimestamp: Date,
-    time: String
+    time: String,
+    noKick: Boolean
 });
 
 module.exports = mongoose.model('verify', verifySchema, 'verify');

@@ -2,14 +2,14 @@ const { MessageEmbed } = require('discord.js');
 const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
 const { embedURL, cleanAnilistHTML, trimArray } = require('../../util/util');
-const searchGraphQL = stripIndents`
+const searchGraphQL = stripIndents `
 	query ($search: String) {
 		characters: Page (perPage: 1) {
 			results: characters (search: $search) { id }
 		}
 	}
 `;
-const resultGraphQL = stripIndents`
+const resultGraphQL = stripIndents `
 	query ($id: Int!) {
 		Character (id: $id) {
 			id
@@ -39,30 +39,30 @@ const resultGraphQL = stripIndents`
 	}
 `;
 const types = {
-	ANIME: 'Anime',
-	MANGA: 'Manga'
+    ANIME: 'Anime',
+    MANGA: 'Manga'
 };
 
-exports.run = async (client, message, args) => {
-    let query = args.join(" ");
-    if (!query) return message.inlineReply("you have to give me a character's name :(")
-    try {
-        const id = await search(query);
-        if (!id) return message.inlineReply('i couldn\'t find any result for that character :(');
-        const character = await fetchCharacter(id);
-        const embed = new MessageEmbed()
-            .setColor(message.member.displayHexColor)
-            .setURL(character.siteUrl)
-            .setThumbnail(character.image.large || character.image.medium || null)
-            .setTitle(`${character.name.first || ''}${character.name.last ? ` ${character.name.last}` : ''}`)
+exports.run = async(client, message, args) => {
+        let query = args.join(" ");
+        if (!query) return message.reply("you have to give me a character's name :(")
+        try {
+            const id = await search(query);
+            if (!id) return message.reply('i couldn\'t find any result for that character :(');
+            const character = await fetchCharacter(id);
+            const embed = new MessageEmbed()
+                .setColor(message.member.displayHexColor)
+                .setURL(character.siteUrl)
+                .setThumbnail(character.image.large || character.image.medium || null)
+                .setTitle(`${character.name.first || ''}${character.name.last ? ` ${character.name.last}` : ''}`)
             .setDescription(character.description ? cleanAnilistHTML(character.description, false) : 'No description found :(')
             .addField('😀 Appearances', trimArray(character.media.edges.map(edge => {
                 const title = edge.node.title.english || edge.node.title.romaji;
                 return embedURL(`${title} (${types[edge.node.type]})`, edge.node.siteUrl);
             }), 5).join(', '));
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     } catch (err) {
-        return message.channel.send('sorry :( i got no result. the server might be down tho.')
+        return message.channel.send('sorry! i got no result. the server might be down tho. :pensive:')
     }
 }
 
@@ -91,15 +91,14 @@ async function fetchCharacter(id) {
 
 exports.help = {
 	name: "anime-character",
-	description: "Search for an officially released anime character",
-	usage: "anime-character `<name>`",
-	example: "anime-character `Bell`"
+	description: "search for an officially released anime character",
+	usage: ["anime-character `<name>`"],
+	example: ["anime-character `Bell`"]
 };
   
 exports.conf = {
 	aliases: ["animecharacter"],
     cooldown: 5,
     guildOnly: true,
-    
 	channelPerms: ["EMBED_LINKS"]
 };

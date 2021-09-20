@@ -1,0 +1,20 @@
+{
+    "seeds": {
+        "price": 50,
+        "displayName": "🌱 seed",
+        "displayPrice": "⏣ 50",
+        "desc": "bait to use for catching `{prefix}fish` {rod}"
+    },
+    "worms": {
+        "price": 150,
+        "displayName": "🪱 worm",
+        "displayPrice": "⏣ 150",
+        "desc": "used for planting trees in your garden via `{prefix}plant` :chestnut:"
+    },
+    "rings": {
+        "price": 1300,
+        "displayPrice": "⏣ 1,300",
+        "displayName": "💍 wedding ring",
+        "desc": "used to propose to your partner via `{prefix}marry` <3 (break after each proposal)"
+    }
+}

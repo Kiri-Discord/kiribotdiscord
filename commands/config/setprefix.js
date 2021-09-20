@@ -1,7 +1,7 @@
 exports.run = async(client, message, args, prefix) => {
 
     if (args.length < 1) {
-        return message.channel.send({ embed: { color: "f3f3f3", description: `ℹ️ my current guild prefix here is \`${prefix}\` you could use \`${prefix}setprefix <prefix>\` to change it :D` } });
+        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `ℹ️ my current guild prefix here is \`${prefix}\` you could use \`${prefix}setprefix <prefix>\` to change it :D` }] });
     };
     const db = client.guildsStorage.get(message.guild.id);
     db.prefix = args[0];
@@ -11,10 +11,8 @@ exports.run = async(client, message, args, prefix) => {
         }, {
             prefix: args[0]
         })
-        .catch(err => console.error(err));
-
-
-    return message.channel.send({ embed: { color: "f3f3f3", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` } });
+        .catch(err => logger.log('error', err));
+    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` }] });
 
 
 };
@@ -22,9 +20,9 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "set-prefix",
-    description: "change my prefix.. pretty self-explanatory.",
-    usage: "set-prefix `<prefix>`",
-    example: "set-prefix `s!`"
+    description: "change my prefix throughout the server",
+    usage: ["set-prefix `<prefix>`"],
+    example: ["set-prefix `k!`"]
 }
 
 exports.conf = {

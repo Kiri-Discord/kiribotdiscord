@@ -6,12 +6,12 @@ const path = require('path');
 
 exports.run = async(client, message, args) => {
     let image;
-    let attachments = message.attachments.array();
+    let attachments = [...message.attachments.values()];
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
-            return message.inlineReply("that isn't a correct URL!");
+            return message.reply("that isn't a correct URL!");
         }
     } else {
         if (attachments.length === 0) {
@@ -29,12 +29,12 @@ exports.run = async(client, message, args) => {
             } catch (error) {
                 image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
             }
-        } else if (attachments.length > 1) return message.inlineReply("i only can process one image at one time!");
+        } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
-    if (!fileTypeRe.test(image)) return message.inlineReply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
+    if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
-        message.channel.startTyping(true);
+        message.channel.sendTyping();
         const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'brazzers.png'));
         const { body } = await request.get(image);
         const data = await loadImage(body);
@@ -46,15 +46,12 @@ exports.run = async(client, message, args) => {
         const height = Math.round(width / ratio);
         ctx.drawImage(base, 0, data.height - height, width, height);
         const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {
-            await message.channel.stopTyping(true);
+        if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };
-        await message.channel.stopTyping(true);
+        };;
         return message.channel.send({ files: [{ attachment, name: "brazzers.png" }] });
-    } catch (error) {
-        await message.channel.stopTyping(true);
-        return message.inlineReply(`sorry i got an error :pensive: try again later!`)
+    } catch (error) {;
+        return message.reply(`sorry i got an error :pensive: try again later!`)
     };
 };
 

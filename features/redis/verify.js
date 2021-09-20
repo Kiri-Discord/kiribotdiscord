@@ -10,65 +10,67 @@ module.exports = class VerifyTimer {
     async fetchAll() {
         const timers = await this.client.dbverify.find({});
         if (!timers || !timers.length) return;
-        for (let data of timers) await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, data.valID, false);
+        for (let data of timers) await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, data.valID, false, data.noKick);
         return this;
     }
 
-    async setTimer(guildID, time, userID, code, update = true) {
+    async setTimer(guildID, time, userID, code, update = true, noKick) {
         const timeout = setTimeout(async() => {
             try {
-                let reason = 'Kiri verification timeout (step 2)';
-                const setting = await this.client.dbguilds.findOne({
-                    guildID: guildID
-                });
-                const guild = await this.client.guilds.cache.get(guildID);
-                if (!guild) return;
-                const member = await guild.members.cache.get(userID);
-                if (!member) return;
-                const roleExist = guild.roles.cache.get(setting.verifyRole);
-                const verifyChannel = guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
-                const verifyRole = member._roles.includes(setting.verifyRole);
-                if (verifyRole || !verifyChannel || !roleExist) return;
-                const logChannel = await guild.channels.cache.get(setting.logChannelID);
-                const logembed = new MessageEmbed()
-                    .setAuthor(`Verification`, this.client.user.displayAvatarURL())
-                    .setTitle(`${member.user.tag} was kicked`)
-                    .setColor("#ff0000")
-                    .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
-                    .addField('Username', member.user.tag)
-                    .addField('User ID', member.id)
-                    .addField('Kicked by', this.client.user)
-                    .addField('Reason', reason)
-                    .setTimestamp()
-                const logerror = new MessageEmbed()
-                    .setAuthor(`Verification`, this.client.user.displayAvatarURL())
-                    .setTitle(`Failed while kicking ${member.user.tag}`)
-                    .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
-                    .setColor('#ff0000')
-                    .setTimestamp()
-                    .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
-                if (!member.kickable) {
+                if (!noKick) {
+                    let reason = 'Kiri verification timeout';
+                    const setting = await this.client.dbguilds.findOne({
+                        guildID: guildID
+                    });
+                    const guild = await this.client.guilds.cache.get(guildID);
+                    if (!guild) return;
+                    const member = await guild.members.cache.get(userID);
+                    if (!member) return;
+                    const roleExist = guild.roles.cache.get(setting.verifyRole);
+                    const verifyChannel = guild.channels.cache.find(ch => ch.id === setting.verifyChannelID);
+                    const verifyRole = member.roles.cache.has(setting.verifyRole);
+                    if (verifyRole || !verifyChannel || !roleExist) return;
+                    const logChannel = await guild.channels.cache.get(setting.logChannelID);
+                    const logembed = new MessageEmbed()
+                        .setAuthor(`Verification`, this.client.user.displayAvatarURL())
+                        .setTitle(`${member.user.tag} was kicked`)
+                        .setColor("#ff0000")
+                        .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
+                        .addField('Username', member.user.tag)
+                        .addField('User ID', member.id)
+                        .addField('Kicked by', this.client.user.toString())
+                        .addField('Reason', reason)
+                        .setTimestamp()
+                    const logerror = new MessageEmbed()
+                        .setAuthor(`Verification`, this.client.user.displayAvatarURL())
+                        .setTitle(`Failed while kicking ${member.user.tag}`)
+                        .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
+                        .setColor('#ff0000')
+                        .setTimestamp()
+                        .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
+                    if (!member.kickable) {
+                        if (logChannel) {
+                            const instance = new sendHook(this.client, logChannel, {
+                                username: member.guild.me.displayName,
+                                avatarURL: this.client.user.displayAvatarURL(),
+                                embeds: [logerror],
+                            });
+                            return instance.send();
+                        } else return;
+                    }
                     if (logChannel) {
                         const instance = new sendHook(this.client, logChannel, {
                             username: member.guild.me.displayName,
                             avatarURL: this.client.user.displayAvatarURL(),
-                            embeds: [logerror],
-                        });
+                            embeds: [logembed],
+                        })
                         return instance.send();
-                    } else return;
-                }
-                if (logChannel) {
-                    const instance = new sendHook(this.client, logChannel, {
-                        username: member.guild.me.displayName,
-                        avatarURL: this.client.user.displayAvatarURL(),
-                        embeds: [logembed],
-                    })
-                    return instance.send();
-                }
-                await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** :pensive:`).catch(() => {
-                    null
-                });
-                await member.kick(reason);
+                    }
+                    await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** :pensive:`).catch(() => {
+                        null
+                    });
+                    await member.kick(reason);
+                };
             } finally {
                 await this.client.dbverify.findOneAndDelete({
                     guildID: guildID,
@@ -85,7 +87,8 @@ module.exports = class VerifyTimer {
                 userID,
                 valID: code,
                 endTimestamp: new Date(Date.now() + time),
-                time: new Date(Date.now() + time).toISOString()
+                time: new Date(Date.now() + time).toISOString(),
+                noKick
             }, {
                 upsert: true,
                 new: true

@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     if (message.author.id !== '617777631257034783') return;
     const msg = args.slice(2).join(" ");
     if (!args[0] || !args[1] || !msg) return;
@@ -7,18 +7,17 @@ exports.run = async (client, message, args) => {
     const channel = await guild.channels.cache.get(args[1]);
     if (!channel) return;
     channel.send(msg);
-}
+};
 
 exports.help = {
-  name: "lol",
-  description: "hmm",
-  usage: `lol`,
-  example: `lol`
-}
+    name: "lol",
+    description: "hmm",
+    usage: [`lol`],
+    example: [`lol`]
+};
 
 exports.conf = {
-  aliases: [],
-  cooldown: 2,
-  owner: true
-}
-
+    aliases: [],
+    cooldown: 2,
+    owner: true
+};

@@ -1,16 +1,16 @@
 const { MessageCollector } = require('discord.js');
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const yes = "y";
-    let attachments = message.attachments.array()
-    if (attachments.length === 0) return message.inlineReply("please upload some images!");
-    message.inlineReply('this action is irreversible :( do you want to continue? \`y/n\`')
+    let attachments = [...message.attachments.values()]
+    if (attachments.length === 0) return message.reply("please upload some images!");
+    await message.reply('this action is irreversible :( do you want to continue? \`y/n\`');
 
-    const collector = new MessageCollector(message.channel, msg => {
-        if (msg.author.id === message.author.id) return true;
-    }, { time: 15000 });
+    const collector = new MessageCollector(message.channel, {
+        filter: msg => msg.author.id === message.author.id,
+        time: 15000
+    });
 
     collector.on('collect', async msg => {
-
         try {
             if (yes.includes(msg.content.trim().toLowerCase())) {
                 await client.user.setAvatar(attachments[0].url)
@@ -26,15 +26,14 @@ exports.run = async (client, message, args) => {
 }
 
 exports.help = {
-	name: "setavatar",
-	description: "change the way i look. 😔",
-	usage: "setavatar `<image attachment>`",
-	example: "setavatar `<insert random image here>`"
+    name: "setavatar",
+    description: "change the way i look. 😔",
+    usage: ["setavatar `<image attachment>`"],
+    example: ["setavatar `<insert random image here>`"]
 };
-  
+
 exports.conf = {
-	aliases: [],
+    aliases: [],
     cooldown: 2,
     owner: true
 };
-  

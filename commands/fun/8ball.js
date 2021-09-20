@@ -1,6 +1,6 @@
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let question = args.join(" ");
-    if (!question) return message.channel.send('you must write something lmao.')
+    if (!question) return message.channel.send('you must write something lol.')
     const responses = [
         "ye",
         "probably",
@@ -8,23 +8,25 @@ exports.run = async (client, message, args) => {
         "unprobably",
         "no",
         "heck no",
-        ]
+        "yes",
+        "of course",
+        "i do"
+    ];
     const randomResponse = Math.floor(Math.random() * (responses.length - 1) + 1);
-    message.channel.startTyping();
-    setTimeout(async () => {
-        await message.channel.stopTyping();
+    message.channel.sendTyping();
+    setTimeout(async() => {
         return message.channel.send(`${responses[randomResponse]}`);
     }, 10000);
 }
 exports.help = {
-	name: "8ball",
-	description: "Your life depends on this one.",
-	usage: "8ball `<question>`",
-	example: "8ball `do you love me?`"
+    name: "8ball",
+    description: "your life depends on this one.",
+    usage: ["8ball `<question>`"],
+    example: ["8ball `do you love me?`"]
 };
-  
+
 exports.conf = {
-	aliases: ["8ball"],
+    aliases: ["8ball"],
     cooldown: 3,
     guildOnly: true,
 };

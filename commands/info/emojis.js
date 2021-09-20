@@ -20,34 +20,36 @@ exports.run = async(client, message, args) => {
   ${(notAnimated.join(' ') + ' ')}
   `;
     const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2047, char: ' ' });
+    const embedArray = [];
     const embed = new MessageEmbed()
         .setDescription(first)
-        .setColor(message.member.displayHexColor)
+        .setColor(message.guild.me.displayHexColor)
         .setThumbnail(icon)
         .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
     if (rest.length) {
-        await message.channel.send(embed);
+        embedArray.push(embed)
         const lastContent = rest.splice(rest.length - 1, 1);
         for (const text of rest) {
             const embed1 = new MessageEmbed()
-                .setColor(message.member.displayHexColor)
+                .setColor(message.guild.me.displayHexColor)
                 .setDescription(text)
-            await message.channel.send(embed1)
+            embedArray.push(embed1)
         };
         const embed3 = new MessageEmbed()
-            .setColor(message.member.displayHexColor)
+            .setColor(message.guild.me.displayHexColor)
             .setDescription(lastContent)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        return message.channel.send(embed3);
+        embedArray.push(embed3)
+        embed3.setTimestamp()
+        return message.channel.send({ embeds: embedArray });
     } else {
-        embed.setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        return message.channel.send(embed);
+        embed.setTimestamp()
+        return message.channel.send({ embeds: [embed] });
     }
 }
 exports.help = {
     name: "emojis",
     description: "display all emojis avaliable on the server, or mention an emoji to get more info about it!",
-    usage: "emojis",
+    usage: ["emojis"],
     example: ["emojis"]
 };
 

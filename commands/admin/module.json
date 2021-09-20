@@ -1,6 +1,7 @@
 {
-  "displayName": "🔨 moderation",
-  "name": "mod",
-  "desc": "turn your server into a totalitarian state with moderation",
-  "hide": false
+    "displayName": "moderation",
+    "name": "mod",
+    "desc": "turn your server into a totalitarian state with moderation",
+    "hide": false,
+    "emoji": "🔨"
 }

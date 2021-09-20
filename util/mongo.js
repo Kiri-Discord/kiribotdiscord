@@ -12,15 +12,15 @@ module.exports = {
         mongoose.set('bufferCommands', false);
         // mongoose.set('cloneSchemas', true);
         mongoose.connection.on('connected', () => {
-            console.log('[MONGO] Mongoose has successfully connected!');
+            logger.log('info', '[MONGO] Mongoose has successfully connected!');
         });
 
         mongoose.connection.on('err', err => {
-            console.error(`[MONGO] Mongoose connection error: \n${err.stack}`);
+            logger.log('error', `[MONGO] Mongoose connection error: \n${err.stack}`);
         });
 
         mongoose.connection.on('disconnected', () => {
-            console.warn('[MONGO] Mongoose connection lost');
+            logger.log('warn', '[MONGO] Mongoose connection lost');
         });
         await mongoose.connect(process.env.mongourl, dbOptions);
         return true;

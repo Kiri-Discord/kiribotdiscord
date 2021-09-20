@@ -1,6 +1,7 @@
 {
-  "displayName": "🎉 giveaways",
-  "desc": "create and edit giveaways per server!",
-  "name": "giveaways",
-  "hide": false
+    "displayName": "giveaways",
+    "desc": "create and edit giveaways per server!",
+    "name": "giveaways",
+    "hide": false,
+    "emoji": "🎉"
 }

@@ -1,5 +1,6 @@
 const { MessageEmbed, Util } = require("discord.js");
 const request = require('node-superfetch');
+const { shortenText } = require('../../util/util');
 
 exports.run = async(client, message, args) => {
     let lyrics;
@@ -7,6 +8,7 @@ exports.run = async(client, message, args) => {
         .setColor(message.member.displayHexColor)
     const queue = client.queue.get(message.guild.id);
     const query = args.join(" ");
+    message.channel.sendTyping();
     if (query) {
         try {
             const { body } = await request
@@ -15,7 +17,7 @@ exports.run = async(client, message, args) => {
                 .query({
                     song: query
                 });
-            if (body.notFound) return message.inlineReply(`no lyrics was found for that song :pensive:`);
+            if (body.notFound) return message.reply(`no lyrics was found for that song :pensive:`);
             if (!body.googleFetch) {
                 embed.setTitle(`Lyrics for ${body.title} by ${body.author}`);
                 embed.setThumbnail(body.thumbnail);
@@ -24,7 +26,7 @@ exports.run = async(client, message, args) => {
             };
             lyrics = body.lyrics;
         } catch (error) {
-            return message.inlineReply(`couldn't connect you to the server. try again later :pensive:`);
+            return message.reply(`couldn't connect you to the server. try again later :pensive:`);
         };
     } else if (queue) {
         try {
@@ -32,9 +34,9 @@ exports.run = async(client, message, args) => {
                 .post(process.env.lyricURL + 'fetch')
                 .set({ Authorization: process.env.lyricsKey })
                 .query({
-                    song: queue.nowPlaying.info.title
+                    song: `${queue.nowPlaying.info.title} ${queue.nowPlaying.info.author}`
                 });
-            if (body.notFound) return message.inlineReply(`i found no lyrics for the current playing song :pensive:`);
+            if (body.notFound) return message.reply(`i found no lyrics for the current playing song :pensive:`);
             if (!body.googleFetch) {
                 embed.setTitle(`Lyrics for ${body.title} by ${body.author}`);
                 embed.setThumbnail(body.thumbnail);
@@ -43,44 +45,45 @@ exports.run = async(client, message, args) => {
             };
             lyrics = body.lyrics;
         } catch (error) {
-            return message.inlineReply(`couldn't connect you to the server. try again later :pensive:`);
+            return message.reply(`couldn't connect you to the server. try again later :pensive:`);
         };
     } else {
-        return message.inlineReply(`what song do you want me to search the lyric for :thinking: ?`);
-    }
-    const [first, ...rest] = Util.splitMessage(lyrics, { maxLength: 4000, char: '\n' });
+        return message.reply(`what song do you want me to search the lyric for :thinking: ?`);
+    };
+
+    const [first, ...rest] = Util.splitMessage(shortenText(lyrics, 12000), { maxLength: 4000, char: '\n' });
 
     if (rest.length) {
         embed.setDescription(first)
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
         const lastContent = rest.splice(rest.length - 1, 1);
         for (const text of rest) {
             const embed1 = new MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setDescription(text)
-            await message.channel.send(embed1)
+            await message.channel.send({ embeds: [embed1] })
         };
         const embed3 = new MessageEmbed()
             .setColor(message.member.displayHexColor)
             .setDescription(lastContent)
             .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
-        return message.channel.send(embed3);
+        return message.channel.send({ embeds: [embed3] });
     } else {
         embed
             .setTimestamp()
             .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
             .setColor(message.member.displayHexColor)
             .setDescription(first)
-        return message.channel.send(embed);
-    }
-}
+        return message.channel.send({ embeds: [embed] });
+    };
+};
 
 exports.help = {
     name: "lyrics",
     description: "get the lyrics for a song",
-    usage: "lyrics [song]",
-    example: "lyrics `never let me go`"
+    usage: ["lyrics `[song]`"],
+    example: ["lyrics `never let me go`"]
 };
 
 exports.conf = {

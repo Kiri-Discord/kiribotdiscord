@@ -1,6 +1,7 @@
 {
-  "displayName": "🎵 music",
-  "desc": "play music right from discord! there is also a karaoke feature for your need :)",
-  "name": "music",
-  "hide": false
+    "displayName": "music",
+    "desc": "play music right from discord! there is also a karaoke feature for your need :)",
+    "name": "music",
+    "hide": false,
+    "emoji": "🎵"
 }

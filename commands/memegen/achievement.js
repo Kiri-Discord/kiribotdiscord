@@ -1,12 +1,13 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
+const { MessageAttachment } = require('discord.js');
 const path = require('path');
 const { shortenText } = require('../../util/canvas');
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Minecraftia.ttf'), { family: 'Minecraftia' });
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     const text = args.join(" ");
-    if (!text) return message.inlineReply(`what achievement do you want to get?`);
-
+    if (!text) return message.reply(`what achievement do you want to get?`);
+    message.channel.sendTyping();
     const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'achievement.png'));
     const canvas = createCanvas(base.width, base.height);
     const ctx = canvas.getContext('2d');
@@ -15,8 +16,11 @@ exports.run = async (client, message, args) => {
     ctx.fillStyle = '#ffff00';
     ctx.fillStyle = '#ffffff';
     ctx.fillText(shortenText(ctx, text, 230), 60, 60);
-    return message.channel.send(`**${message.author.username}** just got an achievement! ${client.customEmojis.get('party') ? client.customEmojis.get('party') : ':partying_face:'}`, { files: [{ attachment: canvas.toBuffer(), name: 'achievement.png' }] });
-}
+    return message.channel.send({
+        content: `**${message.author.username}** just got an achievement! ${client.customEmojis.get('party') ? client.customEmojis.get('party') : ':partying_face:'}`,
+        files: [new MessageAttachment(canvas.toBuffer(), 'achievement.png')]
+    });
+};
 
 exports.help = {
     name: "achievement",
@@ -29,6 +33,5 @@ exports.conf = {
     aliases: ["mc-achieve", "achieve"],
     cooldown: 4,
     guildOnly: true,
-    
-	channelPerms: ["ATTACH_FILES"]
+    channelPerms: ["ATTACH_FILES"]
 };

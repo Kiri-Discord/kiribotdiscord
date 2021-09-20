@@ -7,7 +7,7 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf')
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     let query;
     let game;
     if (!args[0]) {
@@ -24,6 +24,7 @@ exports.run = async (client, message, args) => {
     const user = member.user;
     const avatarURL = user.displayAvatarURL({ format: 'png', size: 64 });
     try {
+        message.channel.sendTyping();
         const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'steam-now-playing.png'));
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
@@ -37,20 +38,20 @@ exports.run = async (client, message, args) => {
         ctx.fillText(shortenText(ctx, game, 200), 80, 70);
         return message.channel.send({ files: [{ attachment: canvas.toBuffer(), name: 'steam-now-playing.png' }] });
     } catch (err) {
-        return message.inlineReply(`sorry :( i got an error. try again later!`);
+        return message.reply(`sorry :( i got an error. try again later!`);
     }
 }
 exports.help = {
-  name: "steam-playing",
-  description: `generate a Steam "Now Playing" notification.`,
-  usage: "steam-playing \`[user] <game>\`",
-  example: "steam-playing \`@Eftw osu\`"
+    name: "steam-playing",
+    description: `generate a Steam "Now Playing" notification.`,
+    usage: "steam-playing \`[user] <game>\`",
+    example: "steam-playing \`@Eftw osu\`"
 }
 
 exports.conf = {
-  aliases: ["steamnp", "steam-now-playing"],
-  cooldown: 3,
-  guildOnly: true,
-  
-  channelPerms: ["ATTACH_FILES"]
+    aliases: ["steamnp", "steam-now-playing"],
+    cooldown: 3,
+    guildOnly: true,
+
+    channelPerms: ["ATTACH_FILES"]
 }

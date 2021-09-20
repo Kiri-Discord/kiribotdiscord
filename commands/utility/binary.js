@@ -1,17 +1,17 @@
 const Discord = require("discord.js");
 
-exports.run = async (client, message, args) => {
+exports.run = async(client, message, args) => {
     if (!args[0]) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
 
     let choice = ["encode", "decode"];
     if (!choice.includes(args[0].toLowerCase())) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
 
     let text = args.slice(1).join(" ");
- 
 
-    if (!text) return message.inlineReply("p l e a s e input some text :D");
 
-    if (text.length > 1024) return message.inlineReply("oww, that is way too much. the maximum character is 1,024.");
+    if (!text) return message.reply("p l e a s e input some text :pensive:");
+
+    if (text.length > 1024) return message.reply("oww, that is way too much. the maximum character is 1,024.");
 
     function encode(char) {
         return char.split("").map(str => {
@@ -26,20 +26,20 @@ exports.run = async (client, message, args) => {
 
     if (args[0].toLowerCase() === "encode") {
         const result = encode(text);
-        if (result.length > 1024) return message.inlineReply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
+        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle! the encoded text just reached over 1024 character, which is beyond Discord limit :pensive:");
         return message.channel.send(encode(text));
     } else if (args[0].toLowerCase() === "decode") {
         const result = decode(text);
-        if (result.length > 1024) return message.inlineReply("bruh, that is way too much for me to handle :( the encoded text just reached over 1024 character, which is beyond Discord limit :(");
+        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle! the encoded text just reached over 1024 character, which is beyond Discord limit :pensive:");
         return message.channel.send(decode(text));
     }
 };
 
 exports.help = {
     name: "binary",
-    description: "Convert text to binary and vice versa.",
-    usage: "binary `<encode | decode> <text>`",
-    example: "binary `encode i love you`"
+    description: "speak out your heart in binary and vice versa",
+    usage: ["binary `<encode | decode> <text>`"],
+    example: ["binary `encode i love you`"]
 };
 
 exports.conf = {

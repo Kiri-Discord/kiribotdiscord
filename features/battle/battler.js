@@ -3,25 +3,25 @@ const { list } = require('../../util/util');
 const choices = ['attack', 'defend', 'special', 'cure', 'final', 'run'];
 
 module.exports = class Battler {
-	constructor(battle, user) {
-		this.battle = battle;
-		this.user = user;
-		this.bot = user.bot;
-		this.hp = 500;
-		this.mp = 500;
-		this.guard = false;
-		this.usedFinal = false;
-	}
+        constructor(battle, user) {
+            this.battle = battle;
+            this.user = user;
+            this.bot = user.bot;
+            this.hp = 500;
+            this.mp = 500;
+            this.guard = false;
+            this.usedFinal = false;
+        }
 
-	async chooseAction(message) {
-		if (this.bot) {
-			if (this.canFinal) return 'final';
-			const botChoices = ['attack', 'attack', 'defend'];
-			if (this.canSpecial) botChoices.push('special');
-			if (this.canHeal && this.hp < 200) botChoices.push('cure');
-			return botChoices[Math.floor(Math.random() * botChoices.length)];
-		}
-		let content = stripIndents`
+        async chooseAction(message) {
+                if (this.bot) {
+                    if (this.canFinal) return 'final';
+                    const botChoices = ['attack', 'attack', 'defend'];
+                    if (this.canSpecial) botChoices.push('special');
+                    if (this.canHeal && this.hp < 200) botChoices.push('cure');
+                    return botChoices[Math.floor(Math.random() * botChoices.length)];
+                }
+                let content = stripIndents `
 			${this}, do you ${list(choices.map(choice => `**${choice}**`), 'or')}? you have **${this.mp}** MP.
 			**${this.battle.user.user.username}:** ${this.battle.user.hp} HP
 			**${this.battle.opponent.user.username}:** ${this.battle.opponent.hp} HP
@@ -45,7 +45,8 @@ module.exports = class Battler {
 			}
 			return false;
 		};
-		const turn = await message.channel.awaitMessages(filter, {
+		const turn = await message.channel.awaitMessages({
+			filter,
 			max: 1,
 			time: 30000
 		});
