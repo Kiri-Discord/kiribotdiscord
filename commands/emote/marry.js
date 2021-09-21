@@ -80,7 +80,7 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             });
 
-            const { body } = await request.get('https://nekos.best/api/v1/:kiss');
+            const { body } = await request.get('https://nekos.best/api/v1/kiss');
             let image = body.url;
             const embed = new MessageEmbed()
                 .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
