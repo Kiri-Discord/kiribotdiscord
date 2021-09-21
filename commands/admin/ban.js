@@ -63,7 +63,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "ban",
-    description: "Ban someone.",
+    description: "ban someone from the server",
     usage: ["ban `<mention | user ID> [reason]`", "ban `<mention | user ID>`"],
     example: ["ban `@Bell because it has to be`", "ban `@kuru`"]
 }

@@ -59,7 +59,7 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "addrole",
-    description: "Add a certain role to a certain person.",
+    description: "add a certain role to a certain person.",
     usage: ["addrole `<@user> <@role>`", "addrole `<@user> <role ID>`", "addrole `<user ID> <role ID>`", "addrole `<user ID> <@role>`", "addrole `<@user> <role name>`", "addrole `<user ID> <role name>"],
     example: ["addrole `@bach @pvp`", "addrole `@kuru 584484488877`", "addrole `5575557852 Member`"]
 };

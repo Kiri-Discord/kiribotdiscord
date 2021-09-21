@@ -4,21 +4,18 @@ exports.run = async(client, message, args) => {
     if (!args[0]) {
         let listGuild = [];
         client.guilds.cache.each(guild => {
-            listGuild.push(`${guild.name} - ${guild.id} (owner: ${guild.ownerID})`)
+            listGuild.push(`${guild.name} - ${guild.id} (owner: ${guild.ownerId})`)
         });
         const [first, ...rest] = Util.splitMessage(listGuild.join('\n'), { maxLength: 1900, char: '\n' });
         if (rest.length) {
             await message.channel.send(first);
             for (const text of rest) {
-                const embed1 = new MessageEmbed()
-                    .setColor(message.member.displayHexColor)
-                    .setDescription(text)
                 await message.channel.send(text);
             };
         } else {
             return message.channel.send(first);
         };
-    }
+    };
     const guild = client.guilds.cache.get(args[0]);
     if (!guild) return message.channel.send('guild not found.');
     const channels = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has('CREATE_INSTANT_INVITE')).first();

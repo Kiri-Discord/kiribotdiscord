@@ -6,7 +6,7 @@ exports.run = async(client, message, args, prefix) => {
     if (!args[0]) {
         let module = [...client.helps.values()];
         if (!client.config.owners.includes(message.author.id)) module = module.filter(x => !x.hide);
-        const replyEmoji = client.customEmojis.get('following');
+        const replyEmoji = client.customEmojis.get('arrow');
         message.channel.sendTyping();
         const optionList = [{
             label: 'all',
@@ -33,10 +33,10 @@ exports.run = async(client, message, args, prefix) => {
         };
         arrSplitted.forEach((item, index) => {
             const embed = new MessageEmbed()
-                .setColor('#EDE7D3')
-                .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
+                .setAuthor('hey, how can i help?', client.user.displayAvatarURL())
+                .setColor('#cbba80')
                 .setDescription(item.join('\n'))
-                .setFooter(`do ${prefix}help <cmd> for more help on a command`)
+                .setFooter(`do ${prefix}help <cmd> for more help on a command :)`)
             arrEmbeds.push(embed);
         });
         const components = [];
@@ -117,10 +117,10 @@ exports.run = async(client, message, args, prefix) => {
                     arrEmbeds = [];
                     arrSplitted.forEach((item, index) => {
                         const embed = new MessageEmbed()
-                            .setColor('#EDE7D3')
-                            .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
+                            .setAuthor('hey, how can i help?', client.user.displayAvatarURL())
+                            .setColor('#cbba80')
                             .setDescription(item.join('\n'))
-                            .setFooter(`do ${prefix}help <cmd> for more help on a command`)
+                            .setFooter(`do ${prefix}help <cmd> for more help on a command :)`)
                         arrEmbeds.push(embed);
                     });
                     currentPage = 0;
@@ -222,16 +222,15 @@ exports.run = async(client, message, args, prefix) => {
                 .addField('nsfw?', adult, true)
             return message.channel.send({ embeds: [embed] });
         } else {
-            const looking = client.customEmojis.get('looking') ? client.customEmojis.get('looking').toString() : ':eyes:';
             const matches = findBestMatch(query, client.allNameCmds).bestMatch.target;
-            return message.channel.send({ embed: { color: "#bee7f7", description: `i don't remember having that commmand or feature packed ${looking} maybe you mean \`${prefix}help ${matches}\` ?` } });
+            return message.channel.send(`:grey_question: maybe you mean \`${prefix}help ${matches}\` ?`);
         };
     };
 };
 
 exports.help = {
     name: "help",
-    description: "Gives descriptions and usage of input command.",
+    description: "gives descriptions and usage of my commands",
     usage: ["help `[command]`", "help `[feature]`", "help"],
     example: ["help `ping`", "help `memeify`", "help"]
 }

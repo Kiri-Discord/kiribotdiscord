@@ -62,7 +62,6 @@ exports.run = async(client, message, args) => {
         content: `page 1 of ${arrEmbeds.length}`,
     });
     const filter = async res => {
-        await res.deferUpdate();
         if (res.user.id !== message.author.id) {
             await res.reply({
                 embeds: [{
@@ -71,8 +70,10 @@ exports.run = async(client, message, args) => {
                 ephemeral: true
             });
             return false;
-        };
-        return true;
+        } else {
+            await res.deferUpdate();
+            return true;
+        }
     };
     return paginateEmbed(arrEmbeds, msg, row, filter, message);
 };

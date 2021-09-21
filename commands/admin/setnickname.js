@@ -43,7 +43,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "setnickname",
-    description: "set a user nickname.",
+    description: "set an user's nickname.",
     usage: ["setnickname `<@user> <nick>`"],
     example: ["setnickname `@bell#9999 hoisted`"]
 }

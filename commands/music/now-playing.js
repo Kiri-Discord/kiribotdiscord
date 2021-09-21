@@ -5,7 +5,11 @@ require('moment-duration-format');
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.channel.send('there is nothing to show since i\'m not playing anything :grimacing:').catch(err => logger.log('error', err));
+    if (!queue) return message.channel.send({
+        embeds: [{
+            description: 'there is nothing to display since i\'m not playing anything :grimacing:'
+        }]
+    });
     const song = queue.nowPlaying;
     const seek = queue.pausedAt ? (queue.pausedAt - queue.player.timestamp) / 1000 : (Date.now() - queue.player.timestamp) / 1000;
     const duration = song.info.isStream ? null : song.info.length / 1000;
