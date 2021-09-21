@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
         .setColor('#7DBBEB')
         .setAuthor(`${message.author.username} cried :(`, message.author.displayAvatarURL())
 
-    fetch('https://nekos.best/api/v1/:cry')
+    fetch('https://nekos.best/api/v1/cry')
         .then(res => res.json())
         .then(json => embed.setImage(json.url))
         .then(() => message.channel.send({ embeds: [embed] }))
