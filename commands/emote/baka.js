@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js")
 const request = require('node-superfetch');
 
 exports.run = async(client, message, args) => {
-    const { body } = await request.get('https://nekos.best/api/v1/:baka');
+    const { body } = await request.get('https://nekos.best/api/v1/baka');
     const data = body.url;
     const embed = new MessageEmbed()
         .setColor('#7DBBEB')
