@@ -313,6 +313,7 @@ module.exports = class util {
 					const number = await util.askString(initialMsg.channel, filter, { time: 15000 });
 					if (number === 0 || !number) return prompt.delete();
 					else {
+                                                await prompt.delete();
 						currentPage = parseInt(number) - 1;
 						await res.editReply({
 							content: `page ${number} of ${array.length}`,
@@ -320,7 +321,7 @@ module.exports = class util {
 							embeds: [array[currentPage]]
 						})
 				    };
-					await prompt.delete();
+
 					break;
 				case 'clearbtn':
 					collector.stop();
