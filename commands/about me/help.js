@@ -168,7 +168,7 @@ exports.run = async(client, message, args, prefix) => {
                         } else return false;
                     };
                     const number = await askString(message.channel, filter, { time: 15000 });
-                    if (number === 0 || !number) return prompt.delete();
+                    if (number === 0 || !number) prompt.delete();
                     else {
                         currentPage = parseInt(number) - 1;
                         await res.editReply({
