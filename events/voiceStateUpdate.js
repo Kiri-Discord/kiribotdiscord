@@ -29,7 +29,7 @@ module.exports = async(client, oldState, newState) => {
                         .setDescription(`it's been a while since everyone started leaving the music channel, so i left it too ☹️\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${client.config.prefix}24/7\` for supporters! stay tuned <3`)
                     queue.textChannel.send({ embeds: [embed] });
                     if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
-                    return client.queue.delete(message.guild.id);
+                    return client.queue.delete(queue.textChannel.guild.id);
                 }, 900000);
             };
         };
