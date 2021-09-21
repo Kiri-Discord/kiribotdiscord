@@ -64,7 +64,7 @@ exports.help = {
 }
 
 exports.conf = {
-    aliases: ["tf"],
+    aliases: ["give"],
     cooldown: 15,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
