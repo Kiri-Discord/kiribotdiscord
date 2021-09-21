@@ -170,6 +170,7 @@ exports.run = async(client, message, args, prefix) => {
                     const number = await askString(message.channel, filter, { time: 15000 });
                     if (number === 0 || !number) prompt.delete();
                     else {
+                        await prompt.delete();
                         currentPage = parseInt(number) - 1;
                         await res.editReply({
                             content: `page ${number} of ${arrEmbeds.length}`,
@@ -177,7 +178,6 @@ exports.run = async(client, message, args, prefix) => {
                             embeds: [arrEmbeds[currentPage]]
                         })
                     };
-                    await prompt.delete();
                     break;
                 case 'clearbtn':
                     collector.stop();
