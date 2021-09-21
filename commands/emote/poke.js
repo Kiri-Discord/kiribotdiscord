@@ -19,7 +19,7 @@ exports.run = async(client, message, args) => {
         message.reply(`have you lost your mind ${deadEmoji}`);
         return
     };
-    const { body } = await request.get('https://nekos.best/api/v1/:poke');
+    const { body } = await request.get('https://nekos.best/api/v1/poke');
     let image = body.url;
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
