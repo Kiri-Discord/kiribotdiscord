@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
         upsert: true,
         new: true,
     });
-    const { body } = await request.get('https://nekos.best/api/v1/:kiss');
+    const { body } = await request.get('https://nekos.best/api/v1/kiss');
     let data = body.url;
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
