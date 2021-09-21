@@ -38,7 +38,7 @@ exports.run = async(client, message, args) => {
 
     const amount = result.received;
 
-    const { body } = await request.get('https://nekos.best/api/v1/:slap');
+    const { body } = await request.get('https://nekos.best/api/v1/slap');
     let image = body.url;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
