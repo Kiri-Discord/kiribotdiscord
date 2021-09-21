@@ -1,6 +1,5 @@
 const { MessageEmbed } = require("discord.js")
-const neko = require('nekos.life');
-const { sfw } = new neko();
+const request = require('node-superfetch');
 const cuddleSchema = require('../../model/cuddle');
 
 
@@ -37,13 +36,14 @@ exports.run = async(client, message, args) => {
         upsert: true,
         new: true,
     });
-    let data = await sfw.cuddle();
+    const { body } = await request.get('https://nekos.best/api/v1/:cuddle');
+    let data = body.url;
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} cuddled ${target.username} ❤️ they was cuddled ${amount} time${addS}!`, message.author.displayAvatarURL())
-        .setImage(data.url)
+        .setImage(data)
     return message.channel.send({ embeds: [embed] })
 }
 

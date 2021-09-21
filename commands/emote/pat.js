@@ -1,8 +1,6 @@
 const { MessageEmbed } = require("discord.js")
-const neko = require('nekos.life');
-const { sfw } = new neko();
+const request = require('node-superfetch');
 const patSchema = require('../../model/pat');
-
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
@@ -39,14 +37,15 @@ exports.run = async(client, message, args) => {
     }, {
         upsert: true,
         new: true,
-    })
-    let data = await sfw.pat();
+    });
+    const { body } = await request.get('https://nekos.best/api/v1/:pat');
+    let image = body.url;
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} pat ${target.username} ❤️ they was pat ${amount} time${addS}!`, message.author.displayAvatarURL())
-        .setImage(data.url)
+        .setImage(image)
 
     return message.channel.send({ embeds: [embed] });
 }

@@ -1,13 +1,13 @@
 const { MessageEmbed } = require("discord.js")
-const neko = require('nekos.life');
-const { sfw } = new neko();
+const request = require('node-superfetch');
 
 exports.run = async(client, message, args) => {
-    const data = await sfw.baka();
+    const { body } = await request.get('https://nekos.best/api/v1/:baka');
+    const data = body.url;
     const embed = new MessageEmbed()
         .setColor('#7DBBEB')
-        .setAuthor(`${message.author.username} just tell someone stupid 😕`, message.author.displayAvatarURL())
-        .setImage(data.url)
+        .setAuthor(`${message.author.username} said baka 😕`, message.author.displayAvatarURL())
+        .setImage(data)
     return message.channel.send({ embeds: [embed] });
 
 }

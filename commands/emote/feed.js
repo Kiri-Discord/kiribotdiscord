@@ -1,6 +1,5 @@
 const { MessageEmbed } = require("discord.js")
-const neko = require('nekos.life');
-const { sfw } = new neko();
+const request = require('node-superfetch');
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
@@ -16,15 +15,13 @@ exports.run = async(client, message, args) => {
     const targetId = target.id
     const authorId = message.author.id
 
-    if (targetId === authorId) {
-        message.reply(`have you lost your mind ${deadEmoji}`)
-        return
-    };
-    const data = await sfw.feed();
+    if (targetId === authorId) return message.channel.send(`have you lost your mind ${deadEmoji}`);
+    const { body } = await request.get('https://nekos.best/api/v1/:feed');
+    let data = body.url;
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} fed ${target.username}!`, message.author.displayAvatarURL())
-        .setImage(data.url)
+        .setImage(data)
     return message.channel.send({ embeds: [embed] })
 }
 

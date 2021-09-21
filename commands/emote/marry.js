@@ -1,5 +1,4 @@
-const neko = require('nekos.life');
-const { sfw } = new neko();
+const request = require('node-superfetch');
 const { MessageEmbed } = require('discord.js');
 exports.run = async(client, message, args, prefix) => {
     const author = await client.love.findOne({
@@ -81,10 +80,11 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             });
 
-            let image = await sfw.kiss();
+            const { body } = await request.get('https://nekos.best/api/v1/:kiss');
+            let image = body.url;
             const embed = new MessageEmbed()
                 .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
-                .setImage(image.url);
+                .setImage(image);
             await message.channel.send({ embeds: [embed] });
             await client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,

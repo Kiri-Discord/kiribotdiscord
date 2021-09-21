@@ -1,6 +1,5 @@
 const { MessageEmbed } = require("discord.js")
-const neko = require('nekos.life');
-const { sfw } = new neko();
+const request = require('node-superfetch');
 const slapSchema = require('../../model/slap')
 
 
@@ -17,12 +16,11 @@ exports.run = async(client, message, args) => {
     if (target.id === client.user.id) return message.reply('what did you say?');
     if (target.bot) return message.reply("you can't slap that bot, sorry :(")
 
-    const { guild } = message
-    const guildId = guild.id
-    const targetId = target.id
-    const authorId = message.author.id
+    const { guild } = message;
+    const guildId = guild.id;
+    const targetId = target.id;
 
-    if (targetId === message.author.id) return message.reply('are you in pain?')
+    if (targetId === message.author.id) return message.channel.send(`${message.author.toString()}, are you in pain?`);
 
     const result = await slapSchema.findOneAndUpdate({
         userId: targetId,
@@ -40,12 +38,13 @@ exports.run = async(client, message, args) => {
 
     const amount = result.received;
 
-    const data = await sfw.slap();
+    const { body } = await request.get('https://nekos.best/api/v1/:slap');
+    let image = body.url;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} slap ${target.username} 😔 they was slapped ${amount} time${addS}!`, message.author.displayAvatarURL())
-        .setImage(data.url)
+        .setImage(image)
 
     return message.channel.send({ embeds: [embed] })
 }
