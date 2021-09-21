@@ -19,7 +19,7 @@ exports.run = async(client, message, args) => {
         message.reply(`have you lost your mind ${deadEmoji}`)
         return
     };
-    const { body } = await request.get('https://nekos.best/api/v1/:tickle');
+    const { body } = await request.get('https://nekos.best/api/v1/tickle');
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} tickled ${target.username}!`, message.author.displayAvatarURL())
