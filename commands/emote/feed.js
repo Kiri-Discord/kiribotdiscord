@@ -16,7 +16,7 @@ exports.run = async(client, message, args) => {
     const authorId = message.author.id
 
     if (targetId === authorId) return message.channel.send(`have you lost your mind ${deadEmoji}`);
-    const { body } = await request.get('https://nekos.best/api/v1/:feed');
+    const { body } = await request.get('https://nekos.best/api/v1/feed');
     let data = body.url;
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
