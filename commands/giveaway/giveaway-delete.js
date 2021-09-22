@@ -61,6 +61,6 @@ exports.conf = {
     aliases: ["gdelete", "g-delete"],
     cooldown: 3,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS", 'MANAGE_MESSAGES'],
+    channelPerms: ["EMBED_LINKS"],
     userPerms: ["MANAGE_MESSAGES"]
 }

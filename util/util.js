@@ -302,7 +302,7 @@ module.exports = class util {
 					const filter = async res => {
 						if (res.author.id === initialMsg.author.id) {
 							const number = res.content;
-							await res.delete();
+							await util.deleteIfAble(res);
 							if (isNaN(number) || number > array.length || number < 1) {
 								return false;
 							}
@@ -312,13 +312,13 @@ module.exports = class util {
 					const number = await util.askString(initialMsg.channel, filter, { time: 15000 });
 					if (number === 0 || !number) return prompt.delete();
 					else {
-                                                await prompt.delete();
+                        await prompt.delete();
 						currentPage = parseInt(number) - 1;
 						await res.editReply({
 							content: `page ${number} of ${array.length}`,
 							// components: [row],
 							embeds: [array[currentPage]]
-						})
+						});
 				    };
 
 					break;
@@ -421,6 +421,19 @@ module.exports = class util {
 		});
 		const filter = async (res) => {
             if (res.user.id !== message.author.id) {
+                await res.reply({
+                    embeds: [{
+                        description: `this menu isn't belong to you :pensive:`
+                    }],
+                    ephemeral: true
+                });
+                return false;
+            } else {
+                return true;
+            };
+        };
+		const filter = async (res) => {
+            if (res.user.id !== message.author.id) {
 				await res.deferReply({
                     ephemeral: true
                 });
@@ -444,13 +457,16 @@ module.exports = class util {
                 return true;
             };
         };
-		const response = await msg.awaitMessageComponent({
-			componentType: 'SELECT_MENU',
-			filter, 
-			time
-		});
-		if (!response) return defalt;
-		return arr[parseInt(response.values[0])];
+		try {
+			const response = await msg.awaitMessageComponent({
+				componentType: 'SELECT_MENU',
+				filter, 
+				time
+			});
+			return arr[parseInt(response.values[0])];
+		} catch (error) {
+			return defalt;
+		};
 	};
 	static msToHMS(duration) {
         var seconds = parseInt((duration / 1000) % 60)

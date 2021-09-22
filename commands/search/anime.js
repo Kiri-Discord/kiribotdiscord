@@ -63,9 +63,10 @@ const statuses = {
 exports.run = async(client, message, args, prefix) => {
         let query = args.join(" ");
         if (!query) return message.reply(`can you give me an anime name? :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`)
-        try {;
+        try {
+            message.channel.sendTyping();
             const id = await search(query);
-            if (!id) return message.channel.send(`i could not find any results with **${query}** :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`).then(() => message.channel.stopTyping(true));
+            if (!id) return message.channel.send(`i could not find any results with **${query}** :(\n*tips, if you don\'t know the anime\'s name, you can always use* \`${prefix}what-anime\` *with a screenshot to get the anime's name!*`);
             const anime = await fetchAnime(id);
             const malScore = await fetchMALScore(anime.idMal);
             const malURL = `https://myanimelist.net/anime/${anime.idMal}`;

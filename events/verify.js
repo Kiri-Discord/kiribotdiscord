@@ -33,6 +33,6 @@ module.exports = async(client, message) => {
                 });
         };
     } else {
-        if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) return message.delete();
-    }
+        return deleteIfAble(message);
+    };
 };

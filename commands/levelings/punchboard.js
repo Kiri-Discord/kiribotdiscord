@@ -103,5 +103,5 @@ exports.conf = {
     aliases: ["pb"],
     cooldown: 3,
     guildOnly: true,
-    channelPerms: ["MANAGE_MESSAGES", "EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS"]
 };

@@ -68,14 +68,12 @@ exports.run = async(client, message, args) => {
         };
         encoder.finish();
         const buffer = await streamToArray(stream);
-        await message.channel.stopTyping();
         await message.channel.send({ content: `ejecting...`, files: [{ attachment: Buffer.concat(buffer), name: 'eject.gif' }] });
         if (random >= 5) return setTimeout(() => {
             const smug = client.customEmojis.get('smug') ? client.customEmojis.get('smug') : ':thinking:';
             return message.channel.send(`${message.author.username}, suprised? ${smug}${!imposter ? '\n||i was the imposter||' : ''}`)
         }, 5000);
     } catch (err) {
-        await message.channel.stopTyping();
         return message.reply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
     };
 };

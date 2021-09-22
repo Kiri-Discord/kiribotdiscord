@@ -65,6 +65,6 @@ exports.conf = {
     aliases: ["gend", "g-end"],
     cooldown: 3,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS", 'MANAGE_MESSAGES'],
+    channelPerms: ["EMBED_LINKS"],
     userPerms: ["MANAGE_MESSAGES"]
 }

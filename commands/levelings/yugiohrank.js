@@ -75,6 +75,7 @@ exports.run = async(client, message, args) => {
         "water",
         "wind",
     ];
+    message.channel.sendTyping();
     const randommonsterType = Math.floor(Math.random() * (list1.length - 1) + 1);
 
     const randomattribute = Math.floor(Math.random() * (list2.length - 1) + 1);
@@ -143,7 +144,7 @@ exports.run = async(client, message, args) => {
         ctx.fillStyle = monsterType === 'xyz' ? 'white' : 'black';
         ctx.fillText(id.toString().padStart(8, '0'), 43, 1128);
         ctx.fillText(`KIRI-EN${setID.toString().padStart(3, '0')}`, 589 - (monsterType === 'link' ? 58 : 0), 849);
-        return message.channel.send(`*i proudly present* **${mention.user.username}** *yugioh card!*`, { files: [{ attachment: canvas.toBuffer(), name: 'yu-gi-oh-gen.png' }] }).then(() => message.channel.stopTyping(true))
+        return message.channel.send({ content: `*i proudly present* **${mention.user.username}** *yugioh card!*`, files: [{ attachment: canvas.toBuffer(), name: 'yu-gi-oh-gen.png' }] })
     } catch (err) {
         return message.channel.send(`sorry :( i got an error. try again later!`);
     };
@@ -152,7 +153,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "yugiohrank",
-    description: "generate yours or other's yugioh card 😄",
+    description: "generate yours or other's Yugioh card base on your stat in the server",
     usage: ["yugiohrank `[@member]`"],
     example: ["yugiohrank `@bell`"]
 };
