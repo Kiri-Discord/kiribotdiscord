@@ -13,14 +13,13 @@ exports.run = async(client, message, args) => {
     if (!member) return message.reply('who do you want to eject lol');
     const user = member.user;
     if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');
-    message.channel.startTyping();
+    message.channel.sendTyping();
     const choices = [1, 2];
     const choice = choices[Math.floor(Math.random() * choices.length)];
     let random = Math.floor(Math.random() * 10);
     if (user.id === client.user.id) random = 6;
     const avatarURL = random < 5 ? user.displayAvatarURL({ format: 'png', size: 512 }) : message.author.displayAvatarURL({ format: 'png', size: 512 });
     try {
-        message.channel.sendTyping();
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
         const imposter = choice === 1;
