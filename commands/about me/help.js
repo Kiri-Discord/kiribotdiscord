@@ -117,7 +117,7 @@ exports.run = async(client, message, args, prefix) => {
                     arrEmbeds = [];
                     arrSplitted.forEach((item, index) => {
                         const embed = new MessageEmbed()
-                            .setAuthor('hey, how can i help?', client.user.displayAvatarURL())
+                            .setAuthor('hey, how can i help? (=^･ω･^=)')
                             .setColor('#cbba80')
                             .setDescription(`if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
                             .setFooter(`do ${prefix}help <cmd> for more help on a command :)`)
