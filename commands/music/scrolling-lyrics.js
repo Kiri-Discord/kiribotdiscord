@@ -71,7 +71,7 @@ exports.run = async(client, message, args, prefix) => {
                 new: true,
             })
             .catch(err => logger.log('error', err));
-        return message.channel.send(({ embeds: [{ color: "f3f3f3", description: `☑️ the scrolling lyric channel has been set to ${channel}!\n\ndo \`${prefix}scrolling-lyrics -on\` to enable it :wink:` }] }));
+        return message.channel.send(({ embeds: [{ color: "f3f3f3", description: `☑️ the scrolling lyric channel has been set to ${channel}!\n\ndo \`${prefix}scrolling-lyrics on\` to enable it :wink:` }] }));
     }
 
 }
