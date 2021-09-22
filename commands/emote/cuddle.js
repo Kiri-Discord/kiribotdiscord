@@ -5,9 +5,8 @@ const cuddleSchema = require('../../model/cuddle');
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
-
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed').toString() : ':pensive:'
     if (!member) {
-        const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
         return message.reply(`you can't just cuddle at the air ${sedEmoji} please mention somebody to cuddle pls`)
     };
     const target = member.user;

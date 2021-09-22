@@ -14,22 +14,22 @@ module.exports = {
             if (!song) {
                 setTimeout(async() => {
                     const newQueue = client.queue.get(message.guild.id);
-                    if (message.guild.me.voice.channel && newQueue) return;
-                    if (!message.guild.me.voice.channel) return;
+                    if (queue.textChannel.guild.me.voice.channel && newQueue) return;
+                    if (!queue.textChannel.guild.me.voice.channel) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
                 }, STAY_TIME * 1000);
                 await Guild.findOneAndUpdate({
-                    guildId: message.guild.id
+                    guildId: queue.textChannel.guild.id
                 }, {
-                    guildId: message.guild.id,
-                    volume: queue.volume
+                    guildId: queue.textChannel.guild.id,
+                    volume: queue.volume || 100
                 }, {
                     upsert: true,
                     new: true
                 })
-                return client.queue.delete(message.guild.id);
+                return client.queue.delete(queue.textChannel.guild.id);
             };
             if (!queue.player) {
                 queue.player = await client.lavacordManager.join({
@@ -100,11 +100,11 @@ module.exports = {
                 queue.nowPlaying = song;
                 queue.songs.shift();
                 await queue.player.play(song.track);
-                queue.player.volume(queue.volume);
+                queue.player.volume(queue.volume || 100);
             } catch (error) {
                 if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                 await client.lavacordManager.leave(queue.textChannel.guild.id);
-                client.queue.delete(message.guild.id);
+                client.queue.delete(queue.textChannel.guild.id);
                 return queue.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
             };
     },

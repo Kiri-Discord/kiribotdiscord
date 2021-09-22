@@ -4,9 +4,8 @@ const patSchema = require('../../model/pat');
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
-
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed').toString() : ':pensive:';
     if (!member) {
-        const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
         return message.reply(`you can't just pat at the air ${sedEmoji} please mention somebody to pat pls`)
     };
 
@@ -15,14 +14,13 @@ exports.run = async(client, message, args) => {
     if (target.id === client.user.id) return message.reply('**pat pat pat pat pat**\nyes, you!')
     if (target.bot) return message.reply("this isn't an simulator so you can't pat that bot, sorry :(")
 
-    const { guild } = message
+    const { guild } = message;
     const guildId = guild.id
     const targetId = target.id
     const authorId = message.author.id;
 
     if (targetId === authorId) {
-        message.reply('**pat pat pat pat pat**\nyes, you!')
-        return
+        return message.reply('**pat pat pat pat pat**\nyes, you!');
     }
 
     const result = await patSchema.findOneAndUpdate({

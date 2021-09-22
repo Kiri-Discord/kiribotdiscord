@@ -5,9 +5,8 @@ const fetch = require('node-fetch');
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
-
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     if (!member) {
-        const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
         return message.reply(`you can't just punch at the air! please mention somebody to punch pls ${sedEmoji}`);
     };
 
@@ -21,7 +20,7 @@ exports.run = async(client, message, args) => {
     const targetId = target.id
 
     if (targetId === message.author.id) {
-        message.reply('are you in pain?');
+        message.channel.send(`${message.author.toString()}, are you in pain?`);
         return
     };
     const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';

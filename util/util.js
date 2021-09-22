@@ -5,7 +5,6 @@ const ISO6391 = require('iso-639-1');
 const ms = require('ms');
 const fetch = require('node-fetch');
 const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
-// const { URLSearchParams } = require('url');
 const { stripIndents } = require('common-tags');
 const hugSchema = require('../model/hug');
 const punchSchema = require('../model/punch');

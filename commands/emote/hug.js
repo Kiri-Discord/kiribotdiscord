@@ -5,9 +5,8 @@ const hugSchema = require('../../model/hug');
 
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
-
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     if (!member) {
-        const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'
         return message.channel.send(`you can't just hug at the air ${sedEmoji} please mention somebody to hug pls`)
     };
     const target = member.user;

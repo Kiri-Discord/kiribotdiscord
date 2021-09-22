@@ -4,7 +4,6 @@ const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const { verify, verifyLanguage, embedURL } = require('../../util/util');
-const spotifyToYT = require("spotify-to-yt");
 const { getTracks } = require('spotify-url-info');
 
 exports.run = async(client, message, args, prefix, cmd, internal) => {

@@ -19,6 +19,7 @@ module.exports = class ScrollingLyrics {
         this.pauseTimestamp = null;
     };
     async init() {
+        if (!this.channel.permissionsFor(this.queue.textChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
         let notice = `displaying scrolling lyrics (${ISO6391.getName(this.lang)}) for this track`;
         if (this.song.type !== 'yt') return this.error('sc');
         const info = await ytdl.getInfo(this.song.info.uri);
@@ -92,17 +93,19 @@ module.exports = class ScrollingLyrics {
     };
     change(channel) {
         this.channel = channel;
-    }
+    };
     error(type) {
         if (type === 'sc') {
-            this.channel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
+            this.queue.textChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
+        } else if (type === 'perms') {
+            this.queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again please :pensive:` }] });
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
                 .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric`)
                 .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
-            this.channel.send({ embeds: [embed] });
-        }
+            this.queue.textChannel.send({ embeds: [embed] });
+        };
         return false;
-    }
-}
+    };
+};
