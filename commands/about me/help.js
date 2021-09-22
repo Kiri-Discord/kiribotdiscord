@@ -35,7 +35,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed = new MessageEmbed()
                 .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                 .setColor('#FFE6CC')
-                .setDescription(`do \`${prefix}help <command>\` for more help info on a command!\n\`⚠️\` if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
+                .setDescription(`do \`${prefix}help <command>\` for more help info on a command!\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
                 .setFooter(`page ${index + 1} of ${arrSplitted.length}`)
             arrEmbeds.push(embed);
         });
@@ -119,7 +119,7 @@ exports.run = async(client, message, args, prefix) => {
                         const embed = new MessageEmbed()
                             .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                             .setColor('#FFE6CC')
-                            .setDescription(`do ${prefix}help <command> for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
+                            .setDescription(`do \`${prefix}help <command>\` for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
                             .setFooter(`page ${index + 1} of ${arrSplitted.length}`)
                         arrEmbeds.push(embed);
                     });
