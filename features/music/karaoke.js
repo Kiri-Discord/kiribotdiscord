@@ -98,7 +98,7 @@ module.exports = class ScrollingLyrics {
         if (type === 'sc') {
             this.queue.textChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
         } else if (type === 'perms') {
-            this.queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again please :pensive:` }] });
+            this.queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
