@@ -421,19 +421,6 @@ module.exports = class util {
 		});
 		const filter = async (res) => {
             if (res.user.id !== message.author.id) {
-                await res.reply({
-                    embeds: [{
-                        description: `this menu isn't belong to you :pensive:`
-                    }],
-                    ephemeral: true
-                });
-                return false;
-            } else {
-                return true;
-            };
-        };
-		const filter = async (res) => {
-            if (res.user.id !== message.author.id) {
 				await res.deferReply({
                     ephemeral: true
                 });
