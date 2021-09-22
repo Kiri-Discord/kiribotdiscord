@@ -53,7 +53,7 @@ module.exports = class ScrollingLyrics {
         this.playing = true;
         this.slots.forEach((subtitle) => {
             const each = setTimeout(() => {
-                this.channel.send(subtitle.text);
+                this.channel.send(subtitle.text).catch(() => null);
                 this.slots.splice(this.slots.findIndex(x => x.id === subtitle.id), 1);
             }, subtitle.time);
             this.timeout.push(each);
