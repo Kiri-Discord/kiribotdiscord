@@ -13,9 +13,9 @@ module.exports = {
             const queue = client.queue.get(message.guild.id);
             if (!song) {
                 setTimeout(async() => {
-                    const newQueue = client.queue.get(message.guild.id);
-                    if (queue.textChannel.guild.me.voice.channel && newQueue) return;
                     if (!queue.textChannel.guild.me.voice.channel) return;
+                    const newQueue = client.queue.get(message.guild.id);
+                    if (newQueue) return;
                     await client.lavacordManager.leave(queue.textChannel.guild.id)
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });

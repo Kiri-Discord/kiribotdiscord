@@ -21,7 +21,7 @@ exports.run = async(client, message, args, prefix) => {
             const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
 
             if (!channel) return message.reply({ embeds: [{ color: "f3f3f3", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-            if (!channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "f3f3f3", description: "i don't have the perms to send greeting message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
+            if (!channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "f3f3f3", description: `i don't have the perms to send greeting message to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.` }] });
             db.greetChannelID = channel.id;
 
             const storageAfter = await client.dbguilds.findOneAndUpdate({
