@@ -1,20 +1,20 @@
 const { MessageEmbed } = require('discord.js');
-const fetch = require('node-fetch');
+const request = require('node-superfetch');
 
 exports.run = async(client, message, args) => {
-    const embed = new MessageEmbed()
-        .setColor("#7DBBEB")
-        .setDescription(`powered by bell's homework folder`)
-
-    fetch('https://neko-love.xyz/api/v1/neko')
-        .then(res => res.json())
-        .then(json => embed.setImage(json.url))
-        .then(() => message.channel.send({ embeds: [embed] }))
-        .catch(err => {
-            message.channel.send("i can't seem to be able to do that :( here is a hug for now 🤗");
-            return logger.log('error', err);
-        });
-}
+    try {
+        message.channel.sendTyping();
+        const { body } = await request.get('https://nekos.best/api/v1/nekos');
+        const embed = new MessageEmbed()
+            .setColor("#7DBBEB")
+            .setAuthor(body.artist_name, null, body.artist_href)
+            .setImage(body.url);
+        return message.channel.send({ embeds: [embed] })
+    } catch (error) {
+        message.channel.send("i can't seem to be able to do that at this time! here is a hug for now 🤗");
+        return logger.log('error', err);
+    };
+};
 
 exports.help = {
     name: "neko",
@@ -27,6 +27,5 @@ exports.conf = {
     aliases: [],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 };

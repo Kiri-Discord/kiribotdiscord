@@ -1,11 +1,8 @@
 const { findBestMatch } = require("string-similarity");
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
-const { deleteIfAble } = require('../util/util');
-// const agreed = new Collection();
+const { deleteIfAble, reactIfAble } = require('../util/util');
 const { MessageEmbed } = require('discord.js');
-// const { embedURL } = require('../util/util');
-// const { stripIndents } = require('common-tags');
 
 module.exports = async(client, message) => {
         if (!client.finished) return;
@@ -126,50 +123,6 @@ module.exports = async(client, message) => {
                 return message.channel.send(`sorry, i don't have the ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission across the server to do that ${sed}`)
             };
         };
-
-    //     let globalStorage = client.globalStorage;
-    //     let storage = await globalStorage.findOne();
-    //     if (!storage) storage = new globalStorage();
-
-    //     const alreadyAgreed = storage.acceptedRules.includes(message.author.id);
-
-    //     if (!alreadyAgreed && !client.config.owners.includes(message.author.id)) {
-    //         if (message.channel.type === 'GUILD_TEXT') {
-    //             if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) return message.channel.send(`uh ${message.author.username}, it seems like you haven't agreed to the rules when using me yet.\nnormally the rules will show up here when you call me for the first time, but this channel has blocked me from showing embed ${sed}\ncan you try it again in an another channel?`);
-    //         };
-    //         const agreedCount = storage.acceptedRules.toObject();
-    //         let key;
-
-    //         if (message.channel.type === 'dm') key = message.author.id;
-    //         else key = `${message.author.id}-${message.guild.id}`;
-
-    //         const verifyEmbed = new MessageEmbed()
-    //             .setColor('#81c42f')
-    //             .addField(`if you have any questions come ask us in:`, `${embedURL('Sefiria (community server)', 'https://discord.gg/kJRAjMyEkY')}\n${embedURL('kiri support (support server)', 'https://discord.gg/D6rWrvS')}`)
-    //             .setDescription(stripIndents `
-    //             • any actions performed to give other users a bad experience are explicitly against the rules ${sed}
-    //             this includes but not limited to:
-    //             > using macros/scripts for commands (make me slower in serving other users)
-    //             > use any of my features for actions that is against the ${embedURL('Discord Terms of Service', 'https://discord.com/terms')}
-    //             • do not use any exploits and report any found in the bot in our server!
-    //             • you can not sell/trade token or any bot goods for real money
-    // `)
-    //             .setFooter(`${agreedCount.length} user have agreed to those rules :)`);
-
-    //         const existingCollector = agreed.get(key);
-
-    //         if (existingCollector) {
-    //             await existingCollector.stop();
-    //         };
-    //         const filter = (reaction, user) => {
-    //             return reaction.emoji.name === '👍' && user.id === message.author.id;
-    //         };
-    //         const verifyMessage = await message.reply(`:warning: you must accept these rules below before using me by reacting with the hands up emojis ${duh}`, verifyEmbed);
-    //         await verifyMessage.react('👍');
-    //         const collectedEmojis = verifyMessage.createReactionCollector(filter, { max: 1, time: 20000, errors: ['time'] });
-    //         agreed.set(key, collectedEmojis);
-    //         return agreeCollector(storage, collectedEmojis, message, key);
-    //     };
         if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
 
         const cooldownID = message.channel.type === "DM" ? message.author.id : message.author.id + message.guild.id
@@ -187,15 +140,12 @@ module.exports = async(client, message) => {
             const expirationTime = timestamps.get(cooldownID) + cooldownAmount;
 
             if (now < expirationTime) {
-                const timeLeft = (expirationTime - now) / 1000;
-                return message.channel.send(`calm down, you are in cooldown :( can you wait **${timeLeft.toFixed(1)}** seconds? ${stare}`)
-                    .then(m => setTimeout(() => {
-                        m.delete();
-                    }, 5000));
+                // const timeLeft = (expirationTime - now) / 1000;
+                return reactIfAble(message, client.user, '🐌');
             };
             timestamps.set(cooldownID, now);
             setTimeout(() => timestamps.delete(cooldownID), cooldownAmount);
-        }
+        };
 
         try {
             if (!commandFile) return;
@@ -205,15 +155,3 @@ module.exports = async(client, message) => {
     logger.log('error', error);
   }
 };
-
-// async function agreeCollector(storage, collector, message, key) {
-//   collector.on('collect', async () => {
-//     await collector.stop();
-//     storage.acceptedRules.push(message.author.id);
-//     await storage.save();
-//   });
-  
-//   collector.on('end', () => {
-//     agreed.delete(key);
-//   });
-// }
