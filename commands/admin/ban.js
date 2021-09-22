@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
@@ -15,7 +15,7 @@ exports.run = async(client, message, args) => {
 
     if (!member.bannable) return message.reply({ embeds: [{ color: "RED", description: 'this user can\'t be banned. it\'s either because they are a mod/admin, or their highest role is equal or higher than mine 😔' }] });
 
-    if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) && message.member.roles.highest.position <= member.roles.highest.position) return message.reply({ embeds: [{ color: "RED", description: 'you cannot ban someone with a higher role than you!' }] });
+    if (!message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.reply({ embeds: [{ color: "RED", description: 'you cannot ban someone with a higher role than you!' }] });
 
 
     let reason = 'No reason specified';
