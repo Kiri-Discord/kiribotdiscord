@@ -33,7 +33,7 @@ exports.run = async(client, message, args, prefix) => {
         };
         arrSplitted.forEach((item, index) => {
             const embed = new MessageEmbed()
-                .setAuthor('hey, how can i help? (=^･ω･^=)')
+                .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                 .setColor('#FFE6CC')
                 .setDescription(`do ${prefix}help <command> for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
                 .setFooter(`page ${index + 1} of ${arrEmbeds.length}`)
@@ -117,7 +117,7 @@ exports.run = async(client, message, args, prefix) => {
                     arrEmbeds = [];
                     arrSplitted.forEach((item, index) => {
                         const embed = new MessageEmbed()
-                            .setAuthor('hey, how can i help? (=^･ω･^=)')
+                            .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                             .setColor('#FFE6CC')
                             .setDescription(`do ${prefix}help <command> for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
                             .setFooter(`page ${index + 1} of ${arrEmbeds.length}`)
