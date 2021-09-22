@@ -42,7 +42,7 @@ module.exports = {
             };
             queue.player.once('end', async data => {
                 if (data.reason === "FINISHED" || data.reason === "STOPPED" || data.reason === "LOAD_FAILED") {
-                    if (!queue.playingMessage.deleted && queue.songs.length) await queue.playingMessage.delete();
+                    if (queue.playingMessage && !queue.playingMessage.deleted && queue.songs.length) await queue.playingMessage.delete();
                     if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     if (queue.loop) {
                         queue.songs.push(queue.nowPlaying);
