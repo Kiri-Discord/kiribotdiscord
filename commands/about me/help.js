@@ -7,6 +7,7 @@ exports.run = async(client, message, args, prefix) => {
         let module = [...client.helps.values()];
         if (!client.config.owners.includes(message.author.id)) module = module.filter(x => !x.hide);
         const replyEmoji = client.customEmojis.get('arrow');
+        const duh = client.customEmojis.get('duh');
         message.channel.sendTyping();
         const optionList = [{
             label: 'all',
@@ -21,22 +22,21 @@ exports.run = async(client, message, args, prefix) => {
             optionList.push({
                 label: mod.displayName,
                 value: mod.name,
-                emoji: mod.emoji
+                emoji: mod.emoji,
             })
             mod.cmds.forEach(x => x.type = mod.name);
             fullCmd.push(...mod.cmds);
         };
-        list = fullCmd.map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
+        list = fullCmd.filter(x => x.type === 'games').map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
         while (list.length) {
             const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
             arrSplitted.push(toAdd);
         };
         arrSplitted.forEach((item, index) => {
             const embed = new MessageEmbed()
-                .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                 .setColor('#FFE6CC')
-                .setDescription(`do \`${prefix}help <command>\` for more help info on a command!\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n` + item.join('\n'))
-                .setFooter(`page ${index + 1} of ${arrSplitted.length}`)
+                .setDescription(item.join('\n'))
+                .setFooter(`page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`)
             arrEmbeds.push(embed);
         });
         const components = [];
@@ -63,6 +63,8 @@ exports.run = async(client, message, args, prefix) => {
         const row = new MessageActionRow()
             .addComponents(components);
         const menu = new MessageSelectMenu()
+            .setMaxValues(1)
+            .setMinValues(1)
             .setCustomId('menu')
             .addOptions(optionList)
             .setPlaceholder('choose a category');
@@ -71,6 +73,7 @@ exports.run = async(client, message, args, prefix) => {
         const msg = await message.channel.send({
             embeds: [arrEmbeds[0]],
             components: [row, row1],
+            content: `if you ran into any trouble, use \`${prefix}invite\` to get more info about my support servers ${duh}`
         });
         const filter = async res => {
             if (res.user.id !== message.author.id) {
@@ -115,10 +118,9 @@ exports.run = async(client, message, args, prefix) => {
                     arrEmbeds = [];
                     arrSplitted.forEach((item, index) => {
                         const embed = new MessageEmbed()
-                            .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                             .setColor('#FFE6CC')
-                            .setDescription(`do \`${prefix}help <command>\` for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n` + item.join('\n'))
-                            .setFooter(`page ${index + 1} of ${arrSplitted.length}`)
+                            .setDescription(item.join('\n'))
+                            .setFooter(`page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`)
                         arrEmbeds.push(embed);
                     });
                     currentPage = 0;

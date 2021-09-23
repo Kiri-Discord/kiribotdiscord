@@ -50,7 +50,8 @@ module.exports = {
                         const upcoming = queue.songs[0];
                         module.exports.play(upcoming, message, client, prefix);
                     } else if (queue.repeat) {
-                        module.exports.play(queue.nowPlaying || queue.songs[0], message, client, prefix);
+                        let upcoming = !queue.nowPlaying ? queue.songs.shift() : queue.nowPlaying;
+                        module.exports.play(upcoming, message, client, prefix);
                     } else {
                         const upcoming = queue.songs[0];
                         module.exports.play(upcoming, message, client, prefix);
