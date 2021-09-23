@@ -35,7 +35,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed = new MessageEmbed()
                 .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                 .setColor('#FFE6CC')
-                .setDescription(`do \`${prefix}help <command>\` for more help info on a command!\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
+                .setDescription(`do \`${prefix}help <command>\` for more help info on a command!\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n` + item.join('\n'))
                 .setFooter(`page ${index + 1} of ${arrSplitted.length}`)
             arrEmbeds.push(embed);
         });
@@ -71,7 +71,6 @@ exports.run = async(client, message, args, prefix) => {
         const msg = await message.channel.send({
             embeds: [arrEmbeds[0]],
             components: [row, row1],
-            //             content: `page 1 of ${arrEmbeds.length}`,
         });
         const filter = async res => {
             if (res.user.id !== message.author.id) {
@@ -96,7 +95,6 @@ exports.run = async(client, message, args, prefix) => {
             row.components.forEach(button => button.setDisabled(true));
             row1.components.forEach(button => button.setDisabled(true));
             return msg.edit({
-                //                 content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
                 components: [row, row1],
                 embeds: [arrEmbeds[currentPage]]
             });
@@ -119,14 +117,12 @@ exports.run = async(client, message, args, prefix) => {
                         const embed = new MessageEmbed()
                             .setAuthor('hey, how can i help? (=^･ω･^=)', client.user.displayAvatarURL())
                             .setColor('#FFE6CC')
-                            .setDescription(`do \`${prefix}help <command>\` for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n\n` + item.join('\n'))
+                            .setDescription(`do \`${prefix}help <command>\` for more help on a command :)\n⚠️ if you ran into any trouble, use \`${prefix}invite\` to get more info about support servers :slight_smile:\n` + item.join('\n'))
                             .setFooter(`page ${index + 1} of ${arrSplitted.length}`)
                         arrEmbeds.push(embed);
                     });
                     currentPage = 0;
                     await res.editReply({
-                        //                         content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
-                        // components: [row, row1],
                         embeds: [arrEmbeds[currentPage]]
                     });
                     break;
@@ -134,8 +130,6 @@ exports.run = async(client, message, args, prefix) => {
                     if (currentPage !== 0) {
                         --currentPage;
                         await res.editReply({
-                            //                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
-                            // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         });
                     };
@@ -144,8 +138,6 @@ exports.run = async(client, message, args, prefix) => {
                     if (currentPage < arrEmbeds.length - 1) {
                         currentPage++;
                         await res.editReply({
-                            //                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
-                            // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         })
                     };
@@ -174,8 +166,6 @@ exports.run = async(client, message, args, prefix) => {
                         await prompt.delete();
                         currentPage = parseInt(number) - 1;
                         await res.editReply({
-                            //                             content: `page ${number} of ${arrEmbeds.length}`,
-                            // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         })
                     };
