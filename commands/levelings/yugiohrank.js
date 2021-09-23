@@ -1,5 +1,4 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
-const { MessageAttachment } = require('discord.js');
 const request = require('node-superfetch');
 const path = require('path');
 const { firstUpperCase } = require('../../util/util');

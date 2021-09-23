@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
             arrSplitted.push(toAdd);
         };
         const arrEmbeds = [];
-        arrSplitted.map((item, index) => {
+        arrSplitted.forEach((item, index) => {
                     const embed = new MessageEmbed()
                         .setAuthor(`Music queue for ${message.guild.name}`, message.guild.iconURL({ size: 4096, dynamic: true }))
                         .setDescription(`Now playing: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)

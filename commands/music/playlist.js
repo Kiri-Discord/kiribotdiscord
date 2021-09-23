@@ -148,7 +148,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                         };
                         newSongs.push(song);
                     };
-                    if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+                    if (!newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                     playlistURL = url;
                     newSongs.forEach(song => {
                         song.requestedby = message.author;

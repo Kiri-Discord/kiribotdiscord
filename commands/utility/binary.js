@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 exports.run = async(client, message, args) => {
     if (!args[0]) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
 

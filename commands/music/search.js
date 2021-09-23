@@ -23,26 +23,26 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             if ((ytRes.length + scRes.total_results) < 1) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] })
             ytRes
                 .splice(0, 10)
-                .map((video) => {
+                .forEach((video) => {
                         result.push({
                                     type: 'yt',
                                     title: shortenText(video.info.title, 80),
                                     url: video.info.uri,
                                     desc: `${shortenText(video.info.author, 12)} ${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'))}`}`,
-                })
+                });
             });
         scRes.collection
             .filter(x => x.streamable)
             .splice(0, scRes.collection.length > 10 ? 9 : scRes.collection.length)
-            .map((track) => {
+            .forEach((track) => {
                 result.push({
                     type: 'sc',
                     title: shortenText(track.title, 80),
                     url: track.permalink_url,
                     desc: `${shortenText(track.user.username, 12)} | ${shortenText(moment.duration(track.duration).format('H[h] m[m] s[s]'))}`
                 })
-            })
-        result.map((song, index) => {
+            });
+        result.forEach((song, index) => {
             options.push({
                 label: song.title,
                 description: song.desc,
@@ -89,11 +89,11 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         };
             
         const collector = loadingMessage.createMessageComponentCollector({
-			componentType: 'SELECT_MENU',
-			filter,
-			time: 30000,
+            componentType: 'SELECT_MENU',
+            filter,
+            time: 30000,
             max: 1
-		});
+        });
         collector.on('end', async(res) => {
             row.components.forEach(component => component.setDisabled(true));
             await loadingMessage.edit({ 
@@ -103,7 +103,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 }],
                 components: [row]
             });
-        })
+        });
         collector.on('collect', async(res) => {
             res.deferUpdate();
             collector.stop();
@@ -119,7 +119,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                     .run(client, message, [url], prefix, cmd, internal);
     
             };
-        })
+        });
     } catch (error) {
         console.error(error);
         return message.reply('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));
