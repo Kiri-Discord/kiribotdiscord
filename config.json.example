@@ -1,0 +1,8 @@
+{
+    "owners": ["first owner ID", "second owner ID", "another owner ID"],
+    "prefix": "your prefix",
+    "supportServerID": "your support server ID (custom emoji are grab here)",
+    "logChannels": ["first channel ID for logging", "second channel ID for logging"],
+    "development": false,
+    "ownerID": "the main owner of the bot"
+}
