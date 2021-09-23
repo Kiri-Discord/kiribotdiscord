@@ -61,7 +61,6 @@ exports.run = async(client, message, args, prefix) => {
         "moneybag": "Money Bag",
         "crab": "Crab",
         "squid": "Squid",
-        "octopus": "Octopus",
         "chest": "Chest",
         "frog": "Frog",
         "seal": "Seal",
@@ -126,8 +125,6 @@ exports.run = async(client, message, args, prefix) => {
             .setDescription(`you caught a **${rarity}** ${nemo} **Nemo** that worth ⏣ **${worth}**!`)
         return message.channel.send(embed2)
     } else if (fish === "chest") {
-        const chest = client.customEmojis.get("chest");
-
         const embed2 = new MessageEmbed()
             .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
@@ -146,11 +143,11 @@ exports.help = {
     description: "go fishing :tropical_fish:",
     usage: ["fish"],
     example: ["fish"]
-}
+};
 
 exports.conf = {
     aliases: ["fishing"],
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};

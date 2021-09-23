@@ -46,6 +46,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         player: null,
         songs: [],
         loop: false,
+        repeat: false,
         playing: true,
         nowPlaying: null,
         volume: null,

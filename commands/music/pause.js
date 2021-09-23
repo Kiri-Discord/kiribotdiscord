@@ -15,6 +15,7 @@ exports.run = async(client, message, args) => {
         if (queue.textChannel.id !== message.channel.id) message.channel.send('⏸️ pausing...');
         queue.dcTimeout = setTimeout(async() => {
             await client.lavacordManager.leave(queue.textChannel.guild.id);
+            if (queue.player) queue.player.destroy();
             const embed = new MessageEmbed()
                 .setTitle("no music was playing :(")
                 .setDescription(`it's been a while since the music queue was paused, so i left the voice channel to reserve data :pensive:\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${client.config.prefix}24/7\` for supporters! stay tuned <3`)

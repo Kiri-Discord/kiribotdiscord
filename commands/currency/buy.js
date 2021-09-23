@@ -33,20 +33,6 @@ exports.run = async(client, message, args, prefix) => {
     async function buyItem(money, price, quantity, item) {
         const total = price * quantity
         if (money < price * quantity) return message.reply(`you don't have that much money in your balance :pensive:\na total of ⏣ __${total - money}__ token is needed to buy it.`)
-
-        const after = await client.money.findOneAndUpdate({
-            guildId: message.guild.id,
-            userId: message.author.id
-        }, {
-            guildId: message.guild.id,
-            userId: message.author.id,
-            $inc: {
-                balance: -total,
-            },
-        }, {
-            upsert: true,
-            new: true,
-        });
         const items = quantity < 1 ? item : item + 's';
         const embed = new MessageEmbed()
             .setColor("#bee7f7")

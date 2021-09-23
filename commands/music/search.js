@@ -20,7 +20,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 query: search,
                 resourceType: 'tracks'
             });
-            if (!(ytRes.length + scRes.total_results) > 0) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] })
+            if ((ytRes.length + scRes.total_results) < 1) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] })
             ytRes
                 .splice(0, 10)
                 .map((video) => {

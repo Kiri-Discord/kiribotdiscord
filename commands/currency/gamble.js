@@ -1,4 +1,4 @@
-const ms = require("parse-ms");
+const { time } = require('@discordjs/builders');
 const { MessageEmbed } = require("discord.js");
 exports.run = async(client, message, args) => {
     const amount = args[0];
@@ -30,12 +30,11 @@ exports.run = async(client, message, args) => {
     let balance = storage.balance;
     if (amount > balance || !balance || balance === 0) return message.reply("you don't have enough money duh");
     let cooldown = 25000;
-    let pad_zero = num => (num < 10 ? '0' : '') + num;
 
     if (lastGamble !== null && cooldown - (Date.now() - lastGamble) > 0) {
-        let timeObj = ms(cooldown - (Date.now() - lastGamble));
-        let second = pad_zero(timeObj.seconds).padStart(2, "0");
-        return message.reply(`that was fast! you need to wait **${second}** second(s) before you can gambling again.\n*money is not a river*  - someone`);
+        const target = cooldown - (Date.now() - lastGamble);
+        const remaining = time(Math.floor((Date.now() + target) / 1000), "R")
+        return message.reply(`that was fast! you need to wait ${remaining} before you can gambling again.\n*money is not a river*  - someone`);
     };
     const result = Math.floor(Math.random() * 10);
 

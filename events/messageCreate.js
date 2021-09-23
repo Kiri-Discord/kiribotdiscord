@@ -148,7 +148,6 @@ module.exports = async(client, message) => {
         };
 
         try {
-            if (!commandFile) return;
             commandFile.run(client, message, args, prefix, cmd);
             logger.log('info', `${sender.tag} (${sender.id}) from ${message.channel.type === 'DM' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd}`);
   } catch (error) {

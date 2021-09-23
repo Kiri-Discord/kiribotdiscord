@@ -12,15 +12,15 @@ const { getTracks } = require('spotify-url-info');
 exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
-        if (!channel) return message.reply({ embeds: [{ color: "RED", description: '⚠️ you are not in a voice channel!' }] });
+        if (!channel) return message.channel.send({ embeds: [{ color: "f3f3f3", description: '⚠️ you are not in a voice channel!' }] });
 
-        if (!channel.joinable) return message.reply({ embeds: [{ color: "RED", description: "i can't join the voice channel where you are in. can you check my permission?" }] });
+        if (!channel.joinable) return message.channel.send({ embeds: [{ color: "f3f3f3", description: "i can't join the voice channel where you are in. can you check my permission?" }] });
 
         if (serverQueue && channel !== message.guild.me.voice.channel) {
             const voicechannel = serverQueue.channel;
-            return message.reply({ embeds: [{ color: "RED", description: `i have already been playing music to someone in your server! join \`#${voicechannel}\` to listen :smiley:` }] });
+            return message.channel.send({ embeds: [{ color: "f3f3f3", description: `i have already been playing music to someone in your server! join \`#${voicechannel}\` to listen :smiley:` }] });
         };
-        if (!args.length) return message.reply({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help playlist\` to learn more :wink:` }] });
+        if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help playlist\` to learn more :wink:` }] });
         const search = args.join(" ");
 
         const musicSettings = await Guild.findOne({
@@ -37,6 +37,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
             player: null,
             songs: [],
             loop: false,
+            repeat: false,
             playing: true,
             volume: null,
             nowPlaying: null,
@@ -81,12 +82,12 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
             for (let each of args) {
                 try {
                     if (each.type === 'yt') {
-                        [song] = await fetchInfo(client, each.url, false);
+                        const [song] = await fetchInfo(client, each.url, false);
                         song.type = 'yt';
                         song.requestedby = message.author;
                         newSongs.push(song);
                     } else {
-                        [song] = await fetchInfo(client, each.url, false, 'yt');
+                        const [song] = await fetchInfo(client, each.url, false, 'yt');
                         song.type = 'sc';
                         song.requestedby = message.author;
                         newSongs.push(song);
@@ -100,7 +101,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         } else if (urlValid) {
             try {
                 newSongs = await fetchInfo(client, url, false);
-                if (!newSongs) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+                if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                 playlistURL = url;
                 newSongs.forEach(song => {
                     song.type = 'yt';
@@ -113,7 +114,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
             try {
                 if (url.includes("/sets/")) {
                     newSongs = await fetchInfo(client, url, false, 'yt');
-                    if (!newSongs) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm working on my end. try again later!)` }] });
+                    if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm working on my end. try again later!)` }] });
                     playlistURL = url;
                     newSongs.forEach(song => {
                         song.type = 'sc';
@@ -147,7 +148,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                         };
                         newSongs.push(song);
                     };
-                    if (!newSongs) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+                    if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                     playlistURL = url;
                     newSongs.forEach(song => {
                         song.requestedby = message.author;
@@ -162,7 +163,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                 if (!results[0]) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                 const playlist = results[0];
                 newSongs = await fetchInfo(client, `https://www.youtube.com/playlist?list=${playlist.id}`);
-                if (!newSongs) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+                if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                 playlistURL = `https://www.youtube.com/playlist?list=${playlist.id}`;
                 newSongs.forEach(song => {
                     song.type = 'yt';

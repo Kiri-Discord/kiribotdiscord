@@ -71,7 +71,7 @@ exports.run = async(client, message, args, prefix) => {
         const msg = await message.channel.send({
             embeds: [arrEmbeds[0]],
             components: [row, row1],
-//             content: `page 1 of ${arrEmbeds.length}`,
+            //             content: `page 1 of ${arrEmbeds.length}`,
         });
         const filter = async res => {
             if (res.user.id !== message.author.id) {
@@ -96,7 +96,7 @@ exports.run = async(client, message, args, prefix) => {
             row.components.forEach(button => button.setDisabled(true));
             row1.components.forEach(button => button.setDisabled(true));
             return msg.edit({
-//                 content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                //                 content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
                 components: [row, row1],
                 embeds: [arrEmbeds[currentPage]]
             });
@@ -125,15 +125,16 @@ exports.run = async(client, message, args, prefix) => {
                     });
                     currentPage = 0;
                     await res.editReply({
-//                         content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                        //                         content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
                         // components: [row, row1],
                         embeds: [arrEmbeds[currentPage]]
                     });
+                    break;
                 case 'previousbtn':
                     if (currentPage !== 0) {
                         --currentPage;
                         await res.editReply({
-//                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                            //                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
                             // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         });
@@ -143,7 +144,7 @@ exports.run = async(client, message, args, prefix) => {
                     if (currentPage < arrEmbeds.length - 1) {
                         currentPage++;
                         await res.editReply({
-//                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
+                            //                             content: `page ${currentPage + 1} of ${arrEmbeds.length}`,
                             // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         })
@@ -173,7 +174,7 @@ exports.run = async(client, message, args, prefix) => {
                         await prompt.delete();
                         currentPage = parseInt(number) - 1;
                         await res.editReply({
-//                             content: `page ${number} of ${arrEmbeds.length}`,
+                            //                             content: `page ${number} of ${arrEmbeds.length}`,
                             // components: [row, row1],
                             embeds: [arrEmbeds[currentPage]]
                         })

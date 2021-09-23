@@ -19,7 +19,7 @@ exports.run = async(client, message, args, prefix) => {
 
     const arr = [];
 
-    data.map((user, index) => {
+    data.forEach((user, index) => {
         let member = message.guild.members.cache.get(user.userId);
         const addS = user.received === 1 ? '' : 's';
         if (!member) {
@@ -41,7 +41,7 @@ exports.run = async(client, message, args, prefix) => {
         arrSplitted.push(toAdd);
     };
     const arrEmbeds = [];
-    arrSplitted.map((item, index) => {
+    arrSplitted.forEach((item, index) => {
         const embed = new MessageEmbed()
             .setColor(message.guild.me.displayHexColor)
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))

@@ -16,7 +16,8 @@ module.exports = {
                     if (!queue.textChannel.guild.me.voice.channel) return;
                     const newQueue = client.queue.get(message.guild.id);
                     if (newQueue) return;
-                    await client.lavacordManager.leave(queue.textChannel.guild.id)
+                    await client.lavacordManager.leave(queue.textChannel.guild.id);
+                    if (queue.player) queue.player.destroy();
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
                 }, STAY_TIME * 1000);
@@ -48,6 +49,8 @@ module.exports = {
                         queue.songs.push(queue.nowPlaying);
                         const upcoming = queue.songs[0];
                         module.exports.play(upcoming, message, client, prefix);
+                    } else if (queue.repeat) {
+                        module.exports.play(queue.nowPlaying || queue.songs[0], message, client, prefix);
                     } else {
                         const upcoming = queue.songs[0];
                         module.exports.play(upcoming, message, client, prefix);
@@ -98,7 +101,7 @@ module.exports = {
             };
             try {
                 queue.nowPlaying = song;
-                queue.songs.shift();
+                if (!queue.repeat) queue.songs.shift();
                 await queue.player.play(song.track);
                 queue.player.volume(queue.volume || 100);
             } catch (error) {

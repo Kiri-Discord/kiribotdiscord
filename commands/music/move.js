@@ -8,11 +8,11 @@ exports.run = async(client, message, args, prefix) => {
     if (!queue.songs.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `there isn't any song left in the queue :pensive:` }] });
     if (!args[0]) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you must to tell me what song you want to move! use \`${prefix}help move\` to learn more :wink:` }] });
     if (!args[1]) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `where do you want to move that song to? use \`${prefix}help move\` to learn more :wink:` }] });
-    if (isNaN(args[0]) || args[0] <= 1) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `that is an invalid queue position number :pensive:` }] });
-    if (isNaN(args[1]) || args[1] <= 1) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `that is an invalid queue position number :pensive:` }] });
+    if (isNaN(args[0]) || args[0] < 1) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `that is an invalid queue position number :pensive:` }] });
+    if (isNaN(args[1]) || args[1] < 1) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `that is an invalid queue position number :pensive:` }] });
     let song = queue.songs[args[0] - 1];
-    queue.songs = move(queue.songs, args[0] - 1, args[1] == 1 ? 1 : args[1] - 1);
-    const index = args[1] == 1 ? 1 : args[1];
+    queue.songs = move(queue.songs, args[0] - 1, args[1] - 1);
+    const index = args[1];
     if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "f3f3f3", description: `${message.author}, you moved **${song.info.title}** to position ${index} 🚚` }] });
     return queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${message.author} moved **${song.info.title}** to position ${index} 🚚` }] });
 }

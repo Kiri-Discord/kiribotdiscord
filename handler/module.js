@@ -8,9 +8,9 @@ module.exports = client => {
 
         categories.forEach(category => {
             let moduleConf = require(`../commands/${category}/module.json`);
+            if (!moduleConf) return;
             moduleConf.path = `./commands/${category}`;
             moduleConf.cmds = [];
-            if (!moduleConf) return;
             client.helps.set(moduleConf.name, moduleConf);
             client.allNameFeaturesSlash.push({ label: moduleConf.name, value: moduleConf.name })
             client.allNameFeatures.push(moduleConf.name);

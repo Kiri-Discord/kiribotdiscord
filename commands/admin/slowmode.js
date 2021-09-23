@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
     let convert = ms(time);
     let toSecond = Math.floor(convert / 1000);
 
-    if (!toSecond || toSecond == undefined) return message.reply({ embeds: [{ color: "RED", description: "please includes the **valid** time format. all valid time format are \`s, m, hrs\` <3" }] });
+    if (!toSecond) return message.reply({ embeds: [{ color: "RED", description: "please includes the **valid** time format. all valid time format are \`s, m, hrs\` <3" }] });
 
     if (toSecond > 21600) return message.reply({ embeds: [{ color: "RED", description: "the cooldown duration must be equal to or more than 6 hours!" }] });
     const rolelog = new MessageEmbed()

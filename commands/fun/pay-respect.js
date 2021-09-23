@@ -5,7 +5,7 @@ exports.run = async(client, message, args) => {
 
         const filter = async(reaction, user) => {
             if (user.bot) return false;
-            if (reaction.emoji.name === "🇫" && !user.bot) {
+            if (reaction.emoji.name === "🇫") {
                 const m = await message.channel.send(`**${user.username}** has paid their respect.`);
                 setTimeout(() => {
                     m.delete();
@@ -26,7 +26,7 @@ exports.run = async(client, message, args) => {
 
         const filter = async(reaction, user) => {
             if (user.bot) return false;
-            if (reaction.emoji.name === "🇫" && !user.bot) {
+            if (reaction.emoji.name === "🇫") {
                 const m = await message.channel.send(`**${user.username}** has paid their respect.`)
                 setTimeout(() => {
                     m.delete();

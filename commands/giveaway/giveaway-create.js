@@ -70,7 +70,7 @@ exports.run = async(client, message, args, prefix) => {
         const time = res.content.toLowerCase();
         const convert = ms(time);
         const toSecond = Math.floor(convert / 1000);
-        if (!toSecond || toSecond == undefined || toSecond < 60 || toSecond > 2592000) {
+        if (!toSecond || toSecond < 60 || toSecond > 2592000) {
             ongoing = true;
             await deleteIfAble(res);
             embed

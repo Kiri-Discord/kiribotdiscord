@@ -9,6 +9,7 @@ module.exports = async(client, oldState, newState) => {
         if (newState.member.user.id === client.user.id) {
             if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
             await client.lavacordManager.leave(queue.textChannel.guild.id);
+            if (queue.player) queue.player.destroy();
             return client.queue.delete(queue.textChannel.guild.id);
         };
         const playerListening = [...queue.channel.members.values()];
@@ -24,6 +25,7 @@ module.exports = async(client, oldState, newState) => {
             if (!queue.dcTimeout) {
                 queue.dcTimeout = setTimeout(async() => {
                     await client.lavacordManager.leave(queue.textChannel.guild.id);
+                    if (queue.player) queue.player.destroy();
                     const embed = new MessageEmbed()
                         .setTitle("it's lonely in here :(")
                         .setDescription(`it's been a while since everyone started leaving the music channel, so i left it too ☹️\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${client.config.prefix}24/7\` for supporters! stay tuned <3`)

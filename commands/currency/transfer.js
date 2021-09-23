@@ -5,11 +5,10 @@ exports.run = async(client, message, args) => {
     if (user.id === client.user.id) return message.reply("wow you are so generous but.. that's me.");
     if (user.bot) return message.reply("that user is a bot.");
     if (user.id === message.author.id) return message.reply("why do you want to transfer a credit to yourself?");
-
+    if (!args[1]) return message.reply("please input the amount of credits that you want to transfer!");
     let amount = parseInt(args[1]);
-    if (!amount) return message.reply("please input the amount of credits that you want to transfer!");
     if (isNaN(amount)) return message.reply("that was not a valid number!");
-
+    if (amount === 0) return message.reply("why did you transfer nothing?");
     let storage = await client.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
@@ -25,7 +24,6 @@ exports.run = async(client, message, args) => {
 
     if (!balance || balance == 0) return message.reply("your wallet is empty. broke. nothing is there :anguished:");
     if (amount > balance) return message.reply("you don't have that enough credits to transfer!");
-    if (amount === 0) return message.reply("why did you transfer nothing?");
     await client.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
@@ -61,11 +59,11 @@ exports.help = {
     description: "transfer tokens to an another user.",
     usage: ["transfer `<@user> <amount>`", "transfer `<user ID> <amount>`"],
     example: ["transfer `@coconut#1337 50`", "transfer `444177575757 50`"]
-}
+};
 
 exports.conf = {
     aliases: ["give"],
     cooldown: 15,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};

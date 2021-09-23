@@ -13,10 +13,6 @@ exports.run = async(client, message, args) => {
         safesearch = "active"
     }
     const href = await search(googleKey, csx, query, safesearch);
-
-    if (href.error) {
-        return message.channel.send(`http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`)
-    }
     if (!href) {
         if (safesearch === "active") {
             return message.reply("i can't find any result for that :pensive: try searching it again it a NSFW channel if you are looking for more darker result.\n*or Google is probably high*")
@@ -24,6 +20,10 @@ exports.run = async(client, message, args) => {
             return message.reply("i can't find any result for that :pensive:\n*Google is probably high*")
         }
     };
+
+    if (href.error) {
+        return message.channel.send(`http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`)
+    }
     const embed = new MessageEmbed()
         .setTitle(href.title)
         .setDescription(href.snippet)

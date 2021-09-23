@@ -20,7 +20,7 @@ exports.run = async(client, message, args, prefix) => {
     };
     let arr = [];
     let rank = message.guild.memberCount;
-    data.map((user, index) => {
+    data.forEach((user, index) => {
         let member = message.guild.members.cache.get(user.userId);
         if (!member) {
             client.dbleveling.findOneAndDelete({
@@ -41,7 +41,7 @@ exports.run = async(client, message, args, prefix) => {
         arrSplitted.push(toAdd);
     };
     const arrEmbeds = [];
-    arrSplitted.map((item, index) => {
+    arrSplitted.forEach((item, index) => {
         const embed = new MessageEmbed()
             .setColor(message.guild.me.displayHexColor)
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
