@@ -17,7 +17,7 @@ exports.run = async(client, message, args, prefix) => {
     let convert = ms(time);
     let toSecond = Math.floor(convert / 1000);
 
-    if (!toSecond || toSecond == undefined) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
+    if (!toSecond) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
 
     if (toSecond > 21600 || toSecond < 60) return message.reply("the timer should be more than or equal to 1 minute or less than 6 hours!");
     db.verifyTimeout = convert;

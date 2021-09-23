@@ -23,7 +23,7 @@ exports.run = async(client, message, args) => {
             if (!allowed.length) return message.reply('hmm looks like an error to me... :(');
             const randomnumber = Math.floor(Math.random() * allowed.length)
             let url = `https://www.reddit.com${allowed[randomnumber].data.permalink}`
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
                 .setAuthor(`r/${memes}`, icon, `https://reddit.com/r/${memes}`)
                 .setTitle(allowed[randomnumber].data.title)
                 .setURL(url)
