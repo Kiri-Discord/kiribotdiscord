@@ -87,7 +87,7 @@ module.exports = async(client, message) => {
                 }, 5000));
         };
 
-        if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.reply(`\`${prefix}${cmd}\` is being maintained. try again later ${sed}`)
+        if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.reply(`\`${prefix}${cmd}\` is being maintained. try again later ${sed}`);
         if (message.channel.type === "DM" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 
         if (!client.config.owners.includes(message.author.id) && commandFile.conf.owner) return;
@@ -98,9 +98,9 @@ module.exports = async(client, message) => {
             } else {
                 const embed2 = new MessageEmbed()
                     .setColor(0x7289DA)
-                    .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
-                    .setTitle('say hi to my uncle')
-                    .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
+                    .setDescription(`you met the void that belongs to people that run my NSFW commands at normal channel..\nplease consider running it in a proper NSFW channel to escape this place ${sed}`)
+                    .setTitle('where is this place?')
+                    .setImage('https://i.redd.it/bo81jbsoqnw41.png')
                 return message.channel.send({ embeds: [embed2] }).catch(() => null)
             };
         };
