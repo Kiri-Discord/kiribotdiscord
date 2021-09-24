@@ -3,34 +3,35 @@ const { promisify } = require('util');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const globPromise = promisify(glob);
+const config = require('../config.json');
 
-module.exports = async client => {
+const init = async() => {
     const cmdFiles = await globPromise(`${process.cwd()}/slashCommands/*/*.js`);
-    logger.log('info', `Found ${cmdFiles.length} slash (/) commands`);
+    console.log(`Found ${cmdFiles.length} slash (/) commands`);
+    if (!cmdFiles.length) return;
     const guild = [];
     const slash = [];
     for (const directory of cmdFiles) {
         const command = require(directory);
-        client.slash.set(command.conf.data.name, command);
         if (command.conf.guild) guild.push(command.conf.data.toJSON());
         else slash.push(command.conf.data.toJSON());
     };
-    if (!process.env.updateSlashOnBoot) return;
     try {
-        const rest = new REST({ version: '9' }).setToken(client.config.token);
+        const rest = new REST({ version: '9' }).setToken(config.token);
         if (guild.length) {
-            logger.log('info', '[DISCORD] Started refreshing application GUILD (/) commands.');
+            console.log('[DISCORD] Started refreshing application GUILD (/) commands.');
             await rest.put(
-                Routes.applicationGuildCommands(client.config.applicationID, client.config.slashTestServerID), { body: guild },
+                Routes.applicationGuildCommands(config.applicationID, config.slashTestServerID), { body: guild },
             );
         };
         if (slash.length) {
-            logger.log('info', '[DISCORD] Started refreshing application GLOBAL (/) commands.');
+            console.log('[DISCORD] Started refreshing application GLOBAL (/) commands.');
             await rest.put(
-                Routes.applicationCommands(client.config.applicationID), { body: slash },
+                Routes.applicationCommands(config.applicationID), { body: slash },
             );
         };
     } catch (error) {
         console.log(error);
     };
 };
+init();

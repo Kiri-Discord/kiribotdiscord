@@ -54,12 +54,11 @@ client.on("warn", warn => logger.log('warn', warn));
 client.on("error", err => {
     logger.log('error', err)
 });
+require("./handler/module.js")(client);
+require("./handler/Event.js")(client);
+require("./handler/getUserfromMention.js")(client);
+require("./handler/getMemberfromMention.js")();
 (async() => {
-    require("./handler/module.js")(client);
-    await require("./handler/registerSlash.js")(client);
-    require("./handler/Event.js")(client);
-    require("./handler/getUserfromMention.js")(client);
-    require("./handler/getMemberfromMention.js")();
     await mongo.init();
     client.login(client.config.token).catch(err => logger.log('error', err));
 })();

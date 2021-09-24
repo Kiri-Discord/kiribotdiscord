@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
             mod.cmds.forEach(x => x.type = mod.name);
             fullCmd.push(...mod.cmds);
         };
-        list = fullCmd.filter(x => x.type === 'games').map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
+        list = fullCmd.filter(x => x.type === 'fun').map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
         while (list.length) {
             const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
             arrSplitted.push(toAdd);

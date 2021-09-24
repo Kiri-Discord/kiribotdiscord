@@ -13,6 +13,7 @@ module.exports = class kiri extends Client {
             this.globalStorage = require('../model/global');
             this.gameStorage = require('../model/game');
             this.giveaways = null;
+            this.slashHelps = new Collection();
             this.queue = new Map();
             this.dbembeds = require('../model/embeds');
             this.commands = new Collection();
