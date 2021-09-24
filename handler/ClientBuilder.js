@@ -1,9 +1,7 @@
-const express = require('express');
 const { Client, Collection, MessageEmbed } = require("discord.js");
 const { embedURL } = require('../util/util');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const VerifyTimer = require('../features/redis/verify');
-const app = express();
 const ownGiveaway = require('../features/giveaway');
 
 module.exports = class kiri extends Client {
@@ -14,7 +12,6 @@ module.exports = class kiri extends Client {
             this.isPlaying = new Collection();
             this.globalStorage = require('../model/global');
             this.gameStorage = require('../model/game');
-            this.webapp = app;
             this.giveaways = null;
             this.queue = new Map();
             this.dbembeds = require('../model/embeds');

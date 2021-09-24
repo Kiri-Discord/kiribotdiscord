@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const config = require('../config.json');
 
 module.exports = {
     init: async() => {
@@ -22,7 +23,7 @@ module.exports = {
         mongoose.connection.on('disconnected', () => {
             logger.log('warn', '[MONGO] Mongoose connection lost');
         });
-        await mongoose.connect(process.env.mongourl, dbOptions);
+        await mongoose.connect(config.mongourl, dbOptions);
         return true;
     }
 }

@@ -7,14 +7,12 @@ global.logger = winston.createLogger({
     format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
 });
 
-require('dotenv').config();
+// require('dotenv').config();
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
 
-global._port = process.env.PORT || 80;
 global.__basedir = __dirname;
-global.__baseURL = process.env.baseURL || 'https://kiribot.xyz/';
 
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
@@ -63,6 +61,6 @@ client.on("error", err => {
     require("./handler/getUserfromMention.js")(client);
     require("./handler/getMemberfromMention.js")();
     await mongo.init();
-    client.login(process.env.token).catch(err => logger.log('error', err));
+    client.login(client.config.token).catch(err => logger.log('error', err));
 })();
 module.exports = client;

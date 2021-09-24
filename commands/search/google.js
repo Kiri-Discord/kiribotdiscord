@@ -2,8 +2,8 @@ const { MessageEmbed } = require("discord.js")
 const request = require("node-superfetch")
 
 exports.run = async(client, message, args) => {
-    let googleKey = process.env.gg_key;
-    let csx = process.env.csx_key;
+    let googleKey = client.config.gg_key;
+    let csx = client.config.csx_key;
     let query = args.join(" ");
     if (!query) return message.reply("pls enter something so i can search 👀");
     let safesearch;

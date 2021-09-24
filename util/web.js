@@ -1,16 +1,18 @@
 const express = require('express');
+const app = express();
 const helmet = require("helmet");
 const compression = require("compression");
-const { MessageEmbed, Permissions } = require("discord.js");
+const { Permissions } = require("discord.js");
+const config = require('../config.json');
 // const { stripIndents } = require('common-tags');
 module.exports = {
     init: (client) => {
-        client.webapp.use(express.json());
-        client.webapp.use(helmet());
-        client.webapp.use(compression());
-        client.webapp.disable("x-powered-by");
-        client.webapp.get('/', authenticateToken, (_, res) => res.send('the heck bros'));
-        client.webapp.post("/checkVerify", authenticateToken, async(req, res) => {
+        app.use(express.json());
+        app.use(helmet());
+        app.use(compression());
+        app.disable("x-powered-by");
+        app.get('/', authenticateToken, (_, res) => res.send('the heck bros'));
+        app.post("/checkVerify", authenticateToken, async(req, res) => {
             if ("userID" in req.query && "guildID" in req.query) {
                 await client.verifytimers.deleteTimer(req.query.guildID, req.query.userID);
                 const setting = await client.dbguilds.findOne({
@@ -58,7 +60,7 @@ module.exports = {
                 return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
             };
         });
-        // client.webapp.post('/vote', authenticateToken, async(req, res) => {
+        // app.post('/vote', authenticateToken, async(req, res) => {
         //     if ("userID" in req.query) {
         //         let user;
         //         try {
@@ -93,11 +95,11 @@ module.exports = {
         //         return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
         //     }
         // });
-        client.webapp.get('*', authenticateToken, function(req, res) {
+        app.get('*', authenticateToken, function(req, res) {
             res.status(404).send('wrong call bruh')
         });
-        client.webapp.listen(_port);
-        logger.log('info', `[WEB] Listening at port ${_port}`);
+        app.listen(config.PORT);
+        logger.log('info', `[WEB] Listening at port ${config.PORT}`);
     }
 };
 
@@ -105,6 +107,6 @@ function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401);
-    if (token !== process.env.apiToken) return res.sendStatus(401);
+    if (token !== config.apiToken) return res.sendStatus(401);
     next()
 };

@@ -12,8 +12,8 @@ exports.run = async(client, message, args) => {
     if (query) {
         try {
             const { body } = await request
-                .post(process.env.lyricURL + 'fetch')
-                .set({ Authorization: process.env.lyricsKey })
+                .post(client.config.lyricURL + 'fetch')
+                .set({ Authorization: client.config.lyricsKey })
                 .query({
                     song: query
                 });
@@ -31,8 +31,8 @@ exports.run = async(client, message, args) => {
     } else if (queue) {
         try {
             const { body } = await request
-                .post(process.env.lyricURL + 'fetch')
-                .set({ Authorization: process.env.lyricsKey })
+                .post(client.config.lyricURL + 'fetch')
+                .set({ Authorization: client.config.lyricsKey })
                 .query({
                     song: `${queue.nowPlaying.info.title} ${queue.nowPlaying.info.author}`
                 });

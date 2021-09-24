@@ -30,7 +30,7 @@ module.exports = async(client, member) => {
                     .setFooter(timeMs !== null ? `you will be kicked from the server in ${ms(timeMs, {long: true})} to prevent bots and spams` : `this link is expiring in ${ms(900000, {long: true})}`)
                     .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
                     .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
-                    .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${__baseURL}verify?valID=${code}`)}`)
+                    .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${client.config.baseURL}verify?valID=${code}`)}`)
             try { 
                 await member.send({embeds: [dm]});
                 return verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`)

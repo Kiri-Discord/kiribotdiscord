@@ -15,9 +15,9 @@ module.exports = async client => {
         if (command.conf.guild) guild.push(command.conf.data.toJSON());
         else slash.push(command.conf.data.toJSON());
     };
-    if (!client.config.updateSlashOnBoot) return;
+    if (!process.env.updateSlashOnBoot) return;
     try {
-        const rest = new REST({ version: '9' }).setToken(process.env.token);
+        const rest = new REST({ version: '9' }).setToken(client.config.token);
         if (guild.length) {
             logger.log('info', '[DISCORD] Started refreshing application GUILD (/) commands.');
             await rest.put(

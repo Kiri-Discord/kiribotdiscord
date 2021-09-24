@@ -9,7 +9,7 @@ exports.run = async(client, message, args) => {
         const search = await request
             .get('http://api.themoviedb.org/3/search/movie')
             .query({
-                api_key: process.env.tmdbKey,
+                api_key: client.config.tmdbKey,
                 include_adult: message.channel.nsfw || false,
                 query
             });
@@ -27,7 +27,7 @@ exports.run = async(client, message, args) => {
         };
         const { body } = await request
             .get(`https://api.themoviedb.org/3/movie/${find.id}`)
-            .query({ api_key: process.env.tmdbKey });
+            .query({ api_key: client.config.tmdbKey });
         const embed = new MessageEmbed()
             .setColor(message.member.displayHexColor)
             .setTitle(body.title)

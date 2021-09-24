@@ -14,7 +14,7 @@ module.exports = async client => {
             fs.readdir(`./commands/${category}`, (err, files) => {
                 logger.log('info', `Found total ${files.length - 1} command(s) from ${category}.`);
                 if (err) logger.log('error', err);
-                for (const file of files) {
+                files.forEach(file => {
                     if (!file.endsWith(".js")) return;
                     let prop = require(`../commands/${category}/${file}`);
                     client.commands.set(prop.help.name, prop);
@@ -25,7 +25,7 @@ module.exports = async client => {
                         if (!prop.conf.adult && !prop.conf.owner) client.allNameCmds.push(alias);
                     });
                     client.helps.get(moduleConf.name).cmds.push({ name: prop.help.name, desc: prop.help.description });
-                };
+                });
             });
         };
     });

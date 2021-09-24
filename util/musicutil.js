@@ -1,3 +1,4 @@
+const { youtubekey, soundcloudkey } = require('../config.json');
 exports.canModifyQueue = (member) => {
     const { channelId } = member.voice;
     const botChannel = member.guild.me.voice.channelId;
@@ -7,8 +8,8 @@ exports.canModifyQueue = (member) => {
     return true;
 };
 
-exports.YOUTUBE_API_KEY = process.env.youtubekey;
-exports.SOUNDCLOUD_CLIENT_ID = process.env.soundcloudkey;
+exports.YOUTUBE_API_KEY = youtubekey;
+exports.SOUNDCLOUD_CLIENT_ID = soundcloudkey;
 exports.MAX_PLAYLIST_SIZE = "100"
 exports.PRUNING = false;
 exports.STAY_TIME = "1200";

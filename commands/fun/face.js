@@ -1,7 +1,7 @@
 const request = require('node-superfetch');
 const { oneLine } = require('common-tags');
 const { base64 } = require('../../util/util');
-const { face_key, face_secret } = process.env;
+const { face_key, face_secret } = require('../../config.json');
 const validUrl = require('valid-url');
 const emotions = ['anger', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise'];
 const emotionResponse = ['angry', 'disgusted', 'afraid', 'happy', 'uncaring', 'sad', 'surprised'];

@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 const { stripIndents } = require('common-tags');
 const { buttonVerify, delay } = require('../../util/util');
 const startWords = require('../../assets/word-list.json');
-const { webster_key } = process.env;
+const { webster_key } = require('../../config.json');
 
 exports.run = async(client, message, args) => {
     const current = client.games.get(message.channel.id);
