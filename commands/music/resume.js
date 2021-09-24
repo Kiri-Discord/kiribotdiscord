@@ -2,8 +2,8 @@ const { canModifyQueue } = require("../../util/musicutil");
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `:x: there isn't any ongoing music queue` }] });
-    if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` }] });
+    if (!queue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: there isn't any ongoing music queue` }] });
+    if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
 
     if (!queue.playing) {
         queue.playing = true;
@@ -12,11 +12,11 @@ exports.run = async(client, message, args) => {
         queue.pausedAt = undefined;
         if (queue.textChannel.id !== message.channel.id) message.channel.send('▶️ resuming...');
 
-        queue.textChannel.send(({ embeds: [{ color: "f3f3f3", description: `${message.author.toString()} resumed the current song ▶️` }] }));
+        queue.textChannel.send(({ embeds: [{ color: "#bee7f7", description: `${message.author.toString()} resumed the current song ▶️` }] }));
         clearTimeout(queue.dcTimeout);
         queue.dcTimeout = undefined;
     } else {
-        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `:x: i am already playing!` }] })
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i am already playing!` }] })
     };
 };
 exports.help = {

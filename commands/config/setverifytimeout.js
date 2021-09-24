@@ -8,7 +8,7 @@ exports.run = async(client, message, args, prefix) => {
         }, {
             verifyTimeout: null
         });
-        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ verify timeout has been disabled` }] });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ verify timeout has been disabled` }] });
     };
     let time = args.join(" ");
 
@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
             verifyTimeout: convert
         })
         .catch(err => logger.log('error', err));
-    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` }] });
+    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` }] });
 }
 exports.help = {
     name: "setverifytimeout",

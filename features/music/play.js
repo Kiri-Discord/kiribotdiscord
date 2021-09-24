@@ -77,7 +77,7 @@ module.exports = {
             });
             if (song.type === 'sp') {
                 const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
-                const msg = await queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
+                const msg = await queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
                 const ytUrl = await spotifyToYT.trackGet(song.info.uri);
                 msg.delete();
                 if (!ytUrl || !ytUrl.url) {

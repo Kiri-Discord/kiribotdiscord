@@ -9,8 +9,8 @@ const { getTracks } = require('spotify-url-info');
 exports.run = async(client, message, args, prefix, cmd, internal) => {
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
-    if (!channel) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `⚠️ you are not in a voice channel!` }] });
-    if (!channel.joinable) return message.reply({ embeds: [{ color: "f3f3f3", description: "i can't join the voice channel where you are in. can you check my permission?" }] })
+    if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
+    if (!channel.joinable || !channel.speakable) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
     if (serverQueue && channel !== message.guild.me.voice.channel) {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music in your server! join ${voicechannel} to listen :smiley:`).catch(err => logger.log('error', err));
@@ -110,7 +110,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const matchs = url.match(spotifyRegex);
         const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
         if (matchs[1] === 'episode' || matchs[1] === 'show') {
-            return message.channel.send({ embeds: [{ color: "f3f3f3", description: `${logo} sorry, i don't support podcast link from Spotify :pensive:` }] });
+            return message.channel.send({ embeds: [{ color: "#bee7f7", description: `${logo} sorry, i don't support podcast link from Spotify :pensive:` }] });
         };
         try {
             const results = await getTracks(url);

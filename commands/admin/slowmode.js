@@ -32,7 +32,7 @@ exports.run = async(client, message, args) => {
         .setTimestamp();
     try {
         await channel.setRateLimitPerUser(toSecond);
-        await message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.` }] });
+        await message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ this channel: <#${channel.id}> will have slowmode turn on for **${ms(ms(time), {long: true})}**.` }] });
         if (!logChannel) {
             return
         } else {

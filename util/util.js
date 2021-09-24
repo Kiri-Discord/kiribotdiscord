@@ -424,7 +424,7 @@ module.exports = class util {
                 });
                 await res.reply({
                     embeds: [{
-                        description: `this menu isn't belong to you :pensive:`
+                        description: `this menu doesn't belong to you :pensive:`
                     }],
                     ephemeral: true
                 });

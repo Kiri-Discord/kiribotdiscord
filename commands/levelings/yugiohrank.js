@@ -23,7 +23,7 @@ exports.run = async(client, message, args) => {
         userId: mention.user.id
     });
 
-    if (!target) return message.reply({ embeds: [{ color: "f3f3f3", description: `❌ you or that user doesn't have any leveling data yet! stay around a little longer :D` }] });
+    if (!target) return message.reply({ embeds: [{ color: "#bee7f7", description: `❌ you or that user doesn't have any leveling data yet! stay around a little longer :D` }] });
 
     const res = client.leveling.getLevelBounds(target.level + 1)
 
@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
     })
 
     if (!result) {
-        return message.reply({ embeds: [{ color: "f3f3f3", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :D` }] })
+        return message.reply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :slight_smile_` }] })
     };
     for (let counter = 0; counter < result.length; ++counter) {
         let member = message.guild.members.cache.get(result[counter].userId)

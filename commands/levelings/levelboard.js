@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
     }).sort({
         xp: -1
     });
-    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ i can't find any leveling data for this guild :pensive: try chatting more to level up or use \`${prefix}leveling on\` to set it up :smile:` }] });
+    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ i can't find any leveling data for this guild :pensive: try chatting more to level up or use \`${prefix}leveling on\` to set it up :smile:` }] });
 
     const emoji = {
         "1": ":crown:",

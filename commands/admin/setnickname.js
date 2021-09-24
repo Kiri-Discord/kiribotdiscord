@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
 
     try {
         await member.setNickname(nick);
-        await message.channel.send({ embeds: [{ color: "f3f3f3", description: `➕ i changed **${user}** nickname to **${nick}**!` }] });
+        await message.channel.send({ embeds: [{ color: "#bee7f7", description: `➕ i changed **${user}** nickname to **${nick}**!` }] });
         if (!logChannel) {
             return;
         } else {
@@ -37,7 +37,7 @@ exports.run = async(client, message, args) => {
             return instance.send();
         }
     } catch (error) {
-        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `ouch, i bumped by an error. can you check my perms? ${stareEmoji}\nthat user might have the same role or a higher role than me.` }] });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ouch, i bumped by an error. can you check my perms? ${stareEmoji}\nthat user might have the same role or a higher role than me.` }] });
     };
 };
 

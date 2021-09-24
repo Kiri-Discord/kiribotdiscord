@@ -5,14 +5,14 @@ exports.run = async(client, message, args, prefix) => {
     let mention = await getMemberfromMention(args[0], message.guild) || message.member;
 
     if (mention.user.id === client.user.id) return message.channel.send('that was me lmao');
-    if (mention.user.bot) return message.channel.send({ embeds: [{ color: "f3f3f3", description: 'just to make this clear... bots can\'t level up :pensive:' }] })
+    if (mention.user.bot) return message.channel.send({ embeds: [{ color: "#bee7f7", description: 'just to make this clear... bots can\'t level up :pensive:' }] })
 
     let target = await client.dbleveling.findOne({
         guildId: message.guild.id,
         userId: mention.user.id
     });
 
-    if (!target) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ you or that user doesn't have any leveling data yet!` }] });
+    if (!target) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you or that user doesn't have any leveling data yet!` }] });
 
     const res = client.leveling.getLevelBounds(target.level + 1);
 
@@ -24,7 +24,7 @@ exports.run = async(client, message, args, prefix) => {
         xp: -1
     });
 
-    if (!result) return message.reply({ embeds: [{ color: "f3f3f3", description: `❌ this guild doesn't have any leveling data yet!\nto turn on the leveling system, do \`${prefix}leveling on\`!` }] });
+    if (!result) return message.reply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet!\nto turn on the leveling system, do \`${prefix}leveling on\`!` }] });
 
     message.channel.sendTyping();
     let rank;

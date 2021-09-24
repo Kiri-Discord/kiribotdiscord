@@ -7,7 +7,7 @@ exports.run = async(client, message, args) => {
         }, {
             ignoreLevelingsChannelID: null
         });
-        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ ignore levelings has been disabled` }] });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ ignore levelings has been disabled` }] });
     };
 
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
@@ -19,7 +19,7 @@ exports.run = async(client, message, args) => {
             ignoreLevelingsChannelID: channel.id
         })
         .catch(err => logger.log('error', err));
-    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ i will ignore levelings from ${channel} starting from now.` }] });
+    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ i will ignore levelings from ${channel} starting from now.` }] });
 }
 
 exports.help = {

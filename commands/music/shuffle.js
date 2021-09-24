@@ -3,14 +3,14 @@ const { shuffle } = require('../../util/util');
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
-    if (!queue) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `:x: there isn't any ongoing music queue` }] });
-    if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you have to be in ${queue.channel} to do this command :(` }] });
+    if (!queue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: there isn't any ongoing music queue` }] });
+    if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     const songs = queue.songs;
     const shuffled = shuffle(songs);
     queue.songs = shuffled;
     client.queue.set(message.guild.id, queue);
-    queue.textChannel.send({ embeds: [{ color: "f3f3f3", description: `${message.author} has shuffled the queue 🔀` }] });
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "f3f3f3", description: `${message.author}, you has shuffled the queue 🔀` }] }).catch(err => logger.log('error', err));
+    queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} has shuffled the queue 🔀` }] });
+    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `${message.author}, you has shuffled the queue 🔀` }] }).catch(err => logger.log('error', err));
 };
 
 exports.help = {

@@ -7,8 +7,8 @@ const moment = require('moment');
 require('moment-duration-format');
 
 exports.run = async(client, message, args, prefix, cmd, internal) => {
-        if (!args.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` }] });
-        if (!message.member.voice.channel) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `⚠️ you are not in a voice channel!` }] });
+        if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` }] });
+        if (!message.member.voice.channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
 
         const search = args.join(" ");
         let result = [];
@@ -78,7 +78,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             if (res.user.id !== message.author.id) {
                 await res.reply({
                     embeds: [{
-                        description: `this menu isn't belong to you :pensive:`
+                        description: `this menu doesn't belong to you :pensive:`
                     }],
                     ephemeral: true
                 });

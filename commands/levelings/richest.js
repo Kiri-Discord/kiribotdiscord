@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
     }).sort({
         balance: -1
     });
-    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ i can't find any money data for this guild :pensive: use \`${prefix}help economy\` for more info :smile:` }] });
+    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ i can't find any money data for this guild :pensive: use \`${prefix}help economy\` for more info :smile:` }] });
 
     const emoji = {
         "1": ":crown:",

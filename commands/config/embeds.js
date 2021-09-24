@@ -7,7 +7,7 @@ const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 const varReplace = require('../../util/variableReplace');
 
 exports.run = async(client, message, args, prefix) => {
-    if (!args.length) return message.channel.send({ embeds: [{ color: "f3f3f3", description: `ℹ️ missing sub command \`${prefix}${exports.help.name} <subcommand>\`\nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ missing sub command \`${prefix}${exports.help.name} <subcommand>\`\nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
     if (args[0].toLowerCase() === 'new') {
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
@@ -646,7 +646,7 @@ exports.run = async(client, message, args, prefix) => {
         return setupMessage.edit({ embeds: [embed2] });
     } else if (args[0].toLowerCase() === 'send') {
         const id = args[1];
-        if (!id) return message.reply({ embeds: [{ color: "f3f3f3", description: `you haven't provided me an embed ID yet. to show all embeds that were created on this guild, do \`${prefix}embeds list\` first!` }] });
+        if (!id) return message.reply({ embeds: [{ color: "#bee7f7", description: `you haven't provided me an embed ID yet. to show all embeds that were created on this guild, do \`${prefix}embeds list\` first!` }] });
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
             guildID: message.guild.id
@@ -655,15 +655,15 @@ exports.run = async(client, message, args, prefix) => {
             guildID: message.guild.id
         });;
         const embed = storage.embeds.toObject().find(x => x._id === id);
-        if (!embed) return message.reply({ embeds: [{ color: "f3f3f3", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!embed) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
 
         const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2]) || message.channel;
-        if (!channel) return message.reply({ embeds: [{ color: "f3f3f3", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-        if (!channel.permissionsFor(message.guild.me).has('MANAGE_WEBHOOKS')) return message.reply({ embeds: [{ color: "f3f3f3", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
+        if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
+        if (!channel.permissionsFor(message.guild.me).has('MANAGE_WEBHOOKS')) return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
         return channel.send({ embeds: [varReplace.replaceEmbed(embed.embed, message.member, message.guild)] })
     } else if (args[0].toLowerCase() === 'delete') {
         const id = args[1];
-        if (!id) return message.reply({ embeds: [{ color: "f3f3f3", description: `you haven't provided me an embed ID yet. to show all embeds that were created on this guild, do \`${prefix}embeds list\` first!` }] });
+        if (!id) return message.reply({ embeds: [{ color: "#bee7f7", description: `you haven't provided me an embed ID yet. to show all embeds that were created on this guild, do \`${prefix}embeds list\` first!` }] });
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
             guildID: message.guild.id
@@ -671,13 +671,13 @@ exports.run = async(client, message, args, prefix) => {
         if (!storage) storage = new embedsStorage({
             guildID: message.guild.id
         });;
-        if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "f3f3f3", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
         const embed = storage.embeds.toObject().find(x => x._id === id);
-        if (!embed) return message.reply({ embeds: [{ color: "f3f3f3", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!embed) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
         storage.embeds.pull(embed);
         storage.markModified('embeds');
         await storage.save();
-        return message.reply({ embeds: [{ color: "f3f3f3", description: `☑️ that embed was deleted successfully` }] });
+        return message.reply({ embeds: [{ color: "#bee7f7", description: `☑️ that embed was deleted successfully` }] });
     } else if (args[0].toLowerCase() === 'list') {
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
@@ -686,7 +686,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!storage) storage = new embedsStorage({
             guildID: message.guild.id
         });;
-        if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "f3f3f3", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
         const array = [];
         storage.embeds.toObject().map((each, index) => {
             const author = message.guild.members.cache.get(each.creator);
@@ -698,7 +698,7 @@ exports.run = async(client, message, args, prefix) => {
             .setAuthor(`all embeds created in ${message.guild.name}:`)
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }));
         return message.channel.send({ embeds: [embed] });
-    } else return message.channel.send({ embeds: [{ color: "f3f3f3", description: `wrong sub command :pensive: \nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
+    } else return message.channel.send({ embeds: [{ color: "#bee7f7", description: `wrong sub command :pensive: \nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
 };
 
 exports.help = {

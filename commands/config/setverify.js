@@ -9,12 +9,12 @@ exports.run = async(client, message, args, prefix) => {
             verifyChannelID: null,
             verifyRole: null
         })
-        return message.channel.send({ embeds: [{ color: "f3f3f3", description: `❌ verify feature has been disabled for all upcoming new members` }] });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ verify feature has been disabled for all upcoming new members` }] });
     };
     if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `to setup the verify feature, do \`${prefix}setverify <#channel> <@role>\` or \`${prefix}setverify -off\` to disable it ;)` }] })
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-    if (!channel) return message.reply({ embeds: [{ color: "f3f3f3", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-    if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.reply({ embeds: [{ color: "f3f3f3", description: "i don't have the perms to send messages to that channel! :pensive:" }] });
+    if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
+    if (!channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send messages to that channel! :pensive:" }] });
 
     const roleName = args.slice(1).join(' ');
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
@@ -37,7 +37,7 @@ exports.run = async(client, message, args, prefix) => {
             verifyRole: role.id
         })
         .catch(err => logger.log('error', err));
-    return message.channel.send({ embeds: [{ color: "f3f3f3", description: `☑️ the verification guiding channel has been set to ${channel} and user will be given the verify role \`${role.name}\` after verifying!\nunverified people won't get kicked by default. use \`${prefix}setverifytimeout <time>\` to set your own duration!` }] });
+    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ the verification guiding channel has been set to ${channel} and user will be given the verify role \`${role.name}\` after verifying!\nunverified people won't get kicked by default. use \`${prefix}setverifytimeout <time>\` to set your own duration!` }] });
 
 }
 
