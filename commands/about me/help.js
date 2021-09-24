@@ -92,7 +92,7 @@ exports.run = async(client, message, args, prefix) => {
         let currentPage = 0;
         const collector = msg.createMessageComponentCollector({
             filter,
-            time: 30000
+            time: 45000
         });
         collector.on('end', async() => {
             row.components.forEach(button => button.setDisabled(true));

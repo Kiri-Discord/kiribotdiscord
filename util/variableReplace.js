@@ -2,6 +2,7 @@ const welcomeNatural = require('../assets/messages/normal/welcome.json');
 const welcomeCute = require('../assets/messages/anime-ish/welcome.json');
 const leaveNatural = require('../assets/messages/normal/leave.json');
 const leaveCute = require('../assets/messages/anime-ish/leave.json');
+const moment = require('moment');
 const ordinal = require('ordinal/indicator');
 const lodashClonedeep = require('lodash.clonedeep');
 
@@ -55,8 +56,8 @@ this.replaceText = (content, member, guild, responseType, leveling) => {
         .split('{user_discriminator}').join(member.user.discriminator)
         .split('{user_id}').join(member.user.id)
         .split('{user_nick}').join(member.displayName)
-        .split('{user_joindate}').join(`<t:${member.user.createdAt}:D> (<t:${member.user.createdAt}:R>)`)
-        .split('{user_createdate}').join(`<t:${member.joinedAt}:D> (<t:${member.joinedAt}:R>)`)
+        .split('{user_joindate}').join(moment.utc(member.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"))
+        .split('{user_createdate}').join(moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss"))
         .split('{user_xp}').join(leveling ? leveling.xp : `||(xp)||`)
         .split('{user_level}').join(leveling ? leveling.level : `||(level)||`);
     return replaced;
