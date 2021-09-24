@@ -94,17 +94,14 @@ module.exports = async(client, message) => {
 
         if (!message.channel.nsfw && commandFile.conf.adult) {
             if (!message.channel.permissionsFor(message.guild.me).has('EMBED_LINKS')) {
-                const msg = await message.channel.send('https://www.youtube.com/watch?v=rTgj1HxmUbg');
-                setTimeout(() => {
-                    return msg.edit(`https://www.youtube.com/watch?v=rTgj1HxmUbg\n*seriously, turn to a nsfw channel pls*`);
-                }, 5000);
+                return message.channel.send('seriously, turn to a nsfw channel pls');
             } else {
                 const embed2 = new MessageEmbed()
                     .setColor(0x7289DA)
                     .setDescription(`he will shoot anybody who is trying to do this illegal stuff in normal channel\ndo this in a nsfw channel to make him feel happier`)
                     .setTitle('say hi to my uncle')
                     .setImage('https://i.pinimg.com/originals/65/96/27/6596276817293850804c8d07162792d5.jpg')
-                return message.channel.send(embed2).catch(() => null)
+                return message.channel.send({ embeds: [embed2] }).catch(() => null)
             };
         };
 
