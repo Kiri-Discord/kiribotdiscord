@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
             mod.cmds.forEach(x => x.type = mod.name);
             fullCmd.push(...mod.cmds);
         };
-        list = fullCmd.filter(x => x.type === 'fun').map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
+        list = fullCmd.filter(x => x.type === 'games').map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
         while (list.length) {
             const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
             arrSplitted.push(toAdd);
@@ -72,7 +72,7 @@ exports.run = async(client, message, args, prefix) => {
             .addComponents(menu);
         const msg = await message.channel.send({
             embeds: [arrEmbeds[0]],
-            components: [row, row1],
+            components: [row1, row],
             content: `if you ran into any trouble, use \`${prefix}invite\` to get more info about my support servers ${duh}`
         });
         const filter = async res => {
@@ -98,7 +98,7 @@ exports.run = async(client, message, args, prefix) => {
             row.components.forEach(button => button.setDisabled(true));
             row1.components.forEach(button => button.setDisabled(true));
             return msg.edit({
-                components: [row, row1],
+                components: [row1, row],
                 embeds: [arrEmbeds[currentPage]]
             });
         })
@@ -185,7 +185,7 @@ exports.run = async(client, message, args, prefix) => {
             if (command.conf.owner) return message.channel.send({ embeds: [{ color: "RED", description: `that command is accessible only by my owner 👑` }] });
             if (command.conf.adult && !message.channel.nsfw) {
                 if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
-                return message.channel.send({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel bruh ${dead}` }] });
+                return message.channel.send({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel dear ${dead}` }] });
             };
             let name = command.help.name;
             let desc = command.help.description;
