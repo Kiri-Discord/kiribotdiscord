@@ -10,7 +10,7 @@ exports.help = {
     description: "very self-explanatory",
     usage: [`beep`],
     example: [`beep`]
-}
+};
 
 exports.conf = {
     aliases: [],

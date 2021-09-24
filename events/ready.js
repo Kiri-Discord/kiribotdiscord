@@ -28,7 +28,7 @@ module.exports = async client => {
         // botSitePost(client);
         // setInterval(() => botSitePost(client), 1200000);
     };
-    const staffsv = client.guilds.cache.get(client.config.supportServerID);
+    const staffsv = client.guilds.cache.get(client.config.emojiServerID);
     if (staffsv) {
         await staffsv.emojis.cache.forEach(async emoji => {
             client.customEmojis.set(emoji.name, emoji);

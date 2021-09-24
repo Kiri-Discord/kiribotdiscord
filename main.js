@@ -9,7 +9,6 @@ global.logger = winston.createLogger({
 
 require('dotenv').config();
 process.on('unhandledRejection', error => {
-    client.channels.cache.get('833003165565583362').send(`${error}`)
     console.error('Unhandled promise rejection:', error);
 });
 
@@ -52,16 +51,17 @@ const client = new kiri({
     }
 
 });
-require("./handler/module.js")(client);
-require("./handler/Event.js")(client);
-require("./handler/getUserfromMention.js")(client);
-require("./handler/getMemberfromMention.js")();
-client.package = require("./package.json");
+// client.package = require("./package.json");
 client.on("warn", warn => logger.log('warn', warn));
 client.on("error", err => {
     logger.log('error', err)
 });
 (async() => {
+    require("./handler/module.js")(client);
+    await require("./handler/registerSlash.js")(client);
+    require("./handler/Event.js")(client);
+    require("./handler/getUserfromMention.js")(client);
+    require("./handler/getMemberfromMention.js")();
     await mongo.init();
     client.login(process.env.token).catch(err => logger.log('error', err));
 })();
