@@ -19,7 +19,7 @@ module.exports = async(client, interaction) => {
         if (interaction.channel.type === "DM" && commandFile.conf.guildOnly) return interaction.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh').toString() : ':thinking:'}`);
         if (!interaction.channel.nsfw && commandFile.conf.adult) {
             if (!interaction.channel.permissionsFor(interaction.guild.me).has('EMBED_LINKS')) {
-                return interaction.reply('you can only use that in a NSFW channel!');
+                return interaction.reply({ content: `you can only use that in a NSFW channel! ${sed}`, ephemeral: true });
             } else {
                 const embed2 = new MessageEmbed()
                     .setColor(0x7289DA)

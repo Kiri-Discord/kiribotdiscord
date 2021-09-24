@@ -7,7 +7,7 @@ exports.run = async(client, interaction) => {
 };
 exports.help = {
     name: "ping",
-    description: "very self-explanatory",
+    description: "ping me and check if i'm actually alive or not",
     usage: ["ping"],
     example: ["ping"]
 };
@@ -17,5 +17,5 @@ exports.conf = {
     cooldown: 2,
     guild: true,
     data: new SlashCommandBuilder()
-        .setName('ping').setDescription('very self-explanatory')
+        .setName(exports.help.name).setDescription(exports.help.description),
 };
