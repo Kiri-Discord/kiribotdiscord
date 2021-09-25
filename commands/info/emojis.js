@@ -20,28 +20,27 @@ exports.run = async(client, message, args) => {
       **Not animated:**
       ${(notAnimated.join(' ') + ' ')}
       `;
-        const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 2047, char: ' ' });
-        const embedArray = [];
+        const [first, ...rest] = Util.splitMessage(allEmojis, { maxLength: 3900, char: ' ' });
         const embed = new MessageEmbed()
             .setDescription(first)
             .setColor(message.guild.me.displayHexColor)
             .setThumbnail(icon)
-            .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL())
+            .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL());
         if (rest.length) {
-            embedArray.push(embed)
-            const lastContent = rest.splice(rest.length - 1, 1);
-            for (const text of rest) {
-                const embed1 = new MessageEmbed()
-                    .setColor(message.guild.me.displayHexColor)
-                    .setDescription(text)
-                embedArray.push(embed1)
+            const lastContent = rest.pop();
+            if (rest.length) {
+                for (const text of rest) {
+                    const embed1 = new MessageEmbed()
+                        .setColor(message.guild.me.displayHexColor)
+                        .setDescription(text)
+                    await message.channel.send({ embeds: [embed1] })
+                };
             };
             const embed3 = new MessageEmbed()
                 .setColor(message.guild.me.displayHexColor)
                 .setDescription(lastContent)
-            embedArray.push(embed3)
-            embed3.setTimestamp()
-            return message.channel.send({ embeds: embedArray });
+                .setTimestamp()
+            return message.channel.send({ embeds: [embed3] });
         } else {
             embed.setTimestamp()
             return message.channel.send({ embeds: [embed] });

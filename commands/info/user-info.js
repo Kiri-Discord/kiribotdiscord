@@ -77,7 +77,6 @@ exports.run = async(client, message, args) => {
     const embed = new MessageEmbed()
         .setDescription(member.user.toString())
         .setAuthor(member.user.tag, avatar)
-        .setFooter(message.member.displayName)
         .setThumbnail(avatar)
         .setTimestamp()
         .setColor(member.displayHexColor)

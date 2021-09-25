@@ -2,7 +2,7 @@
 name: Deploying bot
 on:
   push:
-    branches: [ master ]
+    branches: [ stable ]
 jobs:
   launch-bot:
     runs-on: ubuntu-latest
@@ -17,6 +17,7 @@ jobs:
         script: |
           cd "${{ secrets.EC2_SSH_PATH }}"
           pm2 kill
+          git checkout stable
           git pull
           npm i
           curl --header 'Authorization: token ${{ secrets.ENV_TOKEN }}' --header 'Accept: application/vnd.github.v3.raw' --remote-name --location ${{ secrets.CONFIG_URL }}

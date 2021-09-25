@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
             mod.cmds.forEach(x => x.type = mod.name);
             fullCmd.push(...mod.cmds);
         };
-        list = fullCmd.filter(x => x.type === 'games').map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
+        list = fullCmd.map(x => `**[${x.name}](https://kiribot.xyz)**\n${replyEmoji} ${x.desc}`);
         while (list.length) {
             const toAdd = list.splice(0, list.length >= 10 ? 10 : list.length);
             arrSplitted.push(toAdd);
@@ -39,7 +39,7 @@ exports.run = async(client, message, args, prefix) => {
                 .setFooter(`page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`)
             arrEmbeds.push(embed);
         });
-        const components = [];
+        let components = [];
         if (arrEmbeds.length > 1) {
             components.push(
                 new MessageButton()
@@ -60,7 +60,7 @@ exports.run = async(client, message, args, prefix) => {
             .setCustomId('clearbtn')
             .setEmoji(client.customEmojis.get('trash') ? client.customEmojis.get('trash').id : '🗑️')
             .setStyle('DANGER'));
-        const row = new MessageActionRow()
+        let row = new MessageActionRow()
             .addComponents(components);
         const menu = new MessageSelectMenu()
             .setMaxValues(1)
@@ -123,9 +123,33 @@ exports.run = async(client, message, args, prefix) => {
                             .setFooter(`page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`)
                         arrEmbeds.push(embed);
                     });
+                    components = [];
+                    if (arrEmbeds.length > 1) {
+                        components.push(
+                            new MessageButton()
+                            .setCustomId("previousbtn")
+                            .setEmoji(client.customEmojis.get('left') ? client.customEmojis.get('left').id : '⬅️')
+                            .setStyle("SECONDARY"),
+                            new MessageButton()
+                            .setCustomId('jumpbtn')
+                            .setEmoji(client.customEmojis.get('jump') ? client.customEmojis.get('jump').id : '↗️')
+                            .setStyle('SECONDARY'),
+                            new MessageButton()
+                            .setCustomId("nextbtn")
+                            .setEmoji(client.customEmojis.get('right') ? client.customEmojis.get('right').id : '➡️')
+                            .setStyle("SECONDARY")
+                        )
+                    };
+                    components.push(new MessageButton()
+                        .setCustomId('clearbtn')
+                        .setEmoji(client.customEmojis.get('trash') ? client.customEmojis.get('trash').id : '🗑️')
+                        .setStyle('DANGER'));
+                    row = new MessageActionRow()
+                        .addComponents(components);
                     currentPage = 0;
                     await res.editReply({
-                        embeds: [arrEmbeds[currentPage]]
+                        embeds: [arrEmbeds[currentPage]],
+                        components: [row1, row]
                     });
                     break;
                 case 'previousbtn':
