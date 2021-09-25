@@ -7,7 +7,7 @@ global.logger = winston.createLogger({
     format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
 });
 
-// require('dotenv').config();
+require('dotenv').config();
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });

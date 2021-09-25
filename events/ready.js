@@ -39,7 +39,7 @@ module.exports = async client => {
     await client.verifytimers.fetchAll();
     web.init(client);
     await client.initGiveaway();
-    await music.init(client);
+    if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;
     const activity = randomStatus(client);
     client.user.setPresence({ activities: [{ name: activity.text, type: activity.type }], status: 'online' });
