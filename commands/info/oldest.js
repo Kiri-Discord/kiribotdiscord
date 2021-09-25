@@ -5,15 +5,13 @@ exports.run = async(client, message, args) => {
         .filter((m) => !m.user.bot)
         .sort((a, b) => a.user.createdAt - b.user.createdAt)
         .first();
-    let createdate = `<t:${Math.floor(mem.user.createdAt.getTime()/1000)}:F> (<t:${Math.floor(mem.user.createdAt.getTime()/1000)}:R>)`;
+    let createdate = `<t:${Math.floor(mem.user.createdTimestamp / 1000)}:F> (<t:${Math.floor(mem.user.createdTimestamp / 1000)}:R>)`;
 
     const embed = new MessageEmbed()
-        .setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        .setFooter(client.user.username, client.user.displayAvatarURL())
-        .setColor(message.member.displayHexColor)
+        .setColor('#bee7f7')
         .setTimestamp()
         .setImage(mem.user.displayAvatarURL({ size: 4096, dynamic: true }))
-        .setTitle(`The oldest user in ${message.guild.name} is ${mem.user.tag}!`)
+        .setAuthor(`the oldest user in ${message.guild.name} is ${mem.user.tag}!`)
         .setDescription(`${mem.toString()} joined Discord in ${createdate} !`);
     return message.channel.send({ embeds: [embed] });
 };

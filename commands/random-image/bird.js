@@ -17,7 +17,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "bird",
-    description: "Get a random bird image",
+    description: "get some random bird",
     usage: ["bird"],
     example: ["bird"]
 };

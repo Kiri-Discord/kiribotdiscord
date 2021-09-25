@@ -31,9 +31,9 @@ exports.run = async(client, message, args) => {
 
         let total = guild.memberCount;
         let channels = guild.channels;
-        let text = channels.cache.filter(r => r.type === "text").size,
-            vc = channels.cache.filter(r => r.type === "voice").size,
-            category = channels.cache.filter(r => r.type === "category").size,
+        let text = channels.cache.filter(r => r.type === "GUILD_TEXT").size,
+            vc = channels.cache.filter(r => r.type === "GUILD_VOICE").size,
+            category = channels.cache.filter(r => r.type === "GUILD_CATEGORY").size,
             totalchan = text + vc;
         let h = `<t:${Math.floor(guild.createdAt.getTime()/1000)}:R>`
         let created = `<t:${Math.floor(guild.createdAt.getTime()/1000)}:F>`;
@@ -61,14 +61,14 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "server-info",
-    description: "fetch the guild's information",
+    description: "fetch the server's information",
     usage: ["server-info"],
     example: ["server-info"]
 };
 
 exports.conf = {
     aliases: ["serverinfo", "guildinfo", 'server'],
-    cooldown: 5,
+    cooldown: 4,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 };

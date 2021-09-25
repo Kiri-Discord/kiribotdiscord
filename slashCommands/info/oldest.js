@@ -6,13 +6,13 @@ exports.run = async(client, interaction) => {
         .filter((m) => !m.user.bot)
         .sort((a, b) => a.user.createdAt - b.user.createdAt)
         .first();
-    let createdate = `<t:${Math.floor(mem.user.createdAt.getTime()/1000)}:F> (<t:${Math.floor(mem.user.createdAt.getTime()/1000)}:R>)`;
+    let createdate = `<t:${Math.floor(mem.user.createdTimestamp / 1000)}:F> (<t:${Math.floor(mem.user.createdTimestamp / 1000)}:R>)`;
 
     const embed = new MessageEmbed()
-        .setColor(mem.displayHexColor)
+        .setColor('#bee7f7')
         .setTimestamp()
         .setImage(mem.user.displayAvatarURL({ size: 4096, dynamic: true }))
-        .setTitle(`The oldest user in ${interaction.guild.name} is ${mem.user.tag}!`)
+        .setAuthor(`the oldest user in ${interaction.guild.name} is ${mem.user.tag}!`)
         .setDescription(`${mem.toString()} joined Discord in ${createdate} !`);
     return interaction.reply({ embeds: [embed] });
 };
