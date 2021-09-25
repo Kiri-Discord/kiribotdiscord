@@ -15,6 +15,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         let options = [];
         try {
             let loadingMessage = await message.channel.send({ embeds: [{ color: "#bee7f7", description: `looking for \`${search}\`` }] });
+            message.channel.sendTyping();
             const ytRes = await fetchInfo(client, search, true, 'yt');
             const scRes = await scdl.search({
                 query: search,
@@ -26,9 +27,9 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 .forEach((video) => {
                         result.push({
                                     type: 'yt',
-                                    title: shortenText(video.info.title, 80),
+                                    title: shortenText(video.info.title, 90),
                                     url: video.info.uri,
-                                    desc: `${shortenText(video.info.author, 12)} ${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'))}`}`,
+                                    desc: `${shortenText(video.info.author, 45)}${video.info.isStream ? '' : ` | ${shortenText(moment.duration(video.info.length).format('H[h] m[m] s[s]'), 35)}`}`,
                 });
             });
         scRes.collection
@@ -37,9 +38,9 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             .forEach((track) => {
                 result.push({
                     type: 'sc',
-                    title: shortenText(track.title, 80),
+                    title: shortenText(track.title, 90),
                     url: track.permalink_url,
-                    desc: `${shortenText(track.user.username, 12)} | ${shortenText(moment.duration(track.duration).format('H[h] m[m] s[s]'))}`
+                    desc: `${shortenText(track.user.username, 45)} | ${shortenText(moment.duration(track.duration).format('H[h] m[m] s[s]'), 35)}`
                 })
             });
         result.forEach((song, index) => {
@@ -62,18 +63,10 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             .setDescription('select all the song that you want to add in with the menu below! (multiple choices are supported)')
             .setColor("#bee7f7")
             .setFooter('timing out in 30 seconds');
-        
-        if (!loadingMessage || loadingMessage.deleted) {
-            loadingMessage = await message.channel.send({
-                embeds: [embed], 
-                components: [row],
-            });
-        } else {
-            await loadingMessage.edit({
-                embeds: [embed], 
-                components: [row],
-            })
-        };
+        const msg = await message.channel.send({
+            embeds: [embed], 
+            components: [row],
+        });
         const filter = async (res) => {
             if (res.user.id !== message.author.id) {
                 await res.reply({
@@ -88,33 +81,40 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             };
         };
             
-        const collector = loadingMessage.createMessageComponentCollector({
+        const collector = msg.createMessageComponentCollector({
             componentType: 'SELECT_MENU',
             filter,
             time: 30000,
             max: 1
         });
+        let inactive = true;
         collector.on('end', async(res) => {
-            row.components.forEach(component => component.setDisabled(true));
-            await loadingMessage.edit({ 
-                embeds: [{ 
-                    color: '#bee7f7', 
-                    description: `this command is now inactive :pensive:` 
-                }],
-                components: [row]
-            });
+            if (inactive) {
+                row.components.forEach(component => component.setDisabled(true));
+                await msg.edit({ 
+                    embeds: [{ 
+                        color: '#bee7f7', 
+                        description: `this command is now inactive :pensive:` 
+                    }],
+                    components: [row]
+                });
+            } else {
+                if (msg && !msg.deleted) await msg.delete();
+            };
+            if (loadingMessage && !loadingMessage.deleted) await loadingMessage.delete();
         });
         collector.on('collect', async(res) => {
+            inactive = false;
             res.deferUpdate();
             collector.stop();
             if (res.values.length > 1) {
                 const bulk = res.values.map(song => result[song]);
-                await client.commands
+                client.commands
                     .get("playlist")
                     .run(client, message, bulk, prefix, true);
             } else {
                 const url = result[parseInt(res.values[0])].url;
-                await client.commands
+                client.commands
                     .get("play")
                     .run(client, message, [url], prefix, cmd, internal);
     

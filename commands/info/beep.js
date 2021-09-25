@@ -7,7 +7,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "beep",
-    description: "very self-explanatory",
+    description: "play a nice ping pong game but in robot language",
     usage: [`beep`],
     example: [`beep`]
 };
