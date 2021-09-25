@@ -12,7 +12,7 @@ exports.run = async(client, message, args) => {
 
     if (!member.kickable) return message.reply({ embeds: [{ color: "RED", description: 'this user can\'t be kicked. it\'s either because they are a mod/admin, or their highest role is equal or higher than mine 😔' }] });
 
-    if (!message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.reply({ embeds: [{ color: "RED", description: 'you cannot kick someone with a higher or equal role!' }] });
+    if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.reply({ embeds: [{ color: "RED", description: 'you cannot kick someone with a higher or equal role!' }] });
 
     let reason = 'No reason specified';
     if (args.length > 1) reason = args.slice(1).join(' ');
