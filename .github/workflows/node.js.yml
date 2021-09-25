@@ -2,7 +2,7 @@
 name: Deploying bot
 on:
   push:
-    branches: [ master ]
+    branches: [ stable ]
 jobs:
   launch-bot:
     runs-on: ubuntu-latest
