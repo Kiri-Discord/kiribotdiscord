@@ -121,8 +121,8 @@ async function fetchMALScore(id) {
 exports.help = {
     name: "manga",
     description: "search for offcially released manga",
-    usage: "manga <name>",
-    example: "manga `one piece`"
+    usage: ["manga <name>"],
+    example: ["manga `one piece`"]
 };
 
 exports.conf = {

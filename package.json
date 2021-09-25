@@ -5,7 +5,8 @@
     "main": "main.js",
     "scripts": {
         "start-pm2": "pm2 restart ecosystem.config.js --update-env",
-        "start": "node ."
+        "development": "node .",
+        "register": "node handler/register.js"
     },
     "repository": {
         "type": "git",

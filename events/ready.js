@@ -36,8 +36,10 @@ module.exports = async client => {
         logger.log('info', `[DISCORD] Added ${client.customEmojis.size} custom emojis`);
     };
     logger.log('info', `[DISCORD] Fetching all unverified members..`)
-    await client.verifytimers.fetchAll();
-    web.init(client);
+    if (process.env.NO_WEB_SERVER !== 'true') {
+        await client.verifytimers.fetchAll();
+        web.init(client);
+    };
     await client.initGiveaway();
     if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;

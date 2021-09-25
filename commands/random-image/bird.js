@@ -18,13 +18,12 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "bird",
     description: "Get a random bird image",
-    usage: "bird",
-    example: "bird"
+    usage: ["bird"],
+    example: ["bird"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 3,
-
     channelPerms: ["EMBED_LINKS"]
 };

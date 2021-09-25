@@ -25,8 +25,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "achievement",
     description: "generate a Minecraft achievement notification :stuck_out_tongue:",
-    usage: "achievement `<text>`",
-    example: "achievement"
+    usage: ["achievement `<text>`"],
+    example: ["achievement ` being autist`"]
 };
 
 exports.conf = {

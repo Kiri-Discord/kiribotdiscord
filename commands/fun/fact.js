@@ -14,8 +14,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "fact",
     description: "gives you a fun, random fact.",
-    usage: "fact",
-    example: "fact"
+    usage: ["fact"],
+    example: ["fact"]
 };
 
 exports.conf = {

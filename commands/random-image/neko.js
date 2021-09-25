@@ -19,8 +19,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "neko",
     description: "get a random neko from bell's homework folder",
-    usage: "neko",
-    example: "neko"
+    usage: ["neko"],
+    example: ["neko"]
 };
 
 exports.conf = {

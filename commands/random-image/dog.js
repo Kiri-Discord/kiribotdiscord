@@ -18,14 +18,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "dog",
     description: "get a random dog image 🐶",
-    usage: "dog",
-    example: "dog"
+    usage: ["dog"],
+    example: ["dog"]
 };
 
 exports.conf = {
     aliases: [],
     cooldown: 4,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
 };

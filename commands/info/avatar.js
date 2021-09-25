@@ -20,14 +20,14 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "avatar",
-    description: "Display a user avatar",
+    description: "display an user's avatar",
     usage: ["avatar [@user]", "avatar [user ID]"],
     example: ["avatar `@kiri#6822`", "avatar 84878844578778", "avatar"]
 }
 
 exports.conf = {
     aliases: ["icon", "pfp", "ava"],
-    cooldown: 5,
+    cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 }

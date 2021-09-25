@@ -8,8 +8,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "year",
     description: "track the year's progress",
-    usage: "year",
-    example: "year"
+    usage: ["year"],
+    example: ["year"]
 };
 
 exports.conf = {

@@ -18,8 +18,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "panda",
     description: "get a random panda image",
-    usage: "panda",
-    example: "panda"
+    usage: ["panda"],
+    example: ["panda"]
 };
 
 exports.conf = {

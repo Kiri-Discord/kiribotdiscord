@@ -129,13 +129,14 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
 exports.help = {
     name: "search",
     description: "search a songs to play from (avaliable for YouTube and SoundCloud)",
-    usage: "search `<song name>`",
-    example: "search `never gonna give you up`"
-}
+    usage: ["search `<song name>`"],
+    example: ["search `never gonna give you up`"]
+};
 
 exports.conf = {
     aliases: [],
     cooldown: 4,
     guildOnly: true,
     clientPerms: ["CONNECT", "SPEAK"],
-}
+    channelPerms: ["EMBED_LINKS"]
+};

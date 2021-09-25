@@ -44,6 +44,7 @@ module.exports = async client => {
                 files.forEach(file => {
                     if (!file.endsWith(".js")) return;
                     let prop = require(`../slashCommands/${category}/${file}`);
+                    if (!prop.conf.adult) client.allSlashCmds.push(prop.conf.data.name);
                     client.slash.set(prop.conf.data.name, prop);
                     client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
                 });

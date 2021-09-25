@@ -44,14 +44,13 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "steam-playing",
     description: `generate a Steam "Now Playing" notification.`,
-    usage: "steam-playing \`[user] <game>\`",
-    example: "steam-playing \`@Eftw osu\`"
+    usage: ["steam-playing \`[@user] <game>\`"],
+    example: ["steam-playing \`@Eftw osu\`"]
 }
 
 exports.conf = {
     aliases: ["steamnp", "steam-now-playing"],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["ATTACH_FILES"]
 }

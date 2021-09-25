@@ -32,7 +32,7 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "remove",
     description: "remove a song from the queue",
-    usage: "remove `<postion of track>`",
+    usage: ["remove `<number of track>`", "remove `<number of track, another number of track>`"],
     example: ["remove `1`", "remove `4, 2, 6`"]
 }
 
