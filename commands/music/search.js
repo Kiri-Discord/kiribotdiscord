@@ -87,18 +87,24 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             time: 30000,
             max: 1
         });
+        let inactive = true;
         collector.on('end', async(res) => {
-            row.components.forEach(component => component.setDisabled(true));
-            await msg.edit({ 
-                embeds: [{ 
-                    color: '#bee7f7', 
-                    description: `this command is now inactive :pensive:` 
-                }],
-                components: [row]
-            });
-            if (loadingMessage && !loadingMessage.deleted) await loadingMessage.delete()
+            if (inactive) {
+                row.components.forEach(component => component.setDisabled(true));
+                await msg.edit({ 
+                    embeds: [{ 
+                        color: '#bee7f7', 
+                        description: `this command is now inactive :pensive:` 
+                    }],
+                    components: [row]
+                });
+            } else {
+                if (msg && !msg.deleted) await msg.delete();
+            };
+            if (loadingMessage && !loadingMessage.deleted) await loadingMessage.delete();
         });
         collector.on('collect', async(res) => {
+            inactive = false;
             res.deferUpdate();
             collector.stop();
             if (res.values.length > 1) {
