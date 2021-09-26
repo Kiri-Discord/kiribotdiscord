@@ -8,7 +8,7 @@ exports.run = async(client, message, args, prefix) => {
     }).sort([
         ["received", "descending"]
     ]);
-    if (!data || !data.length) return message.channel.send({ embed: { color: "#bee7f7", description: `❌ seems like no one in your guild has decided to slap yet :grinning: once someone is hugged, their slapped count will show here :pensive:` } });
+    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ seems like no one in your guild has decided to slap yet :grinning: once someone is hugged, their slapped count will show here :pensive:` }] });
     const emoji = {
         "1": ":crown:",
         "2": ":trident:",
