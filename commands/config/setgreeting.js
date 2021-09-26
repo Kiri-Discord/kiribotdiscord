@@ -3,7 +3,6 @@ const { askString } = require('../../util/util');
 const varReplace = require('../../util/variableReplace');
 
 exports.run = async(client, message, args, prefix) => {
-        if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `you haven't provided a sub command \`${prefix}${exports.help.name} <subcommand>\` :pensive:\nall avaliable sub-command for setting up greetings message are: \`-off, channel, content, test\`!` }] })
         const db = client.guildsStorage.get(message.guild.id);
         if (message.flags[0] === "off") {
             db.greetChannelID = undefined;
@@ -28,20 +27,21 @@ exports.run = async(client, message, args, prefix) => {
                 guildID: message.guild.id,
             }, {
                 greetChannelID: channel.id
-            })
+            });
+            const note = storageAfter.greetContent.content === '{auto}' ? `a default welcome message has been set because you haven't set a custom welcome message yet. to use your own your custom welcome message, do \`${prefix}setgreeting content\`!` : '';
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
-                .setDescription(`☑️ the greeting feature has been set to ${channel}!\n${storageAfter.greetContent.content ? `a default welcome message has been set because you haven't set a custom welcome message yet. to create use own your custom welcome message, do \`${prefix}setgreeting content\`!` : ''}`)
-            .setFooter(`the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`) 
-            return message.channel.send({embeds: [embed]});
-    };
-    if (args[0].toLowerCase() === 'content') {
-        let contentObject;
-        const types = ['plain', 'embed'];
-        const embed = new MessageEmbed()
-            .setFooter('this message will be timed out in 20 seconds')
-            .setDescription(`what type of message do you want to set as the greeting message? type either ${types.map(x => `\`${x}\``).join(' or ')} to choose :slight_smile:`)
-        await message.channel.send({embeds: [embed]});
+                .setDescription(`☑️ the greeting feature has been set to ${channel}!\n${note}`)
+                .setFooter(`the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`)
+            return message.channel.send({ embeds: [embed] });
+        };
+        if (args[0].toLowerCase() === 'content') {
+            let contentObject;
+            const types = ['plain', 'embed'];
+            const embed = new MessageEmbed()
+                .setFooter('this message will be timed out in 20 seconds')
+                .setDescription(`what type of message do you want to set as the greeting message? type either ${types.map(x => `\`${x}\``).join(' or ')} to choose :slight_smile:`)
+        await message.channel.send({ embeds: [embed] });
         const filter = res => {
             if (res.author.id !== message.author.id) return false; 
             if (!types.includes(res.content)) {
@@ -57,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed2 = new MessageEmbed()
                 .setDescription(`plain it is! so what content do you want to put in the welcome message?\ntips: variable is supported! feel free to check out at \`${prefix}variables\`.`)
                 .setFooter('this message will be timed out in 20 seconds');
-            await message.channel.send({embeds: [embed2]})
+            await message.channel.send({ embeds: [embed2] })
             const content = await askString(message.channel, res => res.author.id === message.author.id, { time: 120000 });
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);
             if (!content) return message.channel.send("you didn't say anything :pensive:");
@@ -77,7 +77,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed2 = new MessageEmbed()
                 .setDescription(`what is the embed ID that you want to apply? :slight_smile:`)
                 .setFooter('this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"');
-            await message.channel.send({embeds: [embed2]});
+            await message.channel.send({ embeds: [embed2] });
             const content = await askString(message.channel, res => res.author.id === message.author.id);
             if (!content) return message.channel.send(`the setup is cancelled :pensive:`);
             if (content === 0) return message.channel.send("you didn't say anything :pensive:");
@@ -103,7 +103,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!setting.greetChannelID) {
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
-                .setDescription(`❌ the greeting feature wasn't setup yet!`);
+                .setDescription(`❌ the greeting channel wasn't setup yet!`);
             return message.channel.send({embeds: [embed]});
         };
         const channel = message.guild.channels.cache.get(setting.greetChannelID);
@@ -119,7 +119,7 @@ exports.run = async(client, message, args, prefix) => {
         if (setting.greetContent.type === 'plain') return channel.send(varReplace.replaceText(setting.greetContent.content, message.member, message.guild, { event: 'join', type: setting.responseType }));
         else return channel.send({ embeds: [varReplace.replaceEmbed(setting.greetContent.content.embed, message.member, message.guild, { event: 'join', type: setting.responseType })]});
     };
-    return message.channel.send({ embeds: [{ color: "RED", description: `\`${args[0]}\` isn't a valid subcommand :pensive:\nall avaliable sub-command for setting up greeting message are: \`-off, channel, content, test\`!` }] })
+    return message.channel.send({ embeds: [{ color: "RED", description: `${args.length ? `\`${args[0]}\` isn't a valid subcommand :pensive:` : "you haven't provided any subcommand yet!"}\nall avaliable sub-command for setting up greeting message are: \`-off, channel, content, test\`!` }] })
 }
 
 exports.help = {
