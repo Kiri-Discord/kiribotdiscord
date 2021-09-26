@@ -591,7 +591,7 @@ exports.run = async(client, message, args, prefix) => {
             if (iconUrl) targetEmbed.footer.icon_url = iconUrl.trim();
             ongoing = false;
             if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            await displayMessage.edit({ embed: varReplace.replaceEmbed(targetEmbed, message.member, message.guild, null, { level: 50, xp: 50 }) });
+            await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild, null, { level: 50, xp: 50 })] });
         };
         while (!targetEmbed.timestamp) {
             if (!ongoing) {
