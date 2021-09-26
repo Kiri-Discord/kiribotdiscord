@@ -26,7 +26,7 @@ module.exports = {
                 const member = guild.members.cache.get(req.query.userID);
                 if (!member) return res.json({ code: 204, message: 'MEMBER_NOT_FOUND' });
                 if (member.partial) await member.fetch();
-                const roleExist = member.roles.cache.has(setting.verifyRole);
+                const roleExist = member._roles.includes(setting.verifyRole);
                 if (roleExist) return res.json({ code: 204, message: 'ALREADY_VERIFIED' });
                 const verifyRole = guild.roles.cache.get(setting.verifyRole);
                 if (!verifyRole) return res.json({ code: 204, message: 'ROLE_NOT_EXIST' });

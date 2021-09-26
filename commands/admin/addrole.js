@@ -23,7 +23,7 @@ exports.run = async(client, message, args, prefix) => {
     if (message.guild.me.roles.highest.position <= role.position) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
 
-    const alreadyHasRole = member.roles.cache.has(role.id);
+    const alreadyHasRole = member._roles.includes(role.id);
 
     if (alreadyHasRole) return message.reply({ embeds: [{ color: "RED", description: `that user already has that role!` }] });
 
@@ -66,7 +66,7 @@ exports.help = {
 
 exports.conf = {
     aliases: ["add-role", "give-role"],
-    cooldown: 3,
+    cooldown: 4,
     guildOnly: true,
     userPerms: ["MANAGE_ROLES"],
     clientPerms: ["MANAGE_ROLES"],
