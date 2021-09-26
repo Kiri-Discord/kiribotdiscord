@@ -33,7 +33,7 @@ exports.conf = {
         .addUserOption(option => option
             .setName('user')
             .setRequired(false)
-            .setDescription('which member would you like to get the avatar for?')
+            .setDescription('which member would you like to get the avatar for? :)')
         ),
     guild: true,
     channelPerms: ["EMBED_LINKS"]

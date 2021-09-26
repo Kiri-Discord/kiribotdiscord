@@ -173,7 +173,7 @@ exports.conf = {
                 .setDescription('get info about an user in your server')
                 .addUserOption(option => option
                     .setName('target')
-                    .setDescription('what user do you want to get information about?')))
+                    .setDescription('what user which you want to get information about? :)')))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('server')
