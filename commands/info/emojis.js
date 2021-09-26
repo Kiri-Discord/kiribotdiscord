@@ -56,7 +56,7 @@ exports.run = async(client, message, args) => {
             [**Emoji URL**](https://cdn.discordapp.com/emojis/${emoji.id}.png)
             `)
             .setColor(message.member.displayHexColor)
-            .setImage(`https://cdn.discordapp.com/emojis/${emoji.id}.png`)
+            .setImage(`https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? 'gif' : 'png'}`)
         return message.channel.send({ embeds: [embed] });
     };
 };
