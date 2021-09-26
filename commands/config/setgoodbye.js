@@ -77,7 +77,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed2 = new MessageEmbed()
                 .setDescription(`what is the embed ID that you want to apply? :slight_smile:`)
                 .setFooter('this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"');
-            await message.channel.send({embed: [embed2]});
+            await message.channel.send({embeds: [embed2]});
             const content = await askString(message.channel, res => res.author.id === message.author.id);
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);
             if (!content) return message.channel.send("you didn't say anything :pensive:");
