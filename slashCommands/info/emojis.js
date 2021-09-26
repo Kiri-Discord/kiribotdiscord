@@ -59,7 +59,7 @@ exports.run = async(client, interaction) => {
             [**Emoji URL**](https://cdn.discordapp.com/emojis/${emoji.id}.png)
             `)
             .setColor(interaction.member.displayHexColor)
-            .setImage(`https://cdn.discordapp.com/emojis/${emoji.id}.png`)
+            .setImage(`https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? 'gif' : 'png'}`)
         return interaction.reply({ embeds: [embed] });
     };
 };
