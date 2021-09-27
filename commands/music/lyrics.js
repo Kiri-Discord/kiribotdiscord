@@ -28,7 +28,7 @@ exports.run = async(client, message, args) => {
         } catch (error) {
             return message.reply(`couldn't connect you to the server. try again later :pensive:`);
         };
-    } else if (queue) {
+    } else if (queue && queue.nowPlaying) {
         try {
             const { body } = await request
                 .post(client.config.lyricURL + 'fetch')

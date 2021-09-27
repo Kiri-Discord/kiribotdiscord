@@ -35,6 +35,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
             textChannel: message.channel,
             channel,
             player: null,
+            pending: true,
             songs: [],
             loop: false,
             repeat: false,
