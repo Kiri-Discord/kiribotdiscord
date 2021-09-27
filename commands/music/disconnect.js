@@ -1,8 +1,9 @@
 const { reactIfAble } = require('../../util/util');
 const { canModifyQueue } = require("../../util/musicutil");
 exports.run = async(client, message, args) => {
-    if (!message.guild.me.voice.channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i am not connected to any voice channel!` }] });
-    if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
+    const queue = client.queue.get(message.guild.id);
+    if ((queue && queue.pending) || !message.guild.me.voice.channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i am not connected to any voice channel!` }] });
+    if (queue && !canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     client.lavacordManager.leave(message.guild.id);
     return reactIfAble(message, client.user, '👋');
 };
