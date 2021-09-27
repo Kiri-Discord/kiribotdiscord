@@ -3,7 +3,7 @@ const { STAY_TIME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const ScrollingLyrics = require("./karaoke");
 const request = require('node-superfetch');
-const { embedURL } = require('../../util/util');
+const { embedURL, delay } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
 
 module.exports = {
@@ -11,13 +11,14 @@ module.exports = {
             let success;
 
             const queue = client.queue.get(message.guild.id);
+            if (!queue) return;
             if (!song) {
                 setTimeout(async() => {
                     if (!queue.textChannel.guild.me.voice.channel) return;
                     const newQueue = client.queue.get(message.guild.id);
                     if (newQueue) return;
+                    if (queue.player) await queue.player.destroy();
                     await client.lavacordManager.leave(queue.textChannel.guild.id);
-                    if (queue.player) queue.player.destroy();
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
                 }, STAY_TIME * 1000);
@@ -40,9 +41,39 @@ module.exports = {
                 }, {
                     selfdeaf: true
                 });
+                if (!queue.textChannel.guild.me.voice.channelId) {
+                    await delay(2000);
+                    const tried = [];
+                    while (!queue.textChannel.guild.me.voice.channelId) {
+                        if (tried.length === client.lavacordManager.nodes.size) {
+                            await queue.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
+                            await queue.player.destroy();
+                            return client.queue.delete(queue.textChannel.guild.id);
+                        };
+                        const tryCount = tried.length || 0;
+                        await queue.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${client.lavacordManager.nodes.size})` }] });
+                        await queue.player.destroy();
+                        await client.lavacordManager.leave(queue.textChannel.guild.id);
+                        await delay(3000);
+                        queue.player = await client.lavacordManager.join({
+                            guild: queue.textChannel.guild.id,
+                            channel: queue.channel.id,
+                            node: client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0].id
+                        }, {
+                            selfdeaf: true
+                        });
+                        await delay(2000);
+                        if (!queue.textChannel.guild.me.voice.channelId) {
+                            tried.push(queue.player.node.host);
+                            continue;
+                        };
+                    };
+                };
+                queue.pending = false;
             };
             queue.player.once('end', async data => {
                 if (data.reason === "FINISHED" || data.reason === "STOPPED" || data.reason === "LOAD_FAILED") {
+                    if (!queue) return;
                     if (queue.playingMessage && !queue.playingMessage.deleted && queue.songs.length) await queue.playingMessage.delete();
                     if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
                     if (queue.loop) {
@@ -87,6 +118,11 @@ module.exports = {
                 };
                 try {
                     const [res] = await module.exports.fetchInfo(client, ytUrl.url, false);
+                    if (!res) {
+                        queue.songs.shift();
+                        await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                        return module.exports.play(queue.songs[0], message, client, prefix);
+                    };
                     song.track = res.track;
                 } catch (error) {
                     queue.songs.shift();
