@@ -21,7 +21,7 @@ exports.run = async(client, message, args, prefix) => {
     if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= role.position) return message.channel.send({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }] });
     if (message.guild.me.roles.highest.position <= role.position) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
-    const alreadyHasRole = member.roles.cache.has(role.id);
+    const alreadyHasRole = member._roles.includes(role.id);
 
     if (!alreadyHasRole) return message.reply({ embeds: [{ color: "RED", description: `that user doesn't has that role!` }] });
 
@@ -65,7 +65,7 @@ exports.help = {
 
 exports.conf = {
     aliases: ["deleterole", "delrole"],
-    cooldown: 3,
+    cooldown: 4,
     guildOnly: true,
     userPerms: ["MANAGE_ROLES"],
     clientPerms: ["MANAGE_ROLES"],
