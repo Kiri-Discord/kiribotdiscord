@@ -29,6 +29,10 @@ module.exports = {
                     upsert: true,
                     new: true
                 });
+                if (queue.player) {
+                    queue.player.off('end');
+                    await queue.player.destroy();
+                };
                 return client.queue.delete(guildId);
             }
             if (!queue.player) {
@@ -113,6 +117,8 @@ module.exports = {
                                 upsert: true,
                                 new: true
                             });
+                            queue.player.off('end');
+                            await queue.player.destroy();
                             return client.queue.delete(guildId);
                         } else {
                             module.exports.play(upcoming, guildId, client, prefix);
