@@ -4,6 +4,8 @@ const sendHook = require('../../features/webhook.js');
 exports.run = async(client, message, args) => {
         const guildDB = client.guildsStorage.get(message.guild.id)
         const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
+        const duh = client.customEmojis.get('duh');
+        if (!args[0]) return message.channel.send(`how many message would you like to purge? ${duh}`);
         const amount = parseInt(args[0]) + 1;
         if (isNaN(amount)) {
             return message.reply('that doesn\'t seem to be a valid number.');
@@ -12,6 +14,7 @@ exports.run = async(client, message, args) => {
         };
         try {
             const fetch = await message.channel.messages.fetch({ limit: amount });
+            if (!fetch.size) return message.reply(`there isn't any message in this channel!`)
             const deletedMessages = await message.channel.bulkDelete(fetch, true);
 
             const results = {};

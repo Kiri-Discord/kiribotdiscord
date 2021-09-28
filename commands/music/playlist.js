@@ -176,14 +176,14 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
             };
         };
         serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
-        let playlistEmbed = new MessageEmbed().setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL})` : `[track](${playlistURL})`} to the queue [${message.author}]`);
+        let playlistEmbed = new MessageEmbed().setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL || newSongs[0].info.uri})` : `[track](${playlistURL || newSongs[0].info.uri})`} to the queue [${message.author}]`);
         if (notice) playlistEmbed.setFooter(notice);
     message.channel.send({embeds: [playlistEmbed]});
 
     if (!serverQueue) {
         client.queue.set(message.guild.id, queueConstruct);
         try {
-            play(queueConstruct.songs[0], message, client, prefix);
+            play(queueConstruct.songs[0], message.guild.id, client, prefix);
         } catch (error) {
             logger.log('error', error);
             client.queue.delete(message.guild.id);

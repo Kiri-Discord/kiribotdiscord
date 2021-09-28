@@ -149,7 +149,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     queueConstruct.songs.push(song);
     client.queue.set(message.guild.id, queueConstruct);
     try {
-        play(queueConstruct.songs[0], message, client, prefix);
+        play(queueConstruct.songs[0], message.guild.id, client, prefix);
     } catch (error) {
         logger.log('error', error);
         client.queue.delete(message.guild.id);
