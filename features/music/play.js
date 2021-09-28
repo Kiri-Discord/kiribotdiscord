@@ -7,32 +7,30 @@ const { embedURL, delay } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
 
 module.exports = {
-        async play(song, message, client, prefix) {
+        async play(song, guildId, client, prefix, noSkip) {
             let success;
-
-            const queue = client.queue.get(message.guild.id);
+            const queue = client.queue.get(guildId);
             if (!queue) return;
             if (!song) {
                 setTimeout(async() => {
-                    if (!queue.textChannel.guild.me.voice.channel) return;
-                    const newQueue = client.queue.get(message.guild.id);
+                    if (!queue.textChannel.guild.me.voice.channelId) return;
+                    const newQueue = client.queue.get(guildId);
                     if (newQueue) return;
-                    if (queue.player) await queue.player.destroy();
-                    await client.lavacordManager.leave(queue.textChannel.guild.id);
+                    await client.lavacordManager.leave(guildId);
                     const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
                     queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
                 }, STAY_TIME * 1000);
                 await Guild.findOneAndUpdate({
-                    guildId: queue.textChannel.guild.id
+                    guildId: guildId
                 }, {
-                    guildId: queue.textChannel.guild.id,
+                    guildId: guildId,
                     volume: queue.volume || 100
                 }, {
                     upsert: true,
                     new: true
-                })
-                return client.queue.delete(queue.textChannel.guild.id);
-            };
+                });
+                return client.queue.delete(guildId);
+            }
             if (!queue.player) {
                 queue.player = await client.lavacordManager.join({
                     guild: queue.textChannel.guild.id,
@@ -69,84 +67,121 @@ module.exports = {
                         };
                     };
                 };
-                queue.pending = false;
-            };
-            queue.player.once('end', async data => {
-                if (data.reason === "FINISHED" || data.reason === "STOPPED" || data.reason === "LOAD_FAILED") {
-                    if (!queue) return;
-                    if (queue.playingMessage && !queue.playingMessage.deleted && queue.songs.length) await queue.playingMessage.delete();
-                    if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
+                queue.player.on('skip', () => {
+                    let upcoming;
                     if (queue.loop) {
                         queue.songs.push(queue.nowPlaying);
-                        const upcoming = queue.songs[0];
-                        module.exports.play(upcoming, message, client, prefix);
+                        upcoming = queue.songs[0];
                     } else if (queue.repeat) {
-                        let upcoming = !queue.nowPlaying ? queue.songs.shift() : queue.nowPlaying;
-                        module.exports.play(upcoming, message, client, prefix);
+                        upcoming = !queue.nowPlaying ? queue.songs.shift() : queue.nowPlaying;
                     } else {
-                        const upcoming = queue.songs[0];
-                        module.exports.play(upcoming, message, client, prefix);
+                        upcoming = queue.songs[0];
                     };
-                };
-                if (data.reason === "REPLACED") return;
-            });
-            queue.player.once('start', async data => {
-                        if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.start();
-                        const emoji = {
-                            'yt': 'youtube',
-                            'sc': 'soundcloud',
-                            'sp': 'spotify'
+                    return module.exports.play(upcoming, guildId, client, prefix, false);
+                })
+                queue.player.on('end', async data => {
+                    if (!queue) return;
+                    if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
+                    const playingMessage = await queue.textChannel.messages.fetch(queue.playingMessage).catch(() => null);
+                    if (playingMessage !== undefined && !playingMessage.deleted && queue.songs.length) playingMessage.delete();
+                    if (data.reason === 'REPLACED') return;
+                    if (data.reason === "FINISHED" || data.reason === "STOPPED" || data.reason === "LOAD_FAILED") {
+                        let upcoming;
+                        if (queue.loop) {
+                            queue.songs.push(queue.nowPlaying);
+                            upcoming = queue.songs[0];
+                        } else if (queue.repeat) {
+                            upcoming = !queue.nowPlaying ? queue.songs.shift() : queue.nowPlaying;
+                        } else {
+                            upcoming = queue.songs[0];
                         };
-                        try {
-                            const embed = new MessageEmbed()
-                                .setDescription(`${emoji[song.type] ? `${client.customEmojis.get(emoji[song.type])} ` : ''}Now playing **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** [${song.requestedby}]`);
+                        if (upcoming === null || upcoming === undefined) {
+                            setTimeout(async() => {
+                                if (!queue.textChannel.guild.me.voice.channelId) return;
+                                const newQueue = client.queue.get(guildId);
+                                if (newQueue) return;
+                                await client.lavacordManager.leave(guildId);
+                                const waveEmoji = client.customEmojis.get('wave') ? client.customEmojis.get('wave') : ':wave:';
+                                queue.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
+                            }, STAY_TIME * 1000);
+                            await Guild.findOneAndUpdate({
+                                guildId: guildId
+                            }, {
+                                guildId: guildId,
+                                volume: queue.volume || 100
+                            }, {
+                                upsert: true,
+                                new: true
+                            });
+                            return client.queue.delete(guildId);
+                        } else {
+                            module.exports.play(upcoming, guildId, client, prefix);
+                        };
+                    };
+                });
+                queue.player.on('start', async data => {
+                            queue.nowPlaying.startedPlaying = Date.now();
+                            if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.start();
+                            const emoji = {
+                                'yt': 'youtube',
+                                'sc': 'soundcloud',
+                                'sp': 'spotify'
+                            };
+                            try {
+                                const embed = new MessageEmbed()
+                                    .setDescription(`${emoji[queue.nowPlaying.type] ? `${client.customEmojis.get(emoji[queue.nowPlaying.type])} ` : ''}Now playing **${embedURL(queue.nowPlaying.info.title, queue.nowPlaying.info.uri)}** by **${queue.nowPlaying.info.author}** [${queue.nowPlaying.requestedby}]`);
                     if (success) embed.setFooter(success);
-                    queue.playingMessage = await queue.textChannel.send({ embeds: [embed] });
+                    const playingMessage = await queue.textChannel.send({ embeds: [embed] });
+                    queue.playingMessage = playingMessage.id;
                 } catch (error) {
                     logger.log('error', error);
                 };
             });
-            if (song.type === 'sp') {
-                const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
-                const msg = await queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
-                const ytUrl = await spotifyToYT.trackGet(song.info.uri);
-                msg.delete();
-                if (!ytUrl || !ytUrl.url) {
-                    queue.songs.shift();
-                    await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
-                    return module.exports.play(queue.songs[0], message, client, prefix);
-                };
-                try {
-                    const [res] = await module.exports.fetchInfo(client, ytUrl.url, false);
-                    if (!res) {
-                        queue.songs.shift();
-                        await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
-                        return module.exports.play(queue.songs[0], message, client, prefix);
-                    };
-                    song.track = res.track;
-                } catch (error) {
-                    queue.songs.shift();
-                    await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
-                    return module.exports.play(queue.songs[0], message, client, prefix);
-                };
-            };
-            if (queue.karaoke.isEnabled) {
-                queue.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
-                queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
-                success = await queue.karaoke.instance.init();
-                if (!success) queue.karaoke.instance = null;
+            queue.pending = false;
+        };
+        if (song.type === 'sp') {
+            const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
+            const msg = await queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
+            const ytUrl = await spotifyToYT.trackGet(song.info.uri);
+            msg.delete();
+            if (!ytUrl || !ytUrl.url) {
+                queue.songs.shift();
+                await queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                return module.exports.play(queue.songs[0], guildId, client, prefix);
             };
             try {
-                queue.nowPlaying = song;
-                if (!queue.repeat) queue.songs.shift();
-                await queue.player.play(song.track);
-                queue.player.volume(queue.volume || 100);
+                const [res] = await module.exports.fetchInfo(client, ytUrl.url, false);
+                if (!res) {
+                    queue.songs.shift();
+                    await queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    return module.exports.play(queue.songs[0], guildId, client, prefix);
+                };
+                song.track = res.track;
             } catch (error) {
-                if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
-                await client.lavacordManager.leave(queue.textChannel.guild.id);
-                client.queue.delete(queue.textChannel.guild.id);
-                return queue.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
+                queue.songs.shift();
+                await queue.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                return module.exports.play(queue.songs[0], guildId, client, prefix);
             };
+        };
+        if (queue.karaoke.isEnabled) {
+            queue.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
+            queue.karaoke.instance = new ScrollingLyrics(song, queue.karaoke.channel, queue.karaoke.languageCode, queue, prefix);
+            success = await queue.karaoke.instance.init();
+            if (!success) queue.karaoke.instance = null;
+        };
+        try {
+            queue.nowPlaying = song;
+            if (!queue.repeat) queue.songs.shift();
+            await queue.player.play(song.track, {
+                volume: queue.volume || 100,
+                noReplace: noSkip
+            });
+        } catch (error) {
+            if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
+            await client.lavacordManager.leave(queue.textChannel.guild.id);
+            client.queue.delete(queue.textChannel.guild.id);
+            return queue.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
+        };
     },
     async fetchInfo(client, query, search, id) {
         const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id)[0] : client.lavacordManager.idealNodes[0];
