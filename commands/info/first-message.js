@@ -33,5 +33,5 @@ exports.conf = {
     aliases: ["first", "firstmessage"],
     cooldown: 5,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS", "READ_MESSAGE_HISTORY"]
+    channelPerms: ["EMBED_LINKS"]
 };
