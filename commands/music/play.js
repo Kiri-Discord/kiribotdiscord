@@ -140,7 +140,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     if (serverQueue) {
         serverQueue.songs.push(song);
         const embed = new MessageEmbed()
-            .setColor()
             .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`)
         return serverQueue.textChannel
             .send({ embeds: [embed] })
