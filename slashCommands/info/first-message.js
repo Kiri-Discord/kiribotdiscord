@@ -45,5 +45,5 @@ exports.conf = {
             .setDescription('where do you want to find the first message?')
         ),
     guild: true,
-    channelPerms: ["EMBED_LINKS", "READ_MESSAGE_HISTORY"]
+    channelPerms: ["EMBED_LINKS"]
 };
