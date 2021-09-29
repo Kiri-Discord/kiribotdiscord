@@ -49,7 +49,7 @@ async function skip(queue, message, args) {
         queue.songs = queue.songs.slice(args[0] - 1);
     };
     queue.nowPlaying = undefined;
-    await queue.player.emit('skip');
+    queue.skip();
     const number = args[0] - 1;
     if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `⏭ you skipped ${number} songs!` }] })
     return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped ${number} songs ⏭` }] })

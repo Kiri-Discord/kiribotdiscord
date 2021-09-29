@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
     if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     queue.playing = true;
     queue.nowPlaying = undefined;
-    queue.player.emit('skip');
+    queue.skip();
     if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `${message.author}, you skipped to the next track in the queue ⏭` }] })
     return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped to the next track in the queue ⏭` }] });
 };

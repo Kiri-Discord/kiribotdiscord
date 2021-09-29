@@ -3,6 +3,7 @@ const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', '
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 const ISO6391 = require('iso-639-1');
 const ms = require('ms');
+const request = require('node-superfetch');
 const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
 const hugSchema = require('../model/hug');
 const punchSchema = require('../model/punch');
@@ -123,13 +124,13 @@ module.exports = class util {
 
         static delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
-        }
+        };
         static list(arr, conj = 'and') {
                 const len = arr.length;
                 if (len === 0) return '';
                 if (len === 1) return arr[0];
                 return `${arr.slice(0, -1).join(', ')}${len > 1 ? `${len > 2 ? ',' : ''} ${conj} ` : ''}${arr.slice(-1)}`;
-	}
+	};
 
 	static firstUpperCase(text, split = ' ') {
 		return text.split(split).map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(' ');
@@ -397,7 +398,19 @@ module.exports = class util {
 		// 	headers: header
 		// });
 
-	}
+	};
+	static async fetchInfo(client, query, search, id) {
+        const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id)[0] : client.lavacordManager.idealNodes[0];
+        const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+
+        const { body } = await request
+            .get(`http://${node.host}:${node.port}/loadtracks`)
+            .set({ Authorization: node.password })
+            .query({
+                identifier: urlRegex.test(query) ? query : `ytsearch:${query}`,
+            });
+        return body.tracks;
+    };
 	static async pickWhenMany(message, arr, defalt, arrListFunc, { time = 30000 } = {}) {
 		const resultsList = arr.map(arrListFunc);
 		const menu = new MessageSelectMenu()
