@@ -63,7 +63,6 @@ module.exports = class Queue {
             upcoming = this.songs[0];
         } else if (this.repeat) {
             upcoming = !this.nowPlaying ? this.songs[0] : this.nowPlaying;
-            ``
         } else {
             upcoming = this.songs[0];
         };
@@ -87,7 +86,7 @@ module.exports = class Queue {
             }, {
                 selfdeaf: true
             });
-            await this.textChannel.guild.me.fetch(true);
+            await delay(2000);
             if (!this.textChannel.guild.me.voice.channelId) {
                 const tried = [];
                 while (!this.textChannel.guild.me.voice.channelId) {
