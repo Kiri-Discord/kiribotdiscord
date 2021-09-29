@@ -1,5 +1,6 @@
-const { play, fetchInfo } = require("../../features/music/play");
-const { MessageEmbed } = require('discord.js')
+const Queue = require("../../features/music/play");
+const { fetchInfo } = require('../../util/util');
+const { MessageEmbed } = require('discord.js');
 const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
@@ -39,26 +40,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const albumOrTrack = match[1];
         if (albumOrTrack === 'album' || albumOrTrack === 'playlist') return client.commands.get("playlist").run(client, message, args);
     };
-    let queueConstruct = {
-        playingMessage: null,
-        textChannel: message.channel,
-        channel,
-        player: null,
-        pending: true,
-        songs: [],
-        loop: false,
-        repeat: false,
-        playing: true,
-        nowPlaying: null,
-        volume: null,
-        karaoke: {
-            timeout: [],
-            channel: null,
-            isEnabled: null,
-            languageCode: null,
-            instance: null,
-        }
-    };
+    const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
     if (musicSettings && !internal) {
         queueConstruct.karaoke.isEnabled = false;
         queueConstruct.volume = musicSettings.volume;
@@ -148,7 +130,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     queueConstruct.songs.push(song);
     client.queue.set(message.guild.id, queueConstruct);
     try {
-        play(queueConstruct.songs[0], message.guild.id, client, prefix);
+        queueConstruct.play(queueConstruct.songs[0]);
     } catch (error) {
         logger.log('error', error);
         client.queue.delete(message.guild.id);

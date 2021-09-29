@@ -41,7 +41,7 @@ exports.run = async(client, message, args) => {
 async function skip(queue, message, client, sentMessage) {
     queue.playing = true;
     queue.nowPlaying = undefined;
-    queue.player.emit('skip');
+    queue.skip();
     reactIfAble(message, client.user, '👌');
     if (sentMessage) {
         for (let msg of sentMessage) {

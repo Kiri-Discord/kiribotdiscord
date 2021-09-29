@@ -2,7 +2,7 @@ const scdl = require("soundcloud-downloader").default;
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../util/util');
-const { fetchInfo } = require('../../features/music/play');
+const { fetchInfo } = require('../../util/util');
 const moment = require('moment');
 require('moment-duration-format');
 
