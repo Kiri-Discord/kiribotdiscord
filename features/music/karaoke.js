@@ -6,20 +6,21 @@ const { MessageEmbed } = require("discord.js");
 const ISO6391 = require('iso-639-1');
 
 module.exports = class ScrollingLyrics {
-    constructor(song, channel, lang, queue, prefix) {
+    constructor(song, channel, lang, queueChannel, prefix) {
         this.song = song;
         this.channel = channel;
         this.lang = lang;
-        this.queue = queue;
         this.prefix = prefix;
         this.slots = [];
         this.timeout = [];
+        this.queueChannel = queueChannel;
         this.playing = false;
         this.playTimestamp = null;
         this.pauseTimestamp = null;
+        this.success = null;
     };
     async init() {
-        if (!this.channel.permissionsFor(this.queue.textChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
+        if (!this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
         let notice = `displaying scrolling lyrics (${ISO6391.getName(this.lang)}) for this track`;
         if (this.song.type !== 'yt') return this.error('sc');
         const info = await ytdl.getInfo(this.song.info.uri);
@@ -46,7 +47,7 @@ module.exports = class ScrollingLyrics {
                 id: index
             })
         });
-        return notice;
+        return this.success = notice;
     };
     start() {
         if (this.playing) return false;
@@ -96,15 +97,15 @@ module.exports = class ScrollingLyrics {
     };
     error(type) {
         if (type === 'sc') {
-            this.queue.textChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
+            this.queueChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
         } else if (type === 'perms') {
-            this.queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
+            this.queueChannel.send({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
                 .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric`)
                 .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
-            this.queue.textChannel.send({ embeds: [embed] });
+            this.queueChannel.send({ embeds: [embed] });
         };
         return false;
     };

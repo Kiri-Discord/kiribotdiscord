@@ -2,14 +2,20 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async(client, oldState, newState) => {
     if ((oldState.member.user.bot && oldState.member.user.id !== client.user.id) ||
         (newState.member.user.bot && newState.member.user.id !== client.user.id)) return;
-    if (newState.channelId === null) { //leaving vc
+    if (newState.channelId === null) {
+        if (client.dcTimeout.has(oldState.guild.id)) {
+            const timeout = client.dcTimeout.get(oldState.guild.id);
+            clearTimeout(timeout);
+            return client.dcTimeout.delete(oldState.guild.id);
+        };
         const queue = client.queue.get(oldState.guild.id);
         if (!queue) return;
         if (queue.channel.id !== oldState.channelId) return;
         if (newState.member.user.id === client.user.id) {
             if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
-            if (queue.player) await queue.player.destroy();
-            if (!queue.pending) return client.queue.delete(queue.textChannel.guild.id);
+            if (!queue.pending) client.queue.delete(queue.textChannel.guild.id);
+            queue.stopReason = 'disconnected';
+            if (queue.player) return queue.stop();
         };
         const playerListening = [...queue.channel.members.values()];
         let listening = playerListening.filter(x => !x.user.bot).length;

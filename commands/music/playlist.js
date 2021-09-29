@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
-const { play, fetchInfo } = require("../../features/music/play");
+const Queue = require("../../features/music/play");
+const { fetchInfo } = require('../../util/util');
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
@@ -30,26 +31,27 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode|show)(?::|\/)((?:[0-9a-zA-Z]){22})/;
         const url = args[0];
         const urlValid = pattern.test(url);
-        let queueConstruct = {
-            playingMessage: null,
-            textChannel: message.channel,
-            channel,
-            player: null,
-            pending: true,
-            songs: [],
-            loop: false,
-            repeat: false,
-            playing: true,
-            volume: null,
-            nowPlaying: null,
-            karaoke: {
-                timeout: [],
-                channel: null,
-                isEnabled: null,
-                languageCode: null,
-                instance: null,
-            }
-        };
+        const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
+        // let queueConstruct = {
+        //     playingMessage: null,
+        //     textChannel: message.channel,
+        //     channel,
+        //     player: null,
+        //     pending: true,
+        //     songs: [],
+        //     loop: false,
+        //     repeat: false,
+        //     playing: true,
+        //     volume: null,
+        //     nowPlaying: null,
+        //     karaoke: {
+        //         timeout: [],
+        //         channel: null,
+        //         isEnabled: null,
+        //         languageCode: null,
+        //         instance: null,
+        //     }
+        // };
         if (musicSettings) {
             queueConstruct.karaoke.isEnabled = false;
             queueConstruct.volume = musicSettings.volume;
@@ -183,7 +185,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
     if (!serverQueue) {
         client.queue.set(message.guild.id, queueConstruct);
         try {
-            play(queueConstruct.songs[0], message.guild.id, client, prefix);
+            queueConstruct.play(queueConstruct.songs[0]);
         } catch (error) {
             logger.log('error', error);
             client.queue.delete(message.guild.id);
