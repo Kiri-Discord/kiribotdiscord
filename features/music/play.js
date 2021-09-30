@@ -33,6 +33,11 @@ module.exports = class Queue {
     };
     async stop() {
         if (this.stopReason === 'noSong' || this.stopReason === 'selfStop') {
+            if (this.client.dcTimeout.has(this.guildId)) {
+                const timeout = this.client.dcTimeout.get(this.guildId);
+                clearTimeout(timeout);
+                this.client.dcTimeout.delete(this.guildId);
+            };
             const timeout = setTimeout(async() => {
                 if (!this.textChannel.guild.me.voice.channel) return;
                 const newQueue = this.client.queue.get(this.guildId);
@@ -185,7 +190,7 @@ module.exports = class Queue {
         };
         try {
             this.nowPlaying = song;
-            if (!this.repeat) this.songs.splice(this.songs.findIndex(x => x.track === song.track), 1);
+            if (!this.repeat) this.songs.splice(0, 1);
             this.player.play(song.track, {
                 volume: this.volume || 100,
                 noReplace: noSkip
