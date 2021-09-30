@@ -31,7 +31,7 @@ module.exports = async(client, message) => {
             if (message.channel.id === setting.verifyChannelID) {
                 if (alreadyHasVerifyRole) {
                     await deleteIfAble(message);
-                    return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}setverify [-off]\` or see \`${prefix}help setverify\``).then(m => {
+                    return message.channel.send(`you just messaged in a verification channel! to change or remove it, do \`${prefix}set-verify -off\` or see \`${prefix}help set-verify\``).then(m => {
                         setTimeout(() => {
                             m.delete();
                         }, 4000);

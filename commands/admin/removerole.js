@@ -21,6 +21,8 @@ exports.run = async(client, message, args, prefix) => {
     if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= role.position) return message.channel.send({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }] });
     if (message.guild.me.roles.highest.position <= role.position) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
+    if (!member.manageable) return message.reply({ embeds: [{ color: "RED", description: `i can't remove role from that user! they may either be an admin, or their roles are way higher than me.` }] });
+
     const alreadyHasRole = member._roles.includes(role.id);
 
     if (!alreadyHasRole) return message.reply({ embeds: [{ color: "RED", description: `that user doesn't has that role!` }] });
