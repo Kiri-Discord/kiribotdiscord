@@ -148,7 +148,7 @@ module.exports = class Queue {
                         upcoming = this.songs[0];
                     };
                     this.play(upcoming);
-                    if (data.reason === 'LOAD_FAILED') await this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
+                    if (data.reason === 'LOAD_FAILED') this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
                 };
             });
             this.pending = false;
