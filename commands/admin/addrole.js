@@ -22,6 +22,8 @@ exports.run = async(client, message, args, prefix) => {
 
     if (message.guild.me.roles.highest.position <= role.position) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
+    if (!member.manageable) return message.reply({ embeds: [{ color: "RED", description: `i can't add role to that user! they may either be an admin, or their roles are way higher than me.` }] });
+
 
     const alreadyHasRole = member._roles.includes(role.id);
 

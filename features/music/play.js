@@ -69,14 +69,14 @@ module.exports = class Queue {
         this.play(upcoming, false);
     };
     async play(song, noSkip) {
-        if (!song) {
-            this.stopReason = 'noSong';
-            return this.stop();
-        }
         if (this.client.dcTimeout.has(this.guildId)) {
             const timeout = this.client.dcTimeout.get(this.guildId);
             clearTimeout(timeout);
             this.client.dcTimeout.delete(this.guildId);
+        };
+        if (!song) {
+            this.stopReason = 'noSong';
+            return this.stop();
         };
         if (!this.player) {
             this.player = await this.client.lavacordManager.join({
@@ -148,6 +148,7 @@ module.exports = class Queue {
                         upcoming = this.songs[0];
                     };
                     this.play(upcoming);
+                    if (data.reason === 'LOAD_FAILED') await this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
                 };
             });
             this.pending = false;

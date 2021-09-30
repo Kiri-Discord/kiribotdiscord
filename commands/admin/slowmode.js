@@ -24,7 +24,7 @@ exports.run = async(client, message, args) => {
 
     if (!toSecond) return message.reply({ embeds: [{ color: "RED", description: "please includes the **valid** time format. all valid time format are \`s, m, hrs\` <3" }] });
 
-    if (toSecond > 21600) return message.reply({ embeds: [{ color: "RED", description: "the cooldown duration must be equal to or more than 6 hours!" }] });
+    if (toSecond > 21600) return message.reply({ embeds: [{ color: "RED", description: "the cooldown duration must not be equal to or more than 6 hours!" }] });
     const rolelog = new MessageEmbed()
         .setAuthor(client.user.username, client.user.displayAvatarURL())
         .setDescription(`Slowmode is set on <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)

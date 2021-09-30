@@ -11,21 +11,26 @@ exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
     const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare').toString() : ':pensive:';
     if (!member) return message.channel.send({ embeds: [{ color: "RED", description: `i can't find that user! please mention a valid member or user ID in this guild ${stareEmoji}` }] });
+
+    if (!member.manageable) return message.reply({ embeds: [{ color: "RED", description: `i can't change that user's nickname! they may either be an admin, or their roles are way higher than me.` }] });
+
     const { user } = member;
 
     let nick = args.slice(1).join(" ");
     if (!nick) return message.channel.send({ embeds: [{ color: "RED", description: `what nickname do you want to set for ${member.toString()}?` }] });
+    if (nick.length > 32) return message.channel.send({ embeds: [{ color: "RED", description: `your nickname can't be longer than 32 characters!` }] });
 
+    const oldNick = member.displayName;
     const rolelog = new MessageEmbed()
         .setAuthor(client.user.username, client.user.displayAvatarURL())
         .setDescription(`**${user}** nickname was changed to **${nick}**`)
-        .addField('User', user.toString())
+        .addField('Before', oldNick)
         .addField('Moderator', message.author.toString())
         .setTimestamp()
 
     try {
         await member.setNickname(nick);
-        await message.channel.send({ embeds: [{ color: "#bee7f7", description: `➕ i changed **${user}** nickname to **${nick}**!` }] });
+        await message.channel.send({ embeds: [{ color: "#bee7f7", description: `✅ i have changed **${user}** nickname to **${nick}** from **${oldNick}**!` }] });
         if (!logChannel) {
             return;
         } else {
