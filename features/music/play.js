@@ -185,7 +185,7 @@ module.exports = class Queue {
         };
         try {
             this.nowPlaying = song;
-            if (!this.repeat) this.songs.shift();
+            if (!this.repeat) this.songs.splice(this.songs.findIndex(x => x.track === song.track), 1);
             this.player.play(song.track, {
                 volume: this.volume || 100,
                 noReplace: noSkip
