@@ -34,7 +34,7 @@ module.exports = class Queue {
     async stop() {
         if (this.stopReason === 'noSong' || this.stopReason === 'selfStop') {
             const timeout = setTimeout(async() => {
-                if (!this.textChannel.guild.me.voice.channelId) return;
+                if (!this.textChannel.guild.me.voice.channel) return;
                 const newQueue = this.client.queue.get(this.guildId);
                 if (newQueue) return;
                 await this.client.lavacordManager.leave(this.guildId);
