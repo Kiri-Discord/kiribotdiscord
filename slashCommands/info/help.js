@@ -204,7 +204,7 @@ exports.run = async(client, interaction) => {
             };
         });
     } else {
-        let query = option.toLowerCase();
+        let query = option.trim().split(/ +/g)[0].toLowerCase();
         if (client.slash.has(query)) {
             let command = client.slash.get(query);
             const dead = client.customEmojis.get('dead') ? client.customEmojis.get('dead').toString() : ':thinking:';

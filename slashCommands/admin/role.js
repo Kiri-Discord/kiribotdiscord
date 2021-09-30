@@ -17,6 +17,7 @@ exports.run = async(client, interaction) => {
 
         if (interaction.guild.me.roles.highest.position <= role.position) return interaction.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }], ephemeral: true });
 
+        if (!member.manageable) return interaction.reply({ embeds: [{ color: "RED", description: `i can't add roles to that user! they may either be an admin, or their roles are way higher than me.` }], ephemeral: true });
 
         const alreadyHasRole = member._roles.includes(role.id);
 
@@ -64,6 +65,8 @@ exports.run = async(client, interaction) => {
 
         if (interaction.user.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= role.position) return interaction.reply({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }], ephemeral: true });
         if (interaction.guild.me.roles.highest.position <= role.position) return interaction.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }], ephemeral: true });
+
+        if (!member.manageable) return interaction.reply({ embeds: [{ color: "RED", description: `i can't remove roles from that user! they may either be an admin, or their roles are way higher than me.` }], ephemeral: true });
 
         const alreadyHasRole = member._roles.includes(role.id);
 

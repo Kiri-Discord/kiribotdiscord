@@ -47,6 +47,18 @@ module.exports = async client => {
                     if (!prop.conf.adult) client.allSlashCmds.push(prop.conf.data.name);
                     client.slash.set(prop.conf.data.name, prop);
                     client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
+                    const command = prop.conf.data.toJSON();
+                    if (command.options.length) {
+                        const { options } = command;
+                        options.forEach(sub => {
+                            if (sub.type === 1) client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name}`, desc: sub.description });
+                            else if (sub.type === 2) {
+                                sub.options.forEach(op => {
+                                    client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name} ${op.name}`, desc: op.description });
+                                })
+                            }
+                        })
+                    };
                 });
             });
         });
