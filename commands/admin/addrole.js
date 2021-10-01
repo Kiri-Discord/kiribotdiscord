@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
 
     const roleName = args.slice(1).join(' ');
 
-    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}addrole <@user || user ID> <role name || role ID>\`` }] });
+    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}addrole <@user> <@role>\`` }] });
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
