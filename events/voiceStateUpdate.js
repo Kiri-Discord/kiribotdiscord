@@ -15,6 +15,7 @@ module.exports = async(client, oldState, newState) => {
             if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
             if (!queue.pending) client.queue.delete(queue.textChannel.guild.id);
             queue.stopReason = 'disconnected';
+            if (queue.dcTimeout) clearTimeout(queue.dcTimeout);
             if (queue.player) return queue.stop();
         };
         const playerListening = [...queue.channel.members.values()];
