@@ -92,9 +92,9 @@ module.exports = class Queue {
                 selfdeaf: true
             });
             await delay(2000);
-            if (!this.textChannel.guild.me.voice.channelId) {
+            if (!this.textChannel.guild.me.voice.channel) {
                 const tried = [];
-                while (!this.textChannel.guild.me.voice.channelId) {
+                while (!this.textChannel.guild.me.voice.channel) {
                     if (tried.length === this.client.lavacordManager.nodes.size) {
                         await this.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
                         await this.player.destroy();
