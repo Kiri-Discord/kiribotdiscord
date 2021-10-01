@@ -1,5 +1,5 @@
 const web = require('../util/web.js');
-const { randomStatus, botSitePost, purgeDbGuild } = require('../util/util');
+const { randomStatus, purgeDbGuild } = require('../util/util');
 const music = require('../util/music');
 
 module.exports = async client => {
@@ -8,26 +8,27 @@ module.exports = async client => {
     client.user.setPresence({ activities: [{ name: 'waking up' }], status: 'dnd' });
     logger.log('info', '[DISCORD] Fetching server...');
     const allServer = await client.dbguilds.find({});
-    if (!allServer || !allServer.length) return;
-    for (const guild of allServer) {
-        try {
-            await client.guilds.fetch(guild.guildID);
-            client.guildsStorage.set(guild.guildID, guild);
-        } catch (err) {
-            await purgeDbGuild(client, guild.guildID);
-            client.config.logChannels.forEach(id => {
-                const channel = client.channels.cache.get(id);
-                if (channel) channel.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
-            });
-            const owner = client.users.cache.get(client.config.ownerID);
-            if (owner) owner.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
-            logger.log('info', `Kicked from an undefined server (id: ${guild.guildID}).`);
-        };
-    }
-    if (!client.config.development) {
-        // botSitePost(client);
-        // setInterval(() => botSitePost(client), 1200000);
+    if (allServer.length) {
+        for (const guild of allServer) {
+            try {
+                await client.guilds.fetch(guild.guildID);
+                client.guildsStorage.set(guild.guildID, guild);
+            } catch (err) {
+                await purgeDbGuild(client, guild.guildID);
+                client.config.logChannels.forEach(id => {
+                    const channel = client.channels.cache.get(id);
+                    if (channel) channel.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
+                });
+                const owner = client.users.cache.get(client.config.ownerID);
+                if (owner) owner.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
+                logger.log('info', `Kicked from an undefined server (id: ${guild.guildID}).`);
+            };
+        }
     };
+    // if (!client.config.development) {
+    //     // botSitePost(client);
+    //     // setInterval(() => botSitePost(client), 1200000);
+    // };
     const staffsv = client.guilds.cache.get(client.config.emojiServerID);
     if (staffsv) {
         await staffsv.emojis.cache.forEach(async emoji => {
