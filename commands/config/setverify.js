@@ -18,7 +18,7 @@ exports.run = async(client, message, args, prefix) => {
         const channel = message.guild.channels.cache.get(db.verifyChannelID);
         if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `it seems like i don't have the perms to send messages and embed links to ${channel}! can you setup the verification feature again? :pensive:` }] });
         const role = message.guild.roles.cache.get(db.verifyRole);
-        if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `the verification role was deleted! can you setup the verification feature again? :pensive:` }] })
+        if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `the verification role was deleted or invalid! can you setup the verification feature again? :pensive:` }] })
         const embed = new MessageEmbed()
             .setColor('#cbd4c2')
             .setAuthor(message.guild.name, message.guild.iconURL({ size: 4096, dynamic: true }))
@@ -46,7 +46,7 @@ exports.run = async(client, message, args, prefix) => {
             );
         reactIfAble(message, client.user, '👋');
         return channel.send({ embeds: [embed], components: [row] });
-    }
+    };
     if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `to setup the verify feature, do \`${prefix}setverify <#channel> <@role>\` or \`${prefix}setverify -off\` to disable it ;)` }] })
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });

@@ -43,8 +43,8 @@ exports.run = async(client, interaction) => {
             return instance.send();
         };
     } catch (error) {
-        if (interaction.deferred) return interaction.editReply({ embeds: [{ color: "RED", description: `an error happened when i tried to ban that user. can you try again later?` }], ephemeral: true })
-        else return interaction.reply({ embeds: [{ color: "RED", description: `an error happened when i tried to ban that user. can you try again later?` }], ephemeral: true })
+        if (interaction.deferred) return interaction.editReply({ embeds: [{ color: "RED", description: `sorry, an error happened when i tried to ban that user. can you try again later?` }], ephemeral: true });
+        else return interaction.reply({ embeds: [{ color: "RED", description: `sorry, an error happened when i tried to ban that user. can you try again later?` }], ephemeral: true });
     };
 };
 
