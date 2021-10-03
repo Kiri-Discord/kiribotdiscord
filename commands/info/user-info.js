@@ -11,6 +11,7 @@ exports.run = async(client, message, args) => {
     };
 
     function game() {
+        if (!member.presence) return "None";
         let game;
         if (member.presence.activities.length >= 1) {
             if (member.presence.activities[0].type === "CUSTOM") {
