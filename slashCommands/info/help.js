@@ -177,7 +177,8 @@ exports.run = async(client, interaction) => {
                             footer: {
                                 text: "type 'cancel' to cancel the jumping"
                             }
-                        }]
+                        }],
+                        fetchReply: true
                     });
                     const filter = async res => {
                         if (res.author.id === interaction.user.id) {

@@ -1,4 +1,30 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const toggleCmd = require('./leveling/toggle');
+const announceCmd = require('./leveling/announce');
+const contentCmd = require('./leveling/content');
+const ignoreCmd = require('./leveling/ignore');
+const testCmd = require('./leveling/test');
+
+exports.run = async(client, interaction) => {
+    const db = client.guildsStorage.get(interaction.guild.id);
+    switch (interaction.options.getSubcommand()) {
+        case 'toggle':
+            toggleCmd.run(client, interaction, db);
+            break;
+        case 'announce':
+            announceCmd.run(client, interaction, db);
+            break;
+        case 'content':
+            contentCmd.run(client, interaction, db);
+            break;
+        case 'ignore':
+            ignoreCmd.run(client.interaction, db);
+            break;
+        case 'test':
+            testCmd.run(client, interaction, db);
+            break;
+    };
+};
 
 exports.help = {
     name: "leveling",
@@ -30,21 +56,56 @@ exports.conf = {
             subcommand
             .setName('announce')
             .setDescription('set the destination for leveling announcement message')
-        )
-        .addSubcommand(subcommand =>
-            subcommand
-            .setName('send')
-            .setDescription('send the guiding message to the verification channel')
-        )
-        .addSubcommand(subcommand =>
-            subcommand
-            .setName('timeout')
-            .setDescription('set the timeout duration that allow unverified members to stay and verify before they are kicked.')
             .addStringOption(option => option
-                .setName('timeout')
+                .setName('there')
+                .setDescription('do you want to send the annoucement message in the same channel? (this override every other option)')
+                .setRequired(false)
+                .addChoice('on', 'on')
+                .addChoice('off', 'off')
+            )
+            .addChannelOption(option => option
+                .setName('destination')
+                .setRequired(false)
+                .setDescription('where would you like to send the leveling message to?')
+            )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('content')
+            .setDescription('edit the content of the leveling message')
+            .addStringOption(option => option
+                .setName('type')
+                .setDescription('what is the type of your leveling message?')
                 .setRequired(true)
-                .setDescription('what will be the timeout duration? (all valid time format are s, m, hrs!)')
-            )),
+                .addChoice('plain text', 'plain')
+                .addChoice('embed', 'embed')
+            )
+            .addStringOption(option => option
+                .setName('content')
+                .setDescription('set content for your leveling message. if the type is embed, this will be the ID of the embed')
+                .setRequired(true)
+            )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('ignore')
+            .setDescription('ignore a message channel from leveling up')
+            .addChannelOption(option => option
+                .setName('channel')
+                .setRequired(true)
+                .setDescription('what is the channel that you want to block user from leveling?')
+            )
+            .addBooleanOption(option => option
+                .setName('disable')
+                .setDescription('turn off the ignore rule completely for the current ingore channel (override every other option)')
+                .setRequired(false)
+            )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('test')
+            .setDescription('send a test leveling announcement message')
+        ),
     guildOnly: true,
     userPerms: ["MANAGE_GUILD"],
     channelPerms: ["EMBED_LINKS"]

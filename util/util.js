@@ -296,7 +296,8 @@ module.exports = class util {
 							footer: {
 								text: "type 'cancel' to cancel the jumping"
 							}
-						}]
+						}],
+						fetchReply: true
 					});
 					const filter = async res => {
 						if (res.author.id === initialMsg.author.id) {

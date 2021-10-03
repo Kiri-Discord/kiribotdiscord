@@ -29,7 +29,7 @@ exports.run = async(client, message, args, prefix) => {
                 db.levelings.destination = null;
                 setting.levelings.destination = null;
                 await setting.save();
-                return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ levelings announcement will now be send in the same channel that the user is active!` }] })
+                return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ levelings announcement will now be send in the same channel that the user is messaging!` }] });
             } else {
                 const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
                 if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
@@ -40,7 +40,7 @@ exports.run = async(client, message, args, prefix) => {
                 db.levelings.destination = channel.id;
                 setting.levelings.destination = channel.id;
                 await setting.save();
-                return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ levelings announcement will now be send in ${channel}!` }] })
+                return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ levelings announcement will now be send in ${channel}!` }] });
             };
         } else if (args[0] === "content") {
             let contentObject;

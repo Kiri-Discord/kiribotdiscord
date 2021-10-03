@@ -175,7 +175,8 @@ exports.run = async(client, message, args, prefix) => {
                             footer: {
                                 text: "type 'cancel' to cancel the jumping"
                             }
-                        }]
+                        }],
+                        fetchReply: true
                     });
                     const filter = async res => {
                         if (res.author.id === message.author.id) {
