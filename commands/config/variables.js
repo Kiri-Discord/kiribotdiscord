@@ -26,7 +26,7 @@ exports.run = async(client, message, args, prefix) => {
         \`{server_membercount_ordinal}\`
         \`{server_icon}\`
         `, true)
-        .addField(`default response (${prefix}response)`, "\`{auto}\`")
+        .addField(`default response (modify with ${prefix}response)`, "\`{auto}\`")
 
     return message.channel.send({ embeds: [embed] });
 }

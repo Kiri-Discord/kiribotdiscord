@@ -13,8 +13,6 @@ exports.run = async(client, message, args, prefix) => {
         })
         .catch(err => logger.log('error', err));
     return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` }] });
-
-
 };
 
 

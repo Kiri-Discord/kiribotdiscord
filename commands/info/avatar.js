@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { stripIndents } = require('common-tags');
 
 exports.run = async(client, message, args) => {
@@ -14,8 +14,13 @@ exports.run = async(client, message, args) => {
   [**Avatar URL**](${avatar})
   `)
         .setColor(member.displayHexColor)
-        .setImage(avatar)
-    return message.channel.send({ embeds: [embed] });
+        .setImage(avatar);
+    const row = new MessageActionRow()
+        .addComponents(new MessageButton()
+            .setStyle('LINK')
+            .setURL(avatar)
+            .setLabel('Avatar URL'))
+    return message.channel.send({ embeds: [embed], components: [row] });
 }
 
 exports.help = {

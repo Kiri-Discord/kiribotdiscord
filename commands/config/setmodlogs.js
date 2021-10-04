@@ -27,7 +27,7 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "setmodlogs",
-    description: "Set the logs channel where i will logs moderation action",
+    description: "set the logs channel where i will logs moderation action",
     usage: ["setmodlogs `<#channel>`", "setmodlogs `<channel id>`", "setmodlogs -off"],
     example: ["setmodlogs `#logs`", "setmodlogs `4545455454644`", "setmodlogs -off"]
 };
