@@ -209,7 +209,7 @@ exports.run = async(client, message, args, prefix) => {
             const dead = client.customEmojis.get('dead') ? client.customEmojis.get('dead').toString() : ':thinking:';
             if (command.conf.owner) return message.channel.send({ embeds: [{ color: "RED", description: `that command is accessible only by my owner 👑` }] });
             if (command.conf.adult && !message.channel.nsfw) {
-                if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await message.delete();
+                if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) await deleteIfAble(message);
                 return message.channel.send({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel dear ${dead}` }] });
             };
             let name = command.help.name;
