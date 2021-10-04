@@ -111,10 +111,12 @@ exports.run = async(client, message, args, prefix) => {
             await client.dbguilds.findOneAndUpdate({
                 guildID: message.guild.id,
             }, {
-                byeChannelID: null
+                byeChannelID: null,
+                byeContent: null
             });
             db.byeChannelID = null;
-            return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send goodbye message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for greeting message was also resetted. please set a new one using ${prefix}setgreeting channel!` } }] });
+            db.byeContent = null;
+            return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send goodbye message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for goodbye message was also resetted. please set a new one using ${prefix}setgoodbye channel!` } }] });
         };
         if (setting.byeContent.type === 'plain') return channel.send(varReplace.replaceText(setting.byeContent.content, message.member, message.guild, { event: 'leave', type: setting.responseType }));
         else return channel.send({ embeds: [varReplace.replaceEmbed(setting.byeContent.content.embed, message.member, message.guild, { event: 'leave', type: setting.responseType })] });

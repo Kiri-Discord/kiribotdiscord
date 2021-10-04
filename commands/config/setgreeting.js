@@ -113,7 +113,7 @@ exports.run = async(client, message, args, prefix) => {
             }, {
                 greetChannelID: null
             });
-            db.greetChannelID = null;
+            db.greetChannelID = undefined;
             return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send greeting message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for greeting message was also resetted. please set a new one using ${prefix}setgreeting channel!` } }] });
         };
         if (setting.greetContent.type === 'plain') return channel.send(varReplace.replaceText(setting.greetContent.content, message.member, message.guild, { event: 'join', type: setting.responseType }));
