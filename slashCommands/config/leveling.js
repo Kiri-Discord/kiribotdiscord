@@ -18,7 +18,7 @@ exports.run = async(client, interaction) => {
             contentCmd.run(client, interaction, db);
             break;
         case 'ignore':
-            ignoreCmd.run(client.interaction, db);
+            ignoreCmd.run(client, interaction, db);
             break;
         case 'test':
             testCmd.run(client, interaction, db);
@@ -29,12 +29,11 @@ exports.run = async(client, interaction) => {
 exports.help = {
     name: "leveling",
     description: "toggle message leveling for your server",
-    usage: ["leveling toggle [on | off]\`", "leveling `announce [#channel] [there]`", "leveling `content <embed | plain>`", "leveling `test`"],
+    usage: ["leveling \`toggle [on | off]\`", "leveling `announce [#channel] [there]`", "leveling `content <embed | plain>`", "leveling `test`"],
     example: ["leveling \`enable on\`", "leveling \`enable off\`", "leveling `announce there`", "leveling `announce <#channel>`", "leveling `content embed`", "leveling `test`"]
 };
 
 exports.conf = {
-    aliases: ["levelings", "toggleleveling"],
     cooldown: 4,
     guild: true,
     data: new SlashCommandBuilder()

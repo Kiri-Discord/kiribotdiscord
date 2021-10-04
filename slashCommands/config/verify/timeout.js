@@ -1,6 +1,17 @@
 const ms = require('ms');
 
 exports.run = async(client, interaction, db) => {
+    const off = interaction.options.getBoolean('disable');
+    if (off) {
+        await interaction.deferReply();
+        db.verifyTimeout = undefined;
+        await client.dbguilds.findOneAndUpdate({
+            guildID: interaction.guild.id,
+        }, {
+            verifyTimeout: null
+        });
+        return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ verify timeout has been disabled` }] });
+    };
     const time = interaction.options.getString('timeout');
     let convert = ms(time);
     let toSecond = Math.floor(convert / 1000);

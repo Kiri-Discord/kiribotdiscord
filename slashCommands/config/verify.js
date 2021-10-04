@@ -47,7 +47,7 @@ exports.conf = {
         .addSubcommand(subcommand =>
             subcommand
             .setName('setup')
-            .setDescription('setup my verification system that intergrate with Google reCAPTCHA')
+            .setDescription('begin setting up the verify feature')
             .addChannelOption(option => option
                 .setName('channel')
                 .setRequired(true)
@@ -77,7 +77,11 @@ exports.conf = {
                 .setName('timeout')
                 .setRequired(true)
                 .setDescription('what will be the timeout duration? (all valid time format are s, m, hrs!)')
-            )),
+            )
+            .addBooleanOption(option => option
+                .setRequired(false)
+                .setName('disable')
+                .setDescription('weather you want or not to disable the kick timeout'))),
     userPerms: ["MANAGE_GUILD"],
     channelPerms: ["EMBED_LINKS"],
     clientPerms: ["MANAGE_ROLES"]

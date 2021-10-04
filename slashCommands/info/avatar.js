@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { stripIndents } = require('common-tags');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
@@ -14,7 +14,12 @@ exports.run = async(client, interaction) => {
         [**Avatar URL**](${avatar})
         `)
         .setImage(avatar)
-    return interaction.reply({ embeds: [embed] });
+    const row = new MessageActionRow()
+        .addComponents(new MessageButton()
+            .setStyle('LINK')
+            .setURL(avatar)
+            .setLabel('Avatar URL'))
+    return interaction.reply({ embeds: [embed], components: [row] });
 };
 
 exports.help = {
