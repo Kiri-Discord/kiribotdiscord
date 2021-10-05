@@ -11,35 +11,21 @@ Check out [Sefiria discord server](https://discord.gg/D6rWrvS "Sefiria community
 Support for forking / bugs can be found here  
 DM **r3zenix#3895** for help with technical issues, will do my best to help you host but only to an extent.
 
-## Overview
-A bot for moderation and fun ultilities  
 
-***
-  
-Examples:  
+## License
+Kiri is licensed under the terms of [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://github.com/Kiri-Discord/kiribotdiscord/blob/stable/LICENSE) ("CC-BY-NC-SA-4.0"). Commercial use is not allowed under this license. This includes any kind of revenue made with or based upon the software, even donations.
 
-|**Command**| **Usage**                            |
-|:---------:|--------------------------------------|
-|help       |Shows usage and syntax of commands    |
-|rank       |Shows activity rank based on EXP      |
-|quiz       |Gives random trivia question          |  
-  
-*Export of help command on **8ball** utility:*  
-  
-```js
+The CC-BY-NC-SA-4.0 allows you to:
+- [x] **Share** -- copy and redistribute the material in any medium or format
+- [x] **Adapt** -- remix, transform, and build upon the material
 
-exports.help = {
-	name: "8ball",
-	description: "Your life depends on this one.",
-	usage: "8ball `<question>`",
-	example: "8ball `do you love me?`"
-};
+Under the following terms:
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- **NonCommercial** — You may not use the material for commercial purposes. 
+- **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 
-```
+More information can be found [here](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-## Legal
-This repo is protected under [MIT License](https://github.com/ryzenix/sefybotdiscord/blob/master/LICENSE)  
-
-## Website
-The offical site: https://kiri.daztopia.xyz/  
-Site repo: https://github.com/ryzenix/sefy_website  
+## Pull request
+Pull request are always welcome! You just need to sign this SLA [here](https://cla-assistant.io/Kiri-Discord/kiribotdiscord) or we can't merge your changes.
+[![CLA assistant](https://cla-assistant.io/readme/badge/Kiri-Discord/kiribotdiscord)](https://cla-assistant.io/Kiri-Discord/kiribotdiscord)
