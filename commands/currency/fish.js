@@ -117,19 +117,19 @@ exports.run = async(client, message, args, prefix) => {
         .setDescription(`you caught a **${rarity}** :${fish}: **${names[fish]}** that worth ⏣ **${worth}**!`)
 
     if (fish === "clownfish") {
-        const nemo = "🐠";
+        const nemo = client.emojis.cache.get("827417100233998357");
 
         const embed2 = new MessageEmbed()
             .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
-            .setDescription(`you caught a **${rarity}** \\${nemo} **Nemo** that worth ⏣ **${worth}**!`)
-        return message.channel.send({ embeds: [embed2] })
+            .setDescription(`you caught a **${rarity}** ${nemo} **Nemo** that worth ⏣ **${worth}**!`)
+        return message.channel.send(embed2)
     } else if (fish === "chest") {
         const embed2 = new MessageEmbed()
             .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
             .setDescription(`you found a **${rarity}** **Chest** that worth ⏣ **${worth}**!`)
-        return message.channel.send({ embeds: [embed2] })
+        return message.channel.send(embed2)
     } else if (fish === "nothing") {
         const embed2 = new MessageEmbed()
             .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())

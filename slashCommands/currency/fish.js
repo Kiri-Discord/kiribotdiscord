@@ -86,11 +86,11 @@ exports.run = async(client, interaction) => {
     if (rarity === "legendary") worth = 500
 
     await client.inventory.findOneAndUpdate({
-        guildId: interaction.guild.id,
-        userId: interaction.user.id
+        guildId: message.guild.id,
+        userId: message.author.id
     }, {
-        guildId: interaction.guild.id,
-        userId: interaction.user.id,
+        guildId: message.guild.id,
+        userId: message.author.id,
         $inc: {
             worms: -1,
         },
@@ -100,11 +100,11 @@ exports.run = async(client, interaction) => {
     });
 
     await client.money.findOneAndUpdate({
-        guildId: interaction.guild.id,
-        userId: interaction.user.id
+        guildId: message.guild.id,
+        userId: message.author.id
     }, {
-        guildId: interaction.guild.id,
-        userId: interaction.user.id,
+        guildId: message.guild.id,
+        userId: message.author.id,
         $inc: {
             balance: worth,
         },
@@ -114,31 +114,31 @@ exports.run = async(client, interaction) => {
     });
 
     const embed = new MessageEmbed()
-        .setAuthor(`🎣 ${interaction.user.username} went fishing!`, interaction.user.displayAvatarURL())
+        .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
         .setColor("#bee7f7")
         .setDescription(`you caught a **${rarity}** :${fish}: **${names[fish]}** that worth ⏣ **${worth}**!`)
 
     if (fish === "clownfish") {
-        const nemo = "🐠";
+        const nemo = client.emojis.cache.get("827417100233998357");
 
         const embed2 = new MessageEmbed()
-            .setAuthor(`🎣 ${interaction.user.username} went fishing!`, interaction.user.displayAvatarURL())
+            .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
-            .setDescription(`you caught a **${rarity}** \\${nemo} **Nemo** that worth ⏣ **${worth}**!`)
-        return interaction.editReply({ embeds: [embed2] })
+            .setDescription(`you caught a **${rarity}** ${nemo} **Nemo** that worth ⏣ **${worth}**!`)
+        return message.channel.send(embed2)
     } else if (fish === "chest") {
         const embed2 = new MessageEmbed()
-            .setAuthor(`🎣 ${interaction.user.username} went fishing!`, interaction.user.displayAvatarURL())
+            .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
             .setDescription(`you found a **${rarity}** **Chest** that worth ⏣ **${worth}**!`)
-        return interaction.editReply({ embeds: [embed2] })
+        return message.channel.send(embed2)
     } else if (fish === "nothing") {
         const embed2 = new MessageEmbed()
-            .setAuthor(`🎣 ${interaction.user.username} went fishing!`, interaction.user.displayAvatarURL())
+            .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
             .setColor("#bee7f7")
             .setDescription(`you really did found **NOTHING**! take a deep breath, grind, and try again :pensive:`)
-        return interaction.editReply({ embeds: [embed2] })
-    } else return interaction.editReply({ embeds: [embed] })
+        return message.channel.send({ embeds: [embed2] })
+    } else return message.channel.send({ embeds: [embed] })
 }
 exports.help = {
     name: "fish",
@@ -148,10 +148,7 @@ exports.help = {
 };
 
 exports.conf = {
-    data: new SlashCommandBuilder()
-        .setName(exports.help.name)
-        .setDescription(exports.help.description),
-    guild: true,
+    aliases: ["fishing"],
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
