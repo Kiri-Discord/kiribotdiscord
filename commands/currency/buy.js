@@ -15,7 +15,7 @@ exports.run = async(client, message, args, prefix) => {
     const items = ['wedding ring', 'seed', 'worm', 'ring'];
     const toBuy = args.slice(1).join(' ');
     if (!toBuy) return message.reply(`what item do you want to buy? for a list of item that you can purchase, please check \`${prefix}shop\` <3`)
-    if (!items.includes(toBuy.toLowerCase())) return message.reply(`\`${toBuy}\` is an invalid item :pensive: check \`${prefix}shop\` for a list of avaliable item :grin:`);
+    if (!items.includes(toBuy.toLowerCase())) return message.reply(`\`${toBuy}\` is an invalid item! check \`${prefix}shop\` for a list of avaliable item :grin:`);
 
     let moneyStorage = await client.money.findOne({
         userId: message.author.id,

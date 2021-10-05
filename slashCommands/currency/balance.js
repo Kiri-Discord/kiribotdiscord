@@ -1,40 +1,44 @@
 const { MessageEmbed } = require("discord.js");
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { stripIndents } = require('common-tags');
 
-exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+exports.run = async(client, interaction) => {
+    const member = interaction.options.getMember('user') || interaction.member;
     const user = member.user;
-    if (user.id === client.user.id) return message.reply({
+    if (user.id === client.user.id) return interaction.reply({
         embeds: [{
             description: "that's me! did you think i have any money? :pensive:"
-        }]
+        }],
+        ephemeral: true
     });
-    if (user.bot) return message.reply({
+    if (user.bot) return interaction.reply({
         embeds: [{
             description: "duh you can't ask a bot's balance. we are broke enough :pensive:"
-        }]
+        }],
+        ephemeral: true
     });
+    await interaction.deferReply();
     let cooldown = 8.64e+7;
     let storage = await client.money.findOne({
         userId: user.id,
-        guildId: message.guild.id
+        guildId: interaction.guild.id
     });
     if (!storage) {
         const model = client.money;
         storage = new model({
             userId: user.id,
-            guildId: message.guild.id
+            guildId: interaction.guild.id
         });
     };
     let cooldownStorage = await client.cooldowns.findOne({
         userId: user.id,
-        guildId: message.guild.id
+        guildId: interaction.guild.id
     });
     if (!cooldownStorage) {
         const model = client.cooldowns;
         cooldownStorage = new model({
             userId: user.id,
-            guildId: message.guild.id
+            guildId: interaction.guild.id
         });
     };
     let lastDaily;
@@ -54,18 +58,26 @@ exports.run = async(client, message, args) => {
         time until next daily collect: **${lastDaily}**
         `)
         .setTimestamp()
-    return message.channel.send({ embeds: [embed] });
+    return interaction.editReply({ embeds: [embed] });
 };
 
 exports.help = {
     name: "balance",
     description: "check yours, or other members money.",
     usage: ["balance \`[@user]\`", "balance \`[user ID]\`", "balance"],
-    example: ["balance `@eftw`", "balance `484988949488494`", "balance"]
+    example: ["balance `@eftw`", "balance"]
 };
 
 exports.conf = {
-    aliases: ["bal", "coin", "money", "credit"],
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description)
+        .addUserOption(option => option
+            .setName('user')
+            .setRequired(false)
+            .setDescription('which member that you want to see their balance? :)')
+        ),
+    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

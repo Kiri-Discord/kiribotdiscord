@@ -5,34 +5,37 @@ const { stripIndents } = require('common-tags');
 const parseColor = require("color-parse");
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 const varReplace = require('../../util/variableReplace');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
-exports.run = async(client, message, args, prefix) => {
-    if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ missing sub command \`${prefix}${exports.help.name} <subcommand>\`\nall avaliable sub-command for setting up embeds are: \`new, send, list, delete\`!` }] })
-    if (args[0].toLowerCase() === 'new') {
+exports.run = async(client, interaction) => {
+    if (interaction.options.getSubcommand() === 'new') {
+        await interaction.deferReply();
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });
         if (!storage) storage = new embedsStorage({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });
-        if (storage.embeds.toObject().length > 100) return message.channel.send({ embeds: [{ color: "RED", description: `your server has reached the 100 embeds created limit :pensive: please use \`${prefix}${exports.help.name} delete\` to delete unused embeds before creating another one.` }] })
+        if (storage.embeds.toObject().length > 100) return interaction.editReply({ embeds: [{ color: "RED", description: `your server has reached the 100 embeds created limit :pensive: please use \`/${exports.help.name} delete\` to delete unused embeds before creating another one.` }] })
         let name = null;
         let setupMessage = null;
         let displayMessage = null;
         const empty = client.customEmojis.get('empty').toString();
+        const duh = client.customEmojis.get('duh').toString();
         const targetEmbed = {
             description: empty,
         };
         let ongoing = false;
+        interaction.editReply({ embeds: [{ color: "#bee7f7", description: `✅ the embed creation setup was started! please follow my guide ${duh}` }] })
         async function ending(reason) {
             if (setupMessage && !setupMessage.deleted) await setupMessage.delete();
             if (displayMessage && !displayMessage.deleted) await displayMessage.delete();
             if (reason === 1) {
                 const angry = client.customEmojis.get('dead');
-                return message.channel.send(`the embed creation was cancelled! try again whenever you want to talk with me ${angry}`);
+                return interaction.channel.send(`the embed creation was cancelled! try again whenever you want to talk with me ${angry}`);
             };
-            if (reason === 2) return message.channel.send(`alright i cancelled the command :wink:`);
+            if (reason === 2) return interaction.channel.send(`alright i cancelled the command :wink:`);
         };
         const embed = new MessageEmbed()
             .setColor("#bee7f7")
@@ -46,15 +49,15 @@ exports.run = async(client, message, args, prefix) => {
             **something to keep in mind:**
             > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
             > type \`cancel\` if you want to skip the whole setup process
-            > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+            > variable are supported! go check out \`/variable\` to fill in your embed!
             > [] optional, <> required. don't includes these things while setting up the embed :)
         `)
             .setTimestamp()
             .setImage('https://i.imgur.com/XnDAHF9.png');
         while (!name) {
-            if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
-            const filter = res => res.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
+            const filter = res => res.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             const id = res.content.trim().split(/ +/g)[0];
@@ -71,17 +74,17 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
             name = id;
         };
         while (!targetEmbed.color) {
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [targetEmbed] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [targetEmbed] });
             if (!ongoing) {
                 embed
                     .setAuthor('step 2 of 9 (optional)')
@@ -92,14 +95,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = msg => msg.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = msg => msg.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -120,18 +123,18 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `)
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
             await deleteIfAble(res);
             targetEmbed.color = color.values;
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         while (!targetEmbed.author) {
             if (!ongoing) {
@@ -146,14 +149,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id && res.content.trim().split("/\\").every(x => x.length > 0);
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id && res.content.trim().split("/\\").every(x => x.length > 0);
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -165,7 +168,7 @@ exports.run = async(client, message, args, prefix) => {
             const text = field[0];
             const iconUrl = field[1];
             const url = field[2];
-            if (!text || varReplace.replaceText(text.trim(), message.member, message.guild).length > 256) {
+            if (!text || varReplace.replaceText(text.trim(), interaction.member, interaction.guild).length > 256) {
                 ongoing = true;
                 await deleteIfAble(res)
                 embed
@@ -178,14 +181,14 @@ exports.run = async(client, message, args, prefix) => {
                 **something to keep in mind:**
                 > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                 > type \`cancel\` if you want to skip the whole setup process
-                > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                > variable are supported! go check out \`/variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            if ((iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) ||
+            if ((iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild))) ||
                 (url && !validUrl.isWebUri(url.trim()))) {
                 ongoing = true;
                 await deleteIfAble(res);
@@ -200,10 +203,10 @@ exports.run = async(client, message, args, prefix) => {
                 **something to keep in mind:**
                 > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                 > type \`cancel\` if you want to skip the whole setup process
-                > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                > variable are supported! go check out \`/variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
@@ -214,8 +217,8 @@ exports.run = async(client, message, args, prefix) => {
             if (iconUrl) targetEmbed.author.icon_url = iconUrl.trim();
             if (url) targetEmbed.author.url = url.trim();
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         while (!targetEmbed.title) {
             if (!ongoing) {
@@ -229,14 +232,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -245,7 +248,7 @@ exports.run = async(client, message, args, prefix) => {
                 break;
             };
             const text = res.content.trim();
-            if (varReplace.replaceText(text, message.member, message.guild).length > 256) {
+            if (varReplace.replaceText(text, interaction.member, interaction.guild).length > 256) {
                 ongoing = true;
                 await deleteIfAble(res)
                 embed
@@ -257,10 +260,10 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to skip the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
@@ -268,8 +271,8 @@ exports.run = async(client, message, args, prefix) => {
             if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.title = text;
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         while (!targetEmbed.description || targetEmbed.description === empty) {
             if (!ongoing) {
@@ -283,14 +286,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -299,7 +302,7 @@ exports.run = async(client, message, args, prefix) => {
                 break;
             };
             const text = res.content.trim();
-            if (varReplace.replaceText(text, message.member, message.guild).length > 4096) {
+            if (varReplace.replaceText(text, interaction.member, interaction.guild).length > 4096) {
                 ongoing = true;
                 await deleteIfAble(res)
                 embed
@@ -311,10 +314,10 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to skip the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
@@ -322,8 +325,8 @@ exports.run = async(client, message, args, prefix) => {
             // if (targetEmbed.description === empty) targetEmbed.description = null;
             targetEmbed.description = text;
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
             break;
         };
         while (!targetEmbed.thumbnail) {
@@ -338,14 +341,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -354,7 +357,7 @@ exports.run = async(client, message, args, prefix) => {
                 break;
             };
             const iconUrl = res.content.trim().split(/ +/g)[0];
-            if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
+            if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild))) {
                 ongoing = true;
                 await deleteIfAble(res);
                 embed
@@ -367,10 +370,10 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to skip the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
@@ -379,8 +382,8 @@ exports.run = async(client, message, args, prefix) => {
                 url: iconUrl
             };
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         while (!targetEmbed.fields) {
             let fieldsArray = [];
@@ -401,14 +404,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id && res.content.trim().split("\n").every(line => line.trim().split("/\\").every(field => field.length > 0))
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id && res.content.trim().split("\n").every(line => line.trim().split("/\\").every(field => field.length > 0))
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -420,8 +423,8 @@ exports.run = async(client, message, args, prefix) => {
             const check = lines.every(line => {
                 const fields = line.split("/\\");
                 if (fields.length < 2) return false;
-                if (varReplace.replaceText(fields[0], message.member, message.guild).length > 256) return false;
-                if (varReplace.replaceText(fields[1], message.member, message.guild).length > 1024) return false;
+                if (varReplace.replaceText(fields[0], interaction.member, interaction.guild).length > 256) return false;
+                if (varReplace.replaceText(fields[1], interaction.member, interaction.guild).length > 1024) return false;
                 fieldsArray.push({
                     name: fields[0],
                     value: fields[1],
@@ -442,18 +445,18 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to skip the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
             await deleteIfAble(res)
             targetEmbed.fields = fieldsArray;
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         while (!targetEmbed.image) {
             if (!ongoing) {
@@ -467,14 +470,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -483,7 +486,7 @@ exports.run = async(client, message, args, prefix) => {
                 break;
             };
             const iconUrl = res.content.trim().split(/ +/g)[0];
-            if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
+            if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild))) {
                 ongoing = true;
                 await deleteIfAble(res)
                 embed
@@ -496,10 +499,10 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to skip the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
@@ -508,8 +511,8 @@ exports.run = async(client, message, args, prefix) => {
                 url: iconUrl
             };
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         while (!targetEmbed.footer) {
             if (!ongoing) {
@@ -524,14 +527,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = res => res.author.id === message.author.id && res.content.trim().split("/\\").every(x => x.length > 0);
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = res => res.author.id === interaction.user.id && res.content.trim().split("/\\").every(x => x.length > 0);
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip') {
@@ -542,7 +545,7 @@ exports.run = async(client, message, args, prefix) => {
             const field = res.content.trim().split("/\\");
             const text = field[0];
             const iconUrl = field[1];
-            if (!text || varReplace.replaceText(text, message.member, message.guild).length > 500) {
+            if (!text || varReplace.replaceText(text, interaction.member, interaction.guild).length > 500) {
                 ongoing = true;
                 await deleteIfAble(res);
                 embed
@@ -555,14 +558,14 @@ exports.run = async(client, message, args, prefix) => {
                 **something to keep in mind:**
                 > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                 > type \`cancel\` if you want to skip the whole setup process
-                > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                > variable are supported! go check out \`/variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
-            if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), message.member, message.guild))) {
+            if (iconUrl && !validUrl.isWebUri(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild)) && !fileTypeRe.test(varReplace.replaceImage(iconUrl.trim(), interaction.member, interaction.guild))) {
                 ongoing = true;
                 await deleteIfAble(res);
                 embed
@@ -576,10 +579,10 @@ exports.run = async(client, message, args, prefix) => {
                 **something to keep in mind:**
                 > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                 > type \`cancel\` if you want to skip the whole setup process
-                > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                > variable are supported! go check out \`/variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
                 continue;
             };
@@ -590,8 +593,8 @@ exports.run = async(client, message, args, prefix) => {
             };
             if (iconUrl) targetEmbed.footer.icon_url = iconUrl.trim();
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild, null, { level: 50, xp: 50 })] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild, null, { level: 50, xp: 50 })] });
         };
         while (!targetEmbed.timestamp) {
             if (!ongoing) {
@@ -605,14 +608,14 @@ exports.run = async(client, message, args, prefix) => {
                     **something to keep in mind:**
                     > type \`skip\` during the setup process if you want to setup certain step (only for optional step)
                     > type \`cancel\` if you want to cancel the whole setup process
-                    > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
+                    > variable are supported! go check out \`/variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                if (!setupMessage || setupMessage.deleted) setupMessage = await message.channel.send({ embeds: [embed] });
+                if (!setupMessage || setupMessage.deleted) setupMessage = await interaction.channel.send({ embeds: [embed] });
                 else await setupMessage.edit({ embeds: [embed] });
             };
-            const filter = msg => msg.author.id === message.author.id;
-            const res = await askString(message.channel, filter, { time: 180000 });
+            const filter = msg => msg.author.id === interaction.user.id;
+            const res = await askString(interaction.channel, filter, { time: 180000 });
             if (res === 0) return ending(1);
             if (!res) return ending(2);
             if (res.content.trim().toLowerCase() === 'skip' || res.content.trim().toLowerCase() === 'no') {
@@ -622,8 +625,8 @@ exports.run = async(client, message, args, prefix) => {
             await deleteIfAble(res);
             targetEmbed.timestamp = true;
             ongoing = false;
-            if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
-            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, message.member, message.guild)] });
+            if (!displayMessage || displayMessage.deleted) displayMessage = await interaction.channel.send({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
+            else await displayMessage.edit({ embeds: [varReplace.replaceEmbed(targetEmbed, interaction.member, interaction.guild)] });
         };
         const embed2 = new MessageEmbed()
             .setColor("#bee7f7")
@@ -631,74 +634,76 @@ exports.run = async(client, message, args, prefix) => {
             it's all done! i have created the new embed for you :innocent:
             your embed is named \`${name}\` and can be used with the following command below:
 
-            - display the embed via \`${prefix}embed send ${name} #channel\`
+            - display the embed via \`/embed send ${name} #channel\`
             - link to:
-            greet message: via \`${prefix}setgreeting content\` 
-            leave message: via \`${prefix}setgoodbye content\` 
-            leveling message: via \`${prefix}leveling content\`
+            greet message: via \`/setgreeting content\` 
+            leave message: via \`/setgoodbye content\` 
+            leveling message: via \`/leveling content\`
         `);
         storage.embeds.push({
             embed: targetEmbed,
             _id: name,
-            creator: message.author.id
+            creator: interaction.user.id
         });
         await storage.save();
         return setupMessage.edit({ embeds: [embed2] });
-    } else if (args[0].toLowerCase() === 'send') {
-        const id = args[1];
-        if (!id) return message.reply({ embeds: [{ color: "#bee7f7", description: `you haven't provided me an embed ID yet. to show all embeds that were created on this guild, do \`${prefix}embeds list\` first!` }] });
+    } else if (interaction.options.getSubcommand() === 'send') {
+        const id = interaction.options.getString('id');
+        await interaction.deferReply();
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });
         if (!storage) storage = new embedsStorage({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });;
         const embed = storage.embeds.toObject().find(x => x._id === id);
-        if (!embed) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!embed) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`/embeds new\`!` }] });
 
-        const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2]) || message.channel;
-        if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-        if (!channel.permissionsFor(message.guild.me).has('MANAGE_WEBHOOKS')) return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
-        return channel.send({ embeds: [varReplace.replaceEmbed(embed.embed, message.member, message.guild)] })
-    } else if (args[0].toLowerCase() === 'delete') {
-        const id = args[1];
-        if (!id) return message.reply({ embeds: [{ color: "#bee7f7", description: `you haven't provided me an embed ID yet. to show all embeds that were created on this guild, do \`${prefix}embeds list\` first!` }] });
+        const channel = interaction.options.getChannel('destination') || interaction.channel;
+
+        if (!channel.permissionsFor(interaction.guild.me).has('MANAGE_WEBHOOKS')) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
+        interaction.editReply({ embeds: [{ color: "#bee7f7", description: `✅ your embed was sent!` }] });
+        return channel.send({ embeds: [varReplace.replaceEmbed(embed.embed, interaction.member, interaction.guild)] })
+    } else if (interaction.options.getSubcommand() === 'delete') {
+        const id = interaction.options.getString('id');
+        await interaction.deferReply();
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });
         if (!storage) storage = new embedsStorage({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });;
-        if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!storage.embeds.toObject().length) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`/embeds new\`!` }] });
         const embed = storage.embeds.toObject().find(x => x._id === id);
-        if (!embed) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!embed) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${id}\` :pensive: to create a new embed, do \`/embeds new\`!` }] });
         storage.embeds.pull(embed);
         storage.markModified('embeds');
         await storage.save();
-        return message.reply({ embeds: [{ color: "#bee7f7", description: `☑️ that embed was deleted successfully` }] });
-    } else if (args[0].toLowerCase() === 'list') {
+        return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `☑️ that embed was deleted successfully` }] });
+    } else if (interaction.options.getSubcommand() === 'list') {
+        await interaction.deferReply();
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });
         if (!storage) storage = new embedsStorage({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         });;
-        if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+        if (!storage.embeds.toObject().length) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`/embeds new\`!` }] });
         const array = [];
         storage.embeds.toObject().map((each, index) => {
-            const author = message.guild.members.cache.get(each.creator);
+            const author = interaction.guild.members.cache.get(each.creator);
             array.push(`\`${index + 1}\` - ${each._id} [${author ? author.toString() : 'Left user'}]`)
         })
         const embed = new MessageEmbed()
             .setDescription(array.join('\n'))
-            .setColor(message.guild.me.displayHexColor)
-            .setAuthor(`all embeds created in ${message.guild.name}:`)
-            .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }));
-        return message.channel.send({ embeds: [embed] });
-    } else return message.channel.send({ embeds: [{ color: "#bee7f7", description: `wrong sub command :pensive: \nall avaliable sub-command for setting up embeds are: \`new, send, list, delete\`!` }] })
+            .setColor(interaction.guild.me.displayHexColor)
+            .setAuthor(`all embeds created in ${interaction.guild.name}:`)
+            .setThumbnail(interaction.guild.iconURL({ size: 4096, dynamic: true }));
+        return interaction.editReply({ embeds: [embed] });
+    };
 };
 
 exports.help = {
@@ -709,8 +714,46 @@ exports.help = {
 };
 
 exports.conf = {
-    aliases: ["embed"],
     cooldown: 5,
+    guild: true,
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description)
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('new')
+            .setDescription('begin creating a new embed')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('send')
+            .setDescription('send a previously created embed')
+            .addStringOption(option => option
+                .setName('id')
+                .setDescription('what is the ID of the embed that you want to send?')
+                .setRequired(true)
+            )
+            .addChannelOption(option => option
+                .setName('destination')
+                .setRequired(false)
+                .setDescription('where would you like to send the embed to?')
+            )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('list')
+            .setDescription('list all created embed in the server')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('delete')
+            .setDescription('delete a previously created embed')
+            .addStringOption(option => option
+                .setName('id')
+                .setDescription('what is the ID of the embed that you want to delete?')
+                .setRequired(true)
+            )
+        ),
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],
     userPerms: ["MANAGE_GUILD"]
