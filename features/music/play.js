@@ -119,24 +119,6 @@ module.exports = class Queue {
             };
             this.pending = false;
         };
-        this.player.once('end', async data => {
-            if (this.playingMessage && !this.playingMessage.deleted && this.songs.length) this.playingMessage.delete().catch(() => null);
-            if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
-            if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
-                if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
-                let upcoming;
-                if (this.loop) {
-                    this.songs.push(this.nowPlaying);
-                    upcoming = this.songs[0];
-                } else if (this.repeat) {
-                    upcoming = !this.nowPlaying ? this.songs[0] : this.nowPlaying;
-                } else {
-                    upcoming = this.songs[0];
-                };
-                this.play(upcoming);
-                if (data.reason === 'LOAD_FAILED') this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
-            };
-        });
         this.player.once('start', async data => {
             try {
                 const emoji = {
@@ -151,10 +133,32 @@ module.exports = class Queue {
                     if (this.karaoke.instance.success) embed.setFooter(this.karaoke.instance.success);
                     this.karaoke.instance.start();
                 };
-                const sent = await this.textChannel.send({ embeds: [embed] });
-                this.playingMessage = sent;
+                if (!this.repeat) {
+                    const sent = await this.textChannel.send({ embeds: [embed] });
+                    this.playingMessage = sent;
+                };
             } catch (error) {
                 logger.log('error', error);
+            };
+        });
+        this.player.once('end', async data => {
+            if (this.playingMessage) {
+                if (this.playingMessage.deletable && (this.songs.length || (this.loop && !this.songs.length) || !this.repeat)) this.playingMessage.delete();
+            }
+            if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
+            if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
+                if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
+                let upcoming;
+                if (this.loop) {
+                    this.songs.push(this.nowPlaying);
+                    upcoming = this.songs[0];
+                } else if (this.repeat) {
+                    upcoming = !this.nowPlaying ? this.songs[0] : this.nowPlaying;
+                } else {
+                    upcoming = this.songs[0];
+                };
+                this.play(upcoming);
+                if (data.reason === 'LOAD_FAILED') this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
             };
         });
         if (song.type === 'sp') {
