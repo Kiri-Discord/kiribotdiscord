@@ -33,13 +33,13 @@ exports.run = async(client, message, args, prefix) => {
     const level = leveling ? leveling.level : 0;
     const xp = leveling ? leveling.xp : 0;
     let items = await client.inventory.findOne({
-        userId: message.author.id,
+        userId: user.id,
         guildId: message.guild.id
     });
     if (!items) {
         const model = client.inventory
         items = new model({
-            userId: message.author.id,
+            userId: user.id,
             guildId: message.guild.id
         });
     };
