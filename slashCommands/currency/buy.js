@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     const amount = interaction.options.getInteger('amount');
-
+    if (amount < 0) return interaction.reply({ content: 'the amount of item that you want to buy must not be lower than 0 :pensive:', ephemeral: true })
     const items = ['wedding ring', 'seed', 'worm', 'ring'];
     const toBuy = interaction.options.getString('item');
     if (!items.includes(toBuy.toLowerCase())) return interaction.reply({ content: `\`${toBuy}\` is an invalid item! check \`/shop\` for a list of avaliable item :grin:`, ephemeral: true });
