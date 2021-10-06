@@ -28,7 +28,7 @@ exports.run = async(client, message, args) => {
     };
     let lastGamble = cooldownStorage.lastGamble;
     let balance = storage.balance;
-    if (amount > balance || !balance || balance === 0) return message.reply("you don't have enough money duh");
+    if (amount > balance || !balance) return message.reply("you don't have enough money duh");
     let cooldown = 25000;
 
     if (lastGamble !== null && cooldown - (Date.now() - lastGamble) > 0) {
