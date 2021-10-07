@@ -31,15 +31,14 @@ exports.run = async(client, message, args, prefix) => {
     const money = moneyStorage.balance;
 
     async function buyItem(money, price, quantity, item) {
-        const total = price * quantity
-        if (money < price * quantity) return message.reply(`you don't have that much money in your balance :pensive:\na total of ⏣ __${total - money}__ token is needed to buy it.`)
+        const total = price * quantity;
+        if (money < total) return message.reply(`you don't have that much money in your balance :pensive:\na total of ⏣ __${total - money}__ token is needed to buy it.`)
         const items = quantity < 1 ? item : item + 's';
         const embed = new MessageEmbed()
             .setColor("#bee7f7")
             .setAuthor('purchase successful (=^･ω･^=)', message.author.displayAvatarURL())
             .setDescription(`you have bought __${quantity}__ **${items}** (⏣ ${price}) which cost you ⏣ __${total}__ token`)
-            .setFooter(`your current balance: ⏣ ${money - price}`)
-        message.reply({ embeds: [embed] })
+            .setFooter(`your current balance: ⏣ ${money - total}`)
 
         if (item === 'wedding ring' || item === 'ring') {
             await client.inventory.findOneAndUpdate({
@@ -87,7 +86,10 @@ exports.run = async(client, message, args, prefix) => {
                 upsert: true,
                 new: true,
             });
-        }
+        };
+        moneyStorage.balance = moneyStorage.balance - total;
+        await moneyStorage.save();
+        return message.reply({ embeds: [embed] });
     };
     if (toBuy === 'wedding ring' || toBuy === 'ring') {
         buyItem(money, 1300, args[0], toBuy)

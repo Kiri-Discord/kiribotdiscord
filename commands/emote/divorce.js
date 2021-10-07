@@ -1,3 +1,6 @@
+const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const { stripIndent } = require('common-tags');
+
 exports.run = async(client, message, args) => {
     const author = await client.love.findOne({
         userID: message.author.id,
@@ -49,27 +52,51 @@ exports.run = async(client, message, args) => {
     }
 }
 async function divorce(client, message, member) {
-    const msg = await message.channel.send({ embeds: [{ color: "a65959", description: `
-    ${member}, it seems like ${message.author} is asking for a divorce...
-    
-    do you accept this request? please react with ✅ for yes, and ❌ for no.
-
-    *i will be going in a minute.*
-    ` }] });
-    await msg.react('✅');
-    await msg.react('❌');
-    let answered;
-    const filter = (reaction, user) => {
-        return ['✅', '❌'].includes(reaction.emoji.name) && user.id === member.user.id;
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setCustomId('yes')
+            .setLabel('Yes')
+            .setStyle('PRIMARY'),
+            new MessageButton()
+            .setCustomId('no')
+            .setLabel('No')
+            .setStyle('DANGER')
+        );
+    const embed = new MessageEmbed()
+        .setColor('#7DBBEB')
+        .setFooter('i will be going in a minute.')
+        .setDescription(stripIndent `
+        ${member}, it seems like ${message.author} is asking for a divorce...
+        
+        do you accept this request? please select **Yes** or **No**.
+        `)
+    const msg = await message.channel.send({ embeds: [embed], components: [row] });
+    const filter = async(res) => {
+        if (res.user.id !== member.user.id) {
+            await res.reply({
+                embeds: [{
+                    description: `those buttons doesn't belong to you :pensive:`
+                }],
+                ephemeral: true
+            });
+            return false;
+        } else {
+            return true;
+        };
     };
-    const collector = msg.createReactionCollector({ filter, time: 60000 });
-    collector.on('collect', async(reaction, user) => {
-        if (reaction.emoji.name === '❌') {
-            answered = true;
+    const collector = msg.createMessageComponentCollector({
+        componentType: 'BUTTON',
+        filter,
+        time: 60000,
+        max: 1
+    });
+    collector.on('collect', async(res) => {
+        await res.deferReply();
+        if (res.customId === 'no') {
             message.channel.send(`**${member.user.username}** declined your request :(`);
             return collector.stop();
-        } else if (reaction.emoji.name === '✅') {
-            answered = true;
+        } else if (res.customId === 'yes') {
             await client.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
@@ -78,12 +105,14 @@ async function divorce(client, message, member) {
                 userID: member.user.id,
                 guildID: message.guild.id
             });
-            message.channel.send(`**${message.author.username}**, you have divorced with **${member.user.username}** :pensive:`);
+            res.editReply(`**${message.author.username}**, you have divorced with **${member.user.username}** :pensive:`);
             return collector.stop();
-        }
+        };
     });
-    collector.on('end', () => {
-        if (!answered) return message.channel.send('you two didn\'t say anything!');
+    collector.on('end', (collected) => {
+        row.components.forEach(component => component.setDisabled(true));
+        msg.edit({ components: [row] });
+        if (!collected.size) return message.channel.send('you two didn\'t say anything!');
     });
 }
 exports.help = {
@@ -97,5 +126,5 @@ exports.conf = {
     aliases: ['breakup'],
     cooldown: 4,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
+    channelPerms: ["EMBED_LINKS"]
 };

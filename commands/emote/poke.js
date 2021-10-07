@@ -10,7 +10,7 @@ exports.run = async(client, message, args) => {
     };
     const target = member.user;
 
-    if (target.id === client.user.id) return message.reply("you don't know how bad it will be, do you?")
+    if (target.id === client.user.id) return message.reply("you don't know how bad it would be, do you?")
     if (target.bot) return message.reply("you can't poke that bot, sorry :(")
     const targetId = target.id
     const authorId = message.author.id

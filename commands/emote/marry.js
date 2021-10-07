@@ -1,5 +1,6 @@
 const request = require('node-superfetch');
-const { MessageEmbed } = require('discord.js');
+const { stripIndent } = require('common-tags');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 exports.run = async(client, message, args, prefix) => {
     const author = await client.love.findOne({
         userID: message.author.id,
@@ -27,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
             guildId: message.guild.id,
         });
     };
-    if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
+    // if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: message.guild.id
@@ -36,27 +37,54 @@ exports.run = async(client, message, args, prefix) => {
         if (marry.marriedID) {
             return message.reply('that user is already married!');
         };
-    }
-    const msg = await message.channel.send({ embeds: [{ color: "a65959", description: `
-    ${member}, it seems like ${message.author} is interested in taking you as their loved one...
-    
-    do you accept this proposal? please react with ✅ for yes, and ❌ for no.
-    *this proposal will expire in a minute.*
-    ` }] });
-    await msg.react('✅');
-    await msg.react('❌');
-    let answered;
-    const filter = (reaction, user) => {
-        return ['✅', '❌'].includes(reaction.emoji.name) && user.id === member.user.id;
     };
-    const collector = msg.createReactionCollector({ filter, time: 60000 });
-    collector.on('collect', async(reaction, user) => {
-        if (reaction.emoji.name === '❌') {
-            answered = true;
-            message.channel.send(`**${member.user.username}** declined your proposal :(`);
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setCustomId('yes')
+            .setLabel('Yes')
+            .setStyle('PRIMARY'),
+            new MessageButton()
+            .setCustomId('no')
+            .setLabel('No')
+            .setStyle('DANGER')
+        );
+    const embed = new MessageEmbed()
+        .setColor('#7DBBEB')
+        .setDescription(stripIndent `
+        ${member}, it seems like ${message.author} is interested in taking you as their loved one...
+        
+        do you accept this proposal? please select **Yes** or **No**.
+        *this proposal will expire in a minute.*
+        `)
+        .setFooter('this proposal will expire in a minute.')
+    const msg = await message.channel.send({ embeds: [embed], components: [row] });
+    const filter = async(res) => {
+        if (res.user.id !== member.user.id) {
+            await res.reply({
+                embeds: [{
+                    description: `those buttons doesn't belong to you :pensive:`
+                }],
+                ephemeral: true
+            });
+            return false;
+        } else {
+            return true;
+        };
+    };
+
+    const collector = msg.createMessageComponentCollector({
+        componentType: 'BUTTON',
+        filter,
+        time: 60000,
+        max: 1
+    });
+    collector.on('collect', async(res) => {
+        await res.deferReply();
+        if (res.customId === 'no') {
+            res.editReply(`**${member.user.username}** declined your proposal :(`);
             return collector.stop();
-        } else if (reaction.emoji.name === '✅') {
-            answered = true;
+        } else if (res.customId === 'yes') {
             await client.love.findOneAndUpdate({
                 guildID: message.guild.id,
                 userID: message.author.id
@@ -79,13 +107,6 @@ exports.run = async(client, message, args, prefix) => {
                 upsert: true,
                 new: true,
             });
-
-            const { body } = await request.get('https://nekos.best/api/v1/kiss');
-            let image = body.url;
-            const embed = new MessageEmbed()
-                .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
-                .setImage(image);
-            await message.channel.send({ embeds: [embed] });
             await client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
@@ -99,11 +120,19 @@ exports.run = async(client, message, args, prefix) => {
                 upsert: true,
                 new: true,
             });
+            const { body } = await request.get('https://nekos.best/api/v1/kiss');
+            let image = body.url;
+            const embed = new MessageEmbed()
+                .setDescription(`:sparkling_heart: **${message.author.username}** and **${member.user.username}** are now married! :sparkling_heart:`)
+                .setImage(image);
+            await res.editReply({ embeds: [embed] });
             return collector.stop();
-        }
+        };
     });
-    collector.on('end', () => {
-        if (!answered) return message.channel.send('you two didn\'t say anything!');
+    collector.on('end', (collected) => {
+        row.components.forEach(component => component.setDisabled(true));
+        msg.edit({ components: [row] });
+        if (!collected.size) return message.channel.send('you two didn\'t say anything!');
     });
 }
 exports.help = {
@@ -117,5 +146,5 @@ exports.conf = {
     aliases: ['propose'],
     cooldown: 4,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
+    channelPerms: ["EMBED_LINKS"]
 };
