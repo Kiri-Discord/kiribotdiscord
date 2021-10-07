@@ -143,7 +143,7 @@ module.exports = class Queue {
         });
         this.player.once('end', async data => {
             if (this.playingMessage) {
-                if (this.playingMessage.deletable && (this.songs.length || (this.loop && !this.songs.length) || !this.repeat)) this.playingMessage.delete();
+                if (this.playingMessage.deletable && (this.songs.length || (this.loop && !this.songs.length) || !this.repeat && !this.songs.length)) this.playingMessage.delete();
             }
             if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
             if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
