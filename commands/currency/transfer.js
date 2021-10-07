@@ -8,7 +8,7 @@ exports.run = async(client, message, args) => {
     if (!args[1]) return message.reply("please input the amount of credits that you want to transfer!");
     let amount = parseInt(args[1]);
     if (isNaN(amount)) return message.reply("that was not a valid number!");
-    if (amount === 0) return message.reply("why did you transfer nothing?");
+    if (amount === 0 || amount < 0) return message.reply("that is an invalid amount of token! you can't neither transfer nothing or using a negative amount :pensive:");
     let storage = await client.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
@@ -52,7 +52,7 @@ exports.run = async(client, message, args) => {
     });
 
     return message.channel.send(`💸 you've transferred to **${user.tag}** ⏣ **${amount}** credits!`);
-}
+};
 
 exports.help = {
     name: "transfer",
