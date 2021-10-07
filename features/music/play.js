@@ -134,6 +134,7 @@ module.exports = class Queue {
                     this.karaoke.instance.start();
                 };
                 if (!this.repeat) {
+                    this.playingMessage = null;
                     const sent = await this.textChannel.send({ embeds: [embed] });
                     this.playingMessage = sent;
                 };
@@ -143,7 +144,7 @@ module.exports = class Queue {
         });
         this.player.once('end', async data => {
             if (this.playingMessage) {
-                if (this.playingMessage.deletable && (this.songs.length || (this.loop && !this.songs.length) || !this.repeat && !this.songs.length)) this.playingMessage.delete();
+                if (this.playingMessage.deletable && (this.songs.length || (this.loop && !this.songs.length) || !this.repeat && !this.songs.length)) this.playingMessage.delete().catch(() => null);
             }
             if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
             if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
