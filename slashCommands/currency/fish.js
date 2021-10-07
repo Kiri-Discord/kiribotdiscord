@@ -142,7 +142,7 @@ exports.run = async(client, interaction) => {
 }
 exports.help = {
     name: "fish",
-    description: "go fishing :tropical_fish:",
+    description: "go fishing",
     usage: ["fish"],
     example: ["fish"]
 };

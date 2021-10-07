@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const itemsList = require('../../assets/items.json');
 const itemsName = Object.keys(itemsList);
 
@@ -43,7 +44,7 @@ exports.run = async(client, interaction) => {
         const model = client.inventory
         items = new model({
             userId: user.id,
-            guildId: message.guild.id
+            guildId: interaction.guild.id
         });
     };
     let item = 0;
@@ -59,14 +60,14 @@ exports.run = async(client, interaction) => {
     let marriageStatus;
     const target = await client.love.findOne({
         userID: user.id,
-        guildID: message.guild.id
+        guildID: interaction.guild.id
     });
     if (target) {
         if (target.marriedID) {
-            const married = message.guild.members.cache.get(target.marriedID);
+            const married = interaction.guild.members.cache.get(target.marriedID);
             if (!married) {
                 await client.love.findOneAndDelete({
-                    guildID: message.guild.id,
+                    guildID: interaction.guild.id,
                     userID: user.id,
                 });
                 marriageStatus = `**${user.username}** is single!`;
@@ -83,13 +84,13 @@ exports.run = async(client, interaction) => {
 
     const embed = new MessageEmbed()
         .setColor("#bee7f7")
-        .setAuthor(`${user.username}'s profile in ${message.guild.name}`)
+        .setAuthor(`${user.username}'s profile in ${interaction.guild.name}`)
         .setThumbnail(user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
         .addField(`Leveling`, `✨ XP: \`${xp}\`\n:arrow_up: Level: \`${level}\``)
         .addField(`Currency`, `:moneybag: Balance: ⏣ \`${storage.balance}\`\nOwn \`${item}\` item (total \`${itemTotal}\`) that worth ⏣ ${worth}`)
         .addField(`Minigames (only multiplayer)`, `:golf: Games played: **${storage.matchPlayed || 0}**\n:tada: Win: ${storage.win}\n:pensive: Lose: ${storage.lose}\nW/L: **${isNaN(winLoseRate.toFixed(2)) ? 'None' : winLoseRate.toFixed(2)}**`)
         .addField('Marriage', `${marriageStatus} \`/marriage status\` to refresh`)
-    return message.channel.send({ embeds: [embed] })
+    return interaction.editReply({ embeds: [embed] })
 };
 
 exports.help = {
@@ -106,7 +107,7 @@ exports.conf = {
         .addUserOption(option => option
             .setName('user')
             .setRequired(false)
-            .setDescription('which member would you like to get the profile? :)')
+            .setDescription('which member would you like to get the profile for? :)')
         ),
     guild: true,
     cooldown: 3,

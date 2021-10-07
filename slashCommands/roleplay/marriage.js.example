@@ -1,0 +1,13 @@
+exports.help = {
+    name: "marriage",
+    description: "allows marriage in your server (and earn some future benefits of course!)",
+    usage: ["marriage `marry <@mention>`", "marriage `divorce <@mention>`", "marriage `status`"],
+    example: ["marriage `marry @Discord`", "marriage `divorce @Jack`", "marriage `status`"]
+};
+
+exports.conf = {
+
+    cooldown: 4,
+    guildOnly: true,
+    channelPerms: ["EMBED_LINKS", "ADD_REACTIONS"]
+};

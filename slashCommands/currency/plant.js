@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     const slot = interaction.options.getString('slot');
@@ -129,6 +130,7 @@ exports.conf = {
             .setRequired(true)
         ),
     cooldown: 5,
+    guild: true,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 };
