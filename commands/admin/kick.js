@@ -31,9 +31,8 @@ exports.run = async(client, message, args) => {
         .addField('Reason', reason)
         .setFooter('Kicked at')
         .setTimestamp()
-
+    if (!member.user.bot) await member.send(`🔨 you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}`).catch(() => null);
     try {
-        if (!member.user.bot) member.send(`🔨 you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}`);
         await member.kick(reason);
         await message.channel.send({ embeds: [kickembed] });
         if (!logChannel) {

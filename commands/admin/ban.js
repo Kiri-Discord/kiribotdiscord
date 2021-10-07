@@ -40,9 +40,8 @@ exports.run = async(client, message, args) => {
         .setFooter('Banned at')
         .addField('Reason', reason)
         .setTimestamp()
-
+    if (!member.user.bot) await member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}`).catch(() => null);
     try {
-        if (!member.user.bot) member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}`);
         await member.ban({ reason });
         await message.channel.send({ embeds: [banembed] });
         if (!logChannel) {

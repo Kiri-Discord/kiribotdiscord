@@ -16,6 +16,7 @@ exports.run = async(client, message, args, prefix) => {
                 .setDescription(`❌ goodbye feature has been disabled`);
             return message.channel.send({ embeds: [embed] });
         };
+        if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `you haven't provided a sub command \`${prefix}${exports.help.name} <subcommand>\` :pensive:\nall avaliable sub-command for setting up goodbye message are: \`-off, channel, content, test\`!` }] })
         if (args[0].toLowerCase() === 'channel') {
             const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
 
