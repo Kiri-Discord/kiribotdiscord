@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js")
 const request = require('node-superfetch');
 
-exports.run = async(client, interaction, args) => {
+exports.run = async(client, interaction) => {
     await interaction.deferReply();
     const { body } = await request.get('https://nekos.best/api/v1/baka');
     const data = body.url;
