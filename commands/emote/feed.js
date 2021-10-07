@@ -27,7 +27,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "feed",
-    description: "feed someone full :confused:",
+    description: "feed someone full ❤️",
     usage: ["feed <@mention>"],
     example: ["feed @somebody"]
 };

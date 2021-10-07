@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const punchSchema = require('../../model/punch');
-const fetch = require('node-fetch');
+const request = require('node-superfetch');
 
 
 exports.run = async(client, message, args) => {
@@ -38,19 +38,13 @@ exports.run = async(client, message, args) => {
         upsert: true,
         new: true,
     });
+    const { body } = await request.get('https://neko-love.xyz/api/v1/punch');
     const amount = result.received;
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
         .setAuthor(`${message.author.username} punch ${target.username} 😔 they was punched ${amount} time${addS}!`, message.author.displayAvatarURL())
-
-    await fetch('https://neko-love.xyz/api/v1/punch')
-        .then(res => res.json())
-        .then(json => embed.setImage(json.url))
-        .catch(err => {
-            message.channel.send(`an error happened on my side and you wasn't able to punch that person ${stare} here is a hug for now 🤗`);
-            return logger.log('error', err);
-        });
+        .setImage(body.url)
 
     return message.channel.send({ embeds: [embed] })
 }

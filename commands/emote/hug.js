@@ -50,7 +50,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "hug",
-    description: "why are you still seeing this page? just do it lmao",
+    description: "hug somebody with care",
     usage: ["hug <@mention>"],
     example: ["hug @somebody"]
 };
