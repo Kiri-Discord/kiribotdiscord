@@ -28,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
             guildId: message.guild.id,
         });
     };
-    // if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
+    if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: message.guild.id
