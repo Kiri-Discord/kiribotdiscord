@@ -221,6 +221,7 @@ exports.run = async(client, interaction) => {
             let botperms = command.conf.clientPerms ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let channelperms = command.conf.channelPerms ? command.conf.channelPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let adult = command.conf.adult ? 'true' : 'false';
+            let sub = command.subCommand.length ? command.subCommand.join(", ") : null;
 
             let embed = new MessageEmbed()
                 .setColor('#bee7f7')
@@ -235,7 +236,8 @@ exports.run = async(client, interaction) => {
                 .addField("user permission", userperms, true)
                 .addField("global permission", botperms, true)
                 .addField(`channel permission`, channelperms, true)
-                .addField('nsfw?', adult, true)
+                .addField('nsfw?', adult, true);
+            if (sub) embed.addField('sub commands', sub, true);
             return interaction.reply({ embeds: [embed] });
         } else {
             const matches = findBestMatch(query, client.allSlashCmds).bestMatch.target;

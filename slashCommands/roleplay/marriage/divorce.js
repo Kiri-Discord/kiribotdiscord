@@ -72,7 +72,7 @@ async function divorce(client, interaction, member) {
         
         do you accept this request? please select **Yes** or **No**.
         `)
-    const msg = await interaction.channel.send({ embeds: [embed], components: [row] });
+    const msg = await interaction.editReply({ embeds: [embed], components: [row], fetchReply: true });
     const filter = async(res) => {
         if (res.user.id !== member.user.id) {
             await res.reply({

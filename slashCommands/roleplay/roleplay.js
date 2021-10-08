@@ -56,21 +56,7 @@ exports.run = async(client, interaction) => {
 exports.help = {
     name: "roleplay",
     description: "fun roleplay-like actions to interact with your friends and rank yourself up in the leaderboard!",
-    usage: [
-        "roleplay baka `<@user>`",
-        "roleplay cry `<@user>`",
-        "roleplay cuddle `<@user>`",
-        "roleplay feed `<@user>`",
-        "roleplay hug `<@user>`",
-        "roleplay insult `<@user>`",
-        "roleplay kiss `<@user>`",
-        "roleplay pat`<@user>`",
-        "roleplay poke `<@user>`",
-        "roleplay punch `<@user>`",
-        "roleplay slap `<@user>`",
-        "roleplay smug `<@user>`",
-        "roleplay tickle `<@user>`"
-    ],
+    usage: [],
     example: []
 };
 

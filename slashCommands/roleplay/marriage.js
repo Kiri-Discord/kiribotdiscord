@@ -1,12 +1,21 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const marryCmd = require('./marriage/marry');
+const statusCmd = require('./marriage/status');
+const divorceCmd = require('./marriage/divorce');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
         case 'marry':
-
-    }
-}
+            marryCmd.run(client, interaction);
+            break;
+        case 'divorce':
+            divorceCmd.run(client, interaction);
+            break;
+        case 'status':
+            statusCmd.run(client, interaction);
+            break;
+    };
+};
 exports.help = {
     name: "marriage",
     description: "allows marriage in your server (and earn some future benefits of course!)",
@@ -35,7 +44,7 @@ exports.conf = {
             .setDescription("check your or another person's relationship status")
             .addUserOption(option => option
                 .setName('user')
-                .setRequired(true)
+                .setRequired(false)
                 .setDescription('who would you like get the relationship status?')
             )
         )

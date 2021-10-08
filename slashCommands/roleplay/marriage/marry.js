@@ -28,7 +28,7 @@ exports.run = async(client, interaction) => {
             guildId: interaction.guild.id,
         });
     };
-    if (storage.rings < 1) return interaction.editReply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`/shop\`.`);
+    // if (storage.rings < 1) return interaction.editReply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`/shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: interaction.guild.id
@@ -58,7 +58,7 @@ exports.run = async(client, interaction) => {
         *this proposal will expire in a minute.*
         `)
         .setFooter('this proposal will expire in a minute.')
-    const msg = await interaction.channel.send({ embeds: [embed], components: [row] });
+    const msg = await interaction.editReply({ embeds: [embed], components: [row], fetchReply: true });
     const filter = async(res) => {
         if (res.user.id !== member.user.id) {
             await res.reply({
