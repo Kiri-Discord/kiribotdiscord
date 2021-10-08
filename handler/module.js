@@ -45,20 +45,40 @@ module.exports = async client => {
                     if (!file.endsWith(".js")) return;
                     let prop = require(`../slashCommands/${category}/${file}`);
                     if (!prop.conf.adult) client.allSlashCmds.push(prop.conf.data.name);
-                    client.slash.set(prop.conf.data.name, prop);
                     client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+                    prop.subCommand = [];
+>>>>>>> Stashed changes
                     const command = prop.conf.data.toJSON();
                     if (command.options.length) {
                         const { options } = command;
                         options.forEach(sub => {
+<<<<<<< Updated upstream
                             if (sub.type === 1) client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name}`, desc: sub.description });
                             else if (sub.type === 2) {
                                 sub.options.forEach(op => {
                                     client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name} ${op.name}`, desc: op.description });
+=======
+                            if (sub.type === 1) {
+                                client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name}`, desc: sub.description });
+                                prop.subCommand.push(`${prop.conf.data.name} ${sub.name}`);
+                            } else if (sub.type === 2) {
+                                sub.options.forEach(op => {
+                                    client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name} ${op.name}`, desc: op.description });
+                                    prop.subCommand.push(`${prop.conf.data.name} ${sub.name} ${op.name}`);
+>>>>>>> Stashed changes
                                 })
                             }
                         })
                     };
+<<<<<<< Updated upstream
+=======
+                    client.slash.set(prop.conf.data.name, prop);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                 });
             });
         });
