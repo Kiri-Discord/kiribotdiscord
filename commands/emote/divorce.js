@@ -94,7 +94,7 @@ async function divorce(client, message, member) {
     collector.on('collect', async(res) => {
         await res.deferReply();
         if (res.customId === 'no') {
-            message.channel.send(`**${member.user.username}** declined your request :(`);
+            res.editReply(`**${member.user.username}** declined your request :(`);
             return collector.stop();
         } else if (res.customId === 'yes') {
             await client.love.findOneAndDelete({
