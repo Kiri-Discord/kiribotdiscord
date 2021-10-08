@@ -3,8 +3,6 @@ this.getLevel = (xp) => {
 }
 
 this.getLevelBounds = (level) => {
-    // Example: getLevelBounds(1)
-    // Results: lowerBound: 1, upperBound: 32
     const lowerBound = Math.ceil(((level - 1) / 0.177) ** 2);
     const upperBound = Math.ceil((level / 0.177) ** 2);
     return { lowerBound, upperBound };
