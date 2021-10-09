@@ -5,6 +5,7 @@ const factCmd = require('./random/fact');
 const jokeCmd = require('./random/joke');
 const questionCmd = require('./random/question');
 const quoteCmd = require('./random/quote');
+const praiseCmd = require('./random/praise');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
@@ -26,6 +27,10 @@ exports.run = async(client, interaction) => {
         case 'quote':
             quoteCmd.run(client, interaction);
             break;
+        case 'praise':
+            praiseCmd.run(client, interaction);
+            break;
+
     }
 };
 exports.help = {
@@ -47,6 +52,11 @@ exports.conf = {
                 .setRequired(true)
                 .setDescription('what would you like to ask me?')
             )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName('praise')
+            .setDescription("give you a free compliment ;)")
         )
         .addSubcommand(subcommand =>
             subcommand
