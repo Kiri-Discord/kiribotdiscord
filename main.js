@@ -47,7 +47,6 @@ const client = new kiri({
             $browser: "Discord Android"
         }
     }
-
 });
 // client.package = require("./package.json");
 client.on("warn", warn => logger.log('warn', warn));
