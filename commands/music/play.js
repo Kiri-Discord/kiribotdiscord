@@ -12,7 +12,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     const serverQueue = client.queue.get(message.guild.id);
     if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
     if (!channel.joinable || !channel.speakable) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
-    if (serverQueue && channel !== message.guild.me.voice.channel) {
+    if (serverQueue && channel.id !== message.guild.me.voice.channel.id) {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music in your server! join ${voicechannel} to listen :smiley:`).catch(err => logger.log('error', err));
     };
