@@ -47,7 +47,7 @@ module.exports = class Queue {
             }, STAY_TIME * 1000);
             this.client.dcTimeout.set(this.guildId, timeout);
         };
-        this.player.stop();
+        if (this.player) this.player.stop();
         await Guild.findOneAndUpdate({
             guildId: this.guildId
         }, {
