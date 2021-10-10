@@ -51,7 +51,7 @@ exports.run = async(client, message, args) => {
         const ctx = canvas.getContext('2d');
         ctx.font = '40px Noto';
         const lines = await wrapText(ctx, text.content, base.width - 10);
-        const lineBreakLen = text.split('\n').length;
+        const lineBreakLen = text.content.split('\n').length;
         const linesLen = (40 * lines.length) +
             (40 * (lineBreakLen - 1)) +
             (14 * lines.length) +
