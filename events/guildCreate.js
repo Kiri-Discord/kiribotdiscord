@@ -18,8 +18,8 @@ module.exports = async(client, guild) => {
     await newGuild.save();
 
     const prefix = client.config.prefix;
-    const channels = guild.channels.cache.filter(x => x.type === 'GUILD_TEXT').filter(x => x.permissionsFor(guild.me).has('SEND_MESSAGES'))
-    const channelbutcansendEmbed = guild.channels.cache.filter(x => x.type === 'GUILD_TEXT').filter(x => x.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']));
+    const channels = guild.channels.cache.filter(x => x.type === 'GUILD_TEXT').filter(x => x.permissionsFor(guild.me).has(['VIEW_CHANNEL', 'SEND_MESSAGES']))
+    const channelbutcansendEmbed = guild.channels.cache.filter(x => x.type === 'GUILD_TEXT').filter(x => x.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES', 'VIEW_CHANNEL']));
 
     const embed = new MessageEmbed()
         .setTitle("thanks for inviting me to your server :)")
@@ -46,9 +46,9 @@ module.exports = async(client, guild) => {
     logger.log('info', `New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
     const owner = client.users.cache.get(client.config.ownerID);
     if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-    if (channelbutcansendEmbed.size > 0) {
-        channelbutcansendEmbed.first().send({ embeds: [embed] });
-    } else if (channels.size > 0) {
+    if (channelbutcansendEmbed.size) {
+        channelbutcansendEmbed.first().send({ embeds: [embed] }).catch(() => null);
+    } else if (channels.size) {
         channels.first().send(stripIndents `
         **hi, i'm Kiri! thanks for inviting me to your server :)**
 
