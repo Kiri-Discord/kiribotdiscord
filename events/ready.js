@@ -25,10 +25,6 @@ module.exports = async client => {
             };
         }
     };
-    // if (!client.config.development) {
-    //     // botSitePost(client);
-    //     // setInterval(() => botSitePost(client), 1200000);
-    // };
     const staffsv = client.guilds.cache.get(client.config.emojiServerID);
     if (staffsv) {
         await staffsv.emojis.cache.forEach(async emoji => {

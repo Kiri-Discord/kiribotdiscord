@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const helmet = require("helmet");
 const compression = require("compression");
-const { Permissions } = require("discord.js");
+const { Permissions, MessageEmbed } = require("discord.js");
 const config = require('../config.json');
-// const { stripIndents } = require('common-tags');
+const { stripIndents } = require('common-tags');
 module.exports = {
     init: (client) => {
         app.use(express.json());
@@ -60,41 +60,44 @@ module.exports = {
                 return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
             };
         });
-        // app.post('/vote', authenticateToken, async(req, res) => {
-        //     if ("userID" in req.query) {
-        //         let user;
-        //         try {
-        //             user = await client.users.fetch(req.query.userID);
-        //         } catch (error) {
-        //             return res.status(400).json({ code: 400, message: 'USER_NOT_FOUND' });
-        //         };
-        //         const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
-        //         const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
-        //         const embed = new MessageEmbed()
-        //             .setColor('#F4EDB4')
-        //             .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`, client.user.displayAvatarURL())
-        //             .setDescription(stripIndents `
-        //     thank you for being generous and gave me a vote ${blush}
+        app.post('/vote', authenticateToken, async(req, res) => {
+            if ("userID" in req.body) {
+                let user;
+                try {
+                    user = await client.users.fetch(req.body.userID);
+                } catch (error) {
+                    return res.status(400);
+                };
+                const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
+                const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
+                const embed = new MessageEmbed()
+                    .setColor('#F4EDB4')
+                    .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`, client.user.displayAvatarURL())
+                    .setDescription(stripIndents `
+                    thank you for being generous and gave me a vote ${blush}
 
-        //     you was given a 50% bonus on your next daily token collect! type \`>daily\` in any server to collect your token :tada:
-        //     that is the only thing i have to offer right now ${duh} keep voting to explore!
+                    you was given a 50% bonus on your next daily token collect! type \`>daily\` in any server to collect your token :tada:${req.body.weekend ? '\nit is the weekend! i have increased your bonus by 80%!' : ''}
+                    that is the only thing i have to offer right now ${duh} keep voting to explore!
 
-        //     at the mean time, check out our family: 
+                    at the mean time, check out our family: 
 
-        //     [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
-        //     [kiri support (support server)](https://discord.gg/D6rWrvS)
-        //     `)
-        //         res.status(200).json({ code: 200 });
-        //         const voteStorage = client.vote;
-        //         const vote = new voteStorage({
-        //             userID: user.id
-        //         });
-        //         await vote.save();
-        //         return user.send({ embeds: [embed] }).catch(() => null);
-        //     } else {
-        //         return res.status(400).json({ code: 400, message: 'MISSING_QUERY' })
-        //     }
-        // });
+                    [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
+                    [kiri support (support server)](https://discord.gg/D6rWrvS)
+                    `)
+                res.status(200).json({ code: 200 });
+                if (req.body.type !== 'test') {
+                    const voteStorage = client.vote;
+                    const vote = new voteStorage({
+                        userID: user.id,
+                        collectMutiply: req.body.weekend ? 2 : 1.2
+                    });
+                    await vote.save();
+                };
+                return user.send({ embeds: [embed] }).catch(() => null);
+            } else {
+                return res.status(400);
+            };
+        });
         app.get('*', authenticateToken, function(req, res) {
             res.status(404).send('wrong call bruh')
         });

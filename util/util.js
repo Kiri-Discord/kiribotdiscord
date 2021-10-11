@@ -383,21 +383,6 @@ module.exports = class util {
 		];
 		const activity = activities[Math.floor(Math.random() * activities.length)];
 		return { text: activity.text, type: activity.type }
-	}
-	static async botSitePost(client) {
-		if (!process.env.dblToken) return;
-		// const header = {
-		// 	Authorization: process.env.dblToken
-		// }
-		// const body = new URLSearchParams()
-		// body.append("guilds", client.guilds.cache.size);
-		// body.append("users", client.users.cache.size);
-		// fetch(`https://discordbotlist.com/api/v1/bots/sefy/stats`, {
-		// 	method: "POST",
-		// 	body,
-		// 	headers: header
-		// });
-
 	};
 	static async fetchInfo(client, query, search, id) {
         const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id)[0] : client.lavacordManager.idealNodes[0];
