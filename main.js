@@ -16,6 +16,7 @@ global.__basedir = __dirname;
 
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
+const { AutoPoster } = require('topgg-autoposter');
 const { Intents, Options } = require('discord.js');
 const intents = new Intents();
 
@@ -57,6 +58,13 @@ require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);
 require("./handler/getMemberfromMention.js")();
+if (client.config.topggkey && !process.env.NO_TOPGG) {
+    const ap = AutoPoster(client.config.topggkey, client);
+
+    ap.on('posted', () => {
+        logger.log('info', 'Posted stats to Top.gg!');
+    });
+};
 (async() => {
     await mongo.init();
     client.login(client.config.token).catch(err => logger.log('error', err));
