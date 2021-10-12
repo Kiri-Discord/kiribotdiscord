@@ -26,7 +26,7 @@ exports.run = async(client, message, args, prefix) => {
 };
 exports.help = {
     name: "catify",
-    description: "make your text or the message above yours sounds like a cat :thinking:",
+    description: "transfrom your text or the message above yours to one that sounds like a cat 🤔",
     usage: ["catify `[text]`"],
     example: ["catify `wut`"]
 };

@@ -28,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
 
 exports.help = {
     name: "owo",
-    description: "owo your text or the message above yours? :thinking:",
+    description: "owoify your text or the message above yours? 🤔",
     usage: ["owo `[text]`"],
     example: ["owo `hmmm`"]
 };

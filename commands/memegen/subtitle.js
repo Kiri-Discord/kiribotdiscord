@@ -54,7 +54,7 @@ exports.run = async(client, message, args) => {
         ctx.font = `${fontSize}px Noto`;
         ctx.fillStyle = 'yellow';
         ctx.textAlign = 'center';
-        const lines = await wrapText(ctx, text, base.width - 10);
+        const lines = await wrapText(ctx, text.content, base.width - 10);
         if (!lines) return message.channel.send("your subtitle won't fit that meme :grimacing:");
         ctx.textBaseline = 'bottom';
         const initial = base.height - ((lines.length - 1) * fontSize) - (fontSize / 2) - ((lines.length - 1) * 10);

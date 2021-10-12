@@ -24,7 +24,7 @@ exports.run = async(client, message, args) => {
                     sorry, you cannot collect your daily too early :pensive:
                     your next collect is ready <t:${Math.floor((Date.now() + finalTime) / 1000)}:R>
 
-                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/kiri)~~ (currently in maintenance)`)
+                    want to get more token on your next daily collect? vote me [here](https://top.gg/bot/859116638820761630)`)
                     .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
                     .setFooter(`each daily is reseted after 24 hours, regardless of timezone.
                     `)
@@ -33,6 +33,7 @@ exports.run = async(client, message, args) => {
                 let bonus;
                 let bonusAmount;
                 let finalAmount;
+
                 let amount = getRandomInt(10, 30);
                 const voted = await client.vote.findOne({
                     userID: message.author.id
@@ -45,7 +46,7 @@ exports.run = async(client, message, args) => {
                     await client.vote.findOneAndDelete({
                         userID: message.author.id
                     });
-                    bonusAmount = calcBonus(amount)
+                    bonusAmount = calcBonus(amount, voted.collectMutiply || 2);
                     finalAmount = amount + bonusAmount
                 };
                 await client.cooldowns.findOneAndUpdate({
@@ -76,7 +77,7 @@ exports.run = async(client, message, args) => {
                     .setDescription(stripIndents `
             ⏣ __${finalAmount}__ token was placed in your wallet 🙂
 
-            ~~you can get more rewards by voting!~~ (currently in maintenance)
+            you can get more rewards by voting [here](https://top.gg/bot/859116638820761630)
             ${bonus ? `you collected __${bonusAmount}__ more token for voting :)` : ''}
             `)
             .setColor("#bee7f7")
@@ -108,6 +109,6 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-function calcBonus(value) {
-    return parseInt((value / 2).toFixed(0))
+function calcBonus(value, mutiply) {
+    return parseInt((value / mutiply).toFixed(0))
 };

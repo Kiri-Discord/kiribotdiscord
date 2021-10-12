@@ -6,7 +6,8 @@ const reqString = {
 }
 
 const voteSchema = mongoose.Schema({
-    userID: reqString
+    userID: reqString,
+    collectMutiply: Number
 });
 
 module.exports = mongoose.model('vote', voteSchema, 'vote');
