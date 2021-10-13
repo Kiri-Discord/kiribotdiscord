@@ -100,14 +100,14 @@ module.exports = class util {
                 await message.delete();
             } else return null;
         };
-        static async awaitPlayers(message, max, min = 1) {
-            if (max === 1) return [message.author.id];
+        static async awaitPlayers(initialId, message, max, min = 1) {
+            if (max === 1) return [initialId];
             const addS = min - 1 === 1 ? '' : 's';
             await message.channel.send(
                 `at least ${min - 1} more player${addS} needed for the game to start (at max ${max - 1}). to join, type \`join\``
             );
             const joined = [];
-            joined.push(message.author.id);
+            joined.push(initialId);
             const filter = res => {
                 if (res.author.bot) return false;
                 if (joined.includes(res.author.id)) return false;
@@ -117,9 +117,9 @@ module.exports = class util {
                 return true;
             };
             const verify = await message.channel.awaitMessages({ filter, max: max - 1, time: 60000 });
-            verify.set(message.id, message);
-            if (verify.size < min) return false;
-            return verify.map(player => player.author.id);
+            if (verify.size < min - 1) return false;
+            const players = [...verify.values()];
+            return players.map(player => player.author.id);
         };
 
         static delay(ms) {

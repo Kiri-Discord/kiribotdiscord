@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
         }
         client.games.delete(message.channel.id);
         if (!display.includes('???')) {
-            return message.channel.send(`You win! Nice job, master of Google!\n**Final Score: $${formatNumber(score)}**`);
+            return message.channel.send(`you win! nice job, master of Google!\n**Final Score: $${formatNumber(score)}**`);
         }
         const final = makeEmbed(question, tries, suggestions, suggestions);
         return message.channel.send({
@@ -45,7 +45,7 @@ exports.run = async(client, message, args) => {
         });
     } catch (err) {
         client.games.delete(message.channel.id);
-        return message.reply(`Oh no, an error occurred: \`${err.message}\`. Try again later!`);
+        return message.reply(`oh no, an error occurred :( try again later!`);
     };
 };
 
