@@ -1,8 +1,7 @@
 const words = require('../../assets/imposter.json');
 const { stripIndents, oneLine } = require('common-tags');
-const { Collection } = require('@discordjs/collection');
 const { delay, awaitPlayers, list } = require('../../util/util');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Collection } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
         let playersCount = args[0];
@@ -11,11 +10,12 @@ exports.run = async(client, message, args, prefix) => {
         if (current) return message.reply(current.prompt);
         client.games.set(message.channel.id, { prompt: `please wait until the ongoing Among Us game is finished :(` });
         try {
-            const awaitedPlayers = await awaitPlayers(message, playersCount, 3);
+            const awaitedPlayers = await awaitPlayers(message.author.id, message, playersCount, 3);
             if (!awaitedPlayers) {
                 client.games.delete(message.channel.id);
                 return message.channel.send('game could not be started...');
             };
+            awaitedPlayers.push(message.author.id);
             const word = words[Math.floor(Math.random() * words.length)];
             const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
             const players = new Collection();

@@ -1,6 +1,6 @@
 const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
-const { Collection } = require('@discordjs/collection');
+const { Collection } = require('discord.js');
 const { delay, awaitPlayers, reactIfAble } = require('../../util/util');
 const trueOptions = ['true', 'yes', 'the truth', 't', 'tru', 'tr', 'y', 'ye'];
 const falseOptions = ['false', 'lie', 'no', 'a lie', 'f', 'fals', 'fal', 'fa', 'n', 'l'];
@@ -14,7 +14,8 @@ exports.run = async(client, message, args, prefix) => {
         try {
             const pts = new Collection();
             if (players > 1) {
-                const awaitedPlayers = await awaitPlayers(message, players, 2);
+                const awaitedPlayers = await awaitPlayers(message.author.id, message, players, 2);
+                awaitedPlayers.push(message.author.id);
                 for (const player of awaitedPlayers) {
                     pts.set(player, {
                         points: 0,
