@@ -18,14 +18,14 @@ exports.run = async(client, interaction) => {
         let score = 0;
         while (display.includes('???') && tries) {
             const embed = makeEmbed(question, tries, suggestions, display);
-            await message.channel.send({ embeds: [embed] });
-            const messages = await message.channel.awaitMessages({
-                filter: res => res.author.id === message.author.id,
+            await interaction.channel.send({ embeds: [embed] });
+            const messages = await interaction.channel.awaitMessages({
+                filter: res => res.author.id === interaction.user.id,
                 max: 1,
                 time: 30000
             });
             if (!messages.size) {
-                await message.channel.send('Time is up!');
+                await interaction.channel.send('Time is up!');
                 break;
             }
             const choice = messages.first().content.toLowerCase();
@@ -36,18 +36,18 @@ exports.run = async(client, interaction) => {
                 --tries;
             }
         }
-        client.games.delete(message.channel.id);
+        client.games.delete(interaction.channel.id);
         if (!display.includes('???')) {
-            return message.channel.send(`you win! nice job, master of Google!\n**Final Score: $${formatNumber(score)}**`);
+            return interaction.channel.send(`you win! nice job, master of Google!\n**Final Score: $${formatNumber(score)}**`);
         }
         const final = makeEmbed(question, tries, suggestions, suggestions);
-        return message.channel.send({
+        return interaction.channel.send({
             embeds: [final],
             content: `better luck next time! **your score: $${formatNumber(score)}**`,
         });
     } catch (err) {
-        client.games.delete(message.channel.id);
-        return message.reply(`oh no, an error occurred :( try again later!`);
+        client.games.delete(interaction.channel.id);
+        return interaction.reply(`oh no, an error occurred :( try again later!`);
     };
 };
 
