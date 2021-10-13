@@ -1,12 +1,11 @@
 const words = require('../../assets/imposter.json');
 const { stripIndents, oneLine } = require('common-tags');
-const { Collection } = require('@discordjs/collection');
 const { delay, awaitPlayers, list } = require('../../util/util');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Collection } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
-        let playersCount = interaction.options.getInteger('playerCount');
+        let playersCount = interaction.options.getInteger('player-count');
         if (isNaN(playersCount) || playersCount < 3 || playersCount > 20) return interaction.reply({
             content: `how many players are you expecting to have? pick a number between 3 and 20 by using \`/among-us <number of player>\``,
             ephemeral: true
@@ -16,11 +15,12 @@ exports.run = async(client, interaction) => {
         client.games.set(interaction.channel.id, { prompt: `please wait until the ongoing Among Us game is finished :(` });
         try {
             const message = await interaction.reply({ content: 'beginning the Among Us game...', fetchReply: true });
-            const awaitedPlayers = await awaitPlayers(message, playersCount, 3);
+            const awaitedPlayers = await awaitPlayers(interaction.user.id, message, playersCount, 3);
             if (!awaitedPlayers) {
                 client.games.delete(interaction.channel.id);
                 return interaction.channel.send('game could not be started...');
             };
+            awaitedPlayers.push(interaction.user.id);
             const word = words[Math.floor(Math.random() * words.length)];
             const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
             const players = new Collection();
@@ -170,7 +170,7 @@ exports.conf = {
     .setName(exports.help.name)
     .setDescription(exports.help.description)
     .addIntegerOption(option => option
-        .setName('playerCount')
+        .setName('player-count')
         .setDescription('how many players that you want to have?')
         .setRequired(true)
     ),
