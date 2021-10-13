@@ -2,6 +2,7 @@ const request = require('node-superfetch');
 const { stripIndents } = require('common-tags');
 const { formatNumber } = require('../../util/util');
 const { MessageActionRow, MessageButton } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, message, args) => {
         const current = client.games.get(message.channel.id);
