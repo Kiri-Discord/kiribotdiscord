@@ -1,12 +1,12 @@
 const text = require('../../features/waifu/string');
 const waifuDB = require('../../features/waifu/waifu.json');
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, interaction) => {
     const waifu = waifuDB[Math.floor(Math.random() * (waifuDB.length))];
     const no = Math.floor(Math.random() * waifu.images.length);
 
-    message.channel.sendTyping();
 
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
@@ -18,19 +18,22 @@ exports.run = async(client, message, args) => {
             `${ no + 1 } of ${ waifu.images.length }`
         ].join('\u2000|\u2000'));
 
-    return message.channel.send({ embeds: [embed] }).then(m => m.react('💖'));
+    return interaction.reply({ embeds: [embed] });
 };
 
 exports.help = {
     name: "waifu",
-    description: "spawn a random waifu",
+    description: "displays a random waifu image",
     usage: ["waifu"],
     example: ["waifu"]
 }
 
 exports.conf = {
-    aliases: ['wa'],
     channelPerms: ["EMBED_LINKS"],
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description),
+    guild: true,
     cooldown: 5,
     guildOnly: true,
 };
