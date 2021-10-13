@@ -4,10 +4,10 @@ const { formatNumber } = require('../../util/util');
 const { MessageActionRow, MessageButton } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-exports.run = async(client, message, args) => {
-        const current = client.games.get(message.channel.id);
-        if (current) return message.reply(current.prompt);
-        client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** is finished first :(` });
+exports.run = async(client, interaction) => {
+        const current = client.games.get(interaction.channel.id);
+        if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
+        client.games.set(interaction.channel.id, { prompt: `please wait until **${interaction.user.username}** is finished first :(` });
         try {
             const data = await fetchScenario();
             const row = new MessageActionRow()
@@ -21,19 +21,20 @@ exports.run = async(client, message, args) => {
                     .setLabel('2')
                     .setStyle('SECONDARY')
                 );
-            const msg = await message.channel.send({
+            const msg = await interaction.reply({
                         content: stripIndents `
             ${data.prefix ? `${data.prefix.toLowerCase()}, would you rather...` : 'would you rather...'}
             **1.** ${data.option_1.toLowerCase()}
             **2.** ${data.option_2.toLowerCase()}
             _respond with either **1** or **2** to continue._
         `,
-        components: [row]
+        components: [row],
+        fetchReply: true
     });
         const filter = async res => {
-            if (res.user.id !== message.author.id) {
+            if (res.user.id !== interaction.user.id) {
                 await res.reply({
-                    content: `those buttons are for ${message.author.toString()} :pensive:`,
+                    content: `those buttons are for ${interaction.user.toString()} :pensive:`,
                     ephemeral: true
                 });
                 return false;
@@ -51,24 +52,24 @@ exports.run = async(client, message, args) => {
             await postResponse(data.id, option1);
             const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
             const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-            client.games.delete(message.channel.id);
+            client.games.delete(interaction.channel.id);
             return res.editReply(stripIndents`
                 **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
             `);
         })
         collector.on('end', (collected) => {
-            client.games.delete(message.channel.id);
+            client.games.delete(interaction.channel.id);
             row.components.forEach(component => component.setDisabled(true));
             msg.edit({ components: [row] });
-            if (!collected.size) return message.reply(stripIndents`
+            if (!collected.size) return interaction.channel.send(stripIndents`
             no response? :D
             1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
             `);
         });
     } catch (err) {
-        client.games.delete(message.channel.id);
-        return message.reply(`sorry! i got an error. try again later :pensive:`);
+        client.games.delete(interaction.channel.id);
+        return interaction.followUp(`sorry! i got an error. try again later :pensive:`);
     };
 };
 
