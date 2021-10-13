@@ -36,51 +36,35 @@ exports.run = async(client, message, args) => {
                     ephemeral: true
                 });
                 return false;
-            };
-            await res.deferUpdate();
-            row.components.forEach(button => button.setDisabled(true));
-            await res.editReply({
-                content: stripIndents `
-            ${data.prefix ? `${data.prefix.toLowerCase()}, would you rather...` : 'would you rather...'}
-            **1.** ${data.option_1.toLowerCase()}
-            **2.** ${data.option_2.toLowerCase()}
-            _respond with either **1** or **2** to continue._
-        `,
-                components: [row]
-            });
-            return true
-        }
-        const res = await msg.awaitMessageComponent({
+            } else return true
+        };
+        const collector = await msg.createMessageComponentCollector({
             filter,
             componentType: 'BUTTON',
             time: 30000,
+            max: 1
         });
-        if (!res) {
+        collector.on('collect', async(res) => {
+            await res.deferReply();
+            const option1 = res.customId === '1';
+            await postResponse(data.id, option1);
+            const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
+            const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
             client.games.delete(message.channel.id);
-            row.components.forEach(button => button.setDisabled(true));
-            await msg.edit({
-                content: stripIndents `
-            ${data.prefix ? `${data.prefix.toLowerCase()}, would you rather...` : 'would you rather...'}
-            **1.** ${data.option_1.toLowerCase()}
-            **2.** ${data.option_2.toLowerCase()}
-            _respond with either **1** or **2** to continue._
-        `,
-                components: [row]
-            });
-            return message.reply(stripIndents`
-                no response? :D
+            return res.editReply(stripIndents`
+                **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
             `);
-        };
-        const option1 = res.customId === '1';
-        await postResponse(data.id, option1);
-        const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
-        const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-        client.games.delete(message.channel.id);
-        return message.reply(stripIndents`
-            **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
+        })
+        collector.on('end', (collected) => {
+            client.games.delete(message.channel.id);
+            row.components.forEach(component => component.setDisabled(true));
+            msg.edit({ components: [row] });
+            if (!collected.size) return message.reply(stripIndents`
+            no response? :D
             1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
-        `);
+            `);
+        });
     } catch (err) {
         client.games.delete(message.channel.id);
         return message.reply(`sorry! i got an error. try again later :pensive:`);
