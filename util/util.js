@@ -224,22 +224,26 @@ module.exports = class util {
                 components: [row]
             });
             return true;
-        }
-		const res = await msg.awaitMessageComponent({
-            filter,
-            componentType: 'BUTTON',
-            time
-        });
-
-		if (!res) {
+        };
+		try {
+			const res = await msg.awaitMessageComponent({
+				filter,
+				componentType: 'BUTTON',
+				time
+			});
 			row.components.forEach(button => button.setDisabled(true));
 			await msg.edit({
-				content,
-                components: [row]
-            });
+				components: [row]
+			});
+			return res.customId === 'yes';
+		} catch {
+			row.components.forEach(button => button.setDisabled(true));
+			await msg.edit({
+				components: [row]
+			});
 			return false;
-		} else return res.customId === 'yes';
-	}
+		};
+	};
 	static async askString(channel, filter, { time = 20000 } = {}) {
 		const verify = await channel.awaitMessages({
 			filter: filter,
