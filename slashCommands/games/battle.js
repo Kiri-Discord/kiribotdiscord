@@ -2,13 +2,13 @@ const Battle = require('../../features/battle/battle');
 const { randomRange, buttonVerify } = require('../../util/util');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-exports.run = async(client, interaction, args) => {
+exports.run = async(client, interaction) => {
     const member = interaction.options.getMember('opponent') || interaction.guild.me;
     const opponent = member.user;
     if (opponent.id === interaction.user.id) return interaction.reply({ content: 'you can\'t play against yourself :(', ephemeral: true });
     const current = client.games.get(interaction.channel.id);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-    if (client.isPlaying.get(interaction.author.id)) return interaction.reply({ content: 'you are already in a game. please finish that first.', ephemeral: true });
+    if (client.isPlaying.get(interaction.user.id)) return interaction.reply({ content: 'you are already in a game. please finish that first.', ephemeral: true });
     client.games.set(interaction.channel.id, { data: new Battle(interaction.user, opponent), prompt: `you should wait until **${interaction.user.username}** and **${opponent.username}** finish fighting :)` });
     try {
         client.isPlaying.set(interaction.user.id, true);
@@ -18,15 +18,19 @@ exports.run = async(client, interaction, args) => {
                 client.games.delete(interaction.channel.id);
                 return interaction.reply({ content: 'that user is already in a game. try again in a minute.', ephemeral: true });
             };
+            await interaction.deferReply();
             const verification = await buttonVerify(interaction.channel, opponent, `${opponent}, do you accept this challenge?`);
             if (!verification) {
                 client.isPlaying.delete(interaction.user.id);
                 client.games.delete(interaction.channel.id);
-                return interaction.reply({ content: 'looks like they declined :pensive:', ephemeral: true });
+                return interaction.editReply({ content: 'looks like they declined :pensive:' });
+            } else {
+                interaction.editReply({ content: 'beginning the battle...' });
             };
             client.isPlaying.set(opponent.id, true);
+        } else {
+            interaction.reply({ content: 'beginning the battle...', ephemeral: true });
         };
-        interaction.reply({ content: 'beginning the battle...', ephemeral: true });
         const battle = client.games.get(interaction.channel.id).data;
         while (!battle.winner) {
             const choice = await battle.attacker.chooseAction(interaction.channel);
