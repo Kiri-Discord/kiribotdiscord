@@ -20,10 +20,12 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 userId: message.author.id
             });
             if (data) {
-                const foundGameSave = data.storage.find(storage => storage.type === 'chess');
+                const foundGameSave = data.storage.chess;
                 if (!foundGameSave) return message.reply(`you don\'t have any saved chess game ${sedEmoji}`);
-                data.storage.splice(data.storage.indexOf(x => x.type === 'chess'), 1);
-                await data.save();
+                await client.gameStorage.findOneAndDelete({
+                    guildId: message.guild.id,
+                    userId: message.author.id
+                });
                 return message.reply(`your saved game has been deleted ${sedEmoji}`);
             } else {
                 return message.reply(`you don\'t have any saved chess game ${sedEmoji}`);
@@ -96,13 +98,17 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     blackTime = data.blackTime === -1 ? Infinity : data.blackTime;
                     whitePlayer = data.color === 'white' ? message.author : opponent;
                     blackPlayer = data.color === 'black' ? message.author : opponent;
-                    resumeGame.storage.chess = undefined;
-                    await resumeGame.save();
+                    await client.gameStorage.findOneAndDelete({
+                        guildId: message.guild.id,
+                        userId: message.author.id
+                    });
                 } catch {
                     client.games.delete(message.channel.id);
-                    resumeGame.storage.chess = undefined;
-                    await resumeGame.save();
-                    return message.reply(`there was an error while reading your saved game... try again please ${sedEmoji}`);
+                    await client.gameStorage.findOneAndDelete({
+                        guildId: message.guild.id,
+                        userId: message.author.id
+                    });
+                    return message.reply(`there was an error while reading your saved game... can you try again later? ${sedEmoji}`);
                 }
             } else {
                 game = new jsChess.Game(fen || undefined);
@@ -179,21 +185,28 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 if (turn.first().content.toLowerCase() === 'end') break;
                 if (turn.first().content.toLowerCase() === 'save') {
                     const { author } = turn.first();
-                    const alreadySaved = resumeGame.storage.chess;
+                    let previousGameData = await gameStorage.findOne({
+                        guildId: message.guild.id,
+                        userId: message.author.id
+                    });
+                    if (!previousGameData) previousGameData = new gameStorage({
+                        guildId: message.guild.id,
+                        userId: message.author.id
+                    });
+                    const alreadySaved = previousGameData.storage.chess;
                     if (alreadySaved) {
                         const verification = await buttonVerify(message.channel, author, 'you already have a saved game, do you want to overwrite it?');
                         if (!verification) continue;
                     };
-                    resumeGame.storage.chess = undefined;
                     if (gameState.turn === 'black') blackTime -= new Date() - now;
                     if (gameState.turn === 'white') whiteTime -= new Date() - now;
-                    resumeGame.storage.chess = (exportGame(
+                    previousGameData.storage.chess = (exportGame(
                         game,
                         blackTime,
                         whiteTime,
                         whitePlayer.id === author.id ? 'white' : 'black'
-                    ))
-                    await resumeGame.save();
+                    ));
+                    await previousGameData.save();
                     saved = true;
                     break;
                 };
@@ -287,180 +300,180 @@ exports.run = async(client, message, args, prefix, cmd) => {
             content: `checkmate! congratulations, **${winner.username}**!`,
             files: [new MessageAttachment(displayBoard(gameState, prevPieces), 'chess.png')]
         });
-    } catch (err) {
-        client.games.delete(message.channel.id);
-        throw err;
-    };
 
-    function parseSAN(gameState, moves, move) {
-        if (!move) return null;
-        if (move[0] === '0-0') {
-            if (gameState.turn === 'white') {
-                if (gameState.castling.whiteShort) return ['E1', 'G1'];
-                return null;
-            } else if (gameState.turn === 'black') {
-                if (gameState.castling.blackShort) return ['E8', 'G8'];
-                return null;
-            }
+        function parseSAN(gameState, moves, move) {
+            if (!move) return null;
+            if (move[0] === '0-0') {
+                if (gameState.turn === 'white') {
+                    if (gameState.castling.whiteShort) return ['E1', 'G1'];
+                    return null;
+                } else if (gameState.turn === 'black') {
+                    if (gameState.castling.blackShort) return ['E8', 'G8'];
+                    return null;
+                }
+            };
+            if (move[0] === '0-0-0') {
+                if (gameState.turn === 'white') {
+                    if (gameState.castling.whiteLong) return ['E1', 'C1'];
+                    return null;
+                } else if (gameState.turn === 'black') {
+                    if (gameState.castling.blackLong) return ['E8', 'C8'];
+                    return null;
+                }
+            };
+            if (!move[3]) return null;
+            const initial = move[1] || 'P';
+            if (gameState.pieces[initial]) return [initial, move[3], move[4] || 'Q'];
+            const possiblePieces = Object.keys(gameState.pieces).filter(piece => {
+                if (pickImage(gameState.pieces[piece]).color !== gameState.turn) return false;
+                if (gameState.pieces[piece].toUpperCase() !== initial) return false;
+                if (move[2] && move[2] !== 'X' && !piece.startsWith(move[2])) return false;
+                if (move[4]) {
+                    if (!piece.endsWith(gameState.turn === 'black' ? '2' : '7')) return false;
+                    if (gameState.pieces[piece].toUpperCase() !== 'P') return false;
+                }
+                if (!moves[piece]) return false;
+                return moves[piece].includes(move[3]);
+            });
+            if (possiblePieces.length === 1) return [possiblePieces[0], move[3], move[4] || 'Q'];
+            return null;
         };
-        if (move[0] === '0-0-0') {
-            if (gameState.turn === 'white') {
-                if (gameState.castling.whiteLong) return ['E1', 'C1'];
-                return null;
-            } else if (gameState.turn === 'black') {
-                if (gameState.castling.blackLong) return ['E8', 'C8'];
-                return null;
-            }
-        };
-        if (!move[3]) return null;
-        const initial = move[1] || 'P';
-        if (gameState.pieces[initial]) return [initial, move[3], move[4] || 'Q'];
-        const possiblePieces = Object.keys(gameState.pieces).filter(piece => {
-            if (pickImage(gameState.pieces[piece]).color !== gameState.turn) return false;
-            if (gameState.pieces[piece].toUpperCase() !== initial) return false;
-            if (move[2] && move[2] !== 'X' && !piece.startsWith(move[2])) return false;
-            if (move[4]) {
-                if (!piece.endsWith(gameState.turn === 'black' ? '2' : '7')) return false;
-                if (gameState.pieces[piece].toUpperCase() !== 'P') return false;
-            }
-            if (!moves[piece]) return false;
-            return moves[piece].includes(move[3]);
-        });
-        if (possiblePieces.length === 1) return [possiblePieces[0], move[3], move[4] || 'Q'];
-        return null;
-    };
 
-    function displayBoard(gameState, prevPieces) {
-        const canvas = createCanvas(images.board.width, images.board.height);
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(images.board, 0, 0);
-        let w = 2;
-        let h = 3;
-        let row = 8;
-        let col = 0;
-        for (let i = 0; i < 64; i++) {
-            const piece = gameState.pieces[`${cols[col]}${row}`];
-            const prevGamePiece = prevPieces ? prevPieces[`${cols[col]}${row}`] : null;
-            if (piece) {
-                const parsed = pickImage(piece);
-                const img = images[parsed.color][parsed.name];
-                const { x, y, width, height } = centerImagePart(img, 62, 62, w, h);
-                if ((gameState.check || gameState.checkMate) && piece === (gameState.turn === 'white' ? 'K' : 'k')) {
-                    ctx.fillStyle = 'red';
-                    ctx.globalAlpha = 0.5;
-                    ctx.fillRect(w, h, 62, 62);
-                    ctx.globalAlpha = 1;
-                    ctx.drawImage(img, x, y, width, height);
-                } else if (prevPieces && (!prevGamePiece || piece !== prevGamePiece)) {
+        function displayBoard(gameState, prevPieces) {
+            const canvas = createCanvas(images.board.width, images.board.height);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(images.board, 0, 0);
+            let w = 2;
+            let h = 3;
+            let row = 8;
+            let col = 0;
+            for (let i = 0; i < 64; i++) {
+                const piece = gameState.pieces[`${cols[col]}${row}`];
+                const prevGamePiece = prevPieces ? prevPieces[`${cols[col]}${row}`] : null;
+                if (piece) {
+                    const parsed = pickImage(piece);
+                    const img = images[parsed.color][parsed.name];
+                    const { x, y, width, height } = centerImagePart(img, 62, 62, w, h);
+                    if ((gameState.check || gameState.checkMate) && piece === (gameState.turn === 'white' ? 'K' : 'k')) {
+                        ctx.fillStyle = 'red';
+                        ctx.globalAlpha = 0.5;
+                        ctx.fillRect(w, h, 62, 62);
+                        ctx.globalAlpha = 1;
+                        ctx.drawImage(img, x, y, width, height);
+                    } else if (prevPieces && (!prevGamePiece || piece !== prevGamePiece)) {
+                        ctx.fillStyle = 'yellow';
+                        ctx.globalAlpha = 0.5;
+                        ctx.fillRect(w, h, 62, 62);
+                        ctx.globalAlpha = 1;
+                        ctx.drawImage(img, x, y, width, height);
+                    } else {
+                        ctx.drawImage(img, x, y, width, height);
+                    }
+                } else if (prevGamePiece) {
                     ctx.fillStyle = 'yellow';
                     ctx.globalAlpha = 0.5;
                     ctx.fillRect(w, h, 62, 62);
                     ctx.globalAlpha = 1;
-                    ctx.drawImage(img, x, y, width, height);
-                } else {
-                    ctx.drawImage(img, x, y, width, height);
                 }
-            } else if (prevGamePiece) {
-                ctx.fillStyle = 'yellow';
-                ctx.globalAlpha = 0.5;
-                ctx.fillRect(w, h, 62, 62);
-                ctx.globalAlpha = 1;
+                w += 62;
+                col += 1;
+                if (col % 8 === 0 && col !== 0) {
+                    w = 2;
+                    col = 0;
+                    h += 62;
+                    row -= 1;
+                }
             }
-            w += 62;
-            col += 1;
-            if (col % 8 === 0 && col !== 0) {
-                w = 2;
-                col = 0;
-                h += 62;
-                row -= 1;
-            }
-        }
-        return canvas.toBuffer();
-    };
-
-    async function loadImages() {
-        const image = { black: {}, white: {} };
-        image.board = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'chess', 'board.png'));
-        for (const piece of pieces) {
-            const blk = `black-${piece}.png`;
-            image.black[piece] = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'chess', blk));
-            const whi = `white-${piece}.png`;
-            image.white[piece] = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'chess', whi));
-        }
-        images = image;
-        return images;
-    };
-
-    function pickImage(piece) {
-        let name;
-        let color;
-        switch (piece) {
-            case 'p':
-                name = 'pawn';
-                color = 'black';
-                break;
-            case 'n':
-                name = 'knight';
-                color = 'black';
-                break;
-            case 'b':
-                name = 'bishop';
-                color = 'black';
-                break;
-            case 'r':
-                name = 'rook';
-                color = 'black';
-                break;
-            case 'q':
-                name = 'queen';
-                color = 'black';
-                break;
-            case 'k':
-                name = 'king';
-                color = 'black';
-                break;
-            case 'P':
-                name = 'pawn';
-                color = 'white';
-                break;
-            case 'N':
-                name = 'knight';
-                color = 'white';
-                break;
-            case 'B':
-                name = 'bishop';
-                color = 'white';
-                break;
-            case 'R':
-                name = 'rook';
-                color = 'white';
-                break;
-            case 'Q':
-                name = 'queen';
-                color = 'white';
-                break;
-            case 'K':
-                name = 'king';
-                color = 'white';
-                break;
-        }
-        return { name, color };
-    };
-
-    function exportGame(game, blackTime, whiteTime, playerColor) {
-        return {
-            type: 'chess',
-            fen: game.exportFEN(),
-            blackTime: blackTime === Infinity ? -1 : blackTime,
-            whiteTime: whiteTime === Infinity ? -1 : whiteTime,
-            color: playerColor
+            return canvas.toBuffer();
         };
-    };
 
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+        async function loadImages() {
+            const image = { black: {}, white: {} };
+            image.board = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'chess', 'board.png'));
+            for (const piece of pieces) {
+                const blk = `black-${piece}.png`;
+                image.black[piece] = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'chess', blk));
+                const whi = `white-${piece}.png`;
+                image.white[piece] = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'chess', whi));
+            }
+            images = image;
+            return images;
+        };
+
+        function pickImage(piece) {
+            let name;
+            let color;
+            switch (piece) {
+                case 'p':
+                    name = 'pawn';
+                    color = 'black';
+                    break;
+                case 'n':
+                    name = 'knight';
+                    color = 'black';
+                    break;
+                case 'b':
+                    name = 'bishop';
+                    color = 'black';
+                    break;
+                case 'r':
+                    name = 'rook';
+                    color = 'black';
+                    break;
+                case 'q':
+                    name = 'queen';
+                    color = 'black';
+                    break;
+                case 'k':
+                    name = 'king';
+                    color = 'black';
+                    break;
+                case 'P':
+                    name = 'pawn';
+                    color = 'white';
+                    break;
+                case 'N':
+                    name = 'knight';
+                    color = 'white';
+                    break;
+                case 'B':
+                    name = 'bishop';
+                    color = 'white';
+                    break;
+                case 'R':
+                    name = 'rook';
+                    color = 'white';
+                    break;
+                case 'Q':
+                    name = 'queen';
+                    color = 'white';
+                    break;
+                case 'K':
+                    name = 'king';
+                    color = 'white';
+                    break;
+            }
+            return { name, color };
+        };
+
+        function exportGame(game, blackTime, whiteTime, playerColor) {
+            return {
+                type: 'chess',
+                fen: game.exportFEN(),
+                blackTime: blackTime === Infinity ? -1 : blackTime,
+                whiteTime: whiteTime === Infinity ? -1 : whiteTime,
+                color: playerColor
+            };
+        };
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+    } catch (err) {
+        client.games.delete(message.channel.id);
+        throw err;
     };
 };
 
