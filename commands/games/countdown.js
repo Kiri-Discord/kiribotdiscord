@@ -67,7 +67,7 @@ class Game {
                     else if (i === 3) this.top += `${this.solved.all[i]} and `;
                     else this.top += this.solved.all[i];
                 };
-                this.client.games.delete(this.message.guild.id);
+                this.client.games.delete(this.message.channel.id);
                 this.msg.edit(`${this.text} ${this.letters}. your choice of ${this.winMessage} the top five solutions are ${this.top}. for a full list of solutions go to https://word.tips/words-for/${this.letters}/?dictionary=wwf`);
             }, 30000);
         } else {
