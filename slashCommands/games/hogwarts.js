@@ -9,7 +9,6 @@ exports.run = async(client, interaction) => {
         const current = client.games.get(interaction.channel.id);
         if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
         client.games.set(interaction.channel.id, { prompt: `you should wait until **${interaction.user.username}** is finished first :(` });
-        let displayMessage = null;
         try {
             const points = {
                 g: 0,
@@ -41,30 +40,30 @@ exports.run = async(client, interaction) => {
                     
                     ${answers.map((answer, i) => `- **${choices[i]}.** ${answer.text}`).join('\n')}
                 `)
-                if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({
+                if (!interaction.replied) await interaction.reply({
                     embeds: [embed]
                 });
-                else await displayMessage.edit({ embeds: [embed]})
+                else await interaction.editReply({ embeds: [embed]})
             const filter = async res => {
                 await deleteIfAble(res);
-                if (res.author.id === message.author.id && choices.slice(0, answers.length).includes(res.content.toUpperCase())) return true;
+                if (res.author.id === interaction.user.id && choices.slice(0, answers.length).includes(res.content.toUpperCase())) return true;
                 else return false;
             };
-            const choice = await message.channel.awaitMessages({
+            const choice = await interaction.channel.awaitMessages({
                 filter,
                 max: 1,
                 time: 120000
             });
             if (!choice.size) {
-                client.games.delete(message.channel.id);
-                return message.channel.send('oh no, you ran out of time! too bad :pensive:');
+                client.games.delete(interaction.channel.id);
+                return interaction.channel.send('oh no, you ran out of time! too bad :pensive:');
             };
             const answer = answers[choices.indexOf(choice.first().content.toUpperCase())];
             for (const [house, amount] of Object.entries(answer.points)) points[house] += amount;
             ++turn;
         }
         const houseResult = Object.keys(points).filter(h => points[h] > 0).sort((a, b) => points[b] - points[a]);
-        client.games.delete(message.channel.id);
+        client.games.delete(interaction.channel.id);
         const totalPoints = houseResult.reduce((a, b) => a + points[b], 0);
         const embed = new MessageEmbed()
         .setTitle(`you are a member of... ${houses[houseResult[0]]}!`)
@@ -72,9 +71,9 @@ exports.run = async(client, interaction) => {
         _${descriptions[houseResult[0]]}_
         ${houseResult.map(house => `${houses[house]}: ${Math.round((points[house] / totalPoints) * 100)}%`).join('\n')}
         `)
-        return message.channel.send({embeds: [embed]})
+        return interaction.channel.send({embeds: [embed]})
     } catch (err) {
-        client.games.delete(message.channel.id);
+        client.games.delete(interaction.channel.id);
         throw err;
     };
 };
@@ -84,17 +83,12 @@ exports.help = {
     description: "a quiz to determine your Hogwarts house in Harry Porter :joy:",
     usage: ["hogwarts"],
     example: ["hogwarts"]
-}
+};
 
 exports.conf = {
     data: new SlashCommandBuilder()
         .setName(exports.help.name)
-        .setDescription(exports.help.description)
-        .addStringOption(option => option
-            .setName('question')
-            .setDescription('what question that you want to use for the game?')
-            .setRequired(false)
-        ),
+        .setDescription(exports.help.description),
     guild: true,
     cooldown: 4,
     guildOnly: true,

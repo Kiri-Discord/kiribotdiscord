@@ -48,7 +48,7 @@ class Game {
         this.word = word.get(Array.from(word.keys()).toString()).content;
         this.displayWord = '';
         for (let i = 0; i < this.word.length; i++) this.displayWord += '-';
-        this.msg.edit(`${this.stages[0]}\n\`\`${this.displayWord}\`\`\n wrong guesses: ${this.guesses}`);
+        this.msg.edit(`${this.stages[0]}\n\`${this.displayWord}\`\n wrong guesses: ${this.guesses}`);
         this.run();
     };
     async run() {
@@ -67,7 +67,7 @@ class Game {
         if (this.word.toLowerCase().includes(this.letter.toLowerCase())) { this.letters++; } else {
             this.stage++;
             this.guesses += `${this.letter.toLowerCase()} `;
-            this.msg.edit(`${this.stages[this.stage]}\n\`\`${this.displayWord}\`\`\n wrong guesses: ${this.guesses}`);
+            this.msg.edit(`${this.stages[this.stage]}\n\`${this.displayWord}\`\n wrong guesses: ${this.guesses}`);
         };
 
         if (this.typedLetters.includes(this.letter)) {
@@ -78,7 +78,7 @@ class Game {
         for (let i = 0; i < this.word.length; i++) {
             if (this.word.charAt(i).toLowerCase() === this.letter.toLowerCase()) {
                 this.displayWord = this.displayWord.substr(0, i) + this.letter + this.displayWord.substr(i + 1);
-                this.msg.edit(`${this.stages[this.stage]}\n\`\`${this.displayWord}\`\`\n wrong guesses: ${this.guesses}`);
+                this.msg.edit(`${this.stages[this.stage]}\n\`${this.displayWord}\`\n wrong guesses: ${this.guesses}`);
                 this.correct++;
                 this.typedLetters.push(this.letter);
             };
@@ -116,7 +116,7 @@ class Game {
                 upsert: true,
                 new: true,
             });
-            return this.msg.edit(`${this.stages[this.stage]}\nyou won! \`\`${this.word}\`\`\n wrong guesses: ${this.guesses}\n⏣ __${amount}__ token was placed in your wallet as a reward!`);
+            return this.msg.edit(`${this.stages[this.stage]}\nyou won! \`${this.word}\`\n wrong guesses: ${this.guesses}\n⏣ __${amount}__ token was placed in your wallet as a reward!`);
         };
 
         if (this.stage === 5) {
@@ -151,7 +151,7 @@ class Game {
                 upsert: true,
                 new: true,
             });
-            return this.msg.edit(`${this.stages[this.stage]}\nyou lost! the word was \`\`${this.word}\`\`\n wrong guesses: ${this.guesses}`);
+            return this.msg.edit(`${this.stages[this.stage]}\nyou lost! the word was \`${this.word}\`\n wrong guesses: ${this.guesses}`);
         };
         this.run();
     };
