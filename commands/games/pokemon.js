@@ -6,7 +6,7 @@ const path = require('path');
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Pokemon Solid.ttf'), { family: 'Pokemon' });
 const pokemonCount = 893;
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, message) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(current.prompt);
     client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished with their game first :(` });
@@ -16,7 +16,6 @@ exports.run = async(client, message, args) => {
         const data = await client.pokemon.fetch(pokemon.toString());
         const names = data.names.map(name => name.name.toLowerCase());
         const image = await createImage(data, true);
-        const answerimage = await createImage(data, false);
         const embed = new MessageEmbed()
             .setColor('#7DBBEB')
             .setTitle('you have 15 seconds, who\'s that Pokémon?')
@@ -30,6 +29,7 @@ exports.run = async(client, message, args) => {
             max: 1,
             time: 15000
         });
+        const answerimage = await createImage(data, false);
         client.games.delete(message.channel.id);
         const embed1 = new MessageEmbed()
             .setColor('#7DBBEB')

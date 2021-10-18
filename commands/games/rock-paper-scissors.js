@@ -3,10 +3,9 @@ const rep = ['r', 'p', 's'];
 
 
 class Game {
-    constructor(message, challenged, args, client) {
+    constructor(message, challenged, client) {
         this.message = message;
         this.challenged = challenged;
-        this.args = args;
         this.client = client;
     };
 
@@ -14,7 +13,7 @@ class Game {
         let p1Message;
         let p2Message;
         const filter = m => rep.includes(m.content.trim().toLowerCase())
-        this.message.channel.send(`you have challenged ${this.args[0]} to a game of **rock-paper-scissors**! please move into DMs.`);
+        this.message.channel.send(`you have challenged ${this.challenged.toString()} to a game of **rock-paper-scissors**! please move into DMs.`);
         try {
             p1Message = await this.message.author.send('you have created a game of rps. please choose \`r, p, s\`');
             p2Message = await this.challenged.send('you have been challenged to a game of rps. please choose \`r, p, s\`');
@@ -186,7 +185,7 @@ exports.run = async(client, message, args) => {
 
     client.isPlaying.set(challenged.id, true);
     client.isPlaying.set(message.author.id, true);
-    const game = new Game(message, challenged, args, client);
+    const game = new Game(message, challenged, client);
     game.run();
 }
 
