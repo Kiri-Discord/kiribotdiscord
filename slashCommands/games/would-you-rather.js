@@ -40,7 +40,7 @@ exports.run = async(client, interaction) => {
                 return false;
             } else return true
         };
-        const collector = await msg.createMessageComponentCollector({
+        const collector = msg.createMessageComponentCollector({
             filter,
             componentType: 'BUTTON',
             time: 30000,

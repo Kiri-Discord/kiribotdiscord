@@ -151,7 +151,7 @@ function makeLeaderboard(pts) {
 
 exports.help = {
 	name: "lie-guess",
-	description: "you and your opponent will be given a fact and must quickly decide if it\'s **true** or a **lie**.¯\\_(ツ)_/¯",
+	description: "you and your opponent will be given a fact and must quickly decide if it\'s true or a **lie.¯\\_(ツ)_/¯",
 	usage: ["lie-guess `<number of players>`"],
 	example: ["lie-guess `4`"]
 };
