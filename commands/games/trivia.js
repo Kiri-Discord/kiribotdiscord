@@ -1,10 +1,10 @@
-const { MessageEmbed, MessageCollector } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const request = require('node-superfetch');
 const { shuffle } = require('../../util/util');
 const difficulties = ['easy', 'medium', 'hard'];
 const choices = ['A', 'B', 'C', 'D'];
 
-exports.run = async(client, message, args, prefix) => {
+exports.run = async(client, message, args) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.channel.send(current.prompt);
     const sadEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
@@ -41,24 +41,40 @@ exports.run = async(client, message, args, prefix) => {
         .addField('Question', `**${decodeURIComponent(body.results[0].question)}**`, true)
         .addField('Answers', shuffled.map((answer, i) => `**${choices[i]}** \`${answer}\``).join('\n'))
         .setColor('#bee7f7')
-    await message.channel.send({ embeds: [questionEmbed] });
-    let winner;
-    const collector = new MessageCollector(message.channel, {
-        filter: msg => !msg.author.bot && choices.includes(msg.content.toUpperCase()),
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setCustomId('A')
+            .setLabel('A')
+            .setStyle('SECONDARY'),
+            new MessageButton()
+            .setCustomId('B')
+            .setLabel('B')
+            .setStyle('SECONDARY'),
+            new MessageButton()
+            .setCustomId('C')
+            .setLabel('C')
+            .setStyle('SECONDARY'),
+            new MessageButton()
+            .setCustomId('D')
+            .setLabel('D')
+            .setStyle('SECONDARY')
+        );
+    const msg = await message.channel.send({ embeds: [questionEmbed], components: [row] });
+    const collector = msg.createMessageComponentCollector({
+        componentType: 'BUTTON',
         time: 15000,
         max: 1
     });
+    let winner;
 
-    collector.on('collect', msg => {
-        if (shuffled[choices.indexOf(msg.content.toUpperCase())].toLowerCase() === correct.toLowerCase()) {
-            winner = msg.author;
-        };
-    });
-    collector.on('end', async() => {
-        client.games.delete(message.channel.id);
+    collector.on('collect', async res => {
+        await res.deferReply();
         const answerEmbed = new MessageEmbed()
             .setColor('#bee7f7')
-        if (winner) {
+        if (shuffled[choices.indexOf(res.customId)] === correct) {
+            row.components.find(component => component.customId === res.customId).style = 'SUCCESS';
+            winner = res.user;
             let amount = getRandomInt(20, 40);
             const storageAfter = await client.money.findOneAndUpdate({
                 guildId: message.guild.id,
@@ -77,14 +93,24 @@ exports.run = async(client, message, args, prefix) => {
                 .setFooter(`your current balance: ${storageAfter.balance}`)
                 .setTitle(`you gave the correct answer, ${winner.username}`)
                 .setDescription(`⏣ **${amount}** token was placed in your wallet :boom:`)
-            return message.channel.send({ embeds: [answerEmbed] });
+            res.editReply({ embeds: [answerEmbed] });
         } else {
             answerEmbed
-                .setFooter('better luck next time :(')
-                .setTitle(`sorry, time\'s up!`)
+                .setFooter('better luck next time!')
+                .setTitle(`sorry, you provided a wrong answer!`)
                 .setDescription(`the correct answer was: \`${correct}\` ${sadEmoji}`)
-            return message.channel.send({ embeds: [answerEmbed] });
+            res.editReply({ embeds: [answerEmbed] });
         };
+    });
+    collector.on('end', (collected) => {
+        client.games.delete(message.channel.id);
+        if (collected.size && shuffled[choices.indexOf(collected.first().customId)] !== correct) row.components.find(component => component.customId === collected.first().customId).style = 'DANGER';
+        // row.components.find(component => shuffled[choices.indexOf(component.customId)] === correct).style = 'SUCCESS';
+        row.components.forEach(component => {
+            if (shuffled[choices.indexOf(component.customId)] === correct) component.style = 'SUCCESS';
+            component.setDisabled(true)
+        });
+        return msg.edit({ components: [row] });
     });
 };
 
