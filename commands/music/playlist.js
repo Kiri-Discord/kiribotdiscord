@@ -4,13 +4,14 @@ const { fetchInfo } = require('../../util/util');
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
+const request = require("node-superfetch");
 const { YOUTUBE_API_KEY, DEFAULT_VOLUME } = require("../../util/musicutil");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
 
 
-exports.run = async(client, message, args, prefix, bulkAdd = false) => {
+exports.run = async(client, message, args, prefix, cmd, bulkAdd) => {
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
         if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: '⚠️ you are not in a voice channel!' }] });
@@ -29,29 +30,22 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         });
         const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
         const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode|show)(?::|\/)((?:[0-9a-zA-Z]){22})/;
-        const url = args[0];
+        const mobileScRegex = /^https?:\/\/(soundcloud\.app\.goo\.gl)\/(.*)$/;
+
+        let url = args[0];
+
+        if (mobileScRegex.test(url)) {
+            try {
+                const res = await request.get(url);
+                url = res.url;
+            } catch (error) {
+                return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
+            };
+        };
+
         const urlValid = pattern.test(url);
         const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
-        // let queueConstruct = {
-        //     playingMessage: null,
-        //     textChannel: message.channel,
-        //     channel,
-        //     player: null,
-        //     pending: true,
-        //     songs: [],
-        //     loop: false,
-        //     repeat: false,
-        //     playing: true,
-        //     volume: null,
-        //     nowPlaying: null,
-        //     karaoke: {
-        //         timeout: [],
-        //         channel: null,
-        //         isEnabled: null,
-        //         languageCode: null,
-        //         instance: null,
-        //     }
-        // };
+
         if (musicSettings) {
             queueConstruct.karaoke.isEnabled = false;
             queueConstruct.volume = musicSettings.volume;
@@ -68,7 +62,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
                         queueConstruct.karaoke.isEnabled = true;
                     } else {
                         queueConstruct.karaoke.isEnabled = false;
-                        message.channel.send('you didn\'t answer anything! i will just play the song now...')
+                        message.channel.send('you didn\'t answer anything! i will just play the song now...');
                     };
                 };
             };
@@ -77,33 +71,12 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
             queueConstruct.volume = DEFAULT_VOLUME;
         };
         let newSongs;
-        let notice = null;
         let playlistURL;
-        if (bulkAdd === true) {
-            let errorCount = 0;
-            newSongs = [];
-            for (let each of args) {
-                try {
-                    if (each.type === 'yt') {
-                        const [song] = await fetchInfo(client, each.url, false);
-                        song.type = 'yt';
-                        song.requestedby = message.author;
-                        newSongs.push(song);
-                    } else {
-                        const [song] = await fetchInfo(client, each.url, false, 'yt');
-                        song.type = 'sc';
-                        song.requestedby = message.author;
-                        newSongs.push(song);
-                    };
-                } catch (error) {
-                    ++errorCount;
-                    continue;
-                };
-            };
-            if (errorCount > 0) notice = `${errorCount} song${errorCount > 1 ? 's' : ''} couldn't be added due to an error`
+        if (bulkAdd) {
+            newSongs = bulkAdd;
         } else if (urlValid) {
             try {
-                newSongs = await fetchInfo(client, url, false);
+                newSongs = await fetchInfo(client, url, null);
                 if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
                 playlistURL = url;
                 newSongs.forEach(song => {
@@ -116,7 +89,7 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         } else if (scdl.isValidUrl(url)) {
             try {
                 if (url.includes("/sets/")) {
-                    newSongs = await fetchInfo(client, url, false, 'yt');
+                    newSongs = await fetchInfo(client, url, null, 'yt');
                     if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm working on my end. try again later!)` }] });
                     playlistURL = url;
                     newSongs.forEach(song => {
@@ -180,7 +153,6 @@ exports.run = async(client, message, args, prefix, bulkAdd = false) => {
         serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
         let playlistEmbed = new MessageEmbed()
             .setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL || newSongs[0].info.uri})` : `[track](${playlistURL || newSongs[0].info.uri})`} to the queue [${message.author}]`);
-        if (notice) playlistEmbed.setFooter(notice);
         message.channel.send({embeds: [playlistEmbed]});
     if (!serverQueue) {
         client.queue.set(message.guild.id, queueConstruct);

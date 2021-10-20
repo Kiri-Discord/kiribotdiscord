@@ -23,8 +23,8 @@ exports.run = async(client, message, args, prefix) => {
         time = timestring(query);
     } catch {
         time = sec(query);
-        // return message.channel.send({ embeds: [{ color: "#bee7f7", description: `hmm, i got a invalid format. can you check if the time is longer than 0 second and meet the correct format? (for example \`04:05\` or \`2m 6s\`)` }] });
     };
+
     const timeMs = time * 1000;
     if (timeMs > song.info.length - 5) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `that is wayy longer than the current playing song! can you check it again?` }] });
     const timestamp = queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying;
@@ -35,7 +35,8 @@ exports.run = async(client, message, args, prefix) => {
         song.startedPlaying = song.startedPlaying - (timeMs - timestamp);
     };
     queue.player.seek(timeMs);
-    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `successfully jumped to **${humanize(timeMs)}** 🚚` }] });
+    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `you seek the current song to **${humanize(timeMs)}**!` }] })
+    return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] 🚚` }] });
 };
 exports.help = {
     name: "seek",

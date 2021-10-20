@@ -3,11 +3,12 @@ const { fetchInfo } = require('../../util/util');
 const { MessageEmbed } = require('discord.js');
 const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../util/musicutil");
+const request = require("node-superfetch");
 const Guild = require('../../model/music');
 const { verify, verifyLanguage, embedURL } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
 
-exports.run = async(client, message, args, prefix, cmd, internal) => {
+exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
     const { channel } = message.member.voice;
     const serverQueue = client.queue.get(message.guild.id);
     if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
@@ -16,29 +17,37 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const voicechannel = serverQueue.channel
         return message.reply(`i have already been playing music in your server! join ${voicechannel} to listen :smiley:`).catch(err => logger.log('error', err));
     };
+    if (!args.length) return message.reply({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` }] });
 
     const musicSettings = await Guild.findOne({
         guildId: message.guild.id
     });
 
-    if (!args.length) return message.reply({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` }] });
-    const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
     const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
     const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode|show)(?::|\/)((?:[0-9a-zA-Z]){22})/;
     const mobileScRegex = /^https?:\/\/(soundcloud\.app\.goo\.gl)\/(.*)$/;
-    const url = args[0];
+    let url = args[0];
+
+    if (mobileScRegex.test(url)) {
+        try {
+            const res = await request.get(url);
+            url = res.url;
+        } catch (error) {
+            return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
+        };
+    };
     const urlValid = videoPattern.test(url);
 
     if (!videoPattern.test(url) && playlistPattern.test(url)) {
-        return client.commands.get("playlist").run(client, message, args);
+        return client.commands.get("playlist").run(client, message, [url]);
     } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
-        return client.commands.get("playlist").run(client, message, args);
+        return client.commands.get("playlist").run(client, message, [url]);
     } else if (url.match(spotifyRegex)) {
         const match = url.match(spotifyRegex);
         const albumOrTrack = match[1];
-        if (albumOrTrack === 'album' || albumOrTrack === 'playlist') return client.commands.get("playlist").run(client, message, args);
+        if (albumOrTrack === 'album' || albumOrTrack === 'playlist') return client.commands.get("playlist").run(client, message, [url]);
     };
     const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
     if (musicSettings && !internal) {
@@ -69,10 +78,11 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         queueConstruct.karaoke = internal;
     };
     let song = null;
-
-    if (urlValid) {
+    if (bulkAdd) {
+        song = bulkAdd;
+    } else if (urlValid) {
         try {
-            [song] = await fetchInfo(client, url, false);
+            [song] = await fetchInfo(client, url, null);
             if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             song.type = 'yt';
             song.requestedby = message.author;
@@ -80,9 +90,9 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             logger.log('error', error);
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
         };
-    } else if (scRegex.test(url) || mobileScRegex.test(url)) {
+    } else if (scRegex.test(url)) {
         try {
-            [song] = await fetchInfo(client, url, false, 'yt');
+            [song] = await fetchInfo(client, url, null, 'yt');
             if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
             song.type = 'sc';
             song.requestedby = message.author;
@@ -116,7 +126,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     } else {
         return client.commands
             .get("search")
-            .run(client, message, [search], prefix, cmd, queueConstruct.karaoke);
+            .run(client, message, args, prefix, cmd, queueConstruct.karaoke);
     };
 
     if (serverQueue) {
