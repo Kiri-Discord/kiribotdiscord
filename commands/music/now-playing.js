@@ -10,18 +10,30 @@ exports.run = async(client, message, args) => {
             description: 'there is nothing to display since i\'m not playing anything :grimacing:'
         }]
     });
+
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     const song = queue.nowPlaying;
+    const types = {
+        "sp": "Spotify",
+        "sc": "SoundCloud",
+        "yt": "YouTube"
+    };
 
-    const seek = song.startedPlaying ? (queue.pausedAt ? (queue.pausedAt - song.startedPlaying) / 1000 : (Date.now() - song.startedPlaying) / 1000) : null;
+    const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
     if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
-    const duration = song.info.isStream ? null : song.info.length / 1000;
+
+    const duration = song.info.isStream ? null : song.info.length;
     const cursor = client.customEmojis.get('truck') ? client.customEmojis.get('truck') : '🔵';
+    const fixedSeek = parseInt((seek / 1000).toFixed().toString().split('.')[0]);
+
+    const bar = splitBar(duration == 0 ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
+
     let nowPlaying = new MessageEmbed()
         .setDescription(`
     **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]
-    ${splitBar(duration == 0 ? seek : duration, seek, 16, '▬', cursor)[0]} ${moment.duration(seek * 1000).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration * 1000).format('H[h] m[m] s[s]')}
+    ${bar} ${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}
     `)
+        .setFooter(`carrying from ${types[song.type]}`)
     return message.channel.send({ embeds: [nowPlaying] });
 };
 exports.help = {

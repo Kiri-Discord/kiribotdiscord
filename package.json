@@ -73,6 +73,7 @@
         "string-progressbar": "^1.0.4",
         "string-similarity": "^4.0.4",
         "subtitle": "^4.1.1",
+        "timestring": "^6.0.0",
         "topgg-autoposter": "^2.0.0",
         "url": "^0.11.0",
         "utf-8-validate": "^5.0.5",

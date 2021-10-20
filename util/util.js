@@ -373,7 +373,18 @@ module.exports = class util {
 			arr[j] = temp;
 		}
 		return arr;
-	}
+	};
+	static sec(string) {
+		const parts = string.split(':');
+		let seconds = 0;
+		let minutes = 1;
+	
+		while (parts.length > 0) {
+			seconds += minutes * Number.parseInt(parts.pop(), 10);
+			minutes *= 60;
+		};
+		return seconds;
+	};
 	static randomStatus(client) {
 		const activities = [
 			{
@@ -397,14 +408,16 @@ module.exports = class util {
 		return { text: activity.text, type: activity.type }
 	};
 	static async fetchInfo(client, query, search, id) {
-        const node = id ? client.lavacordManager.idealNodes.filter(x => x.id !== id)[0] : client.lavacordManager.idealNodes[0];
+		const nodes = client.lavacordManager.idealNodes;
+        const node = id ? nodes.filter(x => x.id !== id)[0] : nodes[0];
         const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+		const searchType = search || 'ytsearch';
 
         const { body } = await request
             .get(`http://${node.host}:${node.port}/loadtracks`)
             .set({ Authorization: node.password })
             .query({
-                identifier: urlRegex.test(query) ? query : `ytsearch:${query}`,
+                identifier: urlRegex.test(query) ? query : `${searchType}:${query}`,
             });
         return body.tracks;
     };
