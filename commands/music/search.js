@@ -105,9 +105,9 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                     components: [row]
                 });
             } else {
-                if (msg && !msg.deletable) await msg.delete();
+                if (msg && msg.deletable) await msg.delete();
             };
-            if (loadingMessage && !loadingMessage.deleted) await loadingMessage.delete();
+            if (loadingMessage && loadingMessage.deletable) await loadingMessage.delete();
         });
         collector.on('collect', async(res) => {
             inactive = false;
