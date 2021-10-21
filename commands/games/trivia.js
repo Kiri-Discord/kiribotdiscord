@@ -73,7 +73,6 @@ exports.run = async(client, message, args) => {
         const answerEmbed = new MessageEmbed()
             .setColor('#bee7f7')
         if (shuffled[choices.indexOf(res.customId)] === correct) {
-            row.components.find(component => component.customId === res.customId).style = 'SUCCESS';
             winner = res.user;
             let amount = getRandomInt(20, 40);
             const storageAfter = await client.money.findOneAndUpdate({
