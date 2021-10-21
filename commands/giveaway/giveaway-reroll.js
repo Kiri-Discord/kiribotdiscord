@@ -1,7 +1,6 @@
 const { reactIfAble } = require('../../util/util');
 const { Permissions } = require('discord.js');
 
-
 exports.run = async(client, message, args, prefix, cmd) => {
     if (!args[0]) {
         const onChannel = client.giveaways.giveaways
@@ -12,16 +11,15 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 color: 'RED'
             }]
         })
-        const matches = onChannel
-            .sort((a, b) => b.startAt - a.startAt)
-            .filter(g => g.extraData.hostedByID === message.author.id)
-        if (!matches || !matches.length) return message.channel.send({
+        const matches = onChannel.sort((a, b) => b.startAt - a.startAt);
+
+        const firstGiveaway = matches[0];
+        if (firstGiveaway.extraData.hostedByID !== message.author.id && !message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply({
             embeds: [{
-                description: `:boom: none of those giveaways on this channel was yours :pensive:\nuse \`${prefix} giveaway-list\` to get the remaining giveaways on this server, then run this command again with the message ID of that giveaway by \`${prefix}${cmd} <message ID>\` :grin:`,
+                description: 'that isn\'t your giveaway, or you don\'t have the \`ADMINISTRATOR\` permission to take full control over that giveaway :pensive:',
                 color: 'RED'
             }]
-        })
-        const firstGiveaway = onChannel[0];
+        });
         await reactIfAble(message, client.user, '✅');
         return client.giveaways.reroll(firstGiveaway.messageId);
     } else {

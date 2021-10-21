@@ -1,8 +1,7 @@
 const { MessageEmbed } = require('discord.js');
-const { askString, deleteIfAble } = require('../../util/util');
+const { askString, deleteIfAble, embedURL } = require('../../util/util');
 const ms = require("ms");
 const { stripIndents } = require('common-tags');
-const { embedURL } = require('../../util/util');
 
 exports.run = async(client, message, args, prefix) => {
     let targetChannel = null;

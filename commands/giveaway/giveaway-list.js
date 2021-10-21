@@ -12,7 +12,7 @@ exports.run = async(client, message, args, prefix) => {
     });
     const all = onServer.sort((a, b) => b.startAt - a.startAt);
     let list = [];
-    all.map((giveaway) => list.push(!giveaway.ended ?
+    all.forEach((giveaway) => list.push(!giveaway.ended ?
         `${giveaway.hostedBy} • **${giveaway.prize}** | ends in: <t:${giveaway.endAt}:R> | ${embedURL('Jump to giveaway', giveaway.messageURL)} (message ID: \`${giveaway.messageId})\`` :
         `**ENDED** ${giveaway.hostedBy} • **${giveaway.prize}** | ${embedURL('Jump to giveaway', giveaway.messageURL)} (message ID: \`${giveaway.messageId}\``));
 
@@ -37,4 +37,4 @@ exports.conf = {
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};
