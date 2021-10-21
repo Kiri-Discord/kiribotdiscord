@@ -26,7 +26,7 @@ exports.run = async(client, interaction) => {
         await client.giveaways.end(firstGiveaway.messageId);
         return interaction.editReply({
             embeds: [{
-                description: `the giveaway ${firstGiveaway.prize} was ended :grin:`,
+                description: `the giveaway **${firstGiveaway.prize}** was ended :grin:`,
                 color: 'RED'
             }]
         });
@@ -58,7 +58,7 @@ exports.run = async(client, interaction) => {
         await client.giveaways.end(giveaway.messageId);
         return interaction.editReply({
             embeds: [{
-                description: `the giveaway ${giveaway.prize} was ended :grin:`,
+                description: `the giveaway **${giveaway.prize}** was ended :grin:`,
                 color: 'RED'
             }]
         });

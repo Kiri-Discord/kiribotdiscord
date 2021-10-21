@@ -31,7 +31,7 @@ exports.run = async(client, interaction) => {
 
 exports.help = {
     name: "giveaway",
-    description: "create a new giveaway on the server with interactive setup",
+    description: "create and manage giveaways on the server",
     usage: ["giveaway `create`", "giveaway `delete [message ID]`", "giveaway `end [message ID]`", "giveaway `list`", "giveaway `reroll [message ID]`"],
     example: ["giveaway `create`", "giveaway `delete 55335657545`", "giveaway `end 87864534464`", "giveaway `list`", "giveaway `reroll 868645354575`"]
 };
@@ -46,7 +46,7 @@ exports.conf = {
         )
         .addSubcommand(sub => sub
             .setName('delete')
-            .setDescription('delete a giveaway (members with \`ADMINISTRATOR\` permission have full control over any ongoing giveaways)')
+            .setDescription('delete a giveaway (members with ADMINISTRATOR permission have full control)')
             .addStringOption(option => option
                 .setName('message-id')
                 .setDescription('what is the message ID of the giveaway the you would like to delete?')
@@ -55,7 +55,7 @@ exports.conf = {
         )
         .addSubcommand(sub => sub
             .setName('end')
-            .setDescription('end a giveaway sooner (members with \`ADMINISTRATOR\` permission have full control over any ongoing giveaways)')
+            .setDescription('end a giveaway sooner (members with ADMINISTRATOR permission have full control)')
             .addStringOption(option => option
                 .setName('message-id')
                 .setDescription('what is the message ID of the giveaway the you would like to end?')
@@ -64,7 +64,7 @@ exports.conf = {
         )
         .addSubcommand(sub => sub
             .setName('reroll')
-            .setDescription('reroll a finished giveaway (members with \`ADMINISTRATOR\` permission have full control over any ongoing giveaways)')
+            .setDescription('reroll a finished giveaway (members with ADMINISTRATOR permission have full control)')
             .addStringOption(option => option
                 .setName('message-id')
                 .setDescription('what is the message ID of the giveaway the you would like to reroll?')

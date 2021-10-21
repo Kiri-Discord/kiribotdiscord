@@ -26,7 +26,7 @@ exports.run = async(client, interaction) => {
         await client.giveaways.reroll(firstGiveaway.messageId);
         return interaction.editReply({
             embeds: [{
-                description: `the giveaway ${firstGiveaway.prize} was rerolled :tada:`,
+                description: `the giveaway **${firstGiveaway.prize}** was rerolled :tada:`,
                 color: 'RED'
             }]
         });
@@ -58,7 +58,7 @@ exports.run = async(client, interaction) => {
         await client.giveaways.reroll(giveaway.messageId);
         return interaction.editReply({
             embeds: [{
-                description: `the giveaway ${giveaway.prize} was rerolled :tada:`,
+                description: `the giveaway **${giveaway.prize}** was rerolled :tada:`,
                 color: 'RED'
             }]
         });
