@@ -9,6 +9,7 @@ exports.run = async(client, interaction) => {
         if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
         client.games.set(interaction.channel.id, { prompt: `please wait until **${interaction.user.username}** is finished first :(` });
         try {
+            await interaction.deferReply();
             const data = await fetchScenario();
             const row = new MessageActionRow()
                 .addComponents(
@@ -21,7 +22,7 @@ exports.run = async(client, interaction) => {
                     .setLabel('2')
                     .setStyle('SECONDARY')
                 );
-            const msg = await interaction.reply({
+            const msg = await interaction.editReply({
                         content: stripIndents `
             ${data.prefix ? `${data.prefix.toLowerCase()}, would you rather...` : 'would you rather...'}
             **1.** ${data.option_1.toLowerCase()}
