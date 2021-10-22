@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
     })
 
     if (!result) {
-        return message.reply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :slight_smile_` }] })
+        return message.reply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :slight_smile:` }] })
     };
     for (let counter = 0; counter < result.length; ++counter) {
         let member = message.guild.members.cache.get(result[counter].userId)
