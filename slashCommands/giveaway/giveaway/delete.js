@@ -22,7 +22,7 @@ exports.run = async(client, interaction) => {
         });
         await interaction.deferReply();
         await client.giveaways.delete(firstGiveaway.messageId, true);
-        return interaction.editReply({ embeds: [{ description: `✅ the giveaway ${firstGiveaway.prize} was deleted :pensive:`, color: 'RED' }] })
+        return interaction.editReply({ embeds: [{ description: `✅ the giveaway **${firstGiveaway.prize}** was deleted :pensive:`, color: 'RED' }] })
     } else {
         const onServer = client.giveaways.giveaways.filter(g => g.guildId === interaction.guild.id);
         if (!onServer || !onServer.length) return interaction.reply({
@@ -49,6 +49,6 @@ exports.run = async(client, interaction) => {
         });
         await interaction.deferReply();
         await client.giveaways.delete(giveaway.messageId, true);
-        return interaction.reply({ embeds: [{ description: `the giveaway ${giveaway.prize} was deleted :pensive:`, color: 'RED' }] })
+        return interaction.reply({ embeds: [{ description: `the giveaway **${giveaway.prize}** was deleted :pensive:`, color: 'RED' }] })
     };
 };
