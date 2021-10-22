@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
     }).sort({
         balance: -1
     });
-    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ i can't find any money data for this guild :pensive: use \`${prefix}help economy\` for more info :smile:` }] });
+    if (!data || !data.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ i can't find any money data for this guild! token (⏣) can be claimed by winning games, betting and economy related features. :slight_smile:` }] });
 
     const emoji = {
         "1": ":crown:",
