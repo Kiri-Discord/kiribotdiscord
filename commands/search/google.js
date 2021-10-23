@@ -15,13 +15,10 @@ exports.run = async(client, message, args) => {
         safesearch = "active"
     }
     const href = await search(googleKey, csx, query, safesearch);
-    if (!href || href.error) {
+    if (!href) {
         message.reply({
             embeds: [{
                 description: `i can't find any result ;-; falling back to Duck Duck Go...`,
-                footer: {
-                    text: href.error ? `Google returned ${href.error} error code` : null
-                }
             }]
         });
         const searchResults = await DDG.search(query, {
@@ -39,9 +36,6 @@ exports.run = async(client, message, args) => {
         return message.channel.send({ embeds: [embed] });
     };
 
-    if (href.error) {
-        return message.channel.send(`http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`)
-    }
     const embed = new MessageEmbed()
         .setTitle(href.title)
         .setDescription(href.snippet)
@@ -72,8 +66,7 @@ async function search(googleKey, csx, query, safesearch) {
             return body.items;
         }
     } catch (error) {
-        if (error.status) return { error: error.status };
-        else return null;
+        return null;
     };
 };
 
