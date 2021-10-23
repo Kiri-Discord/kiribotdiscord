@@ -19,9 +19,6 @@ exports.run = async(client, message, args) => {
         message.reply({
             embeds: [{
                 description: `i can't find any result ;-; falling back to Duck Duck Go...`,
-                footer: {
-                    text: href.error ? `Google returned ${href.error} error code` : null
-                }
             }]
         });
         const searchResults = await DDG.search(query, {
