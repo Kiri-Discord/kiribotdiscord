@@ -1,8 +1,9 @@
 const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const fetch = require("node-fetch");
 
-exports.run = async(client, message, args) => {
-    message.channel.sendTyping();
+exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     let icon;
     let random = ["Memes", "Meme", "Davie504", "Dankmemer", "funny", "wholesomememes", "dankmemes", "raimimemes", "historymemes", "okbuddyretard", "comedyheaven", "pewdiepiesubmissions", "Animemes"]
     let memes = random[Math.floor(Math.random() * random.length)]
@@ -18,9 +19,9 @@ exports.run = async(client, message, args) => {
     fetch(`https://www.reddit.com/r/${memes}.json?sort=top&t=daily`)
         .then(res => res.json())
         .then(body => {
-            if (!body) return message.reply("ouch. i fell, try again please.");
+            if (!body) return interaction.editReply("ouch. i fell, try again please.");
             const allowed = message.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-            if (!allowed.length) return message.reply('hmm looks like an error to me... :(');
+            if (!allowed.length) return interaction.editReply('hmm looks like an error to me... :(');
             const randomnumber = Math.floor(Math.random() * allowed.length)
             let url = `https://www.reddit.com${allowed[randomnumber].data.permalink}`
             let embed = new MessageEmbed()
@@ -32,19 +33,22 @@ exports.run = async(client, message, args) => {
                 .setTimestamp(allowed[randomnumber].data.created_utc * 1000)
                 .setFooter(`⬆ ${allowed[randomnumber].data.ups} 💬 ${allowed[randomnumber].data.num_comments}`)
 
-            return message.channel.send({ embeds: [embed] });
+            return interaction.editReply({ embeds: [embed] });
         });
 };
 
 exports.help = {
     name: "meme",
-    description: "checkmate some memes from lots of sources 😋",
+    description: "checkmate some memes from a variety of sources 😋",
     usage: ["meme"],
     example: ["meme"]
 }
 
 exports.conf = {
-    aliases: ["meme", "m"],
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description),
+    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
