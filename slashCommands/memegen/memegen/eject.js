@@ -3,27 +3,28 @@ const GIFEncoder = require('gifencoder');
 const request = require('node-superfetch');
 const path = require('path');
 const frameCount = 52;
-const { streamToArray } = require('../../util/util');
-registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Regular.ttf'), { family: 'Noto' });
-registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf'), { family: 'Noto' });
-registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
+const { streamToArray } = require('../../../util/util');
+registerFont(path.join(__dirname, '..', '..', '..', 'assets', 'fonts', 'Noto-Regular.ttf'), { family: 'Noto' });
+registerFont(path.join(__dirname, '..', '..', '..', 'assets', 'fonts', 'Noto-CJK.otf'), { family: 'Noto' });
+registerFont(path.join(__dirname, '..', '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
-exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild);
-    if (!member) return message.reply('who do you want to eject lol');
+exports.run = async(client, interaction) => {
+    const member = interaction.options.getMember('target');
     const user = member.user;
-    if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');
-    message.channel.sendTyping();
+
+    // if (user.bot && user.id !== client.user.id) return interaction.reply({ content: 'why are you ejecting that bot :confused:', ephemeral: true });
+
     const choices = [1, 2];
     const choice = choices[Math.floor(Math.random() * choices.length)];
     let random = Math.floor(Math.random() * 10);
     if (user.id === client.user.id) random = 6;
-    const avatarURL = random < 5 ? user.displayAvatarURL({ format: 'png', size: 512 }) : message.author.displayAvatarURL({ format: 'png', size: 512 });
+    const avatarURL = random < 5 ? user.displayAvatarURL({ format: 'png', size: 512 }) : interaction.user.displayAvatarURL({ format: 'png', size: 512 });
     try {
+        await interaction.deferReply();
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
         const imposter = choice === 1;
-        const text = random < 5 ? `${user.username} was${imposter ? ' ' : ' not '}an imposter.` : `${message.author.username} was${imposter ? ' ' : ' not '}an imposter.`;
+        const text = random < 5 ? `${user.username} was${imposter ? ' ' : ' not '}an imposter.` : `${interaction.user.username} was${imposter ? ' ' : ' not '}an imposter.`;
         const encoder = new GIFEncoder(320, 180);
         const canvas = createCanvas(320, 180);
         const ctx = canvas.getContext('2d');
@@ -38,7 +39,7 @@ exports.run = async(client, message, args) => {
         encoder.setQuality(200);
         for (let i = 0; i < frameCount; i++) {
             const frameID = `frame_${i.toString().padStart(2, '0')}.gif`;
-            const frame = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'eject', frameID));
+            const frame = await loadImage(path.join(__dirname, '..', '..', '..', 'assets', 'images', 'eject', frameID));
             ctx.drawImage(frame, 0, 0);
             if (i <= 17) {
                 const x = ((320 / 15) * i) - 50;
@@ -68,26 +69,12 @@ exports.run = async(client, message, args) => {
         };
         encoder.finish();
         const buffer = await streamToArray(stream);
-        await message.channel.send({ content: `ejecting...`, files: [{ attachment: Buffer.concat(buffer), name: 'eject.gif' }] });
+        await interaction.editReply({ content: `ejecting...`, files: [{ attachment: Buffer.concat(buffer), name: 'eject.gif' }] });
         if (random >= 5) return setTimeout(() => {
             const smug = client.customEmojis.get('smug') ? client.customEmojis.get('smug') : ':thinking:';
-            return message.channel.send(`${message.author.username}, suprised? ${smug}${!imposter ? '\n||i was the imposter||' : ''}`)
+            return interaction.channel.send(`${interaction.user.username}, suprised? ${smug}${!imposter ? '\n||i was the imposter||' : ''}`)
         }, 5000);
     } catch (err) {
-        return message.reply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
+        return interaction.editReply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
     };
 };
-
-exports.help = {
-    name: "eject",
-    description: "eject someone off the ship",
-    usage: ["eject `<@mention>`"],
-    example: ["eject `@coconut`"]
-};
-
-exports.conf = {
-    aliases: [],
-    cooldown: 5,
-    guildOnly: true,
-    channelPerms: ["ATTACH_FILES"]
-}

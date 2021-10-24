@@ -7,7 +7,7 @@ registerFont(path.join(__dirname, '..', '..', '..', 'assets', 'fonts', 'Minecraf
 exports.run = async(client, interaction) => {
     const text = interaction.options.getString('text');
     await interaction.deferReply();
-    const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'achievement.png'));
+    const base = await loadImage(path.join(__dirname, '..', '..', '..', 'assets', 'images', 'achievement.png'));
     const canvas = createCanvas(base.width, base.height);
     const ctx = canvas.getContext('2d');
     ctx.drawImage(base, 0, 0);
@@ -16,7 +16,7 @@ exports.run = async(client, interaction) => {
     ctx.fillStyle = '#ffffff';
     ctx.fillText(shortenText(ctx, text, 230), 60, 60);
     return interaction.editReply({
-        content: `**${message.author.username}** just got an achievement! ${client.customEmojis.get('party') ? client.customEmojis.get('party') : ':partying_face:'}`,
+        content: `**${interaction.user.username}** just got an achievement! ${client.customEmojis.get('party') ? client.customEmojis.get('party') : ':partying_face:'}`,
         files: [new MessageAttachment(canvas.toBuffer(), 'achievement.png')]
     });
 };

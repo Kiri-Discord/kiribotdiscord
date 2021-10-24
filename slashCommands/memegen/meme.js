@@ -20,7 +20,7 @@ exports.run = async(client, interaction) => {
         .then(res => res.json())
         .then(body => {
             if (!body) return interaction.editReply("ouch. i fell, try again please.");
-            const allowed = message.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+            const allowed = interaction.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
             if (!allowed.length) return interaction.editReply('hmm looks like an error to me... :(');
             const randomnumber = Math.floor(Math.random() * allowed.length)
             let url = `https://www.reddit.com${allowed[randomnumber].data.permalink}`
@@ -42,7 +42,7 @@ exports.help = {
     description: "checkmate some memes from a variety of sources 😋",
     usage: ["meme"],
     example: ["meme"]
-}
+};
 
 exports.conf = {
     data: new SlashCommandBuilder()
@@ -52,4 +52,4 @@ exports.conf = {
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
-}
+};
