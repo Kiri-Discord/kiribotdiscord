@@ -117,7 +117,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 const bulk = res.values.map(song => lavalinkRes[song]);
                 client.commands
                     .get("playlist")
-                    .run(client, message, args, prefix, cmd, bulk);
+                    .run(client, message, args, prefix, cmd, internal, bulk);
             } else {
                 const song = lavalinkRes[parseInt(res.values[0])];
                 client.commands

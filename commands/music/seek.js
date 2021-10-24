@@ -11,7 +11,7 @@ exports.run = async(client, message, args, prefix) => {
     if (queue.karaoke.isEnabled) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `seeking is not possible when scrolling-lyrics is on :pensive: you can turn it off by \`${prefix}scrolling-lyrics off\`` }] });
 
     const song = queue.nowPlaying;
-    if (song.info.isStream) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `sorry, that song is unseekable :pensive:` }] });
+    if (!song.info.isSeekable) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `sorry, that song is unseekable :pensive:` }] });
     const seek = song.startedPlaying;
     if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
     if (song.requestedby.id !== message.author.id && !message.member.permissions.has('MANAGE_MESSAGES')) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you don't have the permission to do it since you didn't request the song, or you don't have \`MANAGE_MESSAGES\` to seek it :(` }] });

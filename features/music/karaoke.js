@@ -22,7 +22,7 @@ module.exports = class ScrollingLyrics {
     async init() {
         if (!this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
         let notice = `displaying scrolling lyrics (${ISO6391.getName(this.lang)}) for this track`;
-        if (this.song.type !== 'yt') return this.error('sc');
+        if (this.song.type !== 'yt' || this.song.type !== 'sp') return this.error('notSupported');
         const info = await ytdl.getInfo(this.song.info.uri);
         const foundCaption = info.player_response.captions;
         if (!foundCaption) return this.error();
@@ -96,8 +96,8 @@ module.exports = class ScrollingLyrics {
         this.channel = channel;
     };
     error(type) {
-        if (type === 'sc') {
-            this.queueChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode doesn't work yet with SoundCloud track :pensive:` }] });
+        if (type === 'notSupported') {
+            this.queueChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode works only with YouTube or Spotify source for now :pensive:` }] });
         } else if (type === 'perms') {
             this.queueChannel.send({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
         } else {

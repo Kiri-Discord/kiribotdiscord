@@ -4,14 +4,14 @@ const { fetchInfo } = require('../../util/util');
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
-const request = require("node-superfetch");
 const { YOUTUBE_API_KEY, DEFAULT_VOLUME } = require("../../util/musicutil");
+const validUrl = require('valid-url');
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
 
 
-exports.run = async(client, message, args, prefix, cmd, bulkAdd) => {
+exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
         if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: '⚠️ you are not in a voice channel!' }] });
@@ -34,19 +34,11 @@ exports.run = async(client, message, args, prefix, cmd, bulkAdd) => {
 
         let url = args[0];
 
-        if (mobileScRegex.test(url)) {
-            try {
-                const res = await request.get(url);
-                url = res.url;
-            } catch (error) {
-                return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
-            };
-        };
 
         const urlValid = pattern.test(url);
         const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
 
-        if (musicSettings) {
+        if (musicSettings && !internal) {
             queueConstruct.karaoke.isEnabled = false;
             queueConstruct.volume = musicSettings.volume;
             const channel = message.guild.channels.cache.get(musicSettings.KaraokeChannelID);
@@ -62,13 +54,16 @@ exports.run = async(client, message, args, prefix, cmd, bulkAdd) => {
                         queueConstruct.karaoke.isEnabled = true;
                     } else {
                         queueConstruct.karaoke.isEnabled = false;
-                        message.channel.send('you didn\'t answer anything! i will just play the song now...');
+                        message.channel.send('you didn\'t answer anything! i will just play the song now...')
                     };
                 };
             };
         } else {
             queueConstruct.karaoke.isEnabled = false;
             queueConstruct.volume = DEFAULT_VOLUME;
+        };
+        if (internal) {
+            queueConstruct.karaoke = internal;
         };
         let newSongs;
         let playlistURL;
@@ -86,17 +81,15 @@ exports.run = async(client, message, args, prefix, cmd, bulkAdd) => {
             } catch (error) {
                 return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             };
-        } else if (scdl.isValidUrl(url)) {
+        } else if (scdl.isValidUrl(url) || mobileScRegex.test(url)) {
             try {
-                if (url.includes("/sets/")) {
-                    newSongs = await fetchInfo(client, url, null, 'yt');
-                    if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm working on my end. try again later!)` }] });
-                    playlistURL = url;
-                    newSongs.forEach(song => {
-                        song.type = 'sc';
-                        song.requestedby = message.author;
-                    });
-                };
+                newSongs = await fetchInfo(client, url, null, 'yt');
+                if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm working on my end. try again later!)` }] });
+                playlistURL = url;
+                newSongs.forEach(song => {
+                    song.type = 'sc';
+                    song.requestedby = message.author;
+                });
             } catch (error) {
                 return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             };
@@ -130,6 +123,18 @@ exports.run = async(client, message, args, prefix, cmd, bulkAdd) => {
                         song.requestedby = message.author;
                     });
                 };
+            } catch (error) {
+                return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+            };
+        } else if (validUrl.isWebUri(url)) {
+            try {
+                newSongs = await fetchInfo(client, url, null);
+                if (!newSongs || !newSongs.length) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+                playlistURL = url;
+                newSongs.forEach(song => {
+                    song.type = 'other';
+                    song.requestedby = message.author;
+                });
             } catch (error) {
                 return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
             };

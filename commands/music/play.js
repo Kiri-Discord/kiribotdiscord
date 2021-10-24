@@ -3,7 +3,8 @@ const { fetchInfo } = require('../../util/util');
 const { MessageEmbed } = require('discord.js');
 const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../util/musicutil");
-const request = require("node-superfetch");
+const validUrl = require('valid-url');
+// const request = require("node-superfetch");
 const Guild = require('../../model/music');
 const { verify, verifyLanguage, embedURL } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
@@ -30,14 +31,14 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
     const mobileScRegex = /^https?:\/\/(soundcloud\.app\.goo\.gl)\/(.*)$/;
     let url = args[0];
 
-    if (mobileScRegex.test(url)) {
-        try {
-            const res = await request.get(url);
-            url = res.url;
-        } catch (error) {
-            return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
-        };
-    };
+    // if (mobileScRegex.test(url)) {
+    //     try {
+    //         const res = await request.get(url);
+    //         url = res.url;
+    //     } catch (error) {
+    //         return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
+    //     };
+    // };
     const urlValid = videoPattern.test(url);
 
     if (!videoPattern.test(url) && playlistPattern.test(url)) {
@@ -90,12 +91,23 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
             logger.log('error', error);
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
         };
-    } else if (scRegex.test(url)) {
+    } else if (scRegex.test(url) || mobileScRegex.test(url)) {
         try {
-            [song] = await fetchInfo(client, url, null, 'yt');
-            if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
-            song.type = 'sc';
-            song.requestedby = message.author;
+            const res = await fetchInfo(client, url, null, 'yt');
+            if (res.length > 1) {
+                res.forEach(each => {
+                    each.type = 'sc';
+                    each.requestedby = message.author;
+                });
+                return client.commands
+                    .get("playlist")
+                    .run(client, message, args, prefix, cmd, queueConstruct.karaoke, res);
+            } else {
+                song = res[0];
+                if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
+                song.type = 'sc';
+                song.requestedby = message.author;
+            };
         } catch (error) {
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
         };
@@ -119,6 +131,16 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                 type: 'sp',
                 requestedby: message.author
             };
+        } catch (error) {
+            logger.log('error', error);
+            return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
+        };
+    } else if (validUrl.isWebUri(url)) {
+        try {
+            [song] = await fetchInfo(client, url, null);
+            if (!song) return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+            song.type = 'other';
+            song.requestedby = message.author;
         } catch (error) {
             logger.log('error', error);
             return message.channel.send({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
