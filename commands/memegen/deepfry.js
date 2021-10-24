@@ -80,7 +80,7 @@ function desaturate(ctx, level, x, y, width, height) {
 };
 exports.help = {
     name: "deepfry",
-    description: "fry something on Discord!",
+    description: "fry your photo on Discord!",
     usage: ["deepfry `[URL]`", "deepfry `[image attachment]`"],
     example: ["deepfry `image attachment`", "deepfry `https://example.com/girl.jpg`", "deepfry"]
 };
