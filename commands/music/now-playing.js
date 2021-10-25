@@ -39,7 +39,7 @@ exports.run = async(client, message, args) => {
     const cursor = client.customEmojis.get('truck') ? client.customEmojis.get('truck') : '🔵';
     const fixedSeek = Math.floor(seek / 1000);
 
-    const bar = splitBar(duration == 0 ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
+    const bar = splitBar(duration == 0 || !duration ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
 
     let nowPlaying = new MessageEmbed()
         .setDescription(`
