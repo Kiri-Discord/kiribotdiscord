@@ -37,7 +37,7 @@ exports.run = async(client, message, args) => {
 
     const duration = song.info.isStream ? null : song.info.length;
     const cursor = client.customEmojis.get('truck') ? client.customEmojis.get('truck') : '🔵';
-    const fixedSeek = parseInt((seek / 1000).toFixed().toString().split('.')[0]);
+    const fixedSeek = Math.floor(seek / 1000);
 
     const bar = splitBar(duration == 0 ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
 
