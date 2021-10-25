@@ -10,7 +10,6 @@ const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const { verify, verifyLanguage } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
 
-
 exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         const { channel } = message.member.voice;
         const serverQueue = client.queue.get(message.guild.id);
@@ -173,7 +172,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
 
 exports.help = {
     name: "playlist",
-    description: "play an entire playlist or album (support YouTube, SoundCloud and Spotify)",
+    description: "play an entire playlist or album (lots of source supported)",
     usage: ["playlist `<link>`", "playlist `<search query>`"],
     example: ["playlist [this](https://www.youtube.com/playlist?list=PLi9drqWffJ9FWBo7ZVOiaVy0UQQEm4IbP)", "playlist [this](https://soundcloud.com/puppermusic/sets/good-vibes)"]
 };
