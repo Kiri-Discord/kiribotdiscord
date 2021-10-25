@@ -9,7 +9,7 @@ exports.run = async(client, message, args, prefix) => {
 };
 exports.help = {
     name: "music-debug",
-    description: "repeat the current song",
+    description: "turn on debugging mode for music",
     usage: ["music-debug"],
     example: ["music-debug"]
 };
