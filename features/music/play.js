@@ -123,12 +123,17 @@ module.exports = class Queue {
             };
             this.player.on('start', async data => {
                 try {
-                    const emoji = {
-                        'yt': 'youtube',
-                        'sc': 'soundcloud',
-                        'sp': 'spotify'
+                    let targetEmoji;
+                    if (this.nowPlaying.type !== 'other') {
+                        const emoji = {
+                            'yt': 'youtube',
+                            'sc': 'soundcloud',
+                            'sp': 'spotify'
+                        };
+                        targetEmoji = emoji[this.nowPlaying.type] ? `${this.client.customEmojis.get(emoji[this.nowPlaying.type])} ` : '';
+                    } else {
+                        targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? `${this.client.customEmojis.get(this.nowPlaying.info.sourceName)} ` : '';
                     };
-                    const targetEmoji = emoji[this.nowPlaying.type] ? `${this.client.customEmojis.get(emoji[this.nowPlaying.type])} ` : '';
                     const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
                     this.nowPlaying.startedPlaying = Date.now();
                     if (this.karaoke.isEnabled && this.karaoke.instance) {

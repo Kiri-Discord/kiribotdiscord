@@ -13,18 +13,31 @@ exports.run = async(client, message, args) => {
 
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     const song = queue.nowPlaying;
-    const types = {
-        "sp": "Spotify",
-        "sc": "SoundCloud",
-        "yt": "YouTube"
-    };
-
+    let type;
+    if (song.type !== 'other') {
+        const types = {
+            "sp": "Spotify",
+            "sc": "SoundCloud",
+            "yt": "YouTube"
+        };
+        type = types[song.type];
+    } else {
+        const types = {
+            "soundcloud": "SoundCloud",
+            "youtube": "YouTube",
+            "vimeo": "Vimeo",
+            "bandcamp": "Bandcamp",
+            "twitch": "Twitch",
+            "http": "Unknown"
+        };
+        type = types[song.info.sourceName];
+    }
     const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
     if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
 
     const duration = song.info.isStream ? null : song.info.length;
     const cursor = client.customEmojis.get('truck') ? client.customEmojis.get('truck') : '🔵';
-    const fixedSeek = parseInt((seek / 1000).toFixed().toString().split('.')[0]);
+    const fixedSeek = Math.floor(seek / 1000);
 
     const bar = splitBar(duration == 0 ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
 
@@ -33,7 +46,7 @@ exports.run = async(client, message, args) => {
     **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]
     ${bar} ${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}
     `)
-        .setFooter(`carrying from ${types[song.type]}`)
+        .setFooter(`carrying from ${type}`)
     return message.channel.send({ embeds: [nowPlaying] });
 };
 exports.help = {

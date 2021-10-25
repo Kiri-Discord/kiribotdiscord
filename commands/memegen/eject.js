@@ -12,7 +12,7 @@ exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild);
     if (!member) return message.reply('who do you want to eject lol');
     const user = member.user;
-    if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');
+    // if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');
     message.channel.sendTyping();
     const choices = [1, 2];
     const choice = choices[Math.floor(Math.random() * choices.length)];

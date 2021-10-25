@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 exports.run = async(client, message, args) => {
     message.channel.sendTyping();
-    let random = ["hentai", "ecchi", "ahegao"];
+    let random = ["hentai", "ecchi", "ahegao", "pantsu"];
     let subreddit = random[Math.floor(Math.random() * random.length)];
     fetch(`https://www.reddit.com/r/${subreddit}/about.json`)
         .then(res => res.json())
