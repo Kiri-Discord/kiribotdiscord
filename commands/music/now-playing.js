@@ -30,7 +30,7 @@ exports.run = async(client, message, args) => {
             "twitch": "Twitch",
             "http": "Unknown"
         };
-        type = types[this.nowPlaying.info.sourceName];
+        type = types[song.nowPlaying.info.sourceName];
     }
     const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
     if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
