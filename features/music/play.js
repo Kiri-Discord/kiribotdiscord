@@ -132,7 +132,7 @@ module.exports = class Queue {
                         };
                         targetEmoji = emoji[this.nowPlaying.type] ? `${this.client.customEmojis.get(emoji[this.nowPlaying.type])} ` : '';
                     } else {
-                        targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? this.client.customEmojis.get(this.nowPlaying.info.sourceName) : '';
+                        targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? `${this.client.customEmojis.get(this.nowPlaying.info.sourceName)} ` : '';
                     };
                     const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
                     this.nowPlaying.startedPlaying = Date.now();
