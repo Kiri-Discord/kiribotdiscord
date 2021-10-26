@@ -13,14 +13,15 @@ exports.run = async(client, message, args) => {
         let leftMembers = listening - 1;
         let vote = 0;
         let voted = [];
-        await message.channel.send(`there are **${leftMembers}** people listening as well! to skip, type \`skip\` ⏭`);
+        const sentMessage = [];
+        const firstSent = await message.channel.send(`there are **${leftMembers}** people listening as well! to skip, type \`skip\` ⏭`);
+        sentMessage.push(firstSent);
         const collector = new MessageCollector(message.channel, {
             filter: msg => {
                 if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id && !msg.author.bot && !voted.includes(msg.author.id)) return true;
             },
             time: 15000
         });
-        const sentMessage = [];
         collector.on('collect', async msg => {
             voted.push(msg.author.id);
             vote = vote + 1;

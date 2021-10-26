@@ -8,14 +8,14 @@ exports.run = async(client, message, args, prefix) => {
     if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     if (!queue.songs.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `there isn't any song left in the queue :pensive:` }] });
-    if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you must to tell me what song you want to remove! use \`${prefix}help remove\` to learn more :wink:` }] });
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you should provide the index of the song that you want to remove! (${prefix}remove \`1\` or ${prefix}remove \`2, 5, 6\`)` }] });
 
     const arguments = args.join(" ");
     let removed = [];
     const songs = arguments.split(",").map((str) => str.trim());
 
     if (pattern.test(arguments)) {
-        if (songs.some(x => x > queue.songs.length)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `that is not a number or a correct position in the queue :pensive:` }] });
+        if (songs.some(x => x > queue.songs.length)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `some of those are not a number or a correct position in the queue :pensive:` }] });
         queue.songs = queue.songs.filter((item, index) => {
             if (songs.find((songIndex) => songIndex - 1 === index)) removed.push(item);
             else return true;
@@ -26,7 +26,7 @@ exports.run = async(client, message, args, prefix) => {
         if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${queue.songs.splice(args[0] - 1, 1)[0].info.title}** from the queue ❌` }] });
         return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} removed **${queue.songs.splice(args[0] - 1, 1)[0].info.title}** from the queue ❌` }] });
     } else {
-        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `wrong usage! use \`${prefix}help remove\` to learn more :wink:` }] });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your indexes are invalid or doesn't follow the format! (${prefix}remove \`1\` or ${prefix}remove \`2, 5, 6\`)` }] });
     };
 };
 
