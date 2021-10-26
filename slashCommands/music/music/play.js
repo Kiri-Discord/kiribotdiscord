@@ -31,13 +31,13 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
     const urlValid = videoPattern.test(url);
 
     if (!videoPattern.test(url) && playlistPattern.test(url)) {
-        return client.commands.get("playlist").run(client, interaction);
+        return playlistCmd.run(client, interaction);
     } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
-        return client.commands.get("playlist").run(client, interaction);
+        return playlistCmd.run(client, interaction);
     } else if (url.match(spotifyRegex)) {
         const match = url.match(spotifyRegex);
         const albumOrTrack = match[1];
-        if (albumOrTrack === 'album' || albumOrTrack === 'playlist') return client.commands.get("playlist").run(client, interaction);
+        if (albumOrTrack === 'album' || albumOrTrack === 'playlist') return playlistCmd.run(client, interaction);
     };
 
     const musicSettings = await Guild.findOne({

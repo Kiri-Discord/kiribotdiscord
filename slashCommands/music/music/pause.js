@@ -12,8 +12,8 @@ exports.run = async(client, interaction) => {
         queue.player.pause(true);
         queue.pausedAt = Date.now();
         if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.pause(queue.pausedAt);
-        if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send(({ embeds: [{ color: "#bee7f7", description: `${interaction.user} paused the current song ⏸️` }] }))
-        interaction.reply('⏸️ pausing...');
+        if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} paused the current song ⏸️` }] });
+        interaction.reply({ embeds: [{ color: "#bee7f7", description: `you paused the current song ⏸️` }] });
         queue.dcTimeout = setTimeout(async() => {
             const embed = new MessageEmbed()
                 .setTitle("no music was playing :(")

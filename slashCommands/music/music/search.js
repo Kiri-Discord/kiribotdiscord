@@ -1,4 +1,3 @@
-// const scdl = require("soundcloud-downloader").default;
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../../util/util');
@@ -14,7 +13,7 @@ exports.run = async(client, interaction, internal) => {
     if (!interaction.member.voice.channel.joinable || !interaction.member.voice.channel.speakable) return interaction.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
 
     const serverQueue = client.queue.get(interaction.guild.id);
-    if (serverQueue && channel.id !== interaction.guild.me.voice.channel.id) {
+    if (serverQueue && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) {
         const voicechannel = serverQueue.channel
         return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen and search :smiley:` }], ephemeral: true });
     };

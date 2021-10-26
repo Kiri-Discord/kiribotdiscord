@@ -6,9 +6,9 @@ exports.run = async(client, interaction) => {
     if (!canModifyQueue(interaction.member)) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }], ephemeral: true });
     if (queue.pending) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }], ephemeral: true });
 
-    const volume = interaction.options.getInteger('volume');
+    const volume = interaction.options.getInteger('amount');
 
-    if (!volume) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `the current volume is ${queue.volume} 🔊 you can change it with \`/music volume <amount>\`` }], ephemeral: true });
+    if (!volume) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `the current volume is ${queue.volume}! you can change it with \`/music volume <amount>\` 🔊` }], ephemeral: true });
 
     if (volume > 100 || volume < 0) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `the amount of the volume must not lower than zero, and must not higher than 100% ❌` }], ephemeral: true });
 

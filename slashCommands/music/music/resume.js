@@ -10,9 +10,9 @@ exports.run = async(client, interaction) => {
         if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume(queue.player);
         else queue.player.resume();
         queue.pausedAt = undefined;
-        if (queue.textChannel.id !== interaction.channel.id) interaction.reply('▶️ resuming...');
+        interaction.reply(({ embeds: [{ color: "#bee7f7", description: `you resumed the current song ▶️` }] }));
 
-        queue.textChannel.send(({ embeds: [{ color: "#bee7f7", description: `${interaction.user.toString()} resumed the current song ▶️` }] }));
+        if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user.toString()} resumed the current song ▶️` }] });
         clearTimeout(queue.dcTimeout);
         queue.dcTimeout = undefined;
     } else {

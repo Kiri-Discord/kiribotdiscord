@@ -216,6 +216,10 @@ exports.conf = {
             )
         )
         .addSubcommand(sub => sub
+            .setName('skip')
+            .setDescription(`skip the currently playing song`)
+        )
+        .addSubcommand(sub => sub
             .setName('stop')
             .setDescription(`stop the music and clear the queue`)
         )
