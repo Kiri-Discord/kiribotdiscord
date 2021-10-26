@@ -10,7 +10,7 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf
 exports.run = async(client, message, args) => {
     let query;
     let game;
-    let member = await getMemberfromMention(args[0], message.guild) || message.member;
+    let member = await getMemberfromMention(args[0], message.guild);
     if (!member) {
         query = args.join(" ");
         member = message.member;

@@ -40,6 +40,7 @@ exports.run = async(client, message, args, prefix) => {
 };
 
 async function skip(queue, message, args) {
+    if (!queue.songs.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `there isn't any song left in the queue :pensive:` }] });
     queue.playing = true;
     if (queue.loop) {
         for (let i = 0; i < args[0] - 1; i++) {

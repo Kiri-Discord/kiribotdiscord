@@ -15,13 +15,9 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
     if (!channel.joinable || !channel.speakable) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
     if (serverQueue && channel.id !== message.guild.me.voice.channel.id) {
         const voicechannel = serverQueue.channel
-        return message.reply(`i have already been playing music in your server! join ${voicechannel} to listen :smiley:`).catch(err => logger.log('error', err));
+        return message.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }] });
     };
     if (!args.length) return message.reply({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help play\` to learn more :wink:` }] });
-
-    const musicSettings = await Guild.findOne({
-        guildId: message.guild.id
-    });
 
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -42,25 +38,36 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         const albumOrTrack = match[1];
         if (albumOrTrack === 'album' || albumOrTrack === 'playlist') return client.commands.get("playlist").run(client, message, [url]);
     };
+
+    const musicSettings = await Guild.findOne({
+        guildId: message.guild.id
+    });
+
     const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
     if (musicSettings && !internal) {
         queueConstruct.karaoke.isEnabled = false;
         queueConstruct.volume = musicSettings.volume;
         const channel = message.guild.channels.cache.get(musicSettings.KaraokeChannelID);
         if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-            message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
+            const msg1 = await message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
             const verification = await verify(message.channel, message.author, { time: 10000 });
             if (verification) {
-                await message.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
+                const msg2 = await message.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
                 const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
                 if (response.isVerify) {
+                    msg1.delete();
+                    msg2.delete();
                     queueConstruct.karaoke.languageCode = response.choice;
                     queueConstruct.karaoke.channel = channel;
                     queueConstruct.karaoke.isEnabled = true;
                 } else {
                     queueConstruct.karaoke.isEnabled = false;
-                    message.channel.send('you didn\'t answer anything! i will just play the song now...')
+                    msg1.delete();
+                    msg2.delete();
+                    message.channel.send('you didn\'t answer anything! i will just play the song now...');
                 };
+            } else {
+                msg1.delete();
             };
         };
     } else {
