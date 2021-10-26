@@ -1,82 +1,91 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const achievementCmd = require('./music/achievement');
-const beautifulCmd = require('./music/beautiful');
-const bobCmd = require('./music/bob-ross');
-const brazzersCmd = require('./music/brazzers');
-const classicCmd = require('./music/classic-meme');
-const contrastCmd = require('./music/contrast');
-const deepFryCmd = require('./music/deepfry');
-const desaturateCmd = require('./music/desaturate');
-const distortCmd = require('./music/distort');
-const ejectCmd = require('./music/eject');
-const fishEyeCmd = require('./music/fisheye');
-const greyscaleCmd = require('./music/greyscale');
-const ifearnoman = require('./music/i-fear-no-man');
-const invertCmd = require('./music/invert');
-const modernCmd = require('./music/modern-meme');
-const pixelizeCmd = require('./music/pixelize');
-const steamCmd = require('./music/steam-playing');
-const subtitleCmd = require('./music/subtitle');
+const debugCmd = require('./music/debug');
+const disconnectCmd = require('./music/disconnect');
+const fskipCmd = require('./music/force-skip');
+const loopCmd = require('./music/loop');
+const lyricsCmd = require('./music/lyrics');
+const moveCmd = require('./music/move');
+const npCmd = require('./music/now-playing');
+const pauseCmd = require('./music/pause');
+const playCmd = require('./music/play');
+const playlistCmd = require('./music/playlist');
+const queueCmd = require('./music/queue');
+const removeCmd = require('./music/remove');
+const repeatCmd = require('./music/repeat');
+const resumeCmd = require('./music/resume');
+const searchCmd = require('./music/search');
+const seekCmd = require('./music/seek');
+const shuffleCmd = require('./music/shuffle');
+const skipToCmd = require('./music/skip-to');
+const skipCmd = require('./music/skip');
+const stopCmd = require('./music/stop');
+const volumeCmd = require('./music/volume')
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
+        case 'debug':
+            debugCmd.run(client, interaction);
+            break;
         case 'disconnect':
-            achievementCmd.run(client, interaction);
+            disconnectCmd.run(client, interaction);
             break;
         case 'force-skip':
             if (!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({ content: `are you a mod? you don't seems to have the \`MANAGE_MESSAGES\` permission to forcefully modify the queue :pensive:`, ephemeral: true });
-            beautifulCmd.run(client, interaction);
+            fskipCmd.run(client, interaction);
             break;
         case 'loop':
-            bobCmd.run(client, interaction);
+            loopCmd.run(client, interaction);
             break;
         case 'lyrics':
-            brazzersCmd.run(client, interaction);
+            lyricsCmd.run(client, interaction);
             break;
         case 'move':
-            classicCmd.run(client, interaction);
+            moveCmd.run(client, interaction);
             break;
         case 'now-playing':
-            contrastCmd.run(client, interaction);
+            npCmd.run(client, interaction);
             break;
         case 'pause':
-            deepFryCmd.run(client, interaction);
+            pauseCmd.run(client, interaction);
             break;
         case 'play':
-            desaturateCmd.run(client, interaction);
+            playCmd.run(client, interaction);
             break;
         case 'playlist':
-            distortCmd.run(client, interaction);
+            playlistCmd.run(client, interaction);
             break;
         case 'queue':
-            ejectCmd.run(client, interaction);
+            queueCmd.run(client, interaction);
             break;
         case 'remove':
-            fishEyeCmd.run(client, interaction);
+            removeCmd.run(client, interaction);
             break;
         case 'repeat':
-            greyscaleCmd.run(client, interaction);
+            repeatCmd.run(client, interaction);
             break;
         case 'resume':
-            ifearnoman.run(client, interaction);
+            resumeCmd.run(client, interaction);
             break;
         case 'search':
-            invertCmd.run(client, interaction);
+            searchCmd.run(client, interaction);
             break;
         case 'seek':
-            modernCmd.run(client, interaction);
+            seekCmd.run(client, interaction);
             break;
         case 'shuffle':
-            pixelizeCmd.run(client, interaction);
+            shuffleCmd.run(client, interaction);
             break;
         case 'skip-to':
-            steamCmd.run(client, interaction);
+            skipToCmd.run(client, interaction);
             break;
         case 'stop':
-            subtitleCmd.run(client, interaction);
+            stopCmd.run(client, interaction);
             break;
         case 'volume':
             volumeCmd.run(client, interaction);
+            break;
+        case 'skip':
+            skipCmd.run(client, interaction);
             break;
     }
 }
@@ -160,10 +169,10 @@ exports.conf = {
         )
         .addSubcommand(sub => sub
             .setName('remove')
-            .setDescription("remove a song from the queue")
-            .addIntegerOption(option => option
+            .setDescription("remove one or many songs from the queue")
+            .addStringOption(option => option
                 .setName('index')
-                .setDescription('the index of the song that you want to remove in the queue')
+                .setDescription('index(es) of the song that you want to remove in the queue (for example: 1 or 2, 3, 7)')
                 .setRequired(true)
             )
         )
@@ -216,7 +225,7 @@ exports.conf = {
             .addIntegerOption(option => option
                 .setName('amount')
                 .setDescription('the amount of volume that you want to set')
-                .setRequired(true)
+                .setRequired(false)
             )
         ),
     guild: true,

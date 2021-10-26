@@ -7,6 +7,8 @@ const validUrl = require('valid-url');
 const Guild = require('../../../model/music');
 const { verify, verifyLanguage, embedURL } = require('../../../util/util');
 const { getTracks } = require('spotify-url-info');
+const searchCmd = require('./search');
+const playlistCmd = require('./playlist');
 
 exports.run = async(client, interaction, internal, bulkAdd) => {
     const { channel } = interaction.member.voice;
@@ -15,7 +17,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
     if (!channel.joinable || !channel.speakable) return interaction.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
     if (serverQueue && channel.id !== interaction.guild.me.voice.channel.id) {
         const voicechannel = serverQueue.channel
-        return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }] });
+        return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }], ephemeral: true });
     };
 
     const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
@@ -41,7 +43,8 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
     const musicSettings = await Guild.findOne({
         guildId: interaction.guild.id
     });
-    if (interaction.deferred) await interaction.deferReply();
+    if (!interaction.deferred) await interaction.deferReply();
+
     const queueConstruct = new Queue(interaction.guild.id, client, interaction.channel, channel);
     if (musicSettings && !internal) {
         queueConstruct.karaoke.isEnabled = false;
@@ -54,11 +57,14 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                 const msg2 = await interaction.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
                 const response = await verifyLanguage(interaction.channel, interaction.user, { time: 10000 });
                 if (response.isVerify) {
+                    msg1.delete();
+                    msg2.delete();
                     queueConstruct.karaoke.languageCode = response.choice;
                     queueConstruct.karaoke.channel = channel;
                     queueConstruct.karaoke.isEnabled = true;
                 } else {
                     queueConstruct.karaoke.isEnabled = false;
+                    msg1.delete();
                     msg2.delete();
                     interaction.channel.send('you didn\'t answer anything! i will just play the song now...');
                 };
@@ -94,9 +100,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                     each.type = 'sc';
                     each.requestedby = interaction.user;
                 });
-                return client.commands
-                    .get("playlist")
-                    .run(client, interaction, queueConstruct.karaoke, res);
+                return playlistCmd.run(client, interaction, queueConstruct.karaoke, res);
             } else {
                 song = res[0];
                 if (!song) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found (SoundCloud tends to break things as i'm are working on my end. try again later!)` }] });
@@ -138,9 +142,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                     each.type = 'other';
                     each.requestedby = interaction.user;
                 });
-                return client.commands
-                    .get("playlist")
-                    .run(client, interaction, queueConstruct.karaoke, res);
+                return playlistCmd.run(client, interaction, queueConstruct.karaoke, res);
             } else {
                 song = res[0];
                 if (!song) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
@@ -152,9 +154,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
             return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found. try again later :pensive:` }] });
         };
     } else {
-        return client.commands
-            .get("search")
-            .run(client, interaction, queueConstruct.karaoke);
+        return searchCmd.run(client, interaction, queueConstruct.karaoke);
     };
     const embed = new MessageEmbed()
         .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`)
@@ -165,8 +165,8 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
     };
     queueConstruct.songs.push(song);
     client.queue.set(interaction.guild.id, queueConstruct);
+    interaction.editReply({ embeds: [embed], components: [] });
     try {
-        interaction.editReply({ embeds: [embed] });
         queueConstruct.play(queueConstruct.songs[0]);
     } catch (error) {
         logger.log('error', error);

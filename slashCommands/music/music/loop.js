@@ -8,5 +8,5 @@ exports.run = async(client, interaction) => {
     queue.loop = !queue.loop;
     if (queue.repeat && queue.loop) queue.repeat = false;
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `loop is turned ${queue.loop ? "on" : "off"} for the whole queue 🔁` }], ephemeral: true })
-    queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} turn loop ${queue.loop ? "on" : "off"} for the whole queue 🔁` }] }).catch(err => logger.log('error', err));
+    if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} turn loop ${queue.loop ? "on" : "off"} for the whole queue 🔁` }] }).catch(err => logger.log('error', err));
 };

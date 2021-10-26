@@ -4,7 +4,7 @@ const moment = require('moment');
 require('moment-duration-format');
 
 exports.run = async(client, interaction) => {
-    const queue = client.queue.get(message.guild.id);
+    const queue = client.queue.get(interaction.guild.id);
     if (!queue) return interaction.reply({
         embeds: [{
             description: 'there is nothing to display since i\'m not playing anything :grimacing:'
