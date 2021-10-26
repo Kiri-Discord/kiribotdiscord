@@ -18,7 +18,7 @@ exports.run = async(client, message, args) => {
         sentMessage.push(firstSent);
         const collector = new MessageCollector(message.channel, {
             filter: msg => {
-                if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id && !msg.author.bot && !voted.includes(msg.author.id)) return true;
+                if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id && !msg.author.bot && !voted.includes(msg.author.id) && canModifyQueue(msg.member)) return true;
             },
             time: 15000
         });
