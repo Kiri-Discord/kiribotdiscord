@@ -19,12 +19,11 @@ exports.help = {
     description: "shuffle the music queue",
     usage: ["shuffle"],
     example: ["shuffle"]
-}
+};
 
 exports.conf = {
     aliases: ["sh"],
     cooldown: 3,
     guildOnly: true,
-
     channelPerms: ["EMBED_LINKS"]
-}
+};

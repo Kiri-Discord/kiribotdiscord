@@ -42,19 +42,25 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
             queueConstruct.volume = musicSettings.volume;
             const channel = message.guild.channels.cache.get(musicSettings.KaraokeChannelID);
             if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-                message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
+                const msg1 = await message.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
                 const verification = await verify(message.channel, message.author, { time: 10000 });
                 if (verification) {
-                    await message.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
+                    const msg2 = await message.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
                     const response = await verifyLanguage(message.channel, message.author, { time: 10000 });
                     if (response.isVerify) {
+                        msg1.delete();
+                        msg2.delete();
                         queueConstruct.karaoke.languageCode = response.choice;
                         queueConstruct.karaoke.channel = channel;
                         queueConstruct.karaoke.isEnabled = true;
                     } else {
                         queueConstruct.karaoke.isEnabled = false;
-                        message.channel.send('you didn\'t answer anything! i will just play the song now...')
+                        msg1.delete();
+                        msg2.delete();
+                        message.channel.send('you didn\'t answer anything! i will just play the song now...');
                     };
+                } else {
+                    msg1.delete();
                 };
             };
         } else {
@@ -181,6 +187,5 @@ exports.conf = {
     aliases: ["pl"],
     cooldown: 4,
     guildOnly: true,
-    clientPerms: ["CONNECT", "SPEAK"],
     channelPerms: ["EMBED_LINKS"]
 };
