@@ -17,7 +17,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "volume",
-    description: "Change the volume of the current playing song",
+    description: "change the volume of the current queue",
     usage: ["volume `<0 - 100>`"],
     example: ["volume `40`", "volume 30"]
 }

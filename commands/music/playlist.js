@@ -19,14 +19,11 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
 
         if (serverQueue && channel !== message.guild.me.voice.channel) {
             const voicechannel = serverQueue.channel;
-            return message.channel.send({ embeds: [{ color: "#bee7f7", description: `i have already been playing music to someone in your server! join \`#${voicechannel}\` to listen :smiley:` }] });
+            return message.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }] });
         };
         if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help playlist\` to learn more :wink:` }] });
         const search = args.join(" ");
 
-        const musicSettings = await Guild.findOne({
-            guildId: message.guild.id
-        });
         const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;
         const spotifyRegex = /^(?:spotify:|(?:https?:\/\/(?:open|play)\.spotify\.com\/))(?:embed)?\/?(album|track|playlist|episode|show)(?::|\/)((?:[0-9a-zA-Z]){22})/;
         const mobileScRegex = /^https?:\/\/(soundcloud\.app\.goo\.gl)\/(.*)$/;
@@ -35,6 +32,9 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
 
 
         const urlValid = pattern.test(url);
+        const musicSettings = await Guild.findOne({
+            guildId: message.guild.id
+        });
         const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
 
         if (musicSettings && !internal) {
