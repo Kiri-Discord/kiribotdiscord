@@ -3,6 +3,7 @@ const offCmd = require('./greeting/off');
 const channelCmd = require('./greeting/channel');
 const contentCmd = require('./greeting/content');
 const testCmd = require('./greeting/test');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const db = client.guildsStorage.get(interaction.guild.id);
@@ -46,6 +47,7 @@ exports.conf = {
                 .setName('destination')
                 .setRequired(true)
                 .setDescription('where would you like to send the greeting message to?')
+                .addChannelType(ChannelType.GuildText)
             )
         )
         .addSubcommand(subcommand =>

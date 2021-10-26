@@ -3,6 +3,7 @@ const offCmd = require('./goodbye/off');
 const channelCmd = require('./goodbye/channel');
 const contentCmd = require('./goodbye/content');
 const testCmd = require('./goodbye/test');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const db = client.guildsStorage.get(interaction.guild.id);
@@ -46,6 +47,7 @@ exports.conf = {
                 .setName('destination')
                 .setRequired(true)
                 .setDescription('where would you like to send the goodbye message to?')
+                .addChannelType(ChannelType.GuildText)
             )
         )
         .addSubcommand(subcommand =>

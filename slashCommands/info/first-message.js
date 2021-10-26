@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const channel = interaction.options.getChannel('channel') || interaction.channel;
@@ -43,6 +44,7 @@ exports.conf = {
             .setName('channel')
             .setRequired(false)
             .setDescription('where do you want to find the first message?')
+            .addChannelType(ChannelType.GuildText)
         ),
     guild: true,
     channelPerms: ["EMBED_LINKS"]

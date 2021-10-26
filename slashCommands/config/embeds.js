@@ -6,6 +6,7 @@ const parseColor = require("color-parse");
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 const varReplace = require('../../util/variableReplace');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     if (interaction.options.getSubcommand() === 'new') {
@@ -737,6 +738,7 @@ exports.conf = {
                 .setName('destination')
                 .setRequired(false)
                 .setDescription('where would you like to send the embed to?')
+                .addChannelType(ChannelType.GuildText)
             )
         )
         .addSubcommand(subcommand =>

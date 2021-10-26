@@ -4,6 +4,7 @@ const announceCmd = require('./leveling/announce');
 const contentCmd = require('./leveling/content');
 const ignoreCmd = require('./leveling/ignore');
 const testCmd = require('./leveling/test');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const db = client.guildsStorage.get(interaction.guild.id);
@@ -66,6 +67,7 @@ exports.conf = {
                 .setName('destination')
                 .setRequired(false)
                 .setDescription('where would you like to send the leveling message to?')
+                .addChannelType(ChannelType.GuildText)
             )
         )
         .addSubcommand(subcommand =>
@@ -93,6 +95,7 @@ exports.conf = {
                 .setName('channel')
                 .setRequired(true)
                 .setDescription('what is the channel that you want to block user from leveling?')
+                .addChannelType(ChannelType.GuildText)
             )
             .addBooleanOption(option => option
                 .setName('disable')

@@ -2,6 +2,7 @@ const ms = require("ms");
 const { MessageEmbed } = require("discord.js");
 const sendHook = require('../../features/webhook.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const guildDB = client.guildsStorage.get(interaction.guild.id);
@@ -66,6 +67,7 @@ exports.conf = {
             .setName('channel')
             .setRequired(false)
             .setDescription('which channel that you want to set slowmode for?')
+            .addChannelType(ChannelType.GuildText)
         )
         .addBooleanOption(option => option
             .setName('off')

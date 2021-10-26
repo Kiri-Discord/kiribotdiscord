@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const off = interaction.options.getBoolean('disable');
@@ -42,7 +43,9 @@ exports.conf = {
         .addChannelOption(option => option
             .setRequired(true)
             .setName('channel')
-            .setDescription('what is the channel that you want logs to be sent to?'))
+            .setDescription('what is the channel that you want logs to be sent to?')
+            .addChannelType(ChannelType.GuildText)
+        )
         .addBooleanOption(option => option
             .setName('disable')
             .setDescription('weather you want or not to disable the moderation log')

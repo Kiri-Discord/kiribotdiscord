@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const timeoutCmd = require('./verify/timeout');
 const setupCmd = require('./verify/setup');
 const sendCmd = require('./verify/send');
+const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {
     const db = client.guildsStorage.get(interaction.guild.id);
@@ -52,6 +53,7 @@ exports.conf = {
                 .setName('channel')
                 .setRequired(true)
                 .setDescription('set the verification guiding channel')
+                .addChannelType(ChannelType.GuildText)
             )
             .addRoleOption(option => option
                 .setRequired(true)
