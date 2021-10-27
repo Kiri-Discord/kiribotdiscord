@@ -1,4 +1,3 @@
-const { findBestMatch } = require("string-similarity");
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
 const { deleteIfAble, reactIfAble } = require('../util/util');
@@ -78,13 +77,7 @@ module.exports = async(client, message) => {
 
 
         let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-        if (!commandFile) {
-            const matches = findBestMatch(cmd, client.allNameCmds).bestMatch.target;
-            return message.channel.send(`:grey_question: maybe you mean \`${prefix}${matches}\` ?`)
-                .then(m => setTimeout(() => {
-                    m.delete();
-                }, 5000));
-        };
+        if (!commandFile) return;
 
         if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.reply(`\`${prefix}${cmd}\` is being maintained. try again later ${sed}`);
         if (message.channel.type === "DM" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);

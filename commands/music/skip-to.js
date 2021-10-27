@@ -20,7 +20,7 @@ exports.run = async(client, message, args, prefix) => {
         sentMessage.push(firstSent);
         const collector = new MessageCollector(message.channel, {
             filter: msg => {
-                if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id && !msg.author.bot && !voted.includes(msg.author.id)) return true;
+                if (msg.content.toLowerCase() === 'skip' && msg.author.id !== message.author.id && !msg.author.bot && !voted.includes(msg.author.id) && canModifyQueue(msg.member)) return true;
             },
             time: 15000
         });
@@ -28,7 +28,7 @@ exports.run = async(client, message, args, prefix) => {
             voted.push(msg.author.id);
             vote = vote + 1;
             if (vote === leftMembers) {
-                await collector.stop();
+                collector.stop();
                 return skip(queue, message, args, sentMessage);
             }
             const sent = await message.channel.send(`**${vote}** member voted to skip ⏭ only **${leftMembers - vote}** member left!`);
@@ -55,7 +55,7 @@ async function skip(queue, message, args, sentMessage) {
     if (queue.repeat) queue.nowPlaying = undefined;
     queue.skip();
     const number = args[0] - 1;
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `⏭ you skipped ${number} songs!` }] })
+    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `you skipped ${number} songs! ⏭` }] })
     queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped ${number} songs ⏭` }] });
     if (sentMessage) {
         for (let msg of sentMessage) {
