@@ -46,6 +46,7 @@ exports.run = async(client, message, args, prefix) => {
         } else if (args[0] === 'set') {
             const channel = await message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
             if (!channel) return message.reply('i can\'t find that channel. pls mention a channel within this guild 😔');
+            if (!channel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages and embed links to ${channel}! can you check my perms? :pensive:` }] });
             if (serverQueue) {
                 serverQueue.karaoke.channel = channel;
                 if (serverQueue.karaoke.isEnabled && serverQueue.karaoke.instance) {

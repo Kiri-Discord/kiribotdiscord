@@ -22,7 +22,7 @@ module.exports = class ScrollingLyrics {
     async init() {
         if (!this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
         let notice = `displaying scrolling lyrics (${ISO6391.getName(this.lang)}) for this track`;
-        if (this.song.type !== 'yt' || this.song.type !== 'sp') return this.error('notSupported');
+        if (this.song.info.sourceName !== 'youtube') return this.error('notSupported');
         const info = await ytdl.getInfo(this.song.info.uri);
         const foundCaption = info.player_response.captions;
         if (!foundCaption) return this.error();
