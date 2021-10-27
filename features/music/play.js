@@ -174,15 +174,15 @@ module.exports = class Queue {
         };
         if (song.type === 'sp') {
             const logo = this.client.customEmojis.get('spotify') ? this.client.customEmojis.get('spotify').toString() : '⚠️';
-            const msg = await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
-            const ytUrl = await spotifyToYT.trackGet(song.info.uri);
-            msg.delete();
-            if (!ytUrl || !ytUrl.url) {
-                this.songs.shift();
-                await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
-                return this.play(this.songs[0]);
-            };
             try {
+                const msg = await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
+                const ytUrl = await spotifyToYT.trackGet(song.info.uri);
+                msg.delete();
+                if (!ytUrl || !ytUrl.url) {
+                    this.songs.shift();
+                    await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    return this.play(this.songs[0]);
+                };
                 const [res] = await fetchInfo(this.client, ytUrl.url, false);
                 if (!res) {
                     this.songs.shift();

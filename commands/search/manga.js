@@ -57,7 +57,8 @@ exports.run = async(client, message, args) => {
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     let query = args.join(" ");
     if (!query) return message.reply(`pls enter something so i can search ${sedEmoji}`);
-    try {;
+    try {
+        message.channel.sendTyping();
         const id = await search(query);
         if (!id) {;
             return message.reply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);
@@ -73,7 +74,7 @@ exports.run = async(client, message, args) => {
             .setDescription(manga.description ? cleanAnilistHTML(manga.description) : 'No description.')
             .addField('📜 Status', statuses[manga.status], true)
             .addField('📚 Chapters / volumes', `${manga.chapters || '???'}/${manga.volumes || '???'}`, true)
-            .addField('🧨 Year', manga.startDate.year || '???', true)
+            .addField('🧨 Year', `${manga.startDate.year || '???'}`, true)
             .addField('💯 Average score', manga.averageScore ? `${manga.averageScore}%` : '???', true)
             .addField(`🧪 MAL score`, malScore ? embedURL(malScore, malURL) : '???', true)
             .addField('ℹ️ Links', manga.externalLinks.length ? manga.externalLinks.map(link => `[${link.site}](${link.url})`).join(', ') : 'None');;

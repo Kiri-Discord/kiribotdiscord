@@ -47,6 +47,7 @@ exports.run = async(client, message, args) => {
         let query = args.join(" ");
         if (!query) return message.reply("you have to give me a character's name :(")
         try {
+            message.channel.sendTyping();
             const id = await search(query);
             if (!id) return message.reply('i couldn\'t find any result for that character :(');
             const character = await fetchCharacter(id);
