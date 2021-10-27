@@ -52,10 +52,10 @@ async function getList() {
 }
 
 exports.help = {
-    name: "ani-airing",
+    name: "anime-airing",
     description: "get you a list of the anime that air today",
-    usage: ["ani-airing"],
-    example: ["ani-airing"]
+    usage: ["anime-airing"],
+    example: ["anime-airing"]
 };
 
 exports.conf = {

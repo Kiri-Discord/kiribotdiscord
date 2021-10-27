@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const weather = require("weather-js");
 
 exports.run = async(client, message, args) => {
@@ -12,12 +12,12 @@ exports.run = async(client, message, args) => {
         let current = result[0].current;
         let location = result[0].location;
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
             .setAuthor(current.observationpoint)
             .setTitle(`${current.skytext}`)
             .setThumbnail(current.imageUrl)
             .setTimestamp()
-            .setColor(0x7289DA)
+            .setColor(message.guild.me.displayHexColor)
             .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
 
         embed.addField("Latitude", location.lat, true)

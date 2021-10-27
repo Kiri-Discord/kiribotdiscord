@@ -422,50 +422,99 @@ module.exports = class util {
         .setPlaceholder('choose a result');
         const row = new MessageActionRow()
         .addComponents(menu)
-		const msg = await message.channel.send({
-			embeds: [{ 
-				color: '#bee7f7', 
-				description: `**${arr.length} results was found, which would you like to get more information?**`,
-				footer: {
-					text: `this will timeout in 30 seconds`
-				}
-			}],
-			components: [row]
-		});
-		const filter = async (res) => {
-            if (res.user.id !== message.author.id) {
-				await res.deferReply({
-                    ephemeral: true
-                });
-                await res.reply({
-                    embeds: [{
-                        description: `this menu doesn't belong to you :pensive:`
-                    }],
-                    ephemeral: true
-                });
-                return false;
-            } else {
-				await res.deferUpdate();
-                row.components.forEach(component => component.setDisabled(true));
-                await res.editReply({ 
-                    embeds: [{ 
-                        color: '#bee7f7', 
-                        description: `this command is now inactive :pensive:` 
-                    }],
-                    components: [row]
-                });
-                return true;
-            };
-        };
-		try {
-			const response = await msg.awaitMessageComponent({
-				componentType: 'SELECT_MENU',
-				filter, 
-				time
+		if (!message.isCommand()) {
+			const msg = await message.channel.send({
+				embeds: [{ 
+					color: '#bee7f7', 
+					description: `**${arr.length} results was found, which would you like to get more information?**`,
+					footer: {
+						text: `this will timeout in 30 seconds`
+					}
+				}],
+				components: [row]
 			});
-			return arr[parseInt(response.values[0])];
-		} catch (error) {
-			return defalt;
+			const filter = async (res) => {
+				if (res.user.id !== message.author.id) {
+					await res.deferReply({
+						ephemeral: true
+					});
+					await res.reply({
+						embeds: [{
+							description: `this menu doesn't belong to you :pensive:`
+						}],
+						ephemeral: true
+					});
+					return false;
+				} else {
+					await res.deferUpdate();
+					row.components.forEach(component => component.setDisabled(true));
+					await res.editReply({ 
+						embeds: [{ 
+							color: '#bee7f7', 
+							description: `this command is now inactive :pensive:` 
+						}],
+						components: [row]
+					});
+					return true;
+				};
+			};
+			try {
+				const response = await msg.awaitMessageComponent({
+					componentType: 'SELECT_MENU',
+					filter, 
+					time
+				});
+				return arr[parseInt(response.values[0])];
+			} catch (error) {
+				return defalt;
+			};
+		} else {
+			const msg = await message.editReply({
+				embeds: [{ 
+					color: '#bee7f7', 
+					description: `**${arr.length} results was found, which would you like to get more information?**`,
+					footer: {
+						text: `this will timeout in 30 seconds`
+					}
+				}],
+				components: [row],
+				fetchReply: true
+			});
+			const filter = async (res) => {
+				if (res.user.id !== message.user.id) {
+					await res.deferReply({
+						ephemeral: true
+					});
+					await res.reply({
+						embeds: [{
+							description: `this menu doesn't belong to you :pensive:`
+						}],
+						ephemeral: true
+					});
+					return false;
+				} else {
+					await res.deferUpdate();
+					row.components.forEach(component => component.setDisabled(true));
+					await res.editReply({ 
+						embeds: [{ 
+							color: '#bee7f7', 
+							description: `this command is now inactive :pensive:` 
+						}],
+						components: [row]
+					});
+					return true;
+				};
+			};
+			try {
+				const response = await msg.awaitMessageComponent({
+					componentType: 'SELECT_MENU',
+					filter, 
+					time
+				});
+				return arr[parseInt(response.values[0])];
+			} catch (error) {
+				return defalt;
+			};
 		};
 	};
 	static msToHMS(duration) {

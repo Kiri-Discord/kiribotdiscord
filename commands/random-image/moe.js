@@ -2,6 +2,7 @@
 const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 exports.run = async(client, message, args) => {
+    message.channel.sendTyping();
     let random = ["Pixiv", "Patchuu", "awwnime", "cutelittlefangs"];
     let subreddit = random[Math.floor(Math.random() * random.length)];
     fetch(`https://www.reddit.com/r/${subreddit}/about.json`)
@@ -36,7 +37,7 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "moe",
-    description: "get a random anime art online!",
+    description: "get a random moe art online!",
     usage: ["moe"],
     example: ["moe"]
 };

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const axios = require("axios");
+const axios = require("axios").default;
 
 exports.run = async(client, message, args) => {
     const query = args.join(" ").trim();
@@ -10,15 +10,15 @@ exports.run = async(client, message, args) => {
         const article = res.data;
 
         const wikipedia = new MessageEmbed()
-            .setColor('#FFFFFF')
+            .setColor(message.guild.me.displayHexColor)
             .setTitle(`**${article.title}**`)
             .setURL(article.content_urls.desktop.page)
             .setDescription(`> ${article.extract}`)
             .setThumbnail(article.originalimage ? article.originalimage.source : null)
-            .setTimestamp(new Date())
-            .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
-        return message.channel.send(wikipedia);
-    }).catch(() => message.reply(`i found no article with the title **${query}** :(`));
+        return message.channel.send({ embeds: [wikipedia] });
+    }).catch((err) => {
+        message.reply(`i found no article with the title "${query}" :pensive:`);
+    });
 }
 
 exports.help = {
