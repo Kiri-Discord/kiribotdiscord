@@ -1,15 +1,14 @@
-exports.run = async(client, message, args) => {
-    if (!args[0]) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
-    let choice = ["encode", "decode"];
-    if (!choice.includes(args[0].toLowerCase())) return message.channel.send("unknown parameter :( please choose the method first, either decode or encode it.");
+exports.run = async(client, interaction) => {
+    const method = interaction.options.getString('method');
 
-    let text = args.slice(1).join(" ");
+    const text = interaction.options.getString('text');
 
 
-    if (!text) return message.reply("p l e a s e input some text :pensive:");
+    if (!text) return interaction.reply({ content: "p l e a s e input some text :pensive:", ephemeral: true });
 
-    if (text.length > 1024) return message.reply("oww, that is way too much. the maximum character is 1,024.");
+    if (text.length > 1024) return interaction.reply({ content: "oww, that is way too much. the maximum character is 1,024.", ephemeral: true });
 
     function encode(char) {
         return char.split("").map(str => {
@@ -22,14 +21,14 @@ exports.run = async(client, message, args) => {
         return char.split(" ").map(str => String.fromCharCode(Number.parseInt(str, 2))).join("");
     };
 
-    if (args[0].toLowerCase() === "encode") {
+    if (method === "encode") {
         const result = encode(text);
-        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle! the encoded text just reached over 1024 character, which is beyond Discord limit :pensive:");
-        return message.channel.send(encode(text));
-    } else if (args[0].toLowerCase() === "decode") {
+        if (result.length > 1024) return interaction.reply({ content: "bruh, that is way too much for me to handle! the encoded text just reached over 1024 character, which is beyond Discord limit :pensive:", ephemeral: true });
+        return interaction.reply(encode(text));
+    } else if (method === "decode") {
         const result = decode(text);
-        if (result.length > 1024) return message.reply("bruh, that is way too much for me to handle! the encoded text just reached over 1024 character, which is beyond Discord limit :pensive:");
-        return message.channel.send(decode(text));
+        if (result.length > 1024) return interaction.reply({ content: "bruh, that is way too much for me to handle! the encoded text just reached over 1024 character, which is beyond Discord limit :pensive:", ephemeral: true });
+        return interaction.reply(decode(text));
     }
 };
 
@@ -41,7 +40,22 @@ exports.help = {
 };
 
 exports.conf = {
-    aliases: [],
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description)
+        .addStringOption(option => option
+            .setName('method')
+            .setRequired(true)
+            .setDescription('the method uses to either decoding or encoding the binary string')
+            .addChoice('encode text to binary', 'encode')
+            .addChoice('decode binary to text', 'decode')
+        )
+        .addStringOption(option => option
+            .setName('text')
+            .setDescription('the text or the binary string which you want to encode or decode')
+            .setRequired(true)
+        ),
+    ,
     cooldown: 5,
     guildOnly: true,
 }

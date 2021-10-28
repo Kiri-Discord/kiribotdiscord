@@ -272,7 +272,6 @@ exports.conf = {
                 .setRequired(true)
             )
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["ATTACH_FILES"]

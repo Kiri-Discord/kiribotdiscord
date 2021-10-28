@@ -46,7 +46,6 @@ exports.conf = {
     data: new SlashCommandBuilder()
         .setName(exports.help.name)
         .setDescription(exports.help.description),
-    guild: true,
     cooldown: 2,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

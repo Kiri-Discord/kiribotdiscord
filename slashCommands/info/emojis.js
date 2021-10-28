@@ -82,5 +82,5 @@ exports.conf = {
             .setDescription('that certain emoji that you want to get more info about')
             .setRequired(false)
         ),
-    guild: true
+    
 };

@@ -521,7 +521,6 @@ exports.conf = {
             .setName('delete')
             .setDescription('delete an already saved game')
         ),
-    guild: true,
     cooldown: 4,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

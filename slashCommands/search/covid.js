@@ -70,6 +70,5 @@ exports.conf = {
             .setRequired(false)
             .setDescription('what country would you like to get the stat of?')
         ),
-    guild: true,
     channelPerms: ["EMBED_LINKS"]
 };

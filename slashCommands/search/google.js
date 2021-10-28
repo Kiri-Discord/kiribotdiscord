@@ -25,6 +25,11 @@ exports.run = async(client, interaction) => {
         const searchResults = await DDG.search(query, {
             safeSearch: interaction.channel.nsfw ? DDG.SafeSearchType.OFF : DDG.SafeSearchType.MODERATE
         });
+        if (searchResults.noResults) return interaction.editReply({
+            embeds: [{
+                description: `i can't find any result there either :pensive:`,
+            }]
+        });
         const result = searchResults.results[0];
 
         const embed = new MessageEmbed()
@@ -87,7 +92,6 @@ exports.conf = {
             .setRequired(true)
             .setDescription('what would you like to search for?')
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

@@ -37,7 +37,6 @@ exports.conf = {
             .setRequired(true)
             .setDescription('the query that you want to search for on Wikipedia')
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

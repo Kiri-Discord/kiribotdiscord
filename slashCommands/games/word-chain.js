@@ -166,7 +166,6 @@ exports.conf = {
             .setDescription('what is the answer duration that you want to give for each player? (in seconds)')
             .setRequired(false)
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

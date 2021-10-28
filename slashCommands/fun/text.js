@@ -24,7 +24,6 @@ exports.help = {
 };
 
 exports.conf = {
-    guild: true,
     data: new SlashCommandBuilder()
         .setName(exports.help.name)
         .setDescription(exports.help.description)

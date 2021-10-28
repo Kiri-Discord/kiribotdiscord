@@ -79,7 +79,6 @@ exports.conf = {
             .setRequired(false)
             .setDescription('which member would you like to get their rank? :)')
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["ATTACH_FILES", "EMBED_LINKS"]

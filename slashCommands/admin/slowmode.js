@@ -59,7 +59,6 @@ exports.conf = {
     cooldown: 3,
     guildOnly: true,
     userPerms: ["MANAGE_CHANNELS"],
-    guild: true,
     data: new SlashCommandBuilder()
         .setName(exports.help.name)
         .setDescription(exports.help.description)

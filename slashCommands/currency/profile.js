@@ -109,7 +109,6 @@ exports.conf = {
             .setRequired(false)
             .setDescription('which member would you like to get the profile for? :)')
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

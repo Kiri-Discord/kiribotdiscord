@@ -80,7 +80,6 @@ exports.conf = {
             .setDescription('how many token that you want to give?')
             .setRequired(true)
         ),
-    guild: true,
     cooldown: 15,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

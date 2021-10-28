@@ -77,7 +77,6 @@ exports.conf = {
             .setRequired(false)
             .setDescription('which member that you want to see their balance? :)')
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

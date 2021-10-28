@@ -130,7 +130,6 @@ exports.conf = {
             .setRequired(true)
         ),
     cooldown: 5,
-    guild: true,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 };

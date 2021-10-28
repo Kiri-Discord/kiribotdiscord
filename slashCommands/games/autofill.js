@@ -92,7 +92,6 @@ exports.conf = {
             .setDescription('what question that you want to use for the game?')
             .setRequired(false)
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

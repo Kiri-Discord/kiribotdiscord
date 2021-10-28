@@ -114,7 +114,6 @@ exports.conf = {
             .setRequired(true)
             .setDescription('what item that you want to buy? check /shop to know what you can buy <3')
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

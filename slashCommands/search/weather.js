@@ -53,6 +53,5 @@ exports.conf = {
             .setRequired(true)
             .setDescription('what city would you like to get the weather of?')
         ),
-    guild: true,
     channelPerms: ["EMBED_LINKS"]
 }

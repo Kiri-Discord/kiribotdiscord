@@ -267,5 +267,5 @@ exports.conf = {
             .setDescription('the command you want to get help for')
             .setRequired(false)
         ),
-    guild: true
+    
 };

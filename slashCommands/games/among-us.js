@@ -174,6 +174,5 @@ exports.conf = {
         .setDescription('how many players that you want to have?')
         .setRequired(true)
     ),
-    guild: true,
 	channelPerms: ["ADD_REACTIONS", "EMBED_LINKS"]
 };

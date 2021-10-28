@@ -61,7 +61,6 @@ exports.conf = {
         .setName('amount')
         .setRequired(true)
         .setDescription('how many message would you like to purge?')),
-    guild: true,
     userPerms: ["MANAGE_MESSAGES"],
     channelPerms: ["MANAGE_MESSAGES", "READ_MESSAGE_HISTORY"]
 };

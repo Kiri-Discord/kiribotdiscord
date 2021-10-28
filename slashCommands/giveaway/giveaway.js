@@ -75,7 +75,6 @@ exports.conf = {
             .setName('list')
             .setDescription('list all avaliable giveaway on the server')
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],

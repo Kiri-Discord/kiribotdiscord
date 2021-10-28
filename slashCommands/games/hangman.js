@@ -212,7 +212,6 @@ exports.conf = {
             .setDescription('who would you want to be your opponent?')
             .setRequired(true)
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
 };

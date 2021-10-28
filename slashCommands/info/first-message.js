@@ -46,6 +46,5 @@ exports.conf = {
             .setDescription('where do you want to find the first message?')
             .addChannelType(ChannelType.GuildText)
         ),
-    guild: true,
     channelPerms: ["EMBED_LINKS"]
 };

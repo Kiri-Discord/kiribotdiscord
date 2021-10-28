@@ -716,7 +716,6 @@ exports.help = {
 
 exports.conf = {
     cooldown: 5,
-    guild: true,
     data: new SlashCommandBuilder()
         .setName(exports.help.name)
         .setDescription(exports.help.description)

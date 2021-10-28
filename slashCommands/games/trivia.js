@@ -131,7 +131,6 @@ exports.conf = {
             .addChoice('Medium', 'medium')
             .addChoice('Hard', 'hard')
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

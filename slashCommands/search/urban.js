@@ -44,7 +44,6 @@ exports.conf = {
             .setRequired(true)
             .setDescription('what word would you like to search?')
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

@@ -30,6 +30,5 @@ exports.conf = {
     guildOnly: true,
     data: new SlashCommandBuilder()
         .setName(exports.help.name).setDescription(exports.help.description),
-    guild: true,
     channelPerms: ["EMBED_LINKS"]
 };

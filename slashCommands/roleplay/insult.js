@@ -35,7 +35,6 @@ exports.conf = {
             .setRequired(false)
             .setDescription('who would you like to insult directly?')
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
 };

@@ -165,7 +165,6 @@ exports.conf = {
         .setDescription('how many players that you want to have?')
         .setRequired(true)
     ),
-    guild: true,
     cooldown: 5,
 	guildOnly: true,
 };

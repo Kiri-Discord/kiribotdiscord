@@ -27,8 +27,8 @@ exports.run = async(client, interaction) => {
 
 
 exports.help = {
-    name: "image",
-    description: "get random image on the internet",
+    name: "art",
+    description: "get random art on the internet",
 };
 
 exports.conf = {
@@ -55,7 +55,6 @@ exports.conf = {
             .setName('panda')
             .setDescription("get a random panda image")
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

@@ -67,7 +67,6 @@ exports.conf = {
             .setName('nickname')
             .setRequired(true)
             .setDescription('what will their new nickname?')),
-    guild: true,
     userPerms: ["MANAGE_NICKNAMES"],
     clientPerms: ["MANAGE_NICKNAMES"],
     channelPerms: ["EMBED_LINKS"]

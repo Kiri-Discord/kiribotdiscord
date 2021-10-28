@@ -161,7 +161,6 @@ exports.conf = {
             )
         ),
     cooldown: 3,
-    guild: true,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
 };

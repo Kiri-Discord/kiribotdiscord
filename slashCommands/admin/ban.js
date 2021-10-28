@@ -71,7 +71,6 @@ exports.conf = {
             .setName('reason')
             .setRequired(false)
             .setDescription('why are you doing this?')),
-    guild: true,
     userPerms: ["BAN_MEMBERS"],
     clientPerms: ["BAN_MEMBERS"],
     channelPerms: ["EMBED_LINKS"]

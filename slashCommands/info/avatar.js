@@ -53,6 +53,5 @@ exports.conf = {
             .setName('server')
             .setDescription('do you want to display their server avatar instead?')
         ),
-    guild: true,
     channelPerms: ["EMBED_LINKS"]
 };

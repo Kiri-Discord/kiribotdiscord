@@ -105,7 +105,6 @@ exports.conf = {
             .setRequired(true)
             .setDescription('what character would you like to search for?')
         ),
-    guild: true,
     cooldown: 5,
     guildOnly: true,
 	channelPerms: ["EMBED_LINKS"]

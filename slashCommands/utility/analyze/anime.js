@@ -1,5 +1,5 @@
 const { stripIndents } = require('common-tags');
-const { cleanAnilistHTML, embedURL } = require('../../util/util');
+const { cleanAnilistHTML, embedURL } = require('../../../util/util');
 const validUrl = require('valid-url');
 const { MessageEmbed } = require('discord.js');
 const request = require('node-superfetch');
@@ -50,54 +50,54 @@ const statuses = {
 };
 
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, interaction) => {
+        const url = interaction.options.getString('url');
         let image;
-        let attachments = [...message.attachments.values()];
-        if (args[0]) {
-            if (validUrl.isWebUri(args[0])) {
-                image = args[0];
+        if (url) {
+            if (validUrl.isWebUri(url)) {
+                if (!fileTypeRe.test(url)) return interaction.reply({
+                    content: "uh i think that URL you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:",
+                    ephemeral: true
+                });
+                image = url;
             } else {
-                return message.reply("that isn't a correct URL!");
+                return interaction.reply({ content: "that isn't a correct URL!", ephemeral: true });
             }
         } else {
-            if (attachments.length === 0) {
-                try {
-                    const caches = message.channel.messages.cache.filter(msg => msg.attachments.size > 0);
-                    if (!caches.size) {
-                        const fetchs = await message.channel.messages.fetch({ limit: 10 });
-                        const fetch = fetchs.filter(msg => msg.attachments.size > 0);
-                        const target = fetch.filter(msg => fileTypeRe.test(msg.attachments.first().name));
-                        image = target.first().attachments.first().url;
-                    } else {
-                        const cache = caches.filter(msg => fileTypeRe.test(msg.attachments.first().name));
-                        image = cache.last().attachments.first().url;
-                    };
-                } catch (error) {
-                    image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
-                }
-            } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
-            else image = attachments[0].url;
+            try {
+                const caches = interaction.channel.messages.cache.filter(msg => msg.attachments.size > 0);
+                if (!caches.size) {
+                    const fetchs = await interaction.channel.messages.fetch({ limit: 10 });
+                    const fetch = fetchs.filter(msg => msg.attachments.size > 0);
+                    const target = fetch.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+                    image = target.first().attachments.first().url;
+                } else {
+                    const cache = caches.filter(msg => fileTypeRe.test(msg.attachments.first().name));
+                    image = cache.last().attachments.first().url;
+                };
+            } catch (error) {
+                return interaction.reply({ content: 'i found no recent photo in this channel :pensive:', ephemeral: true });
+            };
         };
-        if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
 
         try {
-            message.channel.sendTyping();
+            await interaction.deferReply();
             const status = await fetchRateLimit();
             if (!status.ok && status.status) {
-                return message.reply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in https://www.patreon.com/kiridiscord if you want to help me in increasing my limit :pensive:`);
+                return interaction.editReply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in \`/donate\` if you want to help me in increasing my limit :pensive:`);
             } else if (!status.status) {
-                return message.reply("the anime fetching server seems down... :pensive:")
+                return interaction.editReply("the anime fetching server seems down... :pensive:")
             };;
             let { body } = await request.get(image);
             if (Buffer.byteLength(body) > 1e+7) {
-                return message.reply('the file is way too big for me to handle lol. remember not to upload any image or gif larger than 10MB please :slight_smile:');
+                return interaction.editReply('the file is way too big for me to handle lol. remember not to upload any image or gif larger than 10MB please :slight_smile:');
             }
             const result = await search(image);
             const anime = await fetchAnime(result.id);
             const malScore = await fetchMALScore(anime.idMal);
             const malURL = `https://myanimelist.net/anime/${anime.idMal}`;
             const embed = new MessageEmbed()
-                .setColor(message.member.displayHexColor)
+                .setColor(interaction.member.displayHexColor)
                 .setThumbnail(anime.coverImage.large || anime.coverImage.medium || null)
                 .setTitle(`${anime.title.english || anime.title.romaji}`)
                 .setDescription(`${anime.description ? cleanAnilistHTML(anime.description) : '*No description found???*'}`)
@@ -113,7 +113,7 @@ exports.run = async(client, message, args) => {
 
             const title = `${anime.title.english || anime.title.romaji}${result.episode ? ` (episode ${result.episode})` : ''}`;
         ;
-        return message.channel.send({
+        return interaction.editReply({
             content: stripIndents`
             i'm pretty ${result.prob}% sure this is from ${title} 
             ${result.prob < 87 ? '_i think this probablity is kinda low, try using a higher quality image_' : ''}
@@ -122,7 +122,7 @@ exports.run = async(client, message, args) => {
         });
     } catch (err) {
         console.error(err);
-        return message.reply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
+        return interaction.editReply(`sorry :( i got no result for that image. the server might be down or you are uploading an invalid file.`)
     }
 };
 async function fetchAnime(id) {
@@ -169,18 +169,4 @@ async function search(file) {
         preview: data.image,
         id: data.anilist
     };
-}
-
-exports.help = {
-    name: "what-anime",
-    description: "detect the anime by just a screenshot or a gif :)",
-    usage: ["what-anime `<image attachment>`", "what-anime `<URL>`"],
-    example: ["what-anime `image attachment`", "what-anime `https://example.com/girl.jpg`"]
-}
-
-exports.conf = {
-    aliases: [],
-    cooldown: 5,
-    guildOnly: true,
-	channelPerms: ["EMBED_LINKS"]
-}
+};

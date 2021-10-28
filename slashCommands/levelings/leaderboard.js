@@ -77,7 +77,6 @@ exports.conf = {
             .setName('richest')
             .setDescription("show the leaderboard of people that have the most token in this server 💰")
         ),
-    guild: true,
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]

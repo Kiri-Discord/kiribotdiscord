@@ -78,7 +78,6 @@ exports.conf = {
             .setName('meme')
             .setRequired(true)
             .setDescription('what meme would you like to search for?')),
-    guild: true,
     cooldown: 4,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"]
