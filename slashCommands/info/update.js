@@ -22,8 +22,13 @@ exports.run = async(client, interaction) => {
                 .setFooter(client.user.username)
             embedArray.push(embed);
         });
+        const i = 0;
+        while (i < embedArray.length) {
+            const last = embedArray.pop();
+            embedArray.unshift(last);
+        };
         return targetChannel.send({
-            content: `**${messages.size} recent update** (latest to oldest):`,
+            content: `**${messages.size} recent update** (oldest to latest):`,
             embeds: embedArray
         });
     };
