@@ -3,13 +3,13 @@
         "price": 50,
         "displayName": "🌱 seed",
         "displayPrice": "⏣ 50",
-        "desc": "bait to use for catching `{prefix}fish` {rod}"
+        "desc": "used for planting trees in your garden via `{prefix}plant` :chestnut:"
     },
     "worms": {
         "price": 150,
         "displayName": "🪱 worm",
         "displayPrice": "⏣ 150",
-        "desc": "used for planting trees in your garden via `{prefix}plant` :chestnut:"
+        "desc": "bait to use for catching `{prefix}fish` {rod}"
     },
     "rings": {
         "price": 1300,
