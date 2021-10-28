@@ -48,6 +48,7 @@ module.exports = async(client, message) => {
 
 
         if (!prefixRegex.test(message.content)) {
+            if (!message.guild) return;
             const confess = await client.confession.findOne({
                 userId: message.author.id,
                 guildId: message.guild.id,
