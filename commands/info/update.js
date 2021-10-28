@@ -19,10 +19,10 @@ exports.run = async(client, message, args) => {
                 .setFooter(client.user.username)
             embedArray.push(embed);
         });
-        const i = 0;
+        let i = 0;
         while (i < embedArray.length) {
             i++;
-            const last = embedArray.pop();
+            let last = embedArray.pop();
             embedArray.unshift(last);
         };
         return targetChannel.send({

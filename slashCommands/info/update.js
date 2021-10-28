@@ -22,7 +22,7 @@ exports.run = async(client, interaction) => {
                 .setFooter(client.user.username)
             embedArray.push(embed);
         });
-        const i = 0;
+        let i = 0;
         while (i < embedArray.length) {
             i++;
             const last = embedArray.pop();
