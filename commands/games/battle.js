@@ -28,7 +28,7 @@ exports.run = async(client, message, args) => {
         };
         const battle = client.games.get(message.channel.id).data;
         while (!battle.winner) {
-            const choice = await battle.attacker.chooseAction(message);
+            const choice = await battle.attacker.chooseAction(message.channel);
             if (choice === 'attack') {
                 const damage = randomRange(battle.defender.guard ? 5 : 20, battle.defender.guard ? 20 : 50);
                 await message.channel.send(`${battle.attacker} deals **${damage}** damage!`);

@@ -1,0 +1,23 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
+exports.run = async(client, interaction) => {
+    const today = new Date();
+    const start = new Date(today.getUTCFullYear(), 0, 1);
+    const end = new Date(today.getUTCFullYear() + 1, 0, 1);
+    const percent = (Math.abs(today - start) / Math.abs(end - start)) * 100;
+    return interaction.reply(`**${today.getFullYear()}** is **${percent}%** complete!`);
+}
+exports.help = {
+    name: "year",
+    description: "track the year's progress",
+    usage: ["year"],
+    example: ["year"]
+};
+
+exports.conf = {
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description),
+    cooldown: 2,
+    guildOnly: true,
+};

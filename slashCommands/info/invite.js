@@ -21,5 +21,4 @@ exports.conf = {
     channelPerms: ["EMBED_LINKS"],
     data: new SlashCommandBuilder()
         .setName(exports.help.name).setDescription(exports.help.description),
-
 };

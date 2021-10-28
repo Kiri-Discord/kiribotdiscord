@@ -1,11 +1,20 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { stripIndents } = require('common-tags');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     const member = interaction.options.getMember('user') || interaction.member;
+    const server = interaction.options.getBoolean('server');
+    let avatar;
+    let original = true;
     const { user } = member;
-    const avatar = user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' });
+
+    if (server) {
+        avatar = member.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' });
+        original = false;
+    } else {
+        avatar = member.user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' });
+    };
 
     const embed = new MessageEmbed()
         .setTitle(`${user.tag}`)
@@ -14,7 +23,12 @@ exports.run = async(client, interaction) => {
         [**Avatar URL**](${avatar})
         `)
         .setImage(avatar)
-    return interaction.reply({ embeds: [embed] });
+    const row = new MessageActionRow()
+        .addComponents(new MessageButton()
+            .setStyle('LINK')
+            .setURL(avatar)
+            .setLabel('Avatar URL'))
+    return interaction.reply({ embeds: [embed], components: [row], content: original ? `if you want to display their server avatar instead (if any), do \`${prefix}avatar -server\`!` : null });
 };
 
 exports.help = {
@@ -33,8 +47,11 @@ exports.conf = {
         .addUserOption(option => option
             .setName('user')
             .setRequired(false)
-            .setDescription('which member would you like to get the avatar for?')
+            .setDescription('which member would you like to get the avatar for? :)')
+        )
+        .addBooleanOption(option => option
+            .setName('server')
+            .setDescription('do you want to display their server avatar instead?')
         ),
-    guild: true,
     channelPerms: ["EMBED_LINKS"]
 };

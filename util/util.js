@@ -5,6 +5,8 @@ const ISO6391 = require('iso-639-1');
 const ms = require('ms');
 const request = require('node-superfetch');
 const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
+const inviteRegex = /(https?:\/\/)?(www\.|canary\.|ptb\.)?discord(\.gg|(app)?\.com\/invite|\.me)\/([^ ]+)\/?/gi;
+const botInvRegex = /(https?:\/\/)?(www\.|canary\.|ptb\.)?discord(app)?\.com\/(api\/)?oauth2\/authorize\?([^ ]+)\/?/gi;
 const hugSchema = require('../model/hug');
 const punchSchema = require('../model/punch');
 const slapSchema = require('../model/slap');
@@ -14,6 +16,11 @@ const kissSchema = require('../model/kiss');
 const musicSchema = require('../model/music');
 
 module.exports = class util {
+        static stripInvites(str, { guild = true, bot = true, text = '[redacted invite]' } = {}) {
+            if (guild) str = str.replace(inviteRegex, text);
+            if (bot) str = str.replace(botInvRegex, text);
+            return str;
+        };
         static shortenText(text, maxLength) {
             let shorten = false;
             while (text.length > maxLength) {
@@ -300,7 +307,8 @@ module.exports = class util {
 							footer: {
 								text: "type 'cancel' to cancel the jumping"
 							}
-						}]
+						}],
+						fetchReply: true
 					});
 					const filter = async res => {
 						if (res.author.id === initialMsg.author.id) {

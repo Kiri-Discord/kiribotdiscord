@@ -11,7 +11,7 @@ exports.run = async(client, message, args) => {
     });
     if (user.bot) return message.reply({
         embeds: [{
-            description: "duh you can't ask money out of a bot. we are broke enough :pensive:"
+            description: "duh you can't ask a bot's balance. we are broke enough :pensive:"
         }]
     });
     let cooldown = 8.64e+7;

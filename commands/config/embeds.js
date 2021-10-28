@@ -7,7 +7,7 @@ const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 const varReplace = require('../../util/variableReplace');
 
 exports.run = async(client, message, args, prefix) => {
-    if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ missing sub command \`${prefix}${exports.help.name} <subcommand>\`\nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ missing sub command \`${prefix}${exports.help.name} <subcommand>\`\nall avaliable sub-command for setting up embeds are: \`new, send, list, delete\`!` }] })
     if (args[0].toLowerCase() === 'new') {
         let embedsStorage = client.dbembeds;
         let storage = await embedsStorage.findOne({
@@ -16,7 +16,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!storage) storage = new embedsStorage({
             guildID: message.guild.id
         });
-        if (storage.embeds.toObject().length > 100) return message.channel.send({ embeds: [{ color: "RED", description: `your server has reached the 100 embeds created limit :pensive: please use \`${prefix}${exports.help.name}delete\` to delete unused embeds before creating another one.` }] })
+        if (storage.embeds.toObject().length > 100) return message.channel.send({ embeds: [{ color: "RED", description: `your server has reached the 100 embeds created limit :pensive: please use \`${prefix}${exports.help.name} delete\` to delete unused embeds before creating another one.` }] })
         let name = null;
         let setupMessage = null;
         let displayMessage = null;
@@ -698,7 +698,7 @@ exports.run = async(client, message, args, prefix) => {
             .setAuthor(`all embeds created in ${message.guild.name}:`)
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }));
         return message.channel.send({ embeds: [embed] });
-    } else return message.channel.send({ embeds: [{ color: "#bee7f7", description: `wrong sub command :pensive: \nall avaliable sub-command for setting up embeds are: \`new, send, list\`!` }] })
+    } else return message.channel.send({ embeds: [{ color: "#bee7f7", description: `wrong sub command :pensive: \nall avaliable sub-command for setting up embeds are: \`new, send, list, delete\`!` }] })
 };
 
 exports.help = {

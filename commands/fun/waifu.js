@@ -23,13 +23,14 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "waifu",
-    description: "displays a random waifu image",
+    description: "spawn a random waifu",
     usage: ["waifu"],
     example: ["waifu"]
 }
 
 exports.conf = {
     aliases: ['wa'],
+    channelPerms: ["EMBED_LINKS"],
     cooldown: 5,
     guildOnly: true,
 };

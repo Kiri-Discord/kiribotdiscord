@@ -20,18 +20,23 @@ exports.run = async(client, message, args, prefix) => {
     if (!toSecond) return message.reply("please insert the valid time format! all valid time format are \`s, m, hrs\`!");
 
     if (toSecond > 21600 || toSecond < 60) return message.reply("the timer should be more than or equal to 1 minute or less than 6 hours!");
-    db.verifyTimeout = convert;
-    await client.dbguilds.findOneAndUpdate({
+    try {
+        db.verifyTimeout = convert;
+        await client.dbguilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyTimeout: convert
-        })
-        .catch(err => logger.log('error', err));
-    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}setverify\` first!` }] });
+        });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ new member will be kicked in **${ms(ms(time), {long: true})}** if not verifying. if you can't get it working, use \`${prefix}set-verify\` first!` }] });
+    } catch {
+        logger.log('error', err);
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: there was a problem when i was trying to save that! can you try again later?` }] })
+    };
+
 }
 exports.help = {
     name: "setverifytimeout",
-    description: "how long do you want unverified people to stay in your guild?",
+    description: "set the timeout duration that allow unverified members to stay and verify themselves before they are kicked.",
     usage: ["setverifytimeout `<time>`", "setverifytimeout `-off`"],
     example: ["setverifytimeout `5hrs`", "setverifytimeout `10m`", "setverifytimeout `-off`"]
 };
