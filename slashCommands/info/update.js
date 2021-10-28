@@ -24,6 +24,7 @@ exports.run = async(client, interaction) => {
         });
         const i = 0;
         while (i < embedArray.length) {
+            i++;
             const last = embedArray.pop();
             embedArray.unshift(last);
         };
