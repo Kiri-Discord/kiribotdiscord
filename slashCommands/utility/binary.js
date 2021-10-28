@@ -55,7 +55,6 @@ exports.conf = {
             .setDescription('the text or the binary string which you want to encode or decode')
             .setRequired(true)
         ),
-    ,
     cooldown: 5,
     guildOnly: true,
 }

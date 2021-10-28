@@ -43,7 +43,6 @@ exports.conf = {
             .setDescription('what would you like to confess?')
             .setRequired(true)
         ),
-    ,
     cooldown: 3,
     guildOnly: true,
 };
