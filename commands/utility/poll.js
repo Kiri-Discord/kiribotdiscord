@@ -2,9 +2,9 @@ const request = require('node-superfetch');
 
 exports.run = async(client, message, args, prefix) => {
     const text = args.join(" ");
-    if (!text) return message.channel.send(`you should provide some options to add in the poll and seperate it with a comma (,)`)
+    if (!text) return message.channel.send(`you should provide some options to add in the poll and seperate it with a comma (eg. 1, 2, 3)`)
     const options = text.trim().split(",").filter(x => x !== '').map(x => x.trim());
-    if (options.length < 2) return message.channel.send(`you should provide more than a choice and seperate it with a comma (,)`);
+    if (options.length < 2) return message.channel.send(`you should provide more than a choice and seperate it with a comma (eg. 1, 2, 3)`);
     if (options.length > 31) return message.channel.send('you can only provide less than 30 choices in a poll!');
     try {
         const { body } = await request
@@ -25,7 +25,7 @@ exports.help = {
     name: "poll",
     description: "create a poll from Strawpoll",
     usage: ["poll `<options>`"],
-    example: ["poll `option, another option, just an another option`"]
+    example: ["poll `1, 2, 3`"]
 };
 
 exports.conf = {

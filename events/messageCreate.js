@@ -47,7 +47,22 @@ module.exports = async(client, message) => {
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 
 
-        if (!prefixRegex.test(message.content)) return;
+        if (!prefixRegex.test(message.content)) {
+            const confess = await client.confession.findOne({
+                userId: message.author.id,
+                guildId: message.guild.id,
+            });
+            if (!confess) return;
+            try {
+                await message.reply(`📩 hey **${message.author.username}**, you have a new annoymous confession!\n||${confess.confession}||`);
+                return client.confession.findOneAndDelete({
+                    userId: message.author.id,
+                    guildId: message.guild.id,
+                });
+            } catch {
+                return;
+            };
+        };
         const [, matchedPrefix] = message.content.match(prefixRegex);
 
         const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
@@ -78,7 +93,6 @@ module.exports = async(client, message) => {
 
         let commandFile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
         if (!commandFile) return;
-
         if (commandFile.conf.maintenance && !client.config.owners.includes(message.author.id)) return message.reply(`\`${prefix}${cmd}\` is being maintained. try again later ${sed}`);
         if (message.channel.type === "DM" && commandFile.conf.guildOnly) return message.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':thinking:'}`);
 

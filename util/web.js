@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const helmet = require("helmet");
 const compression = require("compression");
-const { Permissions, MessageEmbed } = require("discord.js");
+const { Permissions, MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const config = require('../config.json');
 const { stripIndents } = require('common-tags');
 module.exports = {
@@ -70,6 +70,13 @@ module.exports = {
                 };
                 const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
                 const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
+                const row = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                        .setStyle('LINK')
+                        .setURL('https://top.gg/bot/859116638820761630')
+                        .setLabel('Vote us on top.gg!')
+                    );
                 const embed = new MessageEmbed()
                     .setColor('#F4EDB4')
                     .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`, client.user.displayAvatarURL())
@@ -78,11 +85,6 @@ module.exports = {
 
                     you was given a 50% bonus on your next daily token collect! type \`>daily\` in any server to collect your token :tada:${req.body.weekend ? '\nit is the weekend! i have increased your bonus by 80%!' : ''}
                     that is the only thing i have to offer right now ${duh} keep voting to explore!
-
-                    at the mean time, check out our family: 
-
-                    [Sefiria (community server)](https://discord.gg/kJRAjMyEkY)
-                    [kiri support (support server)](https://discord.gg/D6rWrvS)
                     `)
                 res.status(200).json({ code: 200 });
                 if (req.body.type !== 'test') {
@@ -93,7 +95,7 @@ module.exports = {
                     });
                     await vote.save();
                 };
-                return user.send({ embeds: [embed] }).catch(() => null);
+                return user.send({ embeds: [embed], components: [row] }).catch(() => null);
             } else {
                 return res.status(400);
             };

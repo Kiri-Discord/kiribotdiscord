@@ -50,7 +50,7 @@ const statuses = {
 };
 
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
         let image;
         let attachments = [...message.attachments.values()];
         if (args[0]) {
@@ -73,7 +73,7 @@ exports.run = async(client, message, args) => {
                         image = cache.last().attachments.first().url;
                     };
                 } catch (error) {
-                    image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+                    return message.reply({ content: 'i found no recent photo in this channel :pensive:' });
                 }
             } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
             else image = attachments[0].url;
@@ -84,7 +84,7 @@ exports.run = async(client, message, args) => {
             message.channel.sendTyping();
             const status = await fetchRateLimit();
             if (!status.ok && status.status) {
-                return message.reply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in https://www.patreon.com/kiridiscord if you want to help me in increasing my limit :pensive:`);
+                return message.reply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in \`${prefix}donate\` if you want to help me in increasing my limit :pensive:`);
             } else if (!status.status) {
                 return message.reply("the anime fetching server seems down... :pensive:")
             };;
@@ -173,7 +173,7 @@ async function search(file) {
 
 exports.help = {
     name: "what-anime",
-    description: "detect the anime by just a screenshot or a gif :)",
+    description: "detect the anime from just a screenshot or a GIF :)",
     usage: ["what-anime `<image attachment>`", "what-anime `<URL>`"],
     example: ["what-anime `image attachment`", "what-anime `https://example.com/girl.jpg`"]
 }

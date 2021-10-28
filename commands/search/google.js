@@ -24,6 +24,11 @@ exports.run = async(client, message, args) => {
         const searchResults = await DDG.search(query, {
             safeSearch: message.channel.nsfw ? DDG.SafeSearchType.OFF : DDG.SafeSearchType.MODERATE
         });
+        if (searchResults.noResults) return message.channel.send({
+            embeds: [{
+                description: `i can't find any result there either :pensive:`,
+            }]
+        });
         const result = searchResults.results[0];
 
         const embed = new MessageEmbed()
@@ -72,7 +77,7 @@ async function search(googleKey, csx, query, safesearch) {
 
 exports.help = {
     name: "google",
-    description: "Find something for you on the web with Google",
+    description: "find something for you on the web with Google",
     usage: ["google `<query>`"],
     example: ["google `discord`"]
 };

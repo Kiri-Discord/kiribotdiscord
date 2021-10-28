@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
-// const { deleteIfAble, reactIfAble } = require('../util/util');
 
 module.exports = async(client, interaction) => {
         if (!client.finished) return;
@@ -33,7 +32,7 @@ module.exports = async(client, interaction) => {
         if (commandFile.conf.channelPerms && interaction.channel.type !== 'DM' && commandFile.conf.channelPerms.length) {
             if (!interaction.channel.permissionsFor(interaction.guild.me).has(commandFile.conf.channelPerms)) {
                 return interaction.reply({ content: `ouch! bruh it seems like i don't have the ${commandFile.conf.channelPerms.map(x => `\`${x}\``).join(" and ")} permission in this channel to properly do that for you :pensive:`, ephemeral: true});
-            };
+        };
     };
     if (commandFile.conf.userPerms && interaction.channel.type !== "DM" && commandFile.conf.userPerms.length) {
         if (!interaction.member.permissions.has(commandFile.conf.userPerms)) {
@@ -71,8 +70,17 @@ module.exports = async(client, interaction) => {
     try {
         commandFile.run(client, interaction);
         logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran a slash command: /${interaction.commandName}`);
+        let setting = client.guildsStorage.get(interaction.guild.id);
+        if (!setting) {
+            const dbguilds = client.dbguilds;
+            setting = new dbguilds({
+                guildID: interaction.guild.id
+            });
+            client.guildsStorage.set(interaction.guild.id, setting);
+            await setting.save();
+        };
     } catch (error) {
-        interaction.reply({ content: `sorry, i got an error while executing that command for you. please seek some support if this happen frequently ${duh}`, ephemeral: true })
         logger.log('error', error);
+        return interaction.reply({ content: `sorry, i got an error while executing that command for you. please seek some support if this happen frequently ${duh}`, ephemeral: true })
     };
 };

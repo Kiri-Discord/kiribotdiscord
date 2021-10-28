@@ -40,7 +40,7 @@ exports.run = async(client, interaction) => {
                 .setFooter(`page ${index + 1} of ${arrSplitted.length} | do /help <command> for more help info on a command!`)
             arrEmbeds.push(embed);
         });
-        const components = [];
+        let components = [];
         if (arrEmbeds.length > 1) {
             components.push(
                 new MessageButton()
@@ -61,7 +61,7 @@ exports.run = async(client, interaction) => {
             .setCustomId('clearbtn')
             .setEmoji(client.customEmojis.get('trash') ? client.customEmojis.get('trash').id : '🗑️')
             .setStyle('DANGER'));
-        const row = new MessageActionRow()
+        let row = new MessageActionRow()
             .addComponents(components);
         const menu = new MessageSelectMenu()
             .setMaxValues(1)
@@ -125,9 +125,33 @@ exports.run = async(client, interaction) => {
                             .setFooter(`page ${index + 1} of ${arrSplitted.length} | do /help <command> for more help info on a command!`)
                         arrEmbeds.push(embed);
                     });
+                    components = [];
+                    if (arrEmbeds.length > 1) {
+                        components.push(
+                            new MessageButton()
+                            .setCustomId("previousbtn")
+                            .setEmoji(client.customEmojis.get('left') ? client.customEmojis.get('left').id : '⬅️')
+                            .setStyle("SECONDARY"),
+                            new MessageButton()
+                            .setCustomId('jumpbtn')
+                            .setEmoji(client.customEmojis.get('jump') ? client.customEmojis.get('jump').id : '↗️')
+                            .setStyle('SECONDARY'),
+                            new MessageButton()
+                            .setCustomId("nextbtn")
+                            .setEmoji(client.customEmojis.get('right') ? client.customEmojis.get('right').id : '➡️')
+                            .setStyle("SECONDARY")
+                        )
+                    };
+                    components.push(new MessageButton()
+                        .setCustomId('clearbtn')
+                        .setEmoji(client.customEmojis.get('trash') ? client.customEmojis.get('trash').id : '🗑️')
+                        .setStyle('DANGER'));
+                    row = new MessageActionRow()
+                        .addComponents(components);
                     currentPage = 0;
                     await res.editReply({
-                        embeds: [arrEmbeds[currentPage]]
+                        embeds: [arrEmbeds[currentPage]],
+                        components: [row1, row]
                     });
                     break;
                 case 'previousbtn':
@@ -153,7 +177,8 @@ exports.run = async(client, interaction) => {
                             footer: {
                                 text: "type 'cancel' to cancel the jumping"
                             }
-                        }]
+                        }],
+                        fetchReply: true
                     });
                     const filter = async res => {
                         if (res.author.id === interaction.user.id) {
@@ -180,7 +205,7 @@ exports.run = async(client, interaction) => {
             };
         });
     } else {
-        let query = option.toLowerCase();
+        let query = option.trim().split(/ +/g)[0].toLowerCase();
         if (client.slash.has(query)) {
             let command = client.slash.get(query);
             const dead = client.customEmojis.get('dead') ? client.customEmojis.get('dead').toString() : ':thinking:';
@@ -196,6 +221,7 @@ exports.run = async(client, interaction) => {
             let botperms = command.conf.clientPerms ? command.conf.clientPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let channelperms = command.conf.channelPerms ? command.conf.channelPerms.map(x => `\`${x}\``).join(", ") : "no perms required.";
             let adult = command.conf.adult ? 'true' : 'false';
+            let sub = command.subCommand.length ? command.subCommand.join(", ") : null;
 
             let embed = new MessageEmbed()
                 .setColor('#bee7f7')
@@ -210,7 +236,8 @@ exports.run = async(client, interaction) => {
                 .addField("user permission", userperms, true)
                 .addField("global permission", botperms, true)
                 .addField(`channel permission`, channelperms, true)
-                .addField('nsfw?', adult, true)
+                .addField('nsfw?', adult, true);
+            if (sub) embed.addField('sub commands', sub, true);
             return interaction.reply({ embeds: [embed] });
         } else {
             const matches = findBestMatch(query, client.allSlashCmds).bestMatch.target;
@@ -240,5 +267,4 @@ exports.conf = {
             .setDescription('the command you want to get help for')
             .setRequired(false)
         ),
-    guild: true
 };

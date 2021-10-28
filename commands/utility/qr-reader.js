@@ -2,7 +2,7 @@ const request = require('node-superfetch');
 const { shorten } = require('../../util/util');
 const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
-
+const { MessageActionRow, MessageButton } = require('discord.js');
 
 exports.run = async(client, message, args) => {
     let image;
@@ -27,7 +27,7 @@ exports.run = async(client, message, args) => {
                     image = cache.last().attachments.first().url;
                 };
             } catch (error) {
-                image = message.author.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+                return message.reply({ content: 'i found no recent photo in this channel :pensive:' });
             }
         } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
@@ -39,9 +39,18 @@ exports.run = async(client, message, args) => {
             .query({ fileurl: image });
         const data = body[0].symbol[0];
         if (!data.data) return message.reply(`i couldn't get a link from this QR code. are you sure that this is the right image?`);
-        return message.channel.send(`here is your link: \n||${shorten(data.data, 2000)}||`);
+        if (validUrl.isWebUri(data.data)) {
+            const row = new MessageActionRow()
+                .addComponents(new MessageButton()
+                    .setStyle('LINK')
+                    .setURL(data.data)
+                    .setLabel('Avatar URL'))
+            return message.channel.send({ content: `here is your link:`, components: [row] });
+        } else {
+            return message.channel.send({ content: `here is your decoded text:\n||${shorten(data.data), 1800}||` });
+        }
     } catch (err) {
-        return message.channel.send(`sorry :( i got an error. try again later! can you check the image files?`);
+        return message.channel.send(`sorry :pensive: i got an error. try again later! can you check the image files?`);
     };
 };
 exports.help = {

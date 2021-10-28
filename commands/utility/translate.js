@@ -5,7 +5,9 @@ const { shorten } = require('../../util/util');
 
 exports.run = async(client, message, args, prefix, cmd) => {
     const query = args.join(' ');
-    if (query.length > 1900) return message.channel.send("sorry, your text can't be longer than 1900 character :pensive:");
+    const deadEmoji = client.customEmojis.get('dead') ? client.customEmojis.get('dead') : ':pensive:'
+    if (!query) return message.channel.send(`what would you want to translate? ${deadEmoji}`);
+    if (query.length > 1900) return message.reply("sorry, your text can't be longer than 1900 character :pensive:");
     try {
         const res = await translate(query, { to: 'en', from: 'auto' });
         const embed = new MessageEmbed()
