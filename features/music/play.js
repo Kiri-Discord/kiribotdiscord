@@ -5,7 +5,7 @@ const ScrollingLyrics = require("./karaoke");
 const { fetchInfo } = require('../../util/util');
 const { embedURL, delay } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
-
+const pEvent = require('p-event');
 module.exports = class Queue {
     constructor(guildId, client, textChannel, voiceChannel) {
         this.playingMessage = null;
@@ -85,6 +85,7 @@ module.exports = class Queue {
         if (!song) {
             return this.stop('noSong');
         };
+        let first;
         if (!this.player) {
             this.player = await this.client.lavacordManager.join({
                 guild: this.textChannel.guild.id,
@@ -93,7 +94,7 @@ module.exports = class Queue {
             }, {
                 selfdeaf: true
             });
-            await delay(2000);
+            await delay(1500);
             if (!this.textChannel.guild.me.voice.channel) {
                 const tried = [];
                 while (!this.textChannel.guild.me.voice.channel) {
@@ -121,6 +122,14 @@ module.exports = class Queue {
                     };
                 };
             };
+            if (this.client.config.testSongBase64) {
+                this.player.play(this.client.config.testSongBase64, {
+                    volume: 80,
+                });
+                await pEvent(this.player, 'end');
+            };
+            first = true;
+
             this.player.on('start', async data => {
                 try {
                     let targetEmoji;
@@ -183,7 +192,7 @@ module.exports = class Queue {
                     await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                     return this.play(this.songs[0]);
                 };
-                const [res] = await fetchInfo(this.client, ytUrl.url, false);
+                const [res] = await fetchInfo(this.client, ytUrl.url, null);
                 if (!res) {
                     this.songs.shift();
                     await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
@@ -207,7 +216,7 @@ module.exports = class Queue {
             if (!this.repeat) this.songs.splice(0, 1);
             this.player.play(song.track, {
                 volume: this.volume || 100,
-                noReplace: noSkip
+                noReplace: first ? true : noSkip
             });
         } catch (error) {
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
