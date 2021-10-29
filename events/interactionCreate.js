@@ -112,7 +112,5 @@ module.exports = async(client, interaction) => {
             .setColor('#cbd4c2');
             return interaction.reply({ embeds: [embed], ephemeral: true })
         };
-        timestamps.set(cooldownID, now);
-        setTimeout(() => timestamps.delete(cooldownID), cooldownAmount);
     };
 };

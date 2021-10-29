@@ -8,7 +8,7 @@ exports.run = async(client, interaction) => {
         content: 'you can only mention a text channel!',
         ephemeral: true
     });
-    if (!channel.permissionsFor(interaction.guild.me).has('READ_MESSAGE_HISTORY')) return interaction.reply({
+    if (!channel.viewable || !channel.permissionsFor(interaction.guild.me).has('READ_MESSAGE_HISTORY')) return interaction.reply({
         content: ":x: i don't have the \`READ_MESSAGE_HISTORY\` permission to read the first message there...",
         ephemeral: true
     });

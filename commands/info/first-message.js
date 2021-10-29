@@ -5,7 +5,7 @@ exports.run = async(client, message, args) => {
     if (channel.type !== 'GUILD_TEXT') return message.reply({
         content: 'you can only mention a text channel!'
     });
-    if (!channel.permissionsFor(message.guild.me).has('READ_MESSAGE_HISTORY')) return message.reply({
+    if (!channel.viewable || !channel.permissionsFor(message.guild.me).has('READ_MESSAGE_HISTORY')) return message.reply({
         content: ":x: i don't have the \`READ_MESSAGE_HISTORY\` permission to read the first message there...",
     });
     const messages = await channel.messages.fetch({ after: 1, limit: 1 });
