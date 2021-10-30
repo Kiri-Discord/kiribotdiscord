@@ -38,12 +38,7 @@ module.exports = class ScrollingLyrics {
             const emoji = this.client.customEmojis.get('party');
             const embed = new MessageEmbed()
                 .setAuthor(`no lyrics for this song in your preferred language (${languages[this.lang]})`)
-                .setDescription(`
-                however, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}
-                choose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:
-
-                ${list.join("\n")}
-                `)
+                .setDescription(`fortunately, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}\nchoose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:\n\n${list.join("\n")}`)
                 .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
             await this.queueChannel.send({ embeds: [embed] });
             const filter = res => {
@@ -135,7 +130,7 @@ module.exports = class ScrollingLyrics {
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
-                .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric`)
+                .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric - Find a YouTube song with subtitles`)
                 .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
             this.queueChannel.send({ embeds: [embed] });
         };
