@@ -48,7 +48,7 @@ exports.run = async(client, message, args) => {
         .setColor(message.guild.me.displayHexColor)
         .setFooter(href.displayLink)
         .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png', 'https://google.com')
-    if (href.pagemap.cse_image) {
+    if (href.pagemap && href.pagemap.cse_image.length) {
         embed.setImage(href.pagemap.cse_image[0].src)
     };
     return message.channel.send({ embeds: [embed] });
