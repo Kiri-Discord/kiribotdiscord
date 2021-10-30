@@ -49,7 +49,7 @@ exports.run = async(client, interaction) => {
             return interaction.reply({ embeds: [{ color: "#bee7f7", description: `☑️ the lyric language has been set to \`${ISO6391.getName(code)}\`\n\ndo \`/scrolling-lyrics on\` to enable it :wink:` }], ephemeral: true });
         } else if (interaction.options.getSubcommand() === 'set') {
             const channel = interaction.options.getChannel('channel');
-            if (!channel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages and embed links to ${channel}! can you check my perms? :pensive:` }], ephemeral: true });
+            if (!channel.viewable || !channel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages and embed links to ${channel}! can you check my perms? :pensive:` }], ephemeral: true });
             if (serverQueue) {
                 serverQueue.karaoke.channel = channel;
                 if (serverQueue.karaoke.isEnabled && serverQueue.karaoke.instance) {

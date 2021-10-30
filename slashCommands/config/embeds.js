@@ -663,7 +663,7 @@ exports.run = async(client, interaction) => {
 
         const channel = interaction.options.getChannel('destination') || interaction.channel;
 
-        if (!channel.permissionsFor(interaction.guild.me).has('MANAGE_WEBHOOKS')) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
+        if (!channel.viewable || !channel.permissionsFor(interaction.guild.me).has('MANAGE_WEBHOOKS')) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
         interaction.editReply({ embeds: [{ color: "#bee7f7", description: `✅ your embed was sent!` }] });
         return channel.send({ embeds: [varReplace.replaceEmbed(embed.embed, interaction.member, interaction.guild)] })
     } else if (interaction.options.getSubcommand() === 'delete') {

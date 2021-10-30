@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 exports.run = async(client, message, args) => {
     const targetChannel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]) || message.channel;
     if (targetChannel.type !== 'GUILD_TEXT') return message.reply({ embeds: [{ color: "#bee7f7", description: `only normal text channel can subscribe to new update :pensive: (subscribing from an another announcement channel is not possible)` }] });
-    if (!targetChannel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_WEBHOOKS'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages, webhooks and embed links to ${targetChannel}! can you check my perms? :pensive:` }] });
+    if (!targetChannel.viewable || !targetChannel.permissionsFor(message.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_WEBHOOKS'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages, webhooks and embed links to ${targetChannel}! can you check my perms? :pensive:` }] });
     const channel = await client.channels.fetch(client.config.updateChannelID);
     await channel.addFollower(targetChannel, "Kiri Bot Updates and Announcement");
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `✅ added your channel ${targetChannel} to the update hub!` }] });

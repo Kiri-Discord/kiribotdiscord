@@ -33,7 +33,7 @@ exports.run = async(client, message, args, prefix) => {
             } else {
                 const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
                 if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-                if (!channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send leveling announcement to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again please :pensive:` }] });
+                if (!channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send leveling announcement to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again please :pensive:` }] });
                 const setting = await client.dbguilds.findOne({
                     guildID: message.guild.id
                 });
@@ -117,7 +117,7 @@ exports.run = async(client, message, args, prefix) => {
         });
         if (!setting.levelings.destination) channel = message.channel;
         else channel = message.guild.channels.cache.get(setting.levelings.destination);
-        if (!channel || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
+        if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
             setting.levelings.destination = null;
             await setting.save();
             return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send leveling announcement message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for leveling message was also resetted. please set a new one using ${prefix}leveling channel!` } }] });

@@ -12,7 +12,7 @@ exports.run = async(client, interaction, db) => {
         return interaction.editReply({ embeds: [embed] });
     };
     const channel = interaction.guild.channels.cache.get(setting.greetChannelID);
-    if (!channel || !channel.permissionsFor(interaction.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
+    if (!channel || !channel.viewable || !channel.permissionsFor(interaction.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
         await client.dbguilds.findOneAndUpdate({
             guildID: interaction.guild.id,
         }, {

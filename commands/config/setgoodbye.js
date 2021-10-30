@@ -21,7 +21,7 @@ exports.run = async(client, message, args, prefix) => {
             const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
 
             if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-            if (!channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send goodbye message to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.` }] });
+            if (!channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send goodbye message to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.` }] });
             db.byeChannelID = channel.id;
 
             const storageAfter = await client.dbguilds.findOneAndUpdate({
@@ -108,7 +108,7 @@ exports.run = async(client, message, args, prefix) => {
             return message.channel.send({embeds: [embed]});
         };
         const channel = message.guild.channels.cache.get(setting.byeChannelID);
-        if (!channel || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
+        if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
             await client.dbguilds.findOneAndUpdate({
                 guildID: message.guild.id,
             }, {

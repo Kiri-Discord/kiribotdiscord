@@ -61,6 +61,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                     };
                 } else {
                     msg1.delete();
+                    interaction.channel.send('you didn\'t answer anything! i will just play the song now...');
                 };
             };
         } else {

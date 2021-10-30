@@ -36,7 +36,7 @@ module.exports = {
                         return member.send(`oof, so mods from **${guild.name}** forgot to give me the role \`MANAGE_ROLES\` to gain you access to the server :pensive: can you ask them to verify you instead?\nyou will not be kicked after this message`);
                     } catch (error) {
                         const verifyChannel = guild.channels.cache.get(setting.verifyChannelID);
-                        if (!verifyChannel || !verifyChannel.permissionsFor(guild.me).has('SEND_MESSAGES')) return;
+                        if (!verifyChannel || !verifyChannel.viewable || !verifyChannel.permissionsFor(guild.me).has('SEND_MESSAGES')) return;
                         else return verifyChannel.send(`<@!${member.user.id}>, sorry but mods from **${guild.name}** forgot to give me the role \`MANAGE_ROLES\` to gain you access to the server :pensive: can you ask them to verify you instead?\nyou will not be kicked after this message`).then(m => {
                             setTimeout(() => {
                                 m.delete()
@@ -48,7 +48,7 @@ module.exports = {
                     try {
                         return member.send(`**${member.user.username}**, you have passed my verification! Welcome to ${guild.name}!`);
                     } catch (error) {
-                        if (!verifyChannel || !verifyChannel.permissionsFor(guild.me).has('SEND_MESSAGES')) return;
+                        if (!verifyChannel || !verifyChannel.viewable || !verifyChannel.permissionsFor(guild.me).has('SEND_MESSAGES')) return;
                         else return verifyChannel.send(`<@!${member.user.id}>, you have passed my verification! Welcome to ${guild.name}!`).then(m => {
                             setTimeout(() => {
                                 m.delete()

@@ -182,7 +182,7 @@ exports.run = async(client, message, args, prefix) => {
                         if (res.author.id === message.author.id) {
                             const number = res.content;
                             await deleteIfAble(res)
-                            if (isNaN(number) || number > arrEmbeds.length || number < 1) {
+                            if ((isNaN(number) || number > arrEmbeds.length || number < 1) && res.content.toLowerCase() !== 'cancel') {
                                 return false;
                             } else return true;
                         } else return false;

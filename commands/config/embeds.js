@@ -659,7 +659,7 @@ exports.run = async(client, message, args, prefix) => {
 
         const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2]) || message.channel;
         if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
-        if (!channel.permissionsFor(message.guild.me).has('MANAGE_WEBHOOKS')) return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
+        if (!channel.viewable || !channel.permissionsFor(message.guild.me).has('MANAGE_WEBHOOKS')) return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send embeds to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again." }] });
         return channel.send({ embeds: [varReplace.replaceEmbed(embed.embed, message.member, message.guild)] })
     } else if (args[0].toLowerCase() === 'delete') {
         const id = args[1];

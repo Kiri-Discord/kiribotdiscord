@@ -61,6 +61,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                     };
                 } else {
                     msg1.delete();
+                    message.channel.send('you didn\'t answer anything! i will just play the song now...');
                 };
             };
         } else {

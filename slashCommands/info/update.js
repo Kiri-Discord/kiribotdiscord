@@ -5,7 +5,7 @@ const { ChannelType } = require('discord-api-types/v9');
 exports.run = async(client, interaction) => {
     const targetChannel = interaction.options.getChannel('channel') || interaction.channel;
 
-    if (!targetChannel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_WEBHOOKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages, webhooks and embed links to ${targetChannel}! can you check my perms? :pensive:` }], ephemeral: true });
+    if (!targetChannel.viewable || !targetChannel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_WEBHOOKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages, webhooks and embed links to ${targetChannel}! can you check my perms? :pensive:` }], ephemeral: true });
     await interaction.deferReply();
     const channel = await client.channels.fetch(client.config.updateChannelID);
     await channel.addFollower(targetChannel, "Kiri Bot Updates and Announcement");

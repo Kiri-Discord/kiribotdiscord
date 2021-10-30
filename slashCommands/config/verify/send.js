@@ -3,7 +3,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 exports.run = async(client, interaction, db) => {
     if (!db.verifyChannelID) return interaction.reply({ embeds: [{ color: "RED", description: `you haven't set up the verification feature yet! to setup the verify feature, do \`/verify <#channel> <@role>\`` }], ephemeral: true });
     const channel = interaction.guild.channels.cache.get(db.verifyChannelID);
-    if (!channel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `it seems like i don't have the perms to send messages and embed links to ${channel}! can you setup the verification feature again? :pensive:` }], ephemeral: true });
+    if (!channel.viewable || !channel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `it seems like i don't have the perms to send messages and embed links to ${channel}! can you setup the verification feature again? :pensive:` }], ephemeral: true });
     const role = interaction.guild.roles.cache.get(db.verifyRole);
     if (!role) return interaction.reply({ embeds: [{ color: "RED", description: `the verification role was deleted or invalid! can you setup the verification feature again? :pensive:` }], ephemeral: true })
     const embed = new MessageEmbed()
