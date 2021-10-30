@@ -1,7 +1,7 @@
 const DDG = require('duck-duck-scrape');
 const { cleanAnilistHTML } = require('../../util/util');
 const { MessageEmbed } = require("discord.js");
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const request = require("node-superfetch");
 
 exports.run = async(client, interaction) => {
     let query = interaction.options.getString('query');
@@ -24,6 +24,27 @@ exports.run = async(client, interaction) => {
         .setFooter('DuckDuckGo', 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png', 'https://duckduckgo.com/')
     return interaction.editReply({ embeds: [embed] });
 };
+
+
+exports.suggestion = async(interaction) => {
+    const query = interaction.options.getFocused();
+    if (!query || query === '') return interaction.respond([]);
+    const { text } = await request
+        .get('https://suggestqueries.google.com/complete/search')
+        .query({
+            client: 'firefox',
+            q: query
+        });
+    const data = JSON.parse(text)[1];
+    if (!data.length) return interaction.respond([]);
+    interaction.respond(data.map(each => {
+        return {
+            name: each,
+            value: each
+        }
+    }))
+};
+
 exports.help = {
     name: "image",
     description: "lookup an image online for your query",
@@ -32,15 +53,20 @@ exports.help = {
 };
 
 exports.conf = {
-    data: new SlashCommandBuilder()
-        .setName(exports.help.name)
-        .setDescription(exports.help.description)
-        .addStringOption(option => option
-            .setName('query')
-            .setRequired(true)
-            .setDescription('what image would you like to search for?')
-        ),
+    data: {
+        name: exports.help.name,
+        description: exports.help.description,
+        options: [{
+            type: 3,
+            name: "query",
+            description: "what image would you like to search for?",
+            required: true,
+            autocomplete: true
+        }]
+    },
+    guild: true,
     cooldown: 5,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS"],
+    rawData: true
 };

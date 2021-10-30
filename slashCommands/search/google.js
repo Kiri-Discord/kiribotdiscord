@@ -2,7 +2,6 @@ const { MessageEmbed } = require("discord.js")
 const request = require("node-superfetch");
 const DDG = require('duck-duck-scrape');
 const { cleanAnilistHTML } = require('../../util/util');
-const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     let googleKey = client.config.gg_key;
@@ -46,7 +45,7 @@ exports.run = async(client, interaction) => {
         .setTitle(href.title)
         .setDescription(href.snippet)
         .setURL(href.link)
-        .setColor(message.guild.me.displayHexColor)
+        .setColor(interaction.guild.me.displayHexColor)
         .setFooter(href.displayLink)
         .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png', 'https://google.com')
     if (href.pagemap.cse_image) {
@@ -76,23 +75,47 @@ async function search(googleKey, csx, query, safesearch) {
     };
 };
 
+exports.suggestion = async(interaction) => {
+    const query = interaction.options.getFocused();
+    if (!query || query === '') return interaction.respond([]);
+    const { text } = await request
+        .get('https://suggestqueries.google.com/complete/search')
+        .query({
+            client: 'firefox',
+            q: query
+        });
+    const data = JSON.parse(text)[1];
+    if (!data.length) return interaction.respond([]);
+    interaction.respond(data.map(each => {
+        return {
+            name: each,
+            value: each
+        }
+    }))
+};
+
 exports.help = {
     name: "google",
-    description: "Find something for you on the web with Google",
+    description: "search something for you on the web with Google",
     usage: ["google `<query>`"],
     example: ["google `discord`"]
 };
 
 exports.conf = {
-    data: new SlashCommandBuilder()
-        .setName(exports.help.name)
-        .setDescription(exports.help.description)
-        .addStringOption(option => option
-            .setName('query')
-            .setRequired(true)
-            .setDescription('what would you like to search for?')
-        ),
+    data: {
+        name: exports.help.name,
+        description: exports.help.description,
+        options: [{
+            type: 3,
+            name: "query",
+            description: "what would you like to search for?",
+            required: true,
+            autocomplete: true
+        }]
+    },
+    guild: true,
     cooldown: 5,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS"],
+    rawData: true
 };
