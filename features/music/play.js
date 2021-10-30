@@ -207,7 +207,7 @@ module.exports = class Queue {
         };
         if (this.karaoke.isEnabled) {
             this.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
-            this.karaoke.instance = new ScrollingLyrics(song, this.karaoke.channel, this.karaoke.languageCode, this.textChannel, this.client.guildsStorage.get(this.guildId).prefix);
+            this.karaoke.instance = new ScrollingLyrics(song, this.karaoke.channel, this.karaoke.languageCode, this.textChannel, this.client.guildsStorage.get(this.guildId).prefix, this.client);
             const success = await this.karaoke.instance.init();
             if (!success) this.karaoke.instance = null;
         };

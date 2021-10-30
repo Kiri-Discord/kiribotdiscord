@@ -2,11 +2,13 @@ const ytdl = require('ytdl-core');
 const { parseSync } = require('subtitle');
 const format = 'vtt';
 const request = require('node-superfetch');
-const { MessageEmbed } = require("discord.js");
+const { askString } = require("../../util/util");
 const ISO6391 = require('iso-639-1');
+const languages = require('../../assets/language.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class ScrollingLyrics {
-    constructor(song, channel, lang, queueChannel, prefix) {
+    constructor(song, channel, lang, queueChannel, prefix, client) {
         this.song = song;
         this.channel = channel;
         this.lang = lang;
@@ -18,10 +20,11 @@ module.exports = class ScrollingLyrics {
         this.playTimestamp = null;
         this.pauseTimestamp = null;
         this.success = null;
+        this.client = client;
     };
     async init() {
-        if (!this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
-        let notice = `displaying scrolling lyrics (${ISO6391.getName(this.lang)}) for this track`;
+        if (!this.channel.viewable || !this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
+        let notice = `displaying scrolling lyrics (${languages[this.lang]}) for this track`;
         if (this.song.info.sourceName !== 'youtube') return this.error('notSupported');
         const info = await ytdl.getInfo(this.song.info.uri);
         const foundCaption = info.player_response.captions;
@@ -30,19 +33,46 @@ module.exports = class ScrollingLyrics {
         if (!tracks || !tracks.length) return this.error();
         let track = tracks.find(t => t.languageCode === this.lang);
         if (!track) {
-            track = tracks[0];
-            notice = `displaying scrolling lyrics (${ISO6391.getName(track.languageCode)}) for this track (fallback from ${ISO6391.getName(this.lang)})`
+            const avaliableLang = tracks.filter(track => languages[track.languageCode]);
+            const list = avaliableLang.map(t => t.languageCode).map((lang, index) => `\`${index + 1}\` - ${languages[lang]}`)
+            const emoji = this.client.customEmojis.get('party');
+            const embed = new MessageEmbed()
+                .setAuthor(`no lyrics for this song in your preferred language (${languages[this.lang]})`)
+                .setDescription(`
+                however, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}
+                choose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:
+
+                ${list.join("\n")}
+                `)
+                .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
+            await this.queueChannel.send({ embeds: [embed] });
+            const filter = res => {
+                const number = res.content;
+                if ((isNaN(number) || number > avaliableLang.length || number < 1) && res.content.toLowerCase() !== 'cancel') {
+                    return false;
+                } else return true;
+            };
+            const text = await askString(this.queueChannel, filter);
+            if (!text || text === 0) return this.error('noChoose');
+
+            track = avaliableLang[parseInt(text.content) - 1];
+            notice = `displaying scrolling lyrics (${languages[track.languageCode]}) for this track (fallback from ${ISO6391.getName(this.lang)})`
         };
-        const { body } = await request
-            .get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
+        const { body } = await request.get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
+
         const output = parseSync(body.toString());
         const subtitles = output
-            .filter(x => x.type = 'cue')
+            .filter(x => x.type === 'cue')
             .filter(x => x.data.text)
-            .filter(x => x.data.text != '');
+            .filter(x => x.data.text != '')
+            .filter((sub, index, arr) =>
+                index === arr.findIndex((t) => (
+                    t.data.start === sub.data.start && t.data.end === sub.data.end && t.data.text === sub.data.text
+                ))
+            );
         subtitles.map((subtitle, index) => {
             this.slots.push({
-                text: subtitle.data.text.replace("\n", " "),
+                text: subtitle.data.text.replace(/(<([^>]+)>)/gi, "").replace("\n", " "),
                 time: subtitle.data.start - 500,
                 id: index
             })
@@ -100,6 +130,8 @@ module.exports = class ScrollingLyrics {
             this.queueChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode works only with YouTube or Spotify source for now :pensive:` }] });
         } else if (type === 'perms') {
             this.queueChannel.send({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
+        } else if (type === 'noChoose') {
+            return false;
         } else {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
