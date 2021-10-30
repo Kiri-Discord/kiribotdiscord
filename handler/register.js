@@ -7,14 +7,14 @@ const config = require('../config.json');
 
 const init = async() => {
     const cmdFiles = await globPromise(`${process.cwd()}/slashCommands/*/*.js`);
-    console.log(`Found ${cmdFiles.length} slash (/) commands`);
+    console.log(`Found ${cmdFiles.length} application (/) commands`);
     if (!cmdFiles.length) return;
     const guild = [];
     const slash = [];
     for (const directory of cmdFiles) {
         const command = require(directory);
-        if (command.conf.guild) guild.push(command.conf.data.toJSON());
-        else slash.push(command.conf.data.toJSON());
+        if (command.conf.guild) guild.push(command.conf.rawData ? command.conf.data : command.conf.data.toJSON());
+        else slash.push(command.conf.rawData ? command.conf.data : command.conf.data.toJSON());
     };
     try {
         const rest = new REST({ version: '9' }).setToken(config.token);

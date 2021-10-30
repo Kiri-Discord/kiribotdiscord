@@ -112,5 +112,9 @@ module.exports = async(client, interaction) => {
             .setColor('#cbd4c2');
             return interaction.reply({ embeds: [embed], ephemeral: true })
         };
+    } else if (interaction.isAutocomplete()) {
+        let commandFile = client.slash.get(interaction.commandName);
+        if (!commandFile || !commandFile.suggestion) return;
+        return commandFile.suggestion(interaction);
     };
 };

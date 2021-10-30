@@ -47,7 +47,7 @@ module.exports = async client => {
                     if (!prop.conf.adult) client.allSlashCmds.push(prop.conf.data.name);
                     client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
                     prop.subCommand = [];
-                    const command = prop.conf.data.toJSON();
+                    const command = prop.conf.rawData ? prop.conf.data : prop.conf.data.toJSON();
                     if (command.options.length) {
                         const { options } = command;
                         options.forEach(sub => {
