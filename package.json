@@ -31,7 +31,7 @@
         "compression": "^1.7.4",
         "discord-api-types": "^0.24.0",
         "discord-giveaways": "^5.0.1",
-        "discord.js": "^13.2.0",
+        "discord.js": "^13.3.0",
         "dotenv": "^10.0.0",
         "duck-duck-scrape": "^2.1.5",
         "express": "^4.17.1",
@@ -80,6 +80,7 @@
         "valid-url": "^1.0.9",
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
+        "youtube-suggest": "^1.1.2",
         "ytdl-core": "^4.9.0"
     }
 }
