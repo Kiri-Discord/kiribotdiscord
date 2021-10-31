@@ -25,6 +25,10 @@ module.exports = async(client, guild) => {
         .addComponents(
             new MessageButton()
             .setStyle('LINK')
+            .setURL('https://kiribot.xyz')
+            .setLabel('Website'),
+            new MessageButton()
+            .setStyle('LINK')
             .setURL('https://discord.gg/kJRAjMyEkY')
             .setLabel('Our support server!'),
             new MessageButton()

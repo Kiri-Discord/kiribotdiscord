@@ -83,7 +83,7 @@ module.exports = {
                     .setDescription(stripIndents `
                     thank you for being generous and gave me a vote ${blush}
 
-                    you was given a 50% bonus on your next daily token collect! type \`>daily\` in any server to collect your token :tada:${req.body.weekend ? '\nit is the weekend! i have increased your bonus by 80%!' : ''}
+                    you was given a 50% bonus on your next daily token collect! type \`${config.prefix}daily\` in any server to collect your token :tada:${req.body.weekend ? '\n\nit is the weekend! i have increased your bonus by 80%!' : ''}
                     that is the only thing i have to offer right now ${duh} keep voting to explore!
                     `)
                 res.status(200).json({ code: 200 });
