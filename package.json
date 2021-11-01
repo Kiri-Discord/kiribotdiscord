@@ -15,7 +15,7 @@
     "author": "ryzenix",
     "license": "MIT",
     "dependencies": {
-        "@discordjs/builders": "^0.7.0",
+        "@discordjs/builders": "^0.8.2",
         "@discordjs/rest": "^0.1.0-canary.0",
         "@vitalets/google-translate-api": "^7.0.0",
         "aki-api": "^6.0.8",
