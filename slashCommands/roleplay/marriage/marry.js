@@ -28,7 +28,7 @@ exports.run = async(client, interaction) => {
             guildId: interaction.guild.id,
         });
     };
-    // if (storage.rings < 1) return interaction.editReply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`/shop\`.`);
+    if (storage.rings < 1) return interaction.editReply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`/shop\`.`);
     const marry = await client.love.findOne({
         userID: member.user.id,
         guildID: interaction.guild.id

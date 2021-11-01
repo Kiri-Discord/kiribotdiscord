@@ -36,10 +36,10 @@ exports.run = async(client, interaction) => {
             patCmd.run(client, interaction);
             break;
         case 'poke':
-            pokeCmd(client, interaction);
+            pokeCmd.run(client, interaction);
             break;
         case 'punch':
-            punchCmd(client, interaction);
+            punchCmd.run(client, interaction);
             break;
         case 'slap':
             slapCmd.run(client, interaction);
