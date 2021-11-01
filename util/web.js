@@ -91,7 +91,7 @@ module.exports = {
                     const voteStorage = client.vote;
                     const vote = new voteStorage({
                         userID: user.id,
-                        collectMutiply: req.body.weekend ? 2 : 1.2
+                        collectMutiply: req.body.weekend ? 80 : 50
                     });
                     await vote.save();
                 };

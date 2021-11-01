@@ -46,7 +46,7 @@ exports.run = async(client, message, args) => {
                     await client.vote.findOneAndDelete({
                         userID: message.author.id
                     });
-                    bonusAmount = calcBonus(amount, voted.collectMutiply || 2);
+                    bonusAmount = calcBonus(amount, voted.collectMutiply || 50);
                     finalAmount = amount + bonusAmount
                 };
                 await client.cooldowns.findOneAndUpdate({
@@ -110,5 +110,5 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 function calcBonus(value, mutiply) {
-    return parseInt((value / mutiply).toFixed(0))
+    return Math.floor((mutiply / 100) * parseInt(value));
 };
