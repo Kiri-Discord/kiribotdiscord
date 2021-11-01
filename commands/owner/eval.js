@@ -14,7 +14,7 @@ exports.run = async(client, message, args) => {
 
         let output = clean(evaled);
         if (output.length > 1024) {
-            const { body } = await post("https://hastebin.com/documents").send(output);
+            const { body } = await post("https://www.toptal.com/developers/hastebin/documents").send(output);
             embed.addField("output", `https://hastebin.com/${body.key}.js`).setColor("#7DBBEB").setColor(0x7289DA);
         } else {
             embed.addField("output", "```js\n" + output + "```").setColor(0x7289DA);
@@ -25,8 +25,8 @@ exports.run = async(client, message, args) => {
     } catch (error) {
         let err = clean(error);
         if (err.length > 1024) {
-            const { body } = await post("https://hastebin.com/documents").send(err);
-            embed.addField("output", `https://hastebin.com/${body.key}.js`).setColor("RED");
+            const { body } = await post("https://www.toptal.com/developers/hastebin/documents").send(err);
+            embed.addField("output", `https://www.toptal.com/developers/hastebin/${body.key}.js`).setColor("RED");
         } else {
             embed.addField("output", "```js\n" + err + "```").setColor("RED");
         }
