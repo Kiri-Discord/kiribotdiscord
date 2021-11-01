@@ -1,5 +1,5 @@
 const web = require('../util/web.js');
-const { randomStatus, purgeDbGuild } = require('../util/util');
+const { purgeDbGuild } = require('../util/util');
 const music = require('../util/music');
 
 module.exports = async client => {
@@ -40,11 +40,11 @@ module.exports = async client => {
     await client.initGiveaway();
     if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;
-    const activity = randomStatus(client);
-    client.user.setPresence({ activities: [{ name: activity.text, type: activity.type }], status: 'online' });
-    const timeout = setInterval(() => {
-        const activity = randomStatus(client);
-        client.user.setPresence({ activities: [{ name: activity.text, type: activity.type }], status: 'online' })
-    }, 120000);
-    timeout.unref();
+    // const activity = randomStatus(client);
+    client.user.setPresence({ activities: [{ name: ';-;', type: 'WATCHING' }], status: 'online' });
+    // const timeout = setInterval(() => {
+    //     const activity = randomStatus(client);
+    //     client.user.setPresence({ activities: [{ name: activity.text, type: activity.type }], status: 'online' })
+    // }, 120000);
+    // timeout.unref();
 };

@@ -385,28 +385,28 @@ module.exports = class util {
 		};
 		return seconds;
 	};
-	static randomStatus(client) {
-		const activities = [
-			{
-				text: `awake for ${ms(client.uptime)}`,
-				type: 'PLAYING'
-			},
-			{
-				text: 'ping me for help <3',
-				type: 'PLAYING'
-			},
-			{
-				text: `life in ${client.ws.ping}ms`,
-				type: 'WATCHING'
-			},
-			{
-				text: 'over you',
-				type: 'WATCHING'
-			}
-		];
-		const activity = activities[Math.floor(Math.random() * activities.length)];
-		return { text: activity.text, type: activity.type }
-	};
+	// static randomStatus(client) {
+	// 	const activities = [
+	// 		{
+	// 			text: `awake for ${ms(client.uptime)}`,
+	// 			type: 'PLAYING'
+	// 		},
+	// 		{
+	// 			text: 'ping me for help <3',
+	// 			type: 'PLAYING'
+	// 		},
+	// 		{
+	// 			text: `life in ${client.ws.ping}ms`,
+	// 			type: 'WATCHING'
+	// 		},
+	// 		{
+	// 			text: 'over you',
+	// 			type: 'WATCHING'
+	// 		}
+	// 	];
+	// 	const activity = activities[Math.floor(Math.random() * activities.length)];
+	// 	return { text: activity.text, type: activity.type }
+	// };
 	static async fetchInfo(client, query, search, id) {
 		const nodes = client.lavacordManager.idealNodes;
         const node = id ? nodes.filter(x => x.id !== id)[0] : nodes[0];

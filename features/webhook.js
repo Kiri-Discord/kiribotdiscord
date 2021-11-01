@@ -1,3 +1,4 @@
+const { Permissions } = require('discord.js')
 module.exports = class sendHook {
     constructor(client, channel, content) {
         this.client = client;
@@ -18,6 +19,7 @@ module.exports = class sendHook {
         return this.send()
     };
     async create() {
+        if (!this.channel.permissionsFor(this.client.user).has(Permissions.FLAGS.MANAGE_WEBHOOKS)) return;
         this.hookInstance = await this.channel.createWebhook('Kiri', {
             avatar: this.client.user.displayAvatarURL(),
         });
