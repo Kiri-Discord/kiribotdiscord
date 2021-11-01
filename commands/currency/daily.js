@@ -110,5 +110,5 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 function calcBonus(value, mutiply) {
-    return Math.floor((mutiply / 100) * parseInt(value));
+    return Math.floor((mutiply / 100) * value);
 };

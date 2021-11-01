@@ -123,5 +123,5 @@ exports.conf = {
 };
 
 function calcBonus(value, mutiply) {
-    return Math.floor((mutiply / 100) * parseInt(value));
+    return Math.floor((mutiply / 100) * value);
 };
