@@ -81,6 +81,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to cuddle?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -90,6 +91,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to feed?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -99,6 +101,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to hug?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -108,6 +111,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to kiss?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -117,6 +121,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to pat?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -126,6 +131,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to poke?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -135,6 +141,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to punch?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -144,6 +151,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to slap?')
+                .setRequired(true)
             )
         )
         .addSubcommand(subcommand =>
@@ -158,6 +166,7 @@ exports.conf = {
             .addUserOption(option => option
                 .setName('target')
                 .setDescription('who would you like to tickle?')
+                .setRequired(true)
             )
         ),
     cooldown: 3,
