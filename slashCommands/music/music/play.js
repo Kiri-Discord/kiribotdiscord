@@ -161,8 +161,8 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
         .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`)
     if (serverQueue) {
         serverQueue.songs.push(song);
-        serverQueue.textChannel.send({ embeds: [embed] });
-        interaction.editReply({ embeds: [embed] });
+        if (interaction.channel.id !== serverQueue.textChannel.id) serverQueue.textChannel.send({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed] });
     };
     queueConstruct.songs.push(song);
     client.queue.set(interaction.guild.id, queueConstruct);

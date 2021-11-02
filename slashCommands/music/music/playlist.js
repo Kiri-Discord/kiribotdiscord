@@ -164,6 +164,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
         serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
         let playlistEmbed = new MessageEmbed()
             .setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL || newSongs[0].info.uri})` : `[track](${playlistURL || newSongs[0].info.uri})`} to the queue [${interaction.user}]`);
+        if (interaction.channel.id !== serverQueue.textChannel.id) serverQueue.textChannel.send({ embeds: [embed] });
         interaction.editReply({embeds: [playlistEmbed], components: []});
     if (!serverQueue) {
         client.queue.set(interaction.guild.id, queueConstruct);
