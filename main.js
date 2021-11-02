@@ -1,4 +1,5 @@
 const winston = require('winston');
+const config = require('./config.json');
 
 global.logger = winston.createLogger({
     transports: [
@@ -13,6 +14,15 @@ process.on('unhandledRejection', error => {
 });
 
 global.__basedir = __dirname;
+
+if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
+    const Sentry = require("@sentry/node");
+
+    Sentry.init({
+        dsn: config.sentryDSNURL,
+        tracesSampleRate: 0.7,
+    });
+};
 
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
@@ -58,15 +68,16 @@ require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);
 require("./handler/getMemberfromMention.js")();
-if (client.config.topggkey && !process.env.NO_TOPGG) {
-    const ap = AutoPoster(client.config.topggkey, client);
+if (config.topggkey && process.env.NO_TOPGG !== 'true') {
+    const ap = AutoPoster(config.topggkey, client);
 
     ap.on('posted', () => {
         logger.log('info', 'Posted stats to Top.gg!');
     });
 };
+
 (async() => {
     await mongo.init();
-    client.login(client.config.token).catch(err => logger.log('error', err));
+    client.login(config.token).catch(err => logger.log('error', err));
 })();
 module.exports = client;
