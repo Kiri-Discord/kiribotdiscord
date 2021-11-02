@@ -27,7 +27,7 @@ if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const { AutoPoster } = require('topgg-autoposter');
-const { Intents } = require('discord.js');
+const { Intents, Options } = require('discord.js');
 const intents = new Intents();
 
 intents.add(
@@ -46,9 +46,9 @@ intents.add(
 
 const client = new kiri({
     intents,
-    // makeCache: Options.cacheWithLimits({
-    //     MessageManager: 180,
-    // }),
+    makeCache: Options.cacheWithLimits({
+        MessageManager: 180,
+    }),
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: true
@@ -59,7 +59,7 @@ const client = new kiri({
         }
     }
 });
-// client.package = require("./package.json");
+
 client.on("warn", warn => logger.log('warn', warn));
 client.on("error", err => {
     logger.log('error', err)
