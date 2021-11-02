@@ -23,7 +23,10 @@ module.exports = {
         mongoose.connection.on('disconnected', () => {
             logger.log('warn', '[MONGO] Mongoose connection lost');
         });
-        await mongoose.connect(config.mongourl, dbOptions);
+        await mongoose.connect(config.mongourl, dbOptions).catch(() => {
+            logger.log('error', '[MONGO] Mongoose connect failed');
+            process.exit(1);
+        });
         return true;
     }
 }

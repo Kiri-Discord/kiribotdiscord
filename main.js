@@ -16,12 +16,12 @@ process.on('unhandledRejection', error => {
 global.__basedir = __dirname;
 
 if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
-    const Sentry = require("@sentry/node");
-
-    Sentry.init({
+    global.sentry = require("@sentry/node");
+    sentry.init({
         dsn: config.sentryDSNURL,
         tracesSampleRate: 0.7,
     });
+    logger.log('info', '[SENTRY] Initialized!')
 };
 
 const mongo = require('./util/mongo');
