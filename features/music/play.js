@@ -152,7 +152,7 @@ module.exports = class Queue {
                     if (!this.repeat) {
                         this.playingMessage = null;
                         const sent = await this.textChannel.send({ embeds: [embed] });
-                        this.playingMessage = sent;
+                        this.playingMessage = sent.id;
                     };
                 } catch (error) {
                     logger.log('error', error);
@@ -161,8 +161,8 @@ module.exports = class Queue {
             this.player.on('end', async data => {
                 if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
                 if (this.playingMessage) {
-                    if (this.playingMessage.deletable && (this.songs.length && !this.loop && !this.repeat || this.loop || this.repeat)) this.playingMessage.delete().catch(() => null);
-                }
+                    if ((this.songs.length && !this.repeat) || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+                };
                 if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
                 if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
                     if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
