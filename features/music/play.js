@@ -161,7 +161,7 @@ module.exports = class Queue {
             this.player.on('end', async data => {
                 if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
                 if (this.playingMessage) {
-                    if ((this.songs.length && !this.repeat) || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+                    if ((this.songs.length && !this.repeat) || (this.songs.length && this.loop)) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
                 };
                 if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
                 if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
