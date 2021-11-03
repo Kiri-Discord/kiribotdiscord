@@ -2,7 +2,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { stripIndents } = require('common-tags');
 
 module.exports = async(client, guild) => {
-
+    if (!client.isReady() && !guild.avaliable) return;
     const guildexist = await client.dbguilds.findOne({
         guildID: guild.id
     });
