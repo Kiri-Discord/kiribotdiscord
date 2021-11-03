@@ -34,6 +34,7 @@ module.exports = class ScrollingLyrics {
         let track = tracks.find(t => t.languageCode === this.lang);
         if (!track) {
             const avaliableLang = tracks.filter(track => languages[track.languageCode]);
+            if (!avaliableLang.length) return this.error();
             const list = avaliableLang.map(t => t.languageCode).map((lang, index) => `\`${index + 1}\` - ${languages[lang]}`)
             const emoji = this.client.customEmojis.get('party');
             const embed = new MessageEmbed()
