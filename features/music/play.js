@@ -105,9 +105,8 @@ module.exports = class Queue {
                     };
                     const tryCount = tried.length || 0;
                     await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
-                    await this.player.destroy();
                     await this.client.lavacordManager.leave(this.textChannel.guild.id);
-                    await delay(3000);
+                    await delay(1500);
                     this.player = await this.client.lavacordManager.join({
                         guild: this.textChannel.guild.id,
                         channel: this.channel.id,
@@ -115,7 +114,6 @@ module.exports = class Queue {
                     }, {
                         selfdeaf: true
                     });
-                    await delay(2000);
                     if (!this.textChannel.guild.me.voice.channelId) {
                         tried.push(this.player.node.host);
                         continue;
