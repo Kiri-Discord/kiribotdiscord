@@ -47,7 +47,7 @@ exports.run = async(client, interaction) => {
         .setColor(interaction.guild.me.displayHexColor)
         .setFooter(href.displayLink)
         .setAuthor('Google', 'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png', 'https://google.com')
-    if (href.pagemap && href.pagemap.cse_image.length) {
+    if (href.pagemap && Array.isArray(href.pagemap.cse_image)) {
         embed.setImage(href.pagemap.cse_image[0].src)
     };
     return interaction.editReply({ embeds: [embed] });
