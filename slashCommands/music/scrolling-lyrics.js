@@ -42,7 +42,7 @@ exports.run = async(client, interaction) => {
 
         } else if (interaction.options.getSubcommand() === "lang") {
             if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ there isn't any queue to set the language for :pensive: you should play a song first!` }], ephemeral: true });
-            const query = interaction.options.getString('lang');
+            const query = interaction.options.getString('language');
             const code = ISO6391.getCode(query.toLowerCase());
             if (!ISO6391.validate(code)) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ sorry, \`${query}\` is not a valid language :pensive:` }], ephemeral: true });
             serverQueue.karaoke.languageCode = code;
