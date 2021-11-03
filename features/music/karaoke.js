@@ -60,7 +60,7 @@ module.exports = class ScrollingLyrics {
         const subtitles = output
             .filter(x => x.type === 'cue')
             .filter(x => x.data.text)
-            .filter(x => x.data.text != '')
+            .filter(x => x.data.text !== '')
             .filter((sub, index, arr) =>
                 index === arr.findIndex((t) => (
                     t.data.start === sub.data.start && t.data.end === sub.data.end && t.data.text === sub.data.text
