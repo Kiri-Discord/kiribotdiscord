@@ -1,5 +1,5 @@
 const Queue = require("../../../features/music/play");
-const { fetchInfo } = require('../../../util/util');
+const { fetchInfo } = require('../../../util/musicutil');
 const { MessageEmbed } = require('discord.js');
 const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../../util/musicutil");
@@ -70,7 +70,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                 };
             } else {
                 msg1.delete();
-                interaction.channel.send('you didn\'t answer anything! i will just play the song now...');
+                if (verification === 0) interaction.channel.send('you didn\'t answer anything! i will just play the song now...');
             };
         };
     } else {
@@ -161,8 +161,8 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
         .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`)
     if (serverQueue) {
         serverQueue.songs.push(song);
-        serverQueue.textChannel.send({ embeds: [embed] });
-        interaction.editReply({ embeds: [embed] });
+        if (interaction.channel.id !== serverQueue.textChannel.id) serverQueue.textChannel.send({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed], components: [] });
     };
     queueConstruct.songs.push(song);
     client.queue.set(interaction.guild.id, queueConstruct);

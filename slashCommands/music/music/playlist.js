@@ -1,13 +1,13 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const Queue = require("../../../features/music/play");
-const { fetchInfo } = require('../../../util/util');
+const { fetchInfo } = require('../../../util/musicutil');
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../../model/music');
 const { YOUTUBE_API_KEY, DEFAULT_VOLUME } = require("../../../util/musicutil");
 const validUrl = require('valid-url');
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-const { verify, verifyLanguage } = require('../../../util/util');
+const { verify, verifyLanguage, shortenText } = require('../../../util/util');
 const { getTracks } = require('spotify-url-info');
 
 exports.run = async(client, interaction, internal, bulkAdd) => {
@@ -61,7 +61,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                     };
                 } else {
                     msg1.delete();
-                    interaction.channel.send('you didn\'t answer anything! i will just play the song now...');
+                    if (verification === 0) interaction.channel.send('you didn\'t answer anything! i will just play the song now...');
                 };
             };
         } else {
@@ -146,24 +146,105 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
             };
         } else {
             try {
-                const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
-                if (!results[0]) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
-                const playlist = results[0];
-                newSongs = await fetchInfo(client, `https://www.youtube.com/playlist?list=${playlist.id}`);
-                if (!newSongs || !newSongs.length) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
-                playlistURL = `https://www.youtube.com/playlist?list=${playlist.id}`;
-                newSongs.forEach(song => {
-                    song.type = 'yt';
-                    song.requestedby = interaction.user;
-                });
+                const results = await youtube.searchPlaylists(search, 10, { part: "snippet" });
+                if (!results.length) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+
+                if (results.length > 1) {
+                    let options = [];
+                    results.forEach((playlist, index) => {
+                        options.push({
+                            label: playlist.title,
+                            value: index.toString(),
+                            description: shortenText(playlist.channelTitle, 45)
+                        })
+                    });
+                    const menu = new MessageSelectMenu()
+                        .setCustomId('search')
+                        .setMaxValues(1)
+                        .setMinValues(1)
+                        .addOptions(options)
+                        .setPlaceholder('choose a playlist <3');
+                    const row = new MessageActionRow()
+                        .addComponents(menu)
+                    const embed = new MessageEmbed()
+                        .setDescription('select the playlist that you want to add in with the menu below!')
+                        .setColor("#bee7f7")
+                        .setFooter('timing out in 30 seconds');
+                    const msg = await interaction.editReply({
+                        embeds: [embed],
+                        components: [row],
+                        fetchReply: true
+                    });
+                    const filter = async(res) => {
+                        if (res.user.id !== interaction.user.id) {
+                            await res.reply({
+                                embeds: [{
+                                    description: `this menu doesn't belong to you :pensive:`
+                                }],
+                                ephemeral: true
+                            });
+                            return false;
+                        } else {
+                            return true;
+                        };
+                    };
+                    let inactive = true;
+                    try {
+                        const response = await msg.awaitMessageComponent({
+                            componentType: 'SELECT_MENU',
+                            filter,
+                            time: 30000,
+                            max: 1
+                        });
+                        inactive = false;
+                        response.deferUpdate();
+                        const playlist = results[parseInt(response.values[0])];
+                        newSongs = await fetchInfo(client, `https://www.youtube.com/playlist?list=${playlist.id}`, null);
+                        if (!newSongs || !newSongs.length) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: i failed when fetching the information for you... (YouTube tends to break things as i'm working on my end. try again later!)` }] });
+                        playlistURL = `https://www.youtube.com/playlist?list=${playlist.id}`;
+                        newSongs.forEach(song => {
+                            song.type = 'yt';
+                            song.requestedby = interaction.user;
+                        });
+                    } catch {
+                        if (inactive) {
+                            row.components.forEach(component => component.setDisabled(true));
+                            msg.editReply({
+                                embeds: [{
+                                    color: '#bee7f7',
+                                    description: `this command is now inactive! playing the first playlist for you...`
+                                }],
+                                components: [row]
+                            });
+                            const playlist = results[0];
+                            newSongs = await fetchInfo(client, `https://www.youtube.com/playlist?list=${playlist.id}`, null);
+                            if (!newSongs || !newSongs.length) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: i failed when fetching the information for you... (YouTube tends to break things as i'm working on my end. try again later!)` }] });
+                            playlistURL = `https://www.youtube.com/playlist?list=${playlist.id}`;
+                            newSongs.forEach(song => {
+                                song.type = 'yt';
+                                song.requestedby = interaction.user;
+                            });
+                        };
+                    };
+                } else {
+                    const playlist = results[0];
+                    newSongs = await fetchInfo(client, `https://www.youtube.com/playlist?list=${playlist.id}`);
+                    if (!newSongs || !newSongs.length) return interaction.editReply({ embeds: [{ color: "RED", description: `:x: i failed when fetching the information for you... (YouTube tends to break things as i'm working on my end. try again later!)` }] });
+                    playlistURL = `https://www.youtube.com/playlist?list=${playlist.id}`;
+                    newSongs.forEach(song => {
+                        song.type = 'yt';
+                        song.requestedby = interaction.user;
+                    });
+                }
             } catch (error) {
                 logger.log('error', error);
-                return interaction.editReply({ embeds: [{ color: "RED", description: `:x: no match were found` }] });
+                return interaction.editReply({ embeds: [{ color: "RED", description: `:x: i failed when fetching the information for you... (YouTube tends to break things as i'm working on my end. try again later!)` }] });
             };
         };
         serverQueue ? serverQueue.songs.push(...newSongs) : queueConstruct.songs.push(...newSongs);
         let playlistEmbed = new MessageEmbed()
             .setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL || newSongs[0].info.uri})` : `[track](${playlistURL || newSongs[0].info.uri})`} to the queue [${interaction.user}]`);
+        if (serverQueue && interaction.channel.id !== serverQueue.textChannel.id) serverQueue.textChannel.send({ embeds: [embed] });
         interaction.editReply({embeds: [playlistEmbed], components: []});
     if (!serverQueue) {
         client.queue.set(interaction.guild.id, queueConstruct);

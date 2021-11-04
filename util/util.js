@@ -2,8 +2,6 @@ const { decode: decodeHTML } = require('html-entities');
 const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya', 'hai', 'si', 'sí', 'oui', 'はい', 'correct'];
 const no = ['no', 'n', 'nah', 'nope', 'nop', 'iie', 'いいえ', 'non', 'fuck off'];
 const ISO6391 = require('iso-639-1');
-const ms = require('ms');
-const request = require('node-superfetch');
 const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
 const inviteRegex = /(https?:\/\/)?(www\.|canary\.|ptb\.)?discord(\.gg|(app)?\.com\/invite|\.me)\/([^ ]+)\/?/gi;
 const botInvRegex = /(https?:\/\/)?(www\.|canary\.|ptb\.)?discord(app)?\.com\/(api\/)?oauth2\/authorize\?([^ ]+)\/?/gi;
@@ -385,42 +383,6 @@ module.exports = class util {
 		};
 		return seconds;
 	};
-	static randomStatus(client) {
-		const activities = [
-			{
-				text: `awake for ${ms(client.uptime)}`,
-				type: 'PLAYING'
-			},
-			{
-				text: 'ping me for help <3',
-				type: 'PLAYING'
-			},
-			{
-				text: `life in ${client.ws.ping}ms`,
-				type: 'WATCHING'
-			},
-			{
-				text: 'over you',
-				type: 'WATCHING'
-			}
-		];
-		const activity = activities[Math.floor(Math.random() * activities.length)];
-		return { text: activity.text, type: activity.type }
-	};
-	static async fetchInfo(client, query, search, id) {
-		const nodes = client.lavacordManager.idealNodes;
-        const node = id ? nodes.filter(x => x.id !== id)[0] : nodes[0];
-        const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-		const searchType = search || 'ytsearch';
-
-        const { body } = await request
-            .get(`http://${node.host}:${node.port}/loadtracks`)
-            .set({ Authorization: node.password })
-            .query({
-                identifier: urlRegex.test(query) ? query : `${searchType}:${query}`,
-            });
-        return body.tracks;
-    };
 	static async pickWhenMany(message, arr, defalt, arrListFunc, { time = 30000 } = {}) {
 		const resultsList = arr.map(arrListFunc);
 		const menu = new MessageSelectMenu()

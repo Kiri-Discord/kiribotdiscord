@@ -1,7 +1,6 @@
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const { MessageEmbed } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../../util/util');
-const { fetchInfo } = require('../../../util/util');
+const { fetchInfo } = require('../../../util/musicutil');
 const moment = require('moment');
 require('moment-duration-format');
 const playCmd = require('./play');
@@ -95,38 +94,37 @@ exports.run = async(client, interaction, internal) => {
                 return true;
             };
         };
-
-        const collector = msg.createMessageComponentCollector({
-            componentType: 'SELECT_MENU',
-            filter,
-            time: 30000,
-            max: 1
-        });
         let inactive = true;
-        collector.on('end', async() => {
+        try {
+            const response = await msg.awaitMessageComponent({
+                componentType: 'SELECT_MENU',
+                filter,
+                time: 30000,
+                max: 1
+            });
+            inactive = false;
+            response.deferUpdate();
+            if (response.values.length > 1) {
+                const bulk = response.values.map(song => lavalinkRes[song]);
+                return playlistCmd.run(client, interaction, internal, bulk);
+            } else {
+                const song = lavalinkRes[parseInt(response.values[0])];
+                return playCmd.run(client, interaction, internal, song);
+            };
+        } catch {
             if (inactive) {
                 row.components.forEach(component => component.setDisabled(true));
-                return msg.editReply({
+                msg.editReply({
                     embeds: [{
                         color: '#bee7f7',
-                        description: `this command is now inactive :pensive:`
+                        description: `this command is now inactive! playing the first song for you...`
                     }],
                     components: [row]
                 });
-            };
-        });
-        collector.on('collect', async(res) => {
-            inactive = false;
-            res.deferUpdate();
-            collector.stop();
-            if (res.values.length > 1) {
-                const bulk = res.values.map(song => lavalinkRes[song]);
-                return playlistCmd.run(client, interaction, internal, bulk);
-            } else {
-                const song = lavalinkRes[parseInt(res.values[0])];
+                const song = lavalinkRes[0];
                 return playCmd.run(client, interaction, internal, song);
             };
-        });
+        };
     } catch (error) {
         console.error(error);
         return interaction.followUp('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));

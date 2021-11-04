@@ -13,25 +13,6 @@ exports.run = async(client, message, args) => {
 
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     const song = queue.nowPlaying;
-    // let type;
-    // if (song.type !== 'other') {
-    //     const types = {
-    //         "sp": "Spotify",
-    //         "sc": "SoundCloud",
-    //         "yt": "YouTube"
-    //     };
-    //     type = types[song.type];
-    // } else {
-    //     const types = {
-    //         "soundcloud": "SoundCloud",
-    //         "youtube": "YouTube",
-    //         "vimeo": "Vimeo",
-    //         "bandcamp": "Bandcamp",
-    //         "twitch": "Twitch",
-    //         "http": "Unknown"
-    //     };
-    //     type = types[song.info.sourceName];
-    // }
     const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
     if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
 
@@ -40,13 +21,13 @@ exports.run = async(client, message, args) => {
     const fixedSeek = Math.floor(seek / 1000);
 
     const bar = splitBar(duration == 0 || !duration ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
+    const status = queue.playing ? '`▶`' : '`⏸`';
 
     let nowPlaying = new MessageEmbed()
         .setDescription(`
-    **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]
-    ${bar} ${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}
-    `)
-        // .setFooter(`carrying from ${type}`)
+        **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]
+        ${status} ${bar} \`${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}\`
+        `)
     return message.channel.send({ embeds: [nowPlaying] });
 };
 exports.help = {

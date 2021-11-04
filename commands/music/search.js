@@ -1,8 +1,6 @@
-// const scdl = require("soundcloud-downloader").default;
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const { MessageEmbed } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../util/util');
-const { fetchInfo } = require('../../util/util');
+const { fetchInfo } = require('../../util/musicutil');
 const moment = require('moment');
 require('moment-duration-format');
 
@@ -76,7 +74,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const embed = new MessageEmbed()
             .setDescription('select all the song that you want to add in with the menu below! (multiple choices are supported)')
             .setColor("#bee7f7")
-            .setFooter('timing out in 30 seconds');
+            .setFooter('timing out in 15 seconds');
         const msg = await message.channel.send({
             embeds: [embed],
             components: [row],
@@ -94,45 +92,45 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 return true;
             };
         };
-
-        const collector = msg.createMessageComponentCollector({
-            componentType: 'SELECT_MENU',
-            filter,
-            time: 30000,
-            max: 1
-        });
         let inactive = true;
-        collector.on('end', async() => {
-            if (inactive) {
-                row.components.forEach(component => component.setDisabled(true));
-                await msg.edit({
-                    embeds: [{
-                        color: '#bee7f7',
-                        description: `this command is now inactive :pensive:`
-                    }],
-                    components: [row]
-                });
-            } else {
-                if (msg && msg.deletable) await msg.delete();
-            };
-            if (loadingMessage && loadingMessage.deletable) await loadingMessage.delete();
-        });
-        collector.on('collect', async(res) => {
+        try {
+            const response = await msg.awaitMessageComponent({
+                componentType: 'SELECT_MENU',
+                filter,
+                time: 15000,
+                max: 1
+            });
             inactive = false;
-            res.deferUpdate();
-            collector.stop();
-            if (res.values.length > 1) {
-                const bulk = res.values.map(song => lavalinkRes[song]);
+            response.deferUpdate();
+            if (msg && msg.deletable) await msg.delete();
+            if (loadingMessage && loadingMessage.deletable) await loadingMessage.delete();
+            if (response.values.length > 1) {
+                const bulk = response.values.map(song => lavalinkRes[song]);
                 client.commands
                     .get("playlist")
                     .run(client, message, args, prefix, cmd, internal, bulk);
             } else {
-                const song = lavalinkRes[parseInt(res.values[0])];
+                const song = lavalinkRes[parseInt(response.values[0])];
                 client.commands
                     .get("play")
                     .run(client, message, args, prefix, cmd, internal, song);
             };
-        });
+        } catch {
+            if (inactive) {
+                row.components.forEach(component => component.setDisabled(true));
+                msg.edit({
+                    embeds: [{
+                        color: '#bee7f7',
+                        description: `this command is now inactive! playing the first song for you...`
+                    }],
+                    components: [row]
+                });
+                const song = lavalinkRes[0];
+                client.commands
+                    .get("play")
+                    .run(client, message, args, prefix, cmd, internal, song);
+            };
+        };
     } catch (error) {
         console.error(error);
         return message.reply('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));

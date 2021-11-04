@@ -1,78 +1,82 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const achievementCmd = require('./memegen/achievement');
-const beautifulCmd = require('./memegen/beautiful');
-const bobCmd = require('./memegen/bob-ross');
-const brazzersCmd = require('./memegen/brazzers');
-const classicCmd = require('./memegen/classic-meme');
-const contrastCmd = require('./memegen/contrast');
-const deepFryCmd = require('./memegen/deepfry');
-const desaturateCmd = require('./memegen/desaturate');
-const distortCmd = require('./memegen/distort');
-const ejectCmd = require('./memegen/eject');
-const fishEyeCmd = require('./memegen/fisheye');
-const greyscaleCmd = require('./memegen/greyscale');
-const ifearnoman = require('./memegen/i-fear-no-man');
-const invertCmd = require('./memegen/invert');
-const modernCmd = require('./memegen/modern-meme');
-const pixelizeCmd = require('./memegen/pixelize');
-const steamCmd = require('./memegen/steam-playing');
-const subtitleCmd = require('./memegen/subtitle');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
         case 'achievement':
+            const achievementCmd = require('./memegen/achievement');
             achievementCmd.run(client, interaction);
             break;
         case 'beautiful':
+            const beautifulCmd = require('./memegen/beautiful');
             beautifulCmd.run(client, interaction);
             break;
         case 'bob-ross':
+            const bobCmd = require('./memegen/bob-ross');
             bobCmd.run(client, interaction);
             break;
         case 'brazzers':
+            const brazzersCmd = require('./memegen/brazzers');
             brazzersCmd.run(client, interaction);
             break;
         case 'classic-meme':
+            const classicCmd = require('./memegen/classic-meme');
             classicCmd.run(client, interaction);
             break;
         case 'contrast':
+            const contrastCmd = require('./memegen/contrast');
             contrastCmd.run(client, interaction);
             break;
         case 'deepfry':
+            const deepFryCmd = require('./memegen/deepfry');
             deepFryCmd.run(client, interaction);
             break;
         case 'desaturate':
+            const desaturateCmd = require('./memegen/desaturate');
             desaturateCmd.run(client, interaction);
             break;
         case 'distort':
+            const distortCmd = require('./memegen/distort');
             distortCmd.run(client, interaction);
             break;
         case 'eject':
+            const ejectCmd = require('./memegen/eject');
             ejectCmd.run(client, interaction);
             break;
         case 'fisheye':
+            const fishEyeCmd = require('./memegen/fisheye');
             fishEyeCmd.run(client, interaction);
             break;
         case 'greyscale':
+            const greyscaleCmd = require('./memegen/greyscale');
             greyscaleCmd.run(client, interaction);
             break;
         case 'i-fear-no-man':
+            const ifearnoman = require('./memegen/i-fear-no-man');
             ifearnoman.run(client, interaction);
             break;
         case 'invert':
+            const invertCmd = require('./memegen/invert');
             invertCmd.run(client, interaction);
             break;
         case 'modern-meme':
+            const modernCmd = require('./memegen/modern-meme');
             modernCmd.run(client, interaction);
             break;
         case 'pixelize':
+            const pixelizeCmd = require('./memegen/pixelize');
             pixelizeCmd.run(client, interaction);
             break;
         case 'steam-playing':
+            const steamCmd = require('./memegen/steam-playing');
             steamCmd.run(client, interaction);
             break;
         case 'subtitle':
+            const subtitleCmd = require('./memegen/subtitle');
             subtitleCmd.run(client, interaction);
+            break;
+        case 'time-card':
+            const cmd = require('./memegen/time-card');
+            cmd.run(client, interaction);
             break;
     }
 }
@@ -266,6 +270,15 @@ exports.conf = {
         .addSubcommand(sub => sub
             .setName('subtitle')
             .setDescription(`add subtitle to your image`)
+            .addStringOption(option => option
+                .setName('text')
+                .setDescription('what should the subtitle be?')
+                .setRequired(true)
+            )
+        )
+        .addSubcommand(sub => sub
+            .setName('time-card')
+            .setDescription(`what is the text that you want to fill?`)
             .addStringOption(option => option
                 .setName('text')
                 .setDescription('what should the subtitle be?')

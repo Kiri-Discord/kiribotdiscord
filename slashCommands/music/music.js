@@ -1,97 +1,96 @@
-const debugCmd = require('./music/debug');
-const disconnectCmd = require('./music/disconnect');
-const fskipCmd = require('./music/force-skip');
-const loopCmd = require('./music/loop');
-const lyricsCmd = require('./music/lyrics');
-const moveCmd = require('./music/move');
-const npCmd = require('./music/now-playing');
-const pauseCmd = require('./music/pause');
-const playCmd = require('./music/play');
-const playlistCmd = require('./music/playlist');
-const queueCmd = require('./music/queue');
-const removeCmd = require('./music/remove');
-const repeatCmd = require('./music/repeat');
-const resumeCmd = require('./music/resume');
-const searchCmd = require('./music/search');
-const seekCmd = require('./music/seek');
-const shuffleCmd = require('./music/shuffle');
-const skipToCmd = require('./music/skip-to');
-const skipCmd = require('./music/skip');
-const stopCmd = require('./music/stop');
-const volumeCmd = require('./music/volume');
 const youtubeSuggest = require("youtube-suggest");
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
         case 'debug':
+            const debugCmd = require('./music/debug');
             debugCmd.run(client, interaction);
             break;
         case 'disconnect':
+            const disconnectCmd = require('./music/disconnect');
             disconnectCmd.run(client, interaction);
             break;
         case 'force-skip':
+            const fskipCmd = require('./music/force-skip');
             if (!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({ content: `are you a mod? you don't seems to have the \`MANAGE_MESSAGES\` permission to forcefully modify the queue :pensive:`, ephemeral: true });
             fskipCmd.run(client, interaction);
             break;
         case 'loop':
+            const loopCmd = require('./music/loop');
             loopCmd.run(client, interaction);
             break;
         case 'lyrics':
+            const lyricsCmd = require('./music/lyrics');
             lyricsCmd.run(client, interaction);
             break;
         case 'move':
+            const moveCmd = require('./music/move');
             moveCmd.run(client, interaction);
             break;
         case 'now-playing':
+            const npCmd = require('./music/now-playing');
             npCmd.run(client, interaction);
             break;
         case 'pause':
+            const pauseCmd = require('./music/pause');
             pauseCmd.run(client, interaction);
             break;
         case 'play':
+            const playCmd = require('./music/play');
             playCmd.run(client, interaction);
             break;
         case 'playlist':
+            const playlistCmd = require('./music/playlist');
             playlistCmd.run(client, interaction);
             break;
         case 'queue':
+            const queueCmd = require('./music/queue');
             queueCmd.run(client, interaction);
             break;
         case 'remove':
+            const removeCmd = require('./music/remove');
             removeCmd.run(client, interaction);
             break;
         case 'repeat':
+            const repeatCmd = require('./music/repeat');
             repeatCmd.run(client, interaction);
             break;
         case 'resume':
+            const resumeCmd = require('./music/resume');
             resumeCmd.run(client, interaction);
             break;
         case 'search':
+            const searchCmd = require('./music/search');
             searchCmd.run(client, interaction);
             break;
         case 'seek':
+            const seekCmd = require('./music/seek');
             seekCmd.run(client, interaction);
             break;
         case 'shuffle':
+            const shuffleCmd = require('./music/shuffle');
             shuffleCmd.run(client, interaction);
             break;
         case 'skip-to':
+            const skipToCmd = require('./music/skip-to');
             skipToCmd.run(client, interaction);
             break;
         case 'stop':
+            const stopCmd = require('./music/stop');
             stopCmd.run(client, interaction);
             break;
         case 'volume':
+            const volumeCmd = require('./music/volume');
             volumeCmd.run(client, interaction);
             break;
         case 'skip':
+            const skipCmd = require('./music/skip');
             skipCmd.run(client, interaction);
             break;
     }
 };
 
 exports.suggestion = async(interaction) => {
-    console.log('emitted')
     const query = interaction.options.getFocused();
     if (!query || query === '') return interaction.respond([]);
     const res = await youtubeSuggest(query);

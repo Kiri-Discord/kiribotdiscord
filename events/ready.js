@@ -25,26 +25,25 @@ module.exports = async client => {
             };
         }
     };
-    const staffsv = client.guilds.cache.get(client.config.emojiServerID);
-    if (staffsv) {
-        await staffsv.emojis.cache.forEach(async emoji => {
-            client.customEmojis.set(emoji.name, emoji);
-        });
-        logger.log('info', `[DISCORD] Added ${client.customEmojis.size} custom emojis`);
+    if (client.config.emojiServerIDs) {
+        for (const id of client.config.emojiServerIDs) {
+            try {
+                const guild = await client.guilds.fetch(id);
+                const emojis = await guild.emojis.fetch();
+                emojis.each(emoji => client.customEmojis.set(emoji.name, emoji));
+                logger.log('info', `[DISCORD] Loaded ${emojis.size} custom emojis from ${guild.name} (id: ${id})`);
+            } catch (err) {
+                logger.log('info', `[DISCORD] Could not fetch emoji server (id: ${id}).`);
+            };
+        };
     };
-    logger.log('info', `[DISCORD] Fetching all unverified members..`)
     if (process.env.NO_WEB_SERVER !== 'true') {
+        logger.log('info', `[DISCORD] Fetching all unverified members..`);
         await client.verifytimers.fetchAll();
         web.init(client);
     };
     await client.initGiveaway();
     if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;
-    const activity = randomStatus(client);
-    client.user.setPresence({ activities: [{ name: activity.text, type: activity.type }], status: 'online' });
-    const timeout = setInterval(() => {
-        const activity = randomStatus(client);
-        client.user.setPresence({ activities: [{ name: activity.text, type: activity.type }], status: 'online' })
-    }, 120000);
-    timeout.unref();
+    client.user.setPresence({ activities: [{ name: ';-;', type: 'WATCHING' }], status: 'online' });
 };
