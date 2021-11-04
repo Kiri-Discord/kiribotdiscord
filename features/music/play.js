@@ -105,9 +105,8 @@ module.exports = class Queue {
                     };
                     const tryCount = tried.length || 0;
                     await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
-                    await this.player.destroy();
                     await this.client.lavacordManager.leave(this.textChannel.guild.id);
-                    await delay(3000);
+                    await delay(1500);
                     this.player = await this.client.lavacordManager.join({
                         guild: this.textChannel.guild.id,
                         channel: this.channel.id,
@@ -115,7 +114,6 @@ module.exports = class Queue {
                     }, {
                         selfdeaf: true
                     });
-                    await delay(2000);
                     if (!this.textChannel.guild.me.voice.channelId) {
                         tried.push(this.player.node.host);
                         continue;
@@ -152,7 +150,7 @@ module.exports = class Queue {
                     if (!this.repeat) {
                         this.playingMessage = null;
                         const sent = await this.textChannel.send({ embeds: [embed] });
-                        this.playingMessage = sent;
+                        this.playingMessage = sent.id;
                     };
                 } catch (error) {
                     logger.log('error', error);
@@ -161,8 +159,8 @@ module.exports = class Queue {
             this.player.on('end', async data => {
                 if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
                 if (this.playingMessage) {
-                    if (this.playingMessage.deletable && (this.songs.length && !this.loop && !this.repeat || this.loop || this.repeat)) this.playingMessage.delete().catch(() => null);
-                }
+                    if (this.songs.length && !this.repeat) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+                };
                 if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
                 if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
                     if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();

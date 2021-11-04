@@ -64,7 +64,6 @@ exports.conf = {
             autocomplete: true
         }]
     },
-    guild: true,
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],

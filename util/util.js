@@ -552,9 +552,6 @@ module.exports = class util {
 		await musicSchema.deleteMany({
 			guildId: id,
 		});
-		await client.confession.deleteMany({
-			guildId: id,
-		});
 	
 		await slapSchema.deleteMany({
 			guildId: id,
@@ -591,10 +588,6 @@ module.exports = class util {
 		await client.garden.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
-		});
-		await client.confession.findOneAndDelete({
-			userId: userId,
-			guildId: guildId,
 		});
 		await client.gameStorage.findOneAndDelete({
 			guildId: guildId,

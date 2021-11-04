@@ -47,23 +47,7 @@ module.exports = async(client, message) => {
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 
 
-        if (!prefixRegex.test(message.content)) {
-            if (!message.guild) return;
-            const confess = await client.confession.findOne({
-                userId: message.author.id,
-                guildId: message.guild.id,
-            });
-            if (!confess) return;
-            try {
-                await message.reply(`📩 hey **${message.author.username}**, you have a new annoymous confession!\n||${confess.confession}||`);
-                return client.confession.findOneAndDelete({
-                    userId: message.author.id,
-                    guildId: message.guild.id,
-                });
-            } catch {
-                return;
-            };
-        };
+        if (!prefixRegex.test(message.content)) return;
         const [, matchedPrefix] = message.content.match(prefixRegex);
 
         const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';

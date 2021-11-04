@@ -1,5 +1,5 @@
 const web = require('../util/web.js');
-const { randomStatus, purgeDbGuild } = require('../util/util');
+const { purgeDbGuild } = require('../util/util');
 const music = require('../util/music');
 
 module.exports = async client => {

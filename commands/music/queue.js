@@ -11,6 +11,7 @@ exports.run = async(client, message, args) => {
                 description: 'there is nothing to display since i\'m not playing anything :grimacing:'
             }]
         });
+        if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
         let queueFields = [];
         const nowPlaying = queue.nowPlaying;
         let totalDuration = nowPlaying.info.length;

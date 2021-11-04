@@ -50,7 +50,7 @@ exports.conf = {
             subcommand
             .setName('gender-guess')
             .setDescription("guess the gender of a person by their name")
-            .addUserOption(option => option
+            .addStringOption(option => option
                 .setName('name')
                 .setRequired(true)
                 .setDescription('the name that you would like me to guess')

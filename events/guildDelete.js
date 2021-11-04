@@ -1,6 +1,7 @@
 const { purgeDbGuild } = require('../util/util');
 
 module.exports = async(client, guild) => {
+    if (!client.isReady() && !guild.avaliable) return;
     await purgeDbGuild(client, guild.id);
     logger.log('info', `Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
     const owner = client.users.cache.get(client.config.ownerID);

@@ -23,7 +23,6 @@ exports.run = async(client, message, args) => {
         message.channel.send(`${message.author.toString()}, are you in pain?`);
         return
     };
-    const stare = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':thinking:';
 
     const result = await punchSchema.findOneAndUpdate({
         userId: targetId,

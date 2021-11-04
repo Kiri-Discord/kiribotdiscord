@@ -1,4 +1,5 @@
 const winston = require('winston');
+const config = require('./config.json');
 
 global.logger = winston.createLogger({
     transports: [
@@ -14,10 +15,19 @@ process.on('unhandledRejection', error => {
 
 global.__basedir = __dirname;
 
+if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
+    global.sentry = require("@sentry/node");
+    sentry.init({
+        dsn: config.sentryDSNURL,
+        tracesSampleRate: 0.7,
+    });
+    logger.log('info', '[SENTRY] Initialized!')
+};
+
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const { AutoPoster } = require('topgg-autoposter');
-const { Intents } = require('discord.js');
+const { Intents, Options } = require('discord.js');
 const intents = new Intents();
 
 intents.add(
@@ -36,9 +46,9 @@ intents.add(
 
 const client = new kiri({
     intents,
-    // makeCache: Options.cacheWithLimits({
-    //     MessageManager: 180,
-    // }),
+    makeCache: Options.cacheWithLimits({
+        MessageManager: 180,
+    }),
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: true
@@ -49,7 +59,7 @@ const client = new kiri({
         }
     }
 });
-// client.package = require("./package.json");
+
 client.on("warn", warn => logger.log('warn', warn));
 client.on("error", err => {
     logger.log('error', err)
@@ -58,15 +68,16 @@ require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 require("./handler/getUserfromMention.js")(client);
 require("./handler/getMemberfromMention.js")();
-if (client.config.topggkey && !process.env.NO_TOPGG) {
-    const ap = AutoPoster(client.config.topggkey, client);
+if (config.topggkey && process.env.NO_TOPGG !== 'true') {
+    const ap = AutoPoster(config.topggkey, client);
 
     ap.on('posted', () => {
         logger.log('info', 'Posted stats to Top.gg!');
     });
 };
+
 (async() => {
     await mongo.init();
-    client.login(client.config.token).catch(err => logger.log('error', err));
+    client.login(config.token).catch(err => logger.log('error', err));
 })();
 module.exports = client;

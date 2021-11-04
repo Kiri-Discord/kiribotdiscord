@@ -1,6 +1,5 @@
 const Manager = require('../features/music/lavacord');
 const nodes = require('../lavalinkNodes.json');
-
 module.exports = {
     init: async(client) => {
         client.lavacordManager = new Manager(client, nodes, {

@@ -122,8 +122,8 @@ exports.run = async(client, message, args, prefix) => {
         if (setting.byeContent.type === 'plain') return channel.send(varReplace.replaceText(setting.byeContent.content, message.member, message.guild, { event: 'leave', type: setting.responseType }));
         else return channel.send({ embeds: [varReplace.replaceEmbed(setting.byeContent.content.embed, message.member, message.guild, { event: 'leave', type: setting.responseType })] });
     };
-    return message.channel.send({ embeds: [{ color: "RED", description: `${args.length ? `\`${args[0]}\` isn't a valid subcommand :pensive:` : "you haven't provided any subcommand yet!"}\nall avaliable sub-command for setting up goodbye message are: \`-off, channel, content, test\`!` }] })
-}
+    return message.channel.send({ embeds: [{ color: "RED", description: `\`${args[0]}\` isn't a valid subcommand :pensive:` }] })
+};
 
 
 exports.help = {
