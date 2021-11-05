@@ -39,6 +39,7 @@ exports.run = async(client, message, args, prefix) => {
         } else if (args[0] === "lang") {
             if (!serverQueue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ there isn't any queue to set the language for :pensive: you should play a song first!` }] });
             const query = args[1];
+            if (!query) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `what language that you want to use? \`${prefix}scrolling-lyrics lang <language>\`` }] });
             const code = ISO6391.getCode(query.toLowerCase());
             if (!ISO6391.validate(code)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ sorry, \`${query}\` is not a valid language :pensive:` }] });
             serverQueue.karaoke.languageCode = code;
