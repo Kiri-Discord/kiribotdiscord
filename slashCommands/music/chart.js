@@ -25,7 +25,7 @@ exports.run = async(client, interaction) => {
     };
     const array = chart.splice(0, 9);
     const top = array.shift();
-    const string = `by **${top.songAuthor}** (${millify(top.timesPlayed)} play${top.timesPlayed === 1 ? '' : 's'})`
+    let string = `by **${top.songAuthor}** (${millify(top.timesPlayed)} play${top.timesPlayed === 1 ? '' : 's'})`
     const embed = new MessageEmbed()
         .setFooter(`reset on the first day of every month (UTC + 0)`)
         .setTitle(`#1 - ${top.songName}`)
