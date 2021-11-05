@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const list = require('../../assets/items.json');
 
 exports.run = async(client, message, args, prefix) => {
     if (!args[0]) return message.reply(`how many items do you want to buy? please check \`${prefix}help buy\` if you encounter any problem :grin:`);
@@ -12,10 +13,10 @@ exports.run = async(client, message, args, prefix) => {
     };
 
     if (isNaN(args[0]) || !isInt(args[0]) || Math.sign(args[0]) === -1) return message.reply('that isn\'t a vaild number! can you try again? :pensive:')
-    const items = ['wedding ring', 'seed', 'worm', 'ring'];
+    const items = Object.keys(list);
     const toBuy = args.slice(1).join(' ');
     if (!toBuy) return message.reply(`what item do you want to buy? for a list of item that you can purchase, please check \`${prefix}shop\` <3`)
-    if (!items.includes(toBuy.toLowerCase())) return message.reply(`\`${toBuy}\` is an invalid item! check \`${prefix}shop\` for a list of avaliable item :grin:`);
+    if (!items.includes(toBuy)) return message.reply(`\`${toBuy}\` is an invalid item! check \`${prefix}shop\` for a list of avaliable item :grin:`);
 
     let moneyStorage = await client.money.findOne({
         userId: message.author.id,
@@ -33,14 +34,14 @@ exports.run = async(client, message, args, prefix) => {
     async function buyItem(money, price, quantity, item) {
         const total = price * quantity;
         if (money < total) return message.reply(`you don't have that much money in your balance :pensive:\na total of ⏣ __${total - money}__ token is needed to buy it.`)
-        const items = quantity < 1 ? item : item + 's';
+        const items = quantity < 1 ? list[item].displayName : list[item].displayName + 's';
         const embed = new MessageEmbed()
             .setColor("#bee7f7")
             .setAuthor('purchase successful (=^･ω･^=)', message.author.displayAvatarURL())
             .setDescription(`you have bought __${quantity}__ **${items}** (⏣ ${price}) which cost you ⏣ __${total}__ token`)
             .setFooter(`your current balance: ⏣ ${money - total}`)
 
-        if (item === 'wedding ring' || item === 'ring') {
+        if (item === 'rings') {
             await client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
@@ -56,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
             });
         };
 
-        if (item === 'seed') {
+        if (item === 'seeds') {
             await client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
@@ -72,7 +73,22 @@ exports.run = async(client, message, args, prefix) => {
             });
         }
 
-        if (item === 'worm') {
+        if (item === 'worms') {
+            await client.inventory.findOneAndUpdate({
+                guildId: message.guild.id,
+                userId: message.author.id
+            }, {
+                guildId: message.guild.id,
+                userId: message.author.id,
+                $inc: {
+                    worms: quantity,
+                },
+            }, {
+                upsert: true,
+                new: true,
+            });
+        };
+        if (item === 'eqTicket') {
             await client.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
@@ -91,16 +107,20 @@ exports.run = async(client, message, args, prefix) => {
         await moneyStorage.save();
         return message.reply({ embeds: [embed] });
     };
-    if (toBuy === 'wedding ring' || toBuy === 'ring') {
+    if (toBuy === 'rings') {
         buyItem(money, 1300, args[0], toBuy)
     };
 
-    if (toBuy === 'seed') {
+    if (toBuy === 'seeds') {
         buyItem(money, 50, args[0], toBuy)
     };
 
-    if (args[1] === 'worm') {
+    if (toBuy === 'worms') {
         buyItem(money, 150, args[0], toBuy)
+    };
+
+    if (toBuy === 'eqTicket') {
+        buyItem(money, 500, args[0], toBuy)
     };
 };
 

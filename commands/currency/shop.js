@@ -10,13 +10,13 @@ exports.run = async(client, message, args, prefix) => {
 
     names.forEach(x => {
         list.push(`
-        ${embedURL(items[x].displayName, 'https://youtu.be/do_XXxrWBxQ')} (${items[x].displayPrice})
+        ${embedURL(items[x].displayName, 'https://youtu.be/do_XXxrWBxQ')} - ${items[x].displayPrice} (ID: \`${x}\`)
         ${items[x].desc.replace('{prefix}', prefix).replace('{rod}', rod)}`)
     })
     const embed = new MessageEmbed()
         .setTitle('the shop 🛒')
         .setColor("#bee7f7")
-        .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <items>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features. :slight_smile:`)
+        .setDescription(`to buy something from the store, type \`${prefix}buy <amount> <id>\`!\ntoken (⏣) can be claimed by winning games, betting and economy related features. :slight_smile:`)
         .addField('items list :moneybag:', stripIndents `
         ${list.join('\n')}
         `)

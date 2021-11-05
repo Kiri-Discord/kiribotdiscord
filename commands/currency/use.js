@@ -19,13 +19,13 @@ exports.run = async(client, message, args, prefix) => {
             });
         };
         let expire = cooldownStorage.ticketExpire;
-        if (expire !== null && Date.now() < expire) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you can't activate another ticket for another ${Math.floor((expire - Date.now()) / 1000)} seconds!` }] });
+        if (expire !== null && Date.now() < expire) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you already have 1 🎫 ** Effect Ticket** in active! you can use it again <t:${Math.floor(expire / 1000)}:R> seconds!` }] })
         let cooldown = 8.64e+7;
         cooldownStorage.ticketExpire = Date.now() + cooldown;
         storage.eqTicket--;
         await storage.save();
         await cooldownStorage.save();
-        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:white_check_mark: you used a ticket! it will be expired in a day!` }] });
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:white_check_mark: you used an 🎫 ** Effect Ticket**! it will be expired in a day!` }] });
     } else {
         return message.channel.send(":thinking: you can't use this item, or it doesn't exist");
     }
