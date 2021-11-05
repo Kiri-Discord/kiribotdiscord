@@ -11,7 +11,6 @@ module.exports = {
         };
         mongoose.Promise = global.Promise;
         mongoose.set('bufferCommands', false);
-        // mongoose.set('cloneSchemas', true);
         mongoose.connection.on('connected', () => {
             logger.log('info', '[MONGO] Mongoose has successfully connected!');
         });

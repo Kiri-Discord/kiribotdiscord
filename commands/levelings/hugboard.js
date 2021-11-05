@@ -42,7 +42,7 @@ exports.run = async(client, message, args, prefix) => {
     const arrEmbeds = [];
     arrSplitted.forEach((item, index) => {
         const embed = new MessageEmbed()
-            .setColor(message.guild.me.displayHexColor)
+            .setColor('#bee7f7')
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`you can hug others with \`${prefix}hug\` :heart_on_fire:`)
             .addField('\u200b', item.join('\n'))

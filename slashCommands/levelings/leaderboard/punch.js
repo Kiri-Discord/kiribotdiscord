@@ -43,7 +43,7 @@ exports.run = async(client, interaction) => {
     const arrEmbeds = [];
     arrSplitted.forEach((item, index) => {
         const embed = new MessageEmbed()
-            .setColor(interaction.guild.me.displayHexColor)
+            .setColor('#bee7f7')
             .setThumbnail(interaction.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`you can punch others with \`/roleplay punch\`!`)
             .addField('\u200b', item.join('\n'))

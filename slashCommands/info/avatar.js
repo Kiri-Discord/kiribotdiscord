@@ -28,7 +28,7 @@ exports.run = async(client, interaction) => {
             .setStyle('LINK')
             .setURL(avatar)
             .setLabel('Avatar URL'))
-    return interaction.reply({ embeds: [embed], components: [row], content: original ? `if you want to display their server avatar instead (if any), do \`${prefix}avatar -server\`!` : null });
+    return interaction.reply({ embeds: [embed], components: [row], content: original ? `if you want to display their server avatar instead (if any), do \`/avatar -server\`!` : null });
 };
 
 exports.help = {

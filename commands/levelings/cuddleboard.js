@@ -43,7 +43,7 @@ exports.run = async(client, message, args, prefix) => {
     const arrEmbeds = [];
     arrSplitted.forEach((item, index) => {
         const embed = new MessageEmbed()
-            .setColor(message.guild.me.displayHexColor)
+            .setColor('#bee7f7')
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`you can cuddle others with \`${prefix}cuddle\`!`)
             .addField('\u200b', item.join('\n'))

@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const itemsList = require('../../assets/items.json');
+const itemsName = Object.keys(itemsList);
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
@@ -25,13 +27,27 @@ exports.run = async(client, interaction) => {
             guildId: interaction.guild.id
         });
     };
+    const array = [];
+    const rod = client.customEmojis.get('rod');
+    for (const property in storage) {
+        if (itemsName.includes(property) && storage[property] > 0) {
+            array.push({
+                name: itemsList[property].displayName,
+                amount: storage[property],
+                desc: itemsList[property].desc.replace('{prefix}', '/').replace('{rod}', rod),
+            })
+        };
+    };
+    if (!array.length) return interaction.editReply('you have no items in your inventory dear :pensive:');
     const embed = new MessageEmbed()
-        .setAuthor(`${interaction.user.username}'s inventory 🎒`, interaction.user.displayAvatarURL())
+        .setAuthor(`${interaction.user.username}'s inventory`)
+        // .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true, size: 1024 }))
         .setColor("#bee7f7")
-        .addField(`💍 wedding rings`, `\`${storage.rings}\``, true)
-        .addField(`🌰 seeds`, `\`${storage.seeds}\``, true)
-        .addField(`🪱 worms`, `\`${storage.worms}\``, true)
         .setFooter(`your current balance: ⏣ ${money.balance}`)
+    const list = array.map(item => {
+        return `**${item.name}** - ${item.amount}\n*${item.desc}*`;
+    });
+    embed.setDescription(list.join('\n\n'));
     return interaction.editReply({ embeds: [embed] })
 };
 

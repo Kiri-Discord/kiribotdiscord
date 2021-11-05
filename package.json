@@ -61,6 +61,7 @@
         "namemc": "^1.8.16",
         "nekos.life": "^2.0.7",
         "node-gyp": "^8.2.0",
+        "node-schedule": "^2.0.0",
         "node-superfetch": "^0.2.3",
         "ordinal": "^1.0.3",
         "p-event": "^4.2.0",

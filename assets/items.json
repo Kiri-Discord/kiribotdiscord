@@ -16,5 +16,11 @@
         "displayPrice": "⏣ 1,300",
         "displayName": "💍 wedding ring",
         "desc": "used to propose to your partner via `{prefix}marry` <3 (break after each proposal)"
+    },
+    "eqTicket": {
+        "price": 500,
+        "displayPrice": "⏣ 500",
+        "displayName": "🎫 effect music ticket",
+        "desc": "used to apply effect in your music queue (each ticket provides 1 days of effect adding)"
     }
 }

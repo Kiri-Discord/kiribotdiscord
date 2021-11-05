@@ -20,18 +20,20 @@ exports.run = async(client, message, args, prefix) => {
     let expire = cooldownStorage.ticketExpire;
     if (!expire || expire < Date.now()) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your 🎫 **Effect Ticket** was expired, or you don't have one! obtain one with \`${prefix}ticket\`!` }] });
 
-    const bands = new Array(6).fill(null).map((n, i) => { return { band: i, gain: 0.65 } });
-
+    const bands = new Array(6).fill(null).map((n, i) => ({ band: i, gain: 0.5 }));
     queue.player.equalizer(bands);
+    queue.player.volume(350);
     const sayoriEmoji = client.customEmojis.get("sayori");
-    message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied bassboost to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
-    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied bassboost to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
+    message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied earrape to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` })
+    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied bassboost to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` });
 };
+
+
 exports.help = {
-    name: "bassboost",
-    description: "apply bassboost to your current music queue",
-    usage: ["bassboost"],
-    example: ["bassboost"]
+    name: "earrape",
+    description: "apply earrape to your current music queue 😳",
+    usage: ["earrape"],
+    example: ["earrape"]
 };
 
 exports.conf = {

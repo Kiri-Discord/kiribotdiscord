@@ -43,7 +43,7 @@ exports.run = async(client, message, args, prefix) => {
     const arrEmbeds = [];
     arrSplitted.forEach((item, index) => {
         const embed = new MessageEmbed()
-            .setColor(message.guild.me.displayHexColor)
+            .setColor('#bee7f7')
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`you can level up by [sending messages](https://support.discord.com/hc/en-us/articles/360034632292-Sending-Messages) in ${message.guild.name}!`)
             .setFooter(`you are ranked ${ordinal(rank)} in this guild :)`)

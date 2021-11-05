@@ -27,7 +27,7 @@ exports.run = async(client, interaction) => {
                     sorry, you cannot collect your daily too early :pensive:
                     your next collect is ready <t:${Math.floor((Date.now() + finalTime) / 1000)}:R>
 
-                    ~~want to get more token on your next daily collect? vote me [here](https://discord.ly/kiri)~~ (currently in maintenance)`)
+                    you can get more rewards by voting [here](https://top.gg/bot/859116638820761630)`)
                     .setTitle(`${interaction.member.displayName}, you've already claimed your daily today!`)
                     .setFooter(`each daily is reseted after 24 hours, regardless of timezone.
                     `)
@@ -79,7 +79,7 @@ exports.run = async(client, interaction) => {
                     .setDescription(stripIndents `
             ⏣ __${finalAmount}__ token was placed in your wallet 🙂
 
-            ~~you can get more rewards by voting!~~ (currently in maintenance)
+            you can get more rewards by voting [here](https://top.gg/bot/859116638820761630)
             ${bonus ? `you collected __${bonusAmount}__ more token for voting :)` : ''}
             `)
             .setColor("#bee7f7")

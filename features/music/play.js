@@ -50,7 +50,7 @@ module.exports = class Queue {
         };
         this.client.queue.delete(this.guildId);
         if (this.player) {
-            this.player.stop();
+            this.player.destroy();
             this.client.lavacordManager.players.delete(this.guildId);
         };
         await Guild.findOneAndUpdate({
@@ -159,7 +159,7 @@ module.exports = class Queue {
             this.player.on('end', async data => {
                 if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
                 if (this.playingMessage) {
-                    if (this.songs.length && !this.repeat) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+                    if (this.songs.length && !this.repeat || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
                 };
                 if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
                 if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
@@ -216,10 +216,30 @@ module.exports = class Queue {
                 volume: this.volume || 100,
                 noReplace: first ? true : noSkip
             });
+            if (song.type === 'yt' || song.type === 'sc' || song.type === 'sp') {
+                const fetched = await this.client.charts.findOne({
+                    songID: song.info.uri,
+                });
+                if (fetched) {
+                    fetched.timesPlayed += 1;
+                    await fetched.save();
+                } else {
+                    const songDB = new this.client.charts({
+                        songID: song.info.uri,
+                        timesPlayed: 1,
+                        songName: song.info.title,
+                        songAuthor: song.info.author,
+                        songDuration: song.info.duration,
+                        type: song.type
+                    });
+                    await songDB.save();
+                };
+            };
         } catch (error) {
+            console.error(error);
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
-            await this.client.lavacordManager.leave(this.textChannel.guild.id);
-            this.client.queue.delete(this.textChannel.guild.id);
+            this.stop('disconnected');
+            this.client.lavacordManager.leave(this.textChannel.guild.id);
             return this.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
         };
     };

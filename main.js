@@ -26,8 +26,10 @@ if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
 
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
+const schedule = require('node-schedule');
 const { AutoPoster } = require('topgg-autoposter');
 const { Intents, Options } = require('discord.js');
+
 const intents = new Intents();
 
 intents.add(
@@ -78,6 +80,30 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
 
 (async() => {
     await mongo.init();
+
+    schedule.scheduleJob('0 0 1 * *', async() => {
+        let storage = await client.globalStorage.findOne();
+        if (!storage) {
+            storage = new client.globalStorage();
+            storage.lastChartReset = Date.now();
+            await storage.save();
+            await client.charts.deleteMany({});
+        } else {
+            const lastReset = new Date(storage.lastChartReset);
+            const today = new Date(Date.now());
+            if (today.getUTCMonth() === lastReset.getUTCMonth()) {
+                return;
+            } else {
+                storage.lastChartReset = Date.now();
+                await storage.save();
+                await client.charts.deleteMany({});
+            }
+        };
+        logger.log('info', '[MUSIC] Deleted all charts!');
+    });
+
     client.login(config.token).catch(err => logger.log('error', err));
 })();
+
+
 module.exports = client;

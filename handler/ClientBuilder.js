@@ -11,6 +11,7 @@ module.exports = class kiri extends Client {
             this.vote = require('../model/vote');
             this.isPlaying = new Map();
             this.dcTimeout = new Map();
+            this.charts = require('../model/chart');
             this.globalStorage = require('../model/global');
             this.gameStorage = require('../model/game');
             this.giveaways = null;

@@ -1,4 +1,5 @@
 const { canModifyQueue } = require("../../util/musicutil");
+const eq = require('../../assets/equalizer');
 
 exports.run = async(client, message, args, prefix) => {
     const queue = client.queue.get(message.guild.id);
@@ -19,19 +20,25 @@ exports.run = async(client, message, args, prefix) => {
     };
     let expire = cooldownStorage.ticketExpire;
     if (!expire || expire < Date.now()) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your 🎫 **Effect Ticket** was expired, or you don't have one! obtain one with \`${prefix}ticket\`!` }] });
+    const body = eq.vaporwave;
 
-    const bands = new Array(6).fill(null).map((n, i) => { return { band: i, gain: 0.65 } });
+    queue.player.node.send({
+        op: 'filters',
+        guildId: queue.guildId,
+        ...body,
+    });
 
-    queue.player.equalizer(bands);
     const sayoriEmoji = client.customEmojis.get("sayori");
-    message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied bassboost to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
-    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied bassboost to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
+    message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied vaporwave to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` })
+    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied vaporwave to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` });
 };
+
+
 exports.help = {
-    name: "bassboost",
-    description: "apply bassboost to your current music queue",
-    usage: ["bassboost"],
-    example: ["bassboost"]
+    name: "vaporwave",
+    description: "apply vaporwave to your current music queue 😔",
+    usage: ["vaporwave"],
+    example: ["vaporwave"]
 };
 
 exports.conf = {

@@ -68,7 +68,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                 };
             } else {
                 msg1.delete();
-                message.channel.send('you didn\'t answer anything! i will just play the song now...');
+                if (verification === 0) message.channel.send('you didn\'t answer anything! i will just play the song now...');
             };
         };
     } else {
@@ -168,7 +168,6 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
             .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`);
         if (message.channel.id !== serverQueue.textChannel.id) serverQueue.textChannel.send({ embeds: [embed] });
         return message.channel.send({ embeds: [embed] })
-
     };
     queueConstruct.songs.push(song);
     client.queue.set(message.guild.id, queueConstruct);

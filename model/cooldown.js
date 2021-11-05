@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const reqString = {
     type: String,
@@ -9,7 +9,8 @@ const cooldownSchema = mongoose.Schema({
     guildId: reqString,
     lastDaily: Date,
     lastWater: Date,
-    lastGamble: Date
+    lastGamble: Date,
+    ticketExpire: Date,
 });
 
 module.exports = mongoose.model(

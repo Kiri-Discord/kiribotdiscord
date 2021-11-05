@@ -69,29 +69,29 @@ module.exports = {
                     return res.status(400);
                 };
                 const blush = client.customEmojis.get('blush') ? client.customEmojis.get('blush') : ':blush:';
-                const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
                 const row = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
                         .setStyle('LINK')
                         .setURL('https://top.gg/bot/859116638820761630')
-                        .setLabel('Vote us on top.gg!')
+                        .setLabel('vote for me on top.gg!')
                     );
                 const embed = new MessageEmbed()
                     .setColor('#F4EDB4')
-                    .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`, client.user.displayAvatarURL())
+                    .setThumbnail(client.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+                    .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`)
                     .setDescription(stripIndents `
                     thank you for being generous and gave me a vote ${blush}
 
-                    you was given a 50% bonus on your next daily token collect! type \`${config.prefix}daily\` in any server to collect your token :tada:${req.body.weekend ? '\n\nit is the weekend! i have increased your bonus by 80%!' : ''}
-                    that is the only thing i have to offer right now ${duh} keep voting to explore!
+                    you was given a 50% bonus on your next daily token collect, and a free 🎫 **Effect Ticket**!\ntype \`${config.prefix}daily\` in any server to collect your token, or \`${config.prefix}ticket\` to obtain your ticket :tada:${req.body.weekend ? '\n\nit is the weekend! i have increased your bonus by 80%!' : ''}
                     `)
+                    .setFooter(`that is the only thing i got to offer right now :) keep voting to explore!`)
                 res.status(200).json({ code: 200 });
                 if (req.body.type !== 'test') {
                     const voteStorage = client.vote;
                     const vote = new voteStorage({
                         userID: user.id,
-                        collectMutiply: req.body.weekend ? 80 : 50
+                        collectMutiply: req.body.weekend ? 80 : 50,
                     });
                     await vote.save();
                 };

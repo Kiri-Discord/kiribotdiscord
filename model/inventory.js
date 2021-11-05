@@ -19,6 +19,10 @@ const moneySchema = mongoose.Schema({
     worms: {
         type: Number,
         default: 0
+    },
+    eqTicket: {
+        type: Number,
+        default: 0
     }
 });
 
