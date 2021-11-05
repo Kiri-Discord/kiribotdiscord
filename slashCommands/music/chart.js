@@ -23,18 +23,20 @@ exports.run = async(client, interaction) => {
         "10": "November",
         "11": "December"
     };
-    const embed = new MessageEmbed()
-        .setFooter(`reset on the first day of every month (UTC + 0)`);
     const array = chart.splice(0, 9);
     const top = array.shift();
-    embed.setTitle(`#1 - ${top.songName}`).setURL(top.songID).setDescription(`by **${top.songAuthor}** (${millify(top.timesPlayed)} play${top.timesPlayed === 1 ? '' : 's'})`);
+    const string = `by **${top.songAuthor}** (${millify(top.timesPlayed)} play${top.timesPlayed === 1 ? '' : 's'})`
+    const embed = new MessageEmbed()
+        .setFooter(`reset on the first day of every month (UTC + 0)`)
+        .setTitle(`#1 - ${top.songName}`)
+        .setURL(top.songID);
     if (array.length) {
         const list = array.map((res, index) => {
             return `\`#${index + 2}\` **[${res.songName}](${res.songID})** - ${res.songAuthor} (${millify(res.timesPlayed)} play${res.timesPlayed === 1 ? '' : 's'})`
         });
-        embed.addField('2 through 10:', list.join('\n'));
+        string += `\n\n**2 through ${array.length}:**\n${list.join('\n')}`;
     };
-
+    embed.setDescription(string);
     return interaction.editReply({ embeds: [embed], content: `top 10 most played songs in **${months[new Date(Date.now()).getUTCMonth()]}** (globally):` });
 };
 
