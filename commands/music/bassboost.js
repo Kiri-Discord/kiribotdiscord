@@ -1,5 +1,4 @@
 const { canModifyQueue } = require("../../util/musicutil");
-
 exports.run = async(client, message, args, prefix) => {
     const queue = client.queue.get(message.guild.id);
     if (!queue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: there isn't any ongoing music queue` }] });
