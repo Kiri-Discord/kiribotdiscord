@@ -50,7 +50,7 @@ module.exports = class Queue {
         };
         this.client.queue.delete(this.guildId);
         if (this.player) {
-            this.player.destroy();
+            this.player.stop();
             this.client.lavacordManager.players.delete(this.guildId);
         };
         await Guild.findOneAndUpdate({
@@ -238,7 +238,6 @@ module.exports = class Queue {
         } catch (error) {
             console.error(error);
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
-            this.stop('disconnected');
             this.client.lavacordManager.leave(this.textChannel.guild.id);
             return this.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
         };

@@ -34,7 +34,7 @@ exports.run = async(client, interaction) => {
         const list = array.map((res, index) => {
             return `\`#${index + 2}\` **[${res.songName}](${res.songID})** - ${res.songAuthor} (${millify(res.timesPlayed)} play${res.timesPlayed === 1 ? '' : 's'})`
         });
-        string += `\n\n**2 through ${array.length}:**\n${list.join('\n')}`;
+        string += `\n\n**2 through ${array.length + 1}:**\n${list.join('\n')}`;
     };
     embed.setDescription(string);
     return interaction.editReply({ embeds: [embed], content: `top 10 most played songs in **${months[new Date(Date.now()).getUTCMonth()]}** (globally):` });
