@@ -28,7 +28,7 @@ exports.run = async(client, interaction) => {
 
 exports.help = {
     name: "art",
-    description: "get random art on the internet",
+    description: "get or search random image on the internet",
 };
 
 exports.conf = {

@@ -4,7 +4,7 @@ exports.run = async(client, message, args) => {
     if (!args[0]) {
         let listGuild = [];
         client.guilds.cache.each(guild => {
-            listGuild.push(`${guild.name} - ${guild.id} (owner: ${guild.ownerId})`)
+            listGuild.push(Util.escapeMarkdown(`${guild.name} - ${guild.id} (owner: ${guild.ownerId})\nThis guild have ${guild.memberCount} members!`))
         });
         const [first, ...rest] = Util.splitMessage(listGuild.join('\n'), { maxLength: 1900, char: '\n' });
         if (rest.length) {
