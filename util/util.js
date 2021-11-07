@@ -127,8 +127,8 @@ module.exports = class util {
             return players.map(player => player.author.id);
         };
 
-        static delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+        static delay(ms, arg) {
+            return new Promise(resolve => setTimeout(resolve, ms, arg));
         };
         static list(arr, conj = 'and') {
                 const len = arr.length;

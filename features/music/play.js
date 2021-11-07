@@ -95,37 +95,18 @@ module.exports = class Queue {
             }, {
                 selfdeaf: true
             });
-            await delay(1500);
-            if (!this.textChannel.guild.me.voice.channel) {
-                const tried = [];
-                while (!this.textChannel.guild.me.voice.channel) {
-                    if (tried.length === this.client.lavacordManager.nodes.size) {
-                        await this.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
-                        await this.player.destroy();
-                        return this.client.queue.delete(this.textChannel.guild.id);
-                    };
-                    const tryCount = tried.length || 0;
-                    await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
-                    await this.client.lavacordManager.leave(this.textChannel.guild.id);
-                    await delay(1500);
-                    this.player = await this.client.lavacordManager.join({
-                        guild: this.textChannel.guild.id,
-                        channel: this.channel.id,
-                        node: this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0].id
-                    }, {
-                        selfdeaf: true
-                    });
-                    if (!this.textChannel.guild.me.voice.channelId) {
-                        tried.push(this.player.node.host);
-                        continue;
-                    };
-                };
-            };
             if (this.client.config.testSongBase64) {
                 this.player.play(this.client.config.testSongBase64, {
                     volume: 80,
                 });
-                await pEvent(this.player, 'end');
+                const resolved = await Promise.race([pEvent(this.player, 'end'), delay(6000, 'TIMED_OUT')]);
+
+                if (resolved === 'TIMED_OUT') {
+                    const reason = !this.textChannel.guild.me.voice.channel ? 'failed' : 'taking too long'
+                    const deadEmoji = this.client.customEmojis.get('dead');
+                    this.textChannel.send({ embeds: [{ description: `${reason} to connect to your voice channel. probably Discord has something to do with it ${deadEmoji} can you create a new queue instead?` }] });
+                    return this.client.lavacordManager.leave(this.textChannel.guild.id);
+                };
             };
             first = true;
 

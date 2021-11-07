@@ -23,7 +23,7 @@ exports.run = async(client, interaction) => {
         "10": "November",
         "11": "December"
     };
-    const array = chart.splice(0, 9);
+    const array = chart.splice(0, 10);
     const top = array.shift();
     let string = `by **${top.songAuthor}** (${millify(top.timesPlayed)} play${top.timesPlayed === 1 ? '' : 's'})`
     const embed = new MessageEmbed()
