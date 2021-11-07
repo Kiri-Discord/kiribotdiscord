@@ -40,7 +40,7 @@ module.exports = class Queue {
                 this.client.dcTimeout.delete(this.guildId);
             };
             const timeout = setTimeout(async() => {
-                if (!this.textChannel.guild.me.voice.channel) return;
+                if (!this.channel.guild.me.voice.channel) return;
                 const newQueue = this.client.queue.get(this.guildId);
                 if (newQueue) return;
                 await this.client.lavacordManager.leave(this.guildId);
@@ -89,7 +89,7 @@ module.exports = class Queue {
         let first;
         if (!this.player) {
             this.player = await this.client.lavacordManager.join({
-                guild: this.textChannel.guild.id,
+                guild: this.channel.guild.id,
                 channel: this.channel.id,
                 node: this.client.lavacordManager.idealNodes[0].id
             }, {
@@ -102,12 +102,14 @@ module.exports = class Queue {
                 const resolved = await Promise.race([pEvent(this.player, 'end'), delay(6000, 'TIMED_OUT')]);
 
                 if (resolved === 'TIMED_OUT') {
-                    const reason = !this.textChannel.guild.me.voice.channel ? 'failed' : 'taking too long'
+                    const reason = !this.channel.guild.me.voice.channel ? 'failed' : 'taking too long'
                     const deadEmoji = this.client.customEmojis.get('dead');
                     this.textChannel.send({ embeds: [{ description: `${reason} to connect to your voice channel. probably Discord has something to do with it ${deadEmoji} can you create a new queue instead?` }] });
-                    return this.client.lavacordManager.leave(this.textChannel.guild.id);
+                    return this.client.lavacordManager.leave(this.channel.guild.id);
                 };
+
             };
+            if (this.channel.type === 'GUILD_STAGE_VOICE') await this.textChannel.guild.me.voice.setSuppressed(false).catch(() => null);
             first = true;
 
             this.player.on('start', async data => {
