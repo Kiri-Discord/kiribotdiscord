@@ -51,7 +51,7 @@ module.exports = class Queue {
         };
         this.client.queue.delete(this.guildId);
         if (this.player) {
-            this.player.stop();
+            if (reason !== 'disconnected') this.player.stop();
             this.client.lavacordManager.players.delete(this.guildId);
         };
         await Guild.findOneAndUpdate({
