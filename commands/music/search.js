@@ -6,12 +6,13 @@ require('moment-duration-format');
 
 exports.run = async(client, message, args, prefix, cmd, internal) => {
     if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` }] });
-
-    if (!message.member.voice.channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
-    if (!message.member.voice.channel.joinable || !message.member.voice.channel.speakable) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
+    const { channel } = message.member.voice;
+    if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
+    const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable || !channel.speakable) : (!channel.joinable || !channel.manageable);
+    if (noPermission) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
 
     const serverQueue = client.queue.get(message.guild.id);
-    if (serverQueue && message.member.voice.channel.id !== message.guild.me.voice.channel.id) {
+    if (serverQueue && channel.id !== message.guild.me.voice.channel.id) {
         const voicechannel = serverQueue.channel
         return message.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen and search :smiley:` }] });
     };
@@ -32,7 +33,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 song.type = 'yt';
                 song.requestedby = message.author;
                 lavalinkRes.push(song);
-                const duration = song.info.isStream ? '[LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
+                const duration = song.info.isStream ? ' [LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
                 result.push({
                     type: song.type,
                     title: shortenText(song.info.title, 90),
@@ -46,7 +47,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 song.type = 'sc';
                 song.requestedby = message.author;
                 lavalinkRes.push(song);
-                const duration = song.info.isStream ? '[LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
+                const duration = song.info.isStream ? ' [LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
                 result.push({
                     type: song.type,
                     title: shortenText(song.info.title, 90),

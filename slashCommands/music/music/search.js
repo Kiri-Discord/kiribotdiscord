@@ -7,9 +7,11 @@ const playCmd = require('./play');
 const playlistCmd = require('./playlist');
 
 exports.run = async(client, interaction, internal) => {
+    const { channel } = interaction.member.voice;
+    if (!channel) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }], ephemeral: true });
 
-    if (!interaction.member.voice.channel) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }], ephemeral: true });
-    if (!interaction.member.voice.channel.joinable || !interaction.member.voice.channel.speakable) return interaction.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
+    const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable || !channel.speakable) : (!channel.joinable || !channel.manageable);
+    if (noPermission) return interaction.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
 
     const serverQueue = client.queue.get(interaction.guild.id);
     if (serverQueue && interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) {
@@ -33,7 +35,7 @@ exports.run = async(client, interaction, internal) => {
                 song.type = 'yt';
                 song.requestedby = interaction.user;
                 lavalinkRes.push(song);
-                const duration = song.info.isStream ? '[LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
+                const duration = song.info.isStream ? ' [LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
                 result.push({
                     type: song.type,
                     title: shortenText(song.info.title, 90),
@@ -47,7 +49,7 @@ exports.run = async(client, interaction, internal) => {
                 song.type = 'sc';
                 song.requestedby = interaction.user;
                 lavalinkRes.push(song);
-                const duration = song.info.isStream ? '[LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
+                const duration = song.info.isStream ? ' [LIVE]' : ` | ${shortenText(moment.duration(song.info.length).format('H[h] m[m] s[s]'), 35)}`;
                 result.push({
                     type: song.type,
                     title: shortenText(song.info.title, 90),
