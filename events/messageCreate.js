@@ -49,7 +49,7 @@ module.exports = async(client, message) => {
 
 
         if (!prefixRegex.test(message.content)) return;
-        const [, matchedPrefix] = message.content.toLowerCase().match(prefixRegex);
+        const [, matchedPrefix] = message.content.match(prefixRegex);
 
         const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
         const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
