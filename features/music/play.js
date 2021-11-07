@@ -215,7 +215,7 @@ module.exports = class Queue {
             if (!this.repeat) this.songs.splice(0, 1);
             this.player.play(song.track, {
                 volume: this.volume || 100,
-                noReplace: first ? true : noSkip
+                noReplace: first ? false : noSkip
             });
             if (song.type === 'yt' || song.type === 'sc' || song.type === 'sp') {
                 const fetched = await this.client.charts.findOne({
