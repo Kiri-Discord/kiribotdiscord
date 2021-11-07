@@ -6,6 +6,7 @@ const { fetchInfo } = require('../../util/musicutil');
 const { embedURL, delay } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
 const pEvent = require('p-event');
+
 module.exports = class Queue {
     constructor(guildId, client, textChannel, voiceChannel) {
         this.playingMessage = null;
