@@ -11,3 +11,5 @@ this.getLevelBounds = (level) => {
 this.gainedXp = () => {
     return Math.ceil(Math.random() * 9) + 3;
 };
+
+
