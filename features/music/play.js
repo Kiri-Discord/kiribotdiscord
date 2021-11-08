@@ -99,13 +99,11 @@ module.exports = class Queue {
                 this.player.play(this.client.config.testSongBase64, {
                     volume: 80,
                 });
-                const resolved = await Promise.race([pEvent(this.player, 'end'), delay(6000, 'TIMED_OUT')]);
+                const resolved = await Promise.race([pEvent(this.player, 'end'), delay(5000, 'TIMED_OUT')]);
 
                 if (resolved === 'TIMED_OUT') {
-                    const reason = !this.channel.guild.me.voice.channel ? 'failed' : 'taking too long'
                     const deadEmoji = this.client.customEmojis.get('dead');
-                    this.textChannel.send({ embeds: [{ description: `${reason} to connect to your voice channel. probably Discord has something to do with it ${deadEmoji} can you create a new queue instead?` }] });
-                    return this.client.lavacordManager.leave(this.channel.guild.id);
+                    this.textChannel.send({ embeds: [{ description: `i can't verify if i have joined your channel or not. probably Discord has something to do with it ${deadEmoji} you can create a new queue instead if song won't play.` }] });
                 };
 
             };
