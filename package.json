@@ -64,7 +64,7 @@
         "node-schedule": "^2.0.0",
         "node-superfetch": "^0.2.3",
         "ordinal": "^1.0.3",
-        "p-event": "^4.2.0",
+        "p-event": "^5.0.1",
         "querystring": "^0.2.1",
         "random-js": "^2.1.0",
         "relevant-urban": "^2.0.0",
