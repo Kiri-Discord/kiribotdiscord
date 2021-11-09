@@ -12,7 +12,7 @@ exports.run = async(client, interaction) => {
 
     const song = queue.nowPlaying;
     if (!song.info.isSeekable) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `sorry, that song is unseekable :pensive:` }], ephemeral: true });
-    const seek = song.startedPlaying;
+    const seek = queue.player.state.position;
     if (!seek) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
     if (song.requestedby.id !== interaction.user.id && !interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `you don't have the permission to do it since you didn't request the song, or you don't have \`MANAGE_MESSAGES\` to seek it :(` }], ephemeral: true });
 
@@ -27,14 +27,14 @@ exports.run = async(client, interaction) => {
 
     const timeMs = time * 1000;
     if (timeMs > song.info.length - 5) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `that is wayy longer than the current playing song! can you check it again?` }], ephemeral: true });
-    const timestamp = queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying;
+    // const timestamp = queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying;
 
-    if (timestamp >= timeMs) {
-        song.startedPlaying = song.startedPlaying + (timestamp - timeMs);
-    } else if (timestamp <= timeMs) {
-        song.startedPlaying = song.startedPlaying - (timeMs - timestamp);
-    };
+    // if (timestamp >= timeMs) {
+    //     song.startedPlaying = song.startedPlaying + (timestamp - timeMs);
+    // } else if (timestamp <= timeMs) {
+    //     song.startedPlaying = song.startedPlaying - (timeMs - timestamp);
+    // };
     queue.player.seek(timeMs);
-    interaction.reply({ embeds: [{ color: "#bee7f7", description: `you seek the current song to **${humanize(timeMs)}**!` }] })
+    interaction.reply({ embeds: [{ color: "#bee7f7", description: `you seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})**! 🚚` }] })
     if (queue.textChannel.id !== interaction.channel.id) return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] 🚚` }] });
 };

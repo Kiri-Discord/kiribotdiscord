@@ -13,8 +13,8 @@ exports.run = async(client, message, args) => {
 
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     const song = queue.nowPlaying;
-    const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
-    if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
+    // const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
+    const seek = queue.player.state.position || 0;
 
     const duration = song.info.isStream ? null : song.info.length;
     const cursor = client.customEmojis.get('truck') ? client.customEmojis.get('truck') : '🔵';
@@ -24,10 +24,7 @@ exports.run = async(client, message, args) => {
     const status = queue.playing ? '`▶`' : '`⏸`';
 
     let nowPlaying = new MessageEmbed()
-        .setDescription(`
-        **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]
-        ${status} ${bar} \`${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}\`
-        `)
+        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]\n${status} ${bar} \`${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}\``)
     return message.channel.send({ embeds: [nowPlaying] });
 };
 exports.help = {

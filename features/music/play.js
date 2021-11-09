@@ -52,7 +52,8 @@ module.exports = class Queue {
         this.client.queue.delete(this.guildId);
         if (this.player) {
             if (reason !== 'disconnected') this.player.stop();
-            this.client.lavacordManager.players.delete(this.guildId);
+            this.player.removeListener('end', this.endEvent);
+            this.player.removeListener('start', this.startEvent);
         };
         await Guild.findOneAndUpdate({
             guildId: this.guildId
@@ -91,7 +92,7 @@ module.exports = class Queue {
             this.player = await this.client.lavacordManager.join({
                 guild: this.channel.guild.id,
                 channel: this.channel.id,
-                node: this.client.lavacordManager.idealNodes[0].id
+                node: this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id : this.client.lavacordManager.idealNodes[0].id
             }, {
                 selfdeaf: true
             });
@@ -110,55 +111,8 @@ module.exports = class Queue {
             if (this.channel.type === 'GUILD_STAGE_VOICE') await this.textChannel.guild.me.voice.setSuppressed(false).catch(() => null);
             first = true;
 
-            this.player.on('start', async data => {
-                try {
-                    let targetEmoji;
-                    if (this.nowPlaying.type !== 'other') {
-                        const emoji = {
-                            'yt': 'youtube',
-                            'sc': 'soundcloud',
-                            'sp': 'spotify'
-                        };
-                        targetEmoji = emoji[this.nowPlaying.type] ? `${this.client.customEmojis.get(emoji[this.nowPlaying.type])} ` : '';
-                    } else {
-                        targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? `${this.client.customEmojis.get(this.nowPlaying.info.sourceName)} ` : '';
-                    };
-                    const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
-                    this.nowPlaying.startedPlaying = Date.now();
-                    if (this.karaoke.isEnabled && this.karaoke.instance) {
-                        if (this.karaoke.instance.success) embed.setFooter(this.karaoke.instance.success);
-                        this.karaoke.instance.start();
-                    };
-                    if (!this.repeat) {
-                        this.playingMessage = null;
-                        const sent = await this.textChannel.send({ embeds: [embed] });
-                        this.playingMessage = sent.id;
-                    };
-                } catch (error) {
-                    logger.log('error', error);
-                };
-            });
-            this.player.on('end', async data => {
-                if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
-                if (this.playingMessage) {
-                    if (this.songs.length && !this.repeat || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
-                };
-                if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
-                if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
-                    if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
-                    let upcoming;
-                    if (this.loop) {
-                        this.songs.push(this.nowPlaying);
-                        upcoming = this.songs[0];
-                    } else if (this.repeat) {
-                        upcoming = !this.nowPlaying ? this.songs[0] : this.nowPlaying;
-                    } else {
-                        upcoming = this.songs[0];
-                    };
-                    this.play(upcoming);
-                    if (data.reason === 'LOAD_FAILED') this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
-                };
-            });
+            this.player.on('start', this.startEvent);
+            this.player.on('end', this.endEvent);
             this.pending = false;
         };
         if (song.type === 'sp') {
@@ -191,8 +145,8 @@ module.exports = class Queue {
             const success = await this.karaoke.instance.init();
             if (!success) this.karaoke.instance = null;
         };
+        this.nowPlaying = song;
         try {
-            this.nowPlaying = song;
             if (!this.repeat) this.songs.splice(0, 1);
             this.player.play(song.track, {
                 volume: this.volume || 100,
@@ -222,6 +176,57 @@ module.exports = class Queue {
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
             this.client.lavacordManager.leave(this.textChannel.guild.id);
             return this.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
+        };
+    };
+    startEvent = async(data) => this.start(data);
+    endEvent = async(data) => this.end(data);
+    async start(data) {
+        try {
+            let targetEmoji;
+            if (this.nowPlaying.type !== 'other') {
+                const emoji = {
+                    'yt': 'youtube',
+                    'sc': 'soundcloud',
+                    'sp': 'spotify'
+                };
+                targetEmoji = emoji[this.nowPlaying.type] ? `${this.client.customEmojis.get(emoji[this.nowPlaying.type])} ` : '';
+            } else {
+                targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? `${this.client.customEmojis.get(this.nowPlaying.info.sourceName)} ` : '';
+            };
+            const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
+            // this.nowPlaying.startedPlaying = Date.now();
+            if (this.karaoke.isEnabled && this.karaoke.instance) {
+                if (this.karaoke.instance.success) embed.setFooter(this.karaoke.instance.success);
+                this.karaoke.instance.start();
+            };
+            if (!this.repeat) {
+                this.playingMessage = null;
+                const sent = await this.textChannel.send({ embeds: [embed] });
+                this.playingMessage = sent.id;
+            };
+        } catch (error) {
+            console.error(error);
+        };
+    };
+    async end(data) {
+        if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
+        if (this.playingMessage) {
+            if (this.songs.length && !this.repeat || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+        };
+        if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
+        if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
+            if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
+            let upcoming;
+            if (this.loop) {
+                this.songs.push(this.nowPlaying);
+                upcoming = this.songs[0];
+            } else if (this.repeat) {
+                upcoming = !this.nowPlaying ? this.songs[0] : this.nowPlaying;
+            } else {
+                upcoming = this.songs[0];
+            };
+            this.play(upcoming);
+            if (data.reason === 'LOAD_FAILED') this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
         };
     };
 };
