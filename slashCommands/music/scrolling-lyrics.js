@@ -23,7 +23,7 @@ exports.run = async(client, interaction) => {
             })
             return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ scrolling lyric has been disabled` }] });
         } else if (interaction.options.getSubcommand() === "on") {
-            if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ there isn't any queue to turn it on :pensive: you should play a song first!` }], ephemeral: true });
+            if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`/scrolling-lyrics set #channel\`!` }], ephemeral: true });
             if (!serverQueue.karaoke.channel) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ the scrolling lyrics channel haven't been set yet. do \`/scrolling-lyrics set #channel\` to set it first!` }], ephemeral: true });
             if (!serverQueue.karaoke.languageCode) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ you haven't set the language for the lyrics yet. do \`/scrolling-lyrics lang <language>\` to set it first!` }], ephemeral: true });
             if (serverQueue.karaoke.isEnabled) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i thought scrolling lyrics is already enabled? :thinking:` }], ephemeral: true });
@@ -41,7 +41,7 @@ exports.run = async(client, interaction) => {
             return interaction.editReply(({ embeds: [{ color: "#bee7f7", description: `☑️ scrolling lyric is turned on in ${serverQueue.karaoke.channel}!` }] }));
 
         } else if (interaction.options.getSubcommand() === "lang") {
-            if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ there isn't any queue to set the language for :pensive: you should play a song first!` }], ephemeral: true });
+            if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`/scrolling-lyrics set #channel\`!` }], ephemeral: true });
             const query = interaction.options.getString('language');
             const code = ISO6391.getCode(query.toLowerCase());
             if (!ISO6391.validate(code)) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ sorry, \`${query}\` is not a valid language :pensive:` }], ephemeral: true });

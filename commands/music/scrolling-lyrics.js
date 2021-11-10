@@ -20,8 +20,8 @@ exports.run = async(client, message, args, prefix) => {
             })
             return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ scrolling lyric has been disabled` }] });
         } else if (args[0] === "on") {
-            if (!serverQueue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ there isn't any queue to turn it on :pensive: you should play a song first!` }] });
-            if (!serverQueue.karaoke.channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ the scrolling lyrics channel haven't been set yet. do \`${prefix}scrolling-lyrics set #yourchannel\` to set it first!` }] });
+            if (!serverQueue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`${prefix}scrolling-lyrics set #channel\`!` }] });
+            if (!serverQueue.karaoke.channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ the scrolling lyrics channel haven't been set yet. do \`${prefix}scrolling-lyrics set #channel\` to set it first!` }] });
             if (!serverQueue.karaoke.languageCode) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you haven't set the language for the lyrics yet. do \`${prefix}scrolling-lyrics lang <language>\` to set it first!` }] });
             if (serverQueue.karaoke.isEnabled) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `i thought scrolling lyrics is already enabled? :thinking:` }] });
             serverQueue.karaoke.isEnabled = true;
@@ -37,7 +37,7 @@ exports.run = async(client, message, args, prefix) => {
             return message.channel.send(({ embeds: [{ color: "#bee7f7", description: `☑️ scrolling lyric is turned on in ${serverQueue.karaoke.channel}!` }] }));
 
         } else if (args[0] === "lang") {
-            if (!serverQueue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ there isn't any queue to set the language for :pensive: you should play a song first!` }] });
+            if (!serverQueue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`${prefix}scrolling-lyrics set #channel\`!` }] });
             const query = args[1];
             if (!query) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `what language that you want to use? \`${prefix}scrolling-lyrics lang <language>\`` }] });
             const code = ISO6391.getCode(query.toLowerCase());
