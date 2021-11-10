@@ -37,10 +37,10 @@ module.exports = async(client, message) => {
                         }, 4000);
                     });
                 } else {
-                    return client.emit('verify', message);
+                    return client.emit('verify', message, setting);
                 };
             };
-            if (setting.enableLevelings && message.channel.type === "GUILD_TEXT") {
+            if (setting.enableLevelings && message.channel.isText()) {
                 client.emit('experience', message, setting);
             };
         };

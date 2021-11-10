@@ -87,7 +87,9 @@ module.exports = async(client, interaction) => {
         if (interaction.customId === 'verify_unsolve_captcha') {
             const embed = new MessageEmbed()
             .addField('**possible problems:**', `
-            - your link might be invalid. the link might have been used before. don't share your link with anyone!
+            - the link might have been used before. don't share your link with anyone!
+            - you might have been banned from the server.
+            - your link has been expired. every verification link is valid for 15 minutes. type \`resend\` in the verification channel to start the verification process again!
             - if you don't get the successful page below, there is probably something wrong with me. please call an admin to manually verify you, and report the bug to my dev!
             - Google reCAPTCHA have detected a suspicious activity on your network, and have temporaily block you from solving the captcha :pensive:
             `)

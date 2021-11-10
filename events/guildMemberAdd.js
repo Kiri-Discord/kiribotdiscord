@@ -22,17 +22,17 @@ module.exports = async(client, member) => {
                 let code = randomText(10);
                 if (exists) {
                     await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
-                    await client.verifytimers.setTimer(member.guild.id, timeMs === null ? 900000 : timeMs, member.user.id, code, true, timeMs === null ? true : false);
+                    await client.verifytimers.setTimer(member.guild.id, !timeMs ? 900000 : timeMs, member.user.id, code, true, !timeMs ? true : false);
                 } else {
-                    await client.verifytimers.setTimer(member.guild.id, timeMs === null ? 900000 : timeMs, member.user.id, code, true, timeMs === null ? true : false);
+                    await client.verifytimers.setTimer(member.guild.id, !timeMs ? 900000 : timeMs, member.user.id, code, true, !timeMs ? true : false);
                 };
                 const dm = new MessageEmbed()
-                    .setFooter(timeMs !== null ? `you will be kicked from the server in ${ms(timeMs, {long: true})} to prevent bots and spams` : `this link is expiring in ${ms(900000, {long: true})}`)
+                    .setFooter(timeMs ? `you will be kicked from the server in ${ms(timeMs, {long: true})} to prevent bots and spams` : `this link is expiring in ${ms(900000, {long: true})}`)
                     .setThumbnail(member.guild.iconURL({ size: 4096, dynamic: true }))
                     .setTitle(`welcome to ${member.guild.name}! wait, beep beep, boop boop?`)
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${member.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${client.config.baseURL}verify?valID=${code}`)}`)
             try { 
-                await member.user.send({embeds: [dm]});
+                await member.user.send({content: `if your link was expired, type \`resend\` in ${verifyChannel.toString()} to get a new one!`, embeds: [dm]});
                 verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`)
                 .then(i => {
                     setTimeout(() => {
