@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../util/util');
-const { fetchInfo } = require('../../util/musicutil');
+const { fetchInfo, canModifyQueue } = require('../../util/musicutil');
 const moment = require('moment');
 require('moment-duration-format');
 
@@ -11,7 +11,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
 
 
     const serverQueue = client.queue.get(message.guild.id);
-    if (serverQueue && channel.id !== message.guild.me.voice.channel.id) {
+    if (serverQueue && !canModifyQueue(message.member)) {
         const voicechannel = serverQueue.channel
         return message.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen and search :smiley:` }] });
     };

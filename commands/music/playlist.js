@@ -1,7 +1,7 @@
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const Queue = require("../../features/music/play");
 const { shortenText } = require('../../util/util');
-const { fetchInfo } = require('../../util/musicutil');
+const { fetchInfo, canModifyQueue } = require('../../util/musicutil');
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
@@ -17,7 +17,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: '⚠️ you are not in a voice channel!' }] });
         const serverQueue = client.queue.get(message.guild.id);
 
-        if (serverQueue && channel !== message.guild.me.voice.channel) {
+        if (serverQueue && !canModifyQueue(message.member)) {
             const voicechannel = serverQueue.channel;
             return message.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }] });
         };

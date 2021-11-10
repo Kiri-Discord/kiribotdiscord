@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const { shortenText } = require('../../../util/util');
-const { fetchInfo } = require('../../../util/musicutil');
+const { fetchInfo, canModifyQueue } = require('../../../util/musicutil');
 const moment = require('moment');
 require('moment-duration-format');
 const playCmd = require('./play');
@@ -11,8 +11,8 @@ exports.run = async(client, interaction, internal) => {
     if (!channel) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }], ephemeral: true });
 
     const serverQueue = client.queue.get(interaction.guild.id);
-    if (serverQueue && channel.id !== interaction.guild.me.voice.channel.id) {
-        const voicechannel = serverQueue.channel
+    if (serverQueue && !canModifyQueue(interaction.member)) {
+        const voicechannel = serverQueue.channel;
         return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen and search :smiley:` }], ephemeral: true });
     };
     const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable && !channel.speakable) : (!channel.joinable && !channel.manageable);

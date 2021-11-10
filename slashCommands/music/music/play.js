@@ -1,5 +1,5 @@
 const Queue = require("../../../features/music/play");
-const { fetchInfo } = require('../../../util/musicutil');
+const { fetchInfo, canModifyQueue } = require('../../../util/musicutil');
 const { MessageEmbed } = require('discord.js');
 const scdl = require("soundcloud-downloader").default;
 const { DEFAULT_VOLUME } = require("../../../util/musicutil");
@@ -16,7 +16,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
 
     const serverQueue = client.queue.get(interaction.guild.id);
 
-    if (serverQueue && channel.id !== interaction.guild.me.voice.channel.id) {
+    if (serverQueue && !canModifyQueue(interaction.member)) {
         const voicechannel = serverQueue.channel
         return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }], ephemeral: true });
     };
