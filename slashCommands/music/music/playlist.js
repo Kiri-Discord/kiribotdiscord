@@ -12,16 +12,19 @@ const { getTracks } = require('spotify-url-info');
 
 exports.run = async(client, interaction, internal, bulkAdd) => {
         const { channel } = interaction.member.voice;
-        const serverQueue = client.queue.get(interaction.guild.id);
+
         if (!channel) return interaction.reply({ embeds: [{ color: "#bee7f7", description: '⚠️ you are not in a voice channel!' }], ephemeral: true });
 
-        const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable || !channel.speakable) : (!channel.joinable || !channel.manageable);
-        if (noPermission) return interaction.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
-
-        if (serverQueue && channel !== interaction.guild.me.voice.channel) {
+        const serverQueue = client.queue.get(interaction.guild.id);
+        if (serverQueue && channel.id !== interaction.guild.me.voice.channel.id) {
             const voicechannel = serverQueue.channel;
             return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }] });
         };
+
+        const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable && !channel.speakable) : (!channel.joinable && !channel.manageable);
+        if (noPermission) return interaction.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
+
+
         const search = interaction.options.getString('query');
 
         const pattern = /^.*(youtu.be\/|list=)([^#\&\?]*).*/gi;

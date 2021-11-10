@@ -137,7 +137,7 @@ module.exports = async(client, message) => {
 
     try {
         commandFile.run(client, message, args, prefix, cmd);
-        logger.log('info', `${sender.tag} (${sender.id}) from ${message.channel.type === 'DM' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd}`);
+        logger.log('info', `${sender.tag} (${sender.id}) from ${message.channel.type === 'DM' ? 'DM' : `${message.guild.name} (${message.guild.id})`} ran a command: ${prefix}${cmd} (${new Date(Date.now())})`);
     } catch (error) {
         message.channel.send(`sorry, i got an error while executing that command for you. please seek some support if this happen frequently ${duh}`)
         logger.log('error', error);

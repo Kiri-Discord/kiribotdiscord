@@ -40,7 +40,7 @@ module.exports = class Queue {
                 this.client.dcTimeout.delete(this.guildId);
             };
             const timeout = setTimeout(async() => {
-                if (!this.channel.guild.me.voice.channel) return;
+                if (!this.textChannel.guild.me.voice.channel) return;
                 const newQueue = this.client.queue.get(this.guildId);
                 if (newQueue) return;
                 await this.client.lavacordManager.leave(this.guildId);
@@ -90,7 +90,7 @@ module.exports = class Queue {
         let first;
         if (!this.player) {
             this.player = await this.client.lavacordManager.join({
-                guild: this.channel.guild.id,
+                guild: this.textChannel.guild.id,
                 channel: this.channel.id,
                 node: this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id : this.client.lavacordManager.idealNodes[0].id
             }, {

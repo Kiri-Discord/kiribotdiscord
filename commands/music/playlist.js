@@ -13,15 +13,19 @@ const { getTracks } = require('spotify-url-info');
 
 exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         const { channel } = message.member.voice;
-        const serverQueue = client.queue.get(message.guild.id);
+
         if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: '⚠️ you are not in a voice channel!' }] });
-        const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable || !channel.speakable) : (!channel.joinable || !channel.manageable);
-        if (noPermission) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
+        const serverQueue = client.queue.get(message.guild.id);
 
         if (serverQueue && channel !== message.guild.me.voice.channel) {
             const voicechannel = serverQueue.channel;
             return message.reply({ embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen :smiley:` }] });
         };
+
+        const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable && !channel.speakable) : (!channel.joinable && !channel.manageable);
+        if (noPermission) return message.reply({ embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }] });
+
+
         if (!args.length) return message.channel.send({ embeds: [{ color: "RED", description: `you must to provide me something to play! use \`${prefix}help playlist\` to learn more :wink:` }] });
         const search = args.join(" ");
 
