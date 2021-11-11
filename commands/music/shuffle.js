@@ -10,8 +10,10 @@ exports.run = async(client, message, args) => {
     const shuffled = shuffle(songs);
     queue.songs = shuffled;
     client.queue.set(message.guild.id, queue);
-    queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} has shuffled the queue 🔀` }] });
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `${message.author}, you has shuffled the queue 🔀` }] }).catch(err => logger.log('error', err));
+
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} has shuffled the queue 🔀` }] });
+    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `${message.author}, you has shuffled the queue 🔀` }] });
 };
 
 exports.help = {

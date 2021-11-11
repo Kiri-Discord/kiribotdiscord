@@ -12,7 +12,8 @@ exports.run = async(client, interaction) => {
         queue.pausedAt = undefined;
         interaction.reply(({ embeds: [{ color: "#bee7f7", description: `you resumed the current song ▶️` }] }));
 
-        if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user.toString()} resumed the current song ▶️` }] });
+        if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user.toString()} resumed the current song ▶️` }] });
+        if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
         clearTimeout(queue.dcTimeout);
         queue.dcTimeout = undefined;
     } else {

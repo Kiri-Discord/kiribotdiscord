@@ -15,5 +15,6 @@ exports.run = async(client, interaction) => {
     queue.volume = volume;
     queue.player.volume(volume);
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `volume set to ${args[0]} 🔊` }] });
-    if (queue.textChannel.id !== interaction.channel.id) return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} set the volume to ${args[0]} 🔊` }] });
+    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} set the volume to ${args[0]} 🔊` }] });
+    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
 };

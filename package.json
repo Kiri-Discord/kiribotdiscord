@@ -83,6 +83,7 @@
         "valid-url": "^1.0.9",
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
+        "winston-daily-rotate-file": "^4.5.5",
         "youtube-suggest": "^1.1.2",
         "ytdl-core": "^4.9.0"
     }

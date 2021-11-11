@@ -83,3 +83,6 @@ lavalinkNodes.json
 
 # Main bot config file
 config.json
+
+# Logging directory
+logs/

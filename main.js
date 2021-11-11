@@ -1,9 +1,32 @@
 const winston = require('winston');
 const config = require('./config.json');
+const fs = require('fs');
+
+const logDir = "logs";
+
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+};
 
 global.logger = winston.createLogger({
     transports: [
         new winston.transports.Console(),
+        new(require("winston-daily-rotate-file"))({
+            filename: `${logDir}/-results.log`,
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.json(),
+            )
+        }),
+        new winston.transports.File({
+            filename: `${logDir}/error.log`,
+            level: 'error',
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.simple(),
+            ),
+            handleExceptions: true
+        }),
     ],
     format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
 });
@@ -12,7 +35,6 @@ require('dotenv').config();
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
-
 global.__basedir = __dirname;
 
 if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
@@ -28,7 +50,7 @@ const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const schedule = require('node-schedule');
 const { AutoPoster } = require('topgg-autoposter');
-const { Intents, Options } = require('discord.js');
+const { Intents } = require('discord.js');
 
 const intents = new Intents();
 

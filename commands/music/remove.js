@@ -20,11 +20,13 @@ exports.run = async(client, message, args, prefix) => {
             if (songs.find((songIndex) => songIndex - 1 === index)) removed.push(item);
             else return true;
         });
-        if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${removed.map((song) => song.info.title).join("\n")}** from the queue` }] });
-        return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} removed **${removed.map((song) => song.info.title).join("\n")}** from the queue ❌` }] })
+        if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} removed **${removed.map((song) => song.info.title).join("\n")}** from the queue ❌` }] });
+        if (queue.textChannel.deleted) queue.textChannel = message.channel;
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${removed.map((song) => song.info.title).join("\n")}** from the queue` }] });
     } else if (!isNaN(args[0]) && songs.length <= 1 && args[0] > 1 && args[0] <= queue.songs.length) {
-        if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${queue.songs.splice(args[0] - 1, 1)[0].info.title}** from the queue ❌` }] });
-        return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} removed **${queue.songs.splice(args[0] - 1, 1)[0].info.title}** from the queue ❌` }] });
+        if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} removed **${queue.songs.splice(args[0] - 1, 1)[0].info.title}** from the queue ❌` }] });
+        if (queue.textChannel.deleted) queue.textChannel = message.channel;
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${queue.songs.splice(args[0] - 1, 1)[0].info.title}** from the queue ❌` }] });
     } else {
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your indexes are invalid or doesn't follow the format! (${prefix}remove \`1\` or ${prefix}remove \`2, 5, 6\`)` }] });
     };

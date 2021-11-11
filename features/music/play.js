@@ -194,13 +194,12 @@ module.exports = class Queue {
                 targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? `${this.client.customEmojis.get(this.nowPlaying.info.sourceName)} ` : '';
             };
             const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
-            // this.nowPlaying.startedPlaying = Date.now();
+
             if (this.karaoke.isEnabled && this.karaoke.instance) {
                 if (this.karaoke.instance.success) embed.setFooter(this.karaoke.instance.success);
                 this.karaoke.instance.start();
             };
-            if (!this.repeat) {
-                this.playingMessage = null;
+            if (!this.repeat && !this.textChannel.deleted) {
                 const sent = await this.textChannel.send({ embeds: [embed] });
                 this.playingMessage = sent.id;
             };
@@ -212,6 +211,7 @@ module.exports = class Queue {
         if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
         if (this.playingMessage) {
             if (this.songs.length && !this.repeat || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+            this.playingMessage = null;
         };
         if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
         if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {

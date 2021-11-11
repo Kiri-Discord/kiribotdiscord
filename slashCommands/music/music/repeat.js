@@ -8,5 +8,6 @@ exports.run = async(client, interaction) => {
     queue.repeat = !queue.repeat;
     if (queue.repeat && queue.loop) queue.loop = false;
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `repeat is turned ${queue.repeat ? "on" : "off"} for the current song 🔁` }] })
-    if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} turn repeat ${queue.repeat ? "on" : "off"} for the current song 🔁` }] }).catch(err => logger.log('error', err));
+    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} turn repeat ${queue.repeat ? "on" : "off"} for the current song 🔁` }] });
+    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
 };

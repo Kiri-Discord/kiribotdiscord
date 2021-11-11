@@ -16,7 +16,8 @@ exports.run = async(client, message, args, prefix) => {
     queue.player.volume(100);
 
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `resetted all filter in this queue :slight_smile:` }] })
-    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} resetted all filter in this queue` }] });
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} resetted all filter in this queue` }] });
+    if (queue.textChannel.deleted) queue.textChannel = message.channel;
 };
 
 

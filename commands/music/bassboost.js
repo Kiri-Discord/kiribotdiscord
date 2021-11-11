@@ -24,7 +24,8 @@ exports.run = async(client, message, args, prefix) => {
     queue.player.equalizer(bands);
     const sayoriEmoji = client.customEmojis.get("sayori");
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied bassboost to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
-    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied bassboost to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied bassboost to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
+    if (queue.textChannel.deleted) queue.textChannel = message.channel;
 };
 exports.help = {
     name: "bassboost",

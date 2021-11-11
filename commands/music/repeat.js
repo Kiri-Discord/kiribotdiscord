@@ -7,8 +7,9 @@ exports.run = async(client, message, args) => {
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     queue.repeat = !queue.repeat;
     if (queue.repeat && queue.loop) queue.loop = false;
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `repeat is turned ${queue.repeat ? "on" : "off"} for the current song 🔁` }] })
-    queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} turn repeat ${queue.repeat ? "on" : "off"} for the current song 🔁` }] }).catch(err => logger.log('error', err));
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} turn repeat ${queue.repeat ? "on" : "off"} for the current song 🔁` }] });
+    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `repeat is turned ${queue.repeat ? "on" : "off"} for the current song 🔁` }] })
 };
 exports.help = {
     name: "repeat",

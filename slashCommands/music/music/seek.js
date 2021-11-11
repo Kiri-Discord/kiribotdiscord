@@ -27,14 +27,9 @@ exports.run = async(client, interaction) => {
 
     const timeMs = time * 1000;
     if (timeMs > song.info.length - 5) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `that is wayy longer than the current playing song! can you check it again?` }], ephemeral: true });
-    // const timestamp = queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying;
 
-    // if (timestamp >= timeMs) {
-    //     song.startedPlaying = song.startedPlaying + (timestamp - timeMs);
-    // } else if (timestamp <= timeMs) {
-    //     song.startedPlaying = song.startedPlaying - (timeMs - timestamp);
-    // };
     queue.player.seek(timeMs);
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `you seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})**! 🚚` }] })
-    if (queue.textChannel.id !== interaction.channel.id) return queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] 🚚` }] });
+    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] 🚚` }] });
+    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
 };

@@ -55,8 +55,9 @@ async function skip(queue, message, args, sentMessage) {
     if (queue.repeat) queue.nowPlaying = undefined;
     queue.skip();
     const number = args[0] - 1;
-    if (queue.textChannel.id !== message.channel.id) message.channel.send({ embeds: [{ color: "#bee7f7", description: `you skipped ${number} songs! ⏭` }] })
-    queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped ${number} songs ⏭` }] });
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped ${number} songs ⏭` }] });
+    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    message.channel.send({ embeds: [{ color: "#bee7f7", description: `you skipped ${number} songs! ⏭` }] })
     if (sentMessage) {
         for (let msg of sentMessage) {
             msg.delete();

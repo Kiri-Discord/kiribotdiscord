@@ -30,7 +30,8 @@ exports.run = async(client, message, args, prefix) => {
     });
     const sayoriEmoji = client.customEmojis.get("sayori");
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied nightcore to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
-    if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied nightcore to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied nightcore to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
+    if (queue.textChannel.deleted) queue.textChannel = message.channel;
 };
 exports.help = {
     name: "nightcore",

@@ -12,8 +12,9 @@ exports.run = async(client, message, args) => {
         queue.player.pause(true);
         queue.pausedAt = Date.now();
         if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.pause(queue.pausedAt);
-        queue.textChannel.send(({ embeds: [{ color: "#bee7f7", description: `${message.author} paused the current song ⏸️` }] }))
-        if (queue.textChannel.id !== message.channel.id) message.channel.send('⏸️ pausing...');
+        message.channel.send({ embeds: [{ color: "#bee7f7", description: `you paused the current song ⏸️` }] });
+
+        if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} paused the current song ⏸️` }] })
         queue.dcTimeout = setTimeout(async() => {
             const embed = new MessageEmbed()
                 .setTitle("no music was playing :(")
@@ -21,6 +22,7 @@ exports.run = async(client, message, args) => {
             queue.textChannel.send({ embeds: [embed] });
             return client.lavacordManager.leave(queue.textChannel.guild.id);
         }, STAY_TIME * 1000);
+        if (queue.textChannel.deleted) queue.textChannel = message.channel;
     } else {
         return message.channel.send('the music is already paused :thinking:')
     }

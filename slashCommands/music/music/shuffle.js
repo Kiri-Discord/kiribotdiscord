@@ -10,6 +10,7 @@ exports.run = async(client, interaction) => {
     const shuffled = shuffle(songs);
     queue.songs = shuffled;
     client.queue.set(interaction.guild.id, queue);
-    if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} has shuffled the queue 🔀` }] });
+    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} has shuffled the queue 🔀` }] });
+    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `you has shuffled the queue 🔀` }] });
 };
