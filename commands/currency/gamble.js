@@ -1,4 +1,4 @@
-const { time } = require('@discordjs/builders');
+const ms = require('ms');
 const { MessageEmbed } = require("discord.js");
 exports.run = async(client, message, args) => {
         const amount = args[0];
@@ -32,9 +32,8 @@ exports.run = async(client, message, args) => {
         let cooldown = 25000;
 
         if (lastGamble !== null && cooldown - (Date.now() - lastGamble) > 0) {
-            const target = cooldown - (Date.now() - lastGamble);
-            const remaining = time(Math.floor((Date.now() + target) / 1000), "R")
-            return message.reply(`that was fast! you need to wait ${remaining} before you can gambling again.\n*money is not a river*  - someone`);
+            const remaining = cooldown - (Date.now() - lastGamble);
+            return message.reply(`that was fast! you need to wait **${ms(remaining, { long: true })}** before you can gambling again.\n*money is not a river*  - someone`);
         };
         const result = Math.floor(Math.random() * 10);
 
