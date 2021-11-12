@@ -68,6 +68,7 @@ exports.run = async(client, message, args, prefix) => {
                             continue;
                         }
                     } else {
+                        lastTurnTimeout = true;
                         message.channel.send(`no answers? well, it was ${question.answer ? 'true' : 'a lie'}.\nthe game has been ended since you are the only player!`);
                         break;
                     }
@@ -95,7 +96,7 @@ exports.run = async(client, message, args, prefix) => {
 		}
 		client.games.delete(message.channel.id);
 		const winner = pts.sort((a, b) => b.points - a.points).first().user;
-		return message.channel.send(stripIndents`
+		if (!lastTurnTimeout) return message.channel.send(stripIndents`
 			congrats, ${winner}!
 			__**top 10 players:**__
 			${makeLeaderboard(pts).slice(0, 10).join('\n')}

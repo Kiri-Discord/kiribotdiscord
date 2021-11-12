@@ -150,7 +150,7 @@ exports.run = async(client, interaction) => {
             };
         };
         client.games.delete(interaction.channel.id);
-        return interaction.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
+        if (!lastTurnTimeout) return interaction.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
     } catch (error) {
         return;
     };

@@ -145,7 +145,7 @@ exports.run = async(client, message, args, prefix) => {
             };
         };
         client.games.delete(message.channel.id);
-        return message.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
+        if (!lastTurnTimeout) return message.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
     } catch (error) {
         return;
     };
