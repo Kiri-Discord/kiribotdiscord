@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { trimArray } = require('../../util/util');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const permissions = require('../../assets//permission.json');
 
 exports.run = async(client, interaction) => {
         if (interaction.options.getSubcommand() === 'server') {
@@ -132,6 +133,8 @@ exports.run = async(client, interaction) => {
             if (roles.length > 6) dots = '...';
             else dots = ''
         } else dots = '';
+        const serialized = member.permissions.serialize();
+        const perms = Object.keys(serialized).filter(perm => serialized[perm] && permissions[perm]);
         const embed = new MessageEmbed()
             .setDescription(member.user.toString())
             .setAuthor(member.user.tag, avatar)
@@ -145,10 +148,10 @@ exports.run = async(client, interaction) => {
             .addField("\`➡️\` Guild join date", `${joindate}\n${joined}`, true)
             .addField('\`🤖\` Bot?', member.user.bot ? 'True' : 'False', true)
             .addField("\`👀\` Status", status, true)
-            .addField('\`⛳\` Flags', userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None')
             .addField("\`🎮\` Activity", game(), true)
-            .addField(`\`👤\` Roles [${roles.length}]`, roles.length ? trimArray(roles, 6).join(', ') + dots : 'None');
-    
+            .addField(`\`🔒\` Key permissions`, perms.map(perm => permissions[perm]).join(', ') || 'None')
+            .addField('\`⛳\` Flags', userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None')
+            .addField(`\`👤\` Roles [${roles.length}]`, roles.length ? trimArray(roles, 6).join(', ') + dots : 'None')
         return interaction.reply({ embeds: [embed] });
     }
 };

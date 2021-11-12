@@ -1,0 +1,15 @@
+{
+    "KICK_MEMBERS": "Kick Members",
+    "BAN_MEMBERS": "Ban Members",
+    "ADMINISTRATOR": "Administrator",
+    "MANAGE_CHANNELS": "Manage Channels",
+    "MANAGE_GUILD": "Manage Server",
+    "MANAGE_MESSAGES": "Manage Messages",
+    "MUTE_MEMBERS": "Mute Members",
+    "DEAFEN_MEMBERS": "Deafen Members",
+    "MOVE_MEMBERS": "Move Members",
+    "MANAGE_NICKNAMES": "Manage Nicknames",
+    "MANAGE_ROLES": "Manage Roles",
+    "MANAGE_WEBHOOKS": "Manage Webhooks",
+    "MANAGE_EMOJIS_AND_STICKERS": "Manage Emojis and Stickers"
+}

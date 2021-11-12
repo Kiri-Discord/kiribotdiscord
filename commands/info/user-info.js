@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { trimArray } = require('../../util/util');
-
+const permissions = require('../../assets//permission.json');
 exports.run = async(client, message, args) => {
     const member = await getMemberfromMention(args[0], message.guild) || message.member;
     const presences = {
@@ -48,7 +48,6 @@ exports.run = async(client, message, args) => {
         HOUSE_BALANCE: `${balance} House of Balance`,
         EARLY_SUPPORTER: `${early} Early Supporter`,
         TEAM_USER: `Team User`,
-        SYSTEM: `System`,
         VERIFIED_BOT: `${verified} Verified Bot`,
         EARLY_VERIFIED_DEVELOPER: `${devVerified} Early Verified Bot Developer`,
         DISCORD_CERTIFIED_MODERATOR: `${verifiedMods} Certified Discord Moderator`
@@ -75,6 +74,8 @@ exports.run = async(client, message, args) => {
         if (roles.length > 6) dots = '...';
         else dots = ''
     } else dots = '';
+    const serialized = member.permissions.serialize();
+    const perms = Object.keys(serialized).filter(perm => serialized[perm] && permissions[perm]);
     const embed = new MessageEmbed()
         .setDescription(member.user.toString())
         .setAuthor(member.user.tag, avatar)
@@ -88,9 +89,10 @@ exports.run = async(client, message, args) => {
         .addField("\`➡️\` Guild join date", `${joindate}\n${joined}`, true)
         .addField('\`🤖\` Bot?', member.user.bot ? 'True' : 'False', true)
         .addField("\`👀\` Status", status, true)
-        .addField('\`⛳\` Flags', userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None')
         .addField("\`🎮\` Activity", game(), true)
-        .addField(`\`👤\` Roles [${roles.length}]`, roles.length ? trimArray(roles, 6).join(', ') + dots : 'None');
+        .addField(`\`🔒\` Key permission`, perms.map(perm => permissions[perm]).join(', ') || 'None')
+        .addField('\`⛳\` Flags', userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None')
+        .addField(`\`👤\` Roles [${roles.length}]`, roles.length ? trimArray(roles, 6).join(', ') + dots : 'None')
 
     return message.channel.send({ embeds: [embed] });
 }

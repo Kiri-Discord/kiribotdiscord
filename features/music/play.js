@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 const { STAY_TIME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const ScrollingLyrics = require("./karaoke");
@@ -108,7 +108,14 @@ module.exports = class Queue {
                 };
 
             };
-            if (this.channel.type === 'GUILD_STAGE_VOICE') await this.textChannel.guild.me.voice.setSuppressed(false).catch(() => null);
+            if (this.channel.type === 'GUILD_STAGE_VOICE') {
+                if (!this.textChannel.guild.me.permissions.has(Permissions.STAGE_MODERATOR)) {
+                    this.client.lavacordManager.leave(this.textChannel.guild.id);
+                    return this.textChannel.send({ embeds: [{ description: `you tried to invite me to your Stage Channel, however i'm not a Stage Moderator ;-; you can make me a moderator of that stage then play again!` }] });
+                } else {
+                    await this.textChannel.guild.me.voice.setSuppressed(false).catch(() => null);
+                };
+            };
             first = true;
 
             this.player.on('start', this.startEvent);
