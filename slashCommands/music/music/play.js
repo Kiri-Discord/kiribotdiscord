@@ -54,7 +54,7 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
         queueConstruct.volume = musicSettings.volume;
         const channel = interaction.guild.channels.cache.get(musicSettings.KaraokeChannelID);
         if (musicSettings.KaraokeChannelID && !serverQueue && channel) {
-            const msg1 = await interaction.channel.send({ embeds: [{ description: `scrolling lyric mode is now set to \`ON\` in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
+            const msg1 = await interaction.channel.send({ embeds: [{ description: `scrolling lyric mode was set to **ON** in the setting and all lyrics will be sent to ${channel}\ndo you want me to enable this to your queue, too? \`y/n\`\n\nyou only have to do this **ONCE** only for this queue :wink:`, footer: { text: `type 'no' or leave this for 10 second to bypass` } }] });
             const verification = await verify(interaction.channel, interaction.user, { time: 10000 });
             if (verification) {
                 const msg2 = await interaction.channel.send({ embeds: [{ description: `nice! okay so what language do you want me to sing in for the upcoming queue?\nresponse in a valid language: for example \`English\` or \`Japanese\` to continue :arrow_right:`, footer: { text: 'this confirmation will timeout in 10 second. type \'cancel\' to cancel this confirmation.' } }] });
