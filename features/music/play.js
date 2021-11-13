@@ -100,12 +100,41 @@ module.exports = class Queue {
         let first;
         if (!this.player) {
             this.player = await this.client.lavacordManager.join({
-                guild: this.guild.id,
+                guild: this.guildId,
                 channel: this.channel.id,
                 node: this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id : this.client.lavacordManager.idealNodes[0].id
             }, {
                 selfdeaf: true
             });
+            await delay(1500);
+            if (!this.me.voice.channelId) {
+                const tried = [];
+                while (!this.me.voice.channelId) {
+                    if (tried.length === this.client.lavacordManager.nodes.size) {
+                        await this.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
+                        await this.player.destroy();
+                        return this.client.queue.delete(this.guildId);
+                    };
+                    const tryCount = tried.length || 0;
+                    await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
+                    await this.client.lavacordManager.leave(this.guildId);
+                    await delay(1500);
+                    const nextNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host) && x.id !== 'yt')[0] : this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0];
+
+                    this.player = await this.client.lavacordManager.join({
+                        guild: this.guildId,
+                        channel: this.channel.id,
+                        node: nextNode.id
+                    }, {
+                        selfdeaf: true
+                    });
+                    if (!this.me.voice.channelId) {
+                        tried.push(this.player.node.host);
+                        await delay(1500);
+                        continue;
+                    };
+                };
+            };
             if (this.client.config.testSongBase64) {
                 this.player.play(this.client.config.testSongBase64, {
                     volume: 80,
