@@ -143,7 +143,8 @@ module.exports = class Queue {
 
                 if (resolved === 'TIMED_OUT') {
                     const deadEmoji = this.client.customEmojis.get('dead');
-                    this.textChannel.send({ embeds: [{ description: `i can't verify if i have joined your channel or not. probably Discord has something to do with it ${deadEmoji} you can create a new queue instead if song won't play.` }] });
+                    await this.textChannel.send({ embeds: [{ description: `i can't verify if i have joined your channel or not. probably Discord has something to do with it ${deadEmoji} you can create a new queue instead if song won't play.` }] });
+                    return this.client.lavacordManager.leave(this.guild.id);
                 };
 
             };
