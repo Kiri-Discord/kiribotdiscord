@@ -24,7 +24,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
     let options = [];
     let lavalinkRes = []
     try {
-        let loadingMessage = await message.channel.send({ embeds: [{ color: "#bee7f7", description: `looking for \`${search}\`` }] });
         message.channel.sendTyping();
         let ytRes = await fetchInfo(client, search, null, 'yt');
         let scRes = await fetchInfo(client, search, 'scsearch', 'yt');
@@ -106,7 +105,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             inactive = false;
             response.deferUpdate();
             if (msg && msg.deletable) await msg.delete();
-            if (loadingMessage && loadingMessage.deletable) await loadingMessage.delete();
+            // if (loadingMessage && loadingMessage.deletable) await loadingMessage.delete();
             if (response.values.length > 1) {
                 const bulk = response.values.map(song => lavalinkRes[song]);
                 client.commands

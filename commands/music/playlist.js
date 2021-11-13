@@ -40,7 +40,9 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         const musicSettings = await Guild.findOne({
             guildId: message.guild.id
         });
-        const queueConstruct = new Queue(message.guild.id, client, message.channel, channel);
+        const queueConstruct = new Queue(message.guild, client, message.channel, channel);
+        const init = await queueConstruct.init();
+        if (!init) return message.reply({ embeds: [{ color: "#bee7f7", description: "there was a media error while i was initializing the queue! can you try again later? :pensive:" }] });
 
         if (musicSettings && !internal) {
             queueConstruct.karaoke.isEnabled = false;

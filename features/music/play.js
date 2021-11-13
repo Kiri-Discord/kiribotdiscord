@@ -8,14 +8,16 @@ const spotifyToYT = require("spotify-to-yt");
 const pEvent = require('p-event');
 
 module.exports = class Queue {
-    constructor(guildId, client, textChannel, voiceChannel) {
+    constructor(guild, client, textChannel, voiceChannel) {
         this.playingMessage = null;
         this.textChannel = textChannel;
         this.channel = voiceChannel;
         this.player = null;
         this.debug = false;
         this.pending = true;
-        this.guildId = guildId;
+        this.guildId = guild.id;
+        this.guild = guild;
+        this.me = null;
         this.client = client;
         this.songs = [];
         this.loop = false;
@@ -32,6 +34,14 @@ module.exports = class Queue {
             instance: null,
         }
     };
+    async init() {
+        try {
+            this.me = await this.guild.members.fetch(this.client.user);
+            return this.me;
+        } catch {
+            return null;
+        }
+    }
     async stop(reason) {
         if (reason === 'noSong' || reason === 'selfStop') {
             if (this.client.dcTimeout.has(this.guildId)) {
@@ -40,7 +50,7 @@ module.exports = class Queue {
                 this.client.dcTimeout.delete(this.guildId);
             };
             const timeout = setTimeout(async() => {
-                if (!this.textChannel.guild.me.voice.channel) return;
+                if (!this.me.voice.channelId) return;
                 const newQueue = this.client.queue.get(this.guildId);
                 if (newQueue) return;
                 await this.client.lavacordManager.leave(this.guildId);
@@ -90,7 +100,7 @@ module.exports = class Queue {
         let first;
         if (!this.player) {
             this.player = await this.client.lavacordManager.join({
-                guild: this.textChannel.guild.id,
+                guild: this.guild.id,
                 channel: this.channel.id,
                 node: this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id : this.client.lavacordManager.idealNodes[0].id
             }, {
@@ -109,11 +119,11 @@ module.exports = class Queue {
 
             };
             if (this.channel.type === 'GUILD_STAGE_VOICE') {
-                if (!this.textChannel.guild.me.permissions.has(Permissions.STAGE_MODERATOR)) {
-                    this.client.lavacordManager.leave(this.textChannel.guild.id);
+                if (!this.me.permissions.has(Permissions.STAGE_MODERATOR)) {
+                    this.client.lavacordManager.leave(this.guild.id);
                     return this.textChannel.send({ embeds: [{ description: `you tried to invite me to your Stage Channel, however i'm not a Stage Moderator ;-; you can make me a moderator of that stage then play again!` }] });
                 } else {
-                    await this.textChannel.guild.me.voice.setSuppressed(false).catch(() => null);
+                    await this.me.voice.setSuppressed(false).catch(() => null);
                 };
             };
             first = true;
@@ -181,7 +191,7 @@ module.exports = class Queue {
         } catch (error) {
             console.error(error);
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
-            this.client.lavacordManager.leave(this.textChannel.guild.id);
+            this.client.lavacordManager.leave(this.guild.id);
             return this.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
         };
     };

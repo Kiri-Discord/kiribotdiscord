@@ -48,7 +48,10 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
     });
     if (!interaction.deferred) await interaction.deferReply();
 
-    const queueConstruct = new Queue(interaction.guild.id, client, interaction.channel, channel);
+    const queueConstruct = new Queue(interaction.guild, client, interaction.channel, channel);
+    const init = await queueConstruct.init();
+    if (!init) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: "there was a media error while i was initializing the queue! can you try again later? :pensive:" }] });
+
     if (musicSettings && !internal) {
         queueConstruct.karaoke.isEnabled = false;
         queueConstruct.volume = musicSettings.volume;
