@@ -75,6 +75,20 @@ module.exports = class Queue {
             new: true
         });
     };
+    pause() {
+        this.playing = false;
+        this.player.pause(true);
+        this.pausedAt = Date.now();
+        if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.pause(this.pausedAt);
+        this.dcTimeout = setTimeout(async() => {
+            const embed = new MessageEmbed()
+                .setTitle("it's lonely here :(")
+                .setDescription(`it's been a while since the music queue was paused, so i left the voice channel to reserve data :pensive:\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${this.client.config.prefix}24/7\` for supporters! stay tuned <3`)
+            this.textChannel.send({ embeds: [embed] });
+            return this.client.lavacordManager.leave(this.guild.id);
+        }, STAY_TIME * 1000);
+        return true;
+    }
     skip() {
         if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
         let upcoming;

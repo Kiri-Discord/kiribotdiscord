@@ -10,7 +10,9 @@ if (!fs.existsSync(logDir)) {
 
 global.logger = winston.createLogger({
     transports: [
-        new winston.transports.Console(),
+        new winston.transports.Console({
+            handleExceptions: true
+        }),
         new(require("winston-daily-rotate-file"))({
             filename: `${logDir}/-results.log`,
             format: winston.format.combine(
@@ -85,7 +87,6 @@ const client = new kiri({
         }
     }
 });
-
 client.on("warn", warn => logger.log('warn', warn));
 client.on("error", err => {
     logger.log('error', err)
@@ -128,6 +129,5 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
 
     client.login(config.token).catch(err => logger.log('error', err));
 })();
-
 
 module.exports = client;

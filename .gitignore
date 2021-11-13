@@ -86,3 +86,5 @@ config.json
 
 # Logging directory
 logs/
+
+package-lock.json

@@ -4,18 +4,9 @@ module.exports = class extends Manager {
     constructor(client, nodes, options) {
         super(nodes, options || {});
         this.client = client;
-        this.send = async(packet) => {
-            if (this.client.guilds.cache) {
-                const guild = this.client.guilds.cache.get(packet.d.guild_id);
-                if (guild) return guild.shard.send(packet);
-            } else {
-                try {
-                    const guild = await this.client.guilds.fetch(packet.d.guild_id);
-                    if (guild) return guild.shard.send(packet);
-                } catch {
-                    return null;
-                };
-            };
+        this.send = (packet) => {
+            const guild = this.client.guilds.cache.get(packet.d.guild_id);
+            if (guild) return guild.shard.send(packet);
         };
         if (client.guilds.cache) {
             client.ws
