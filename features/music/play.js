@@ -278,10 +278,10 @@ module.exports = class Queue {
         if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
             let upcoming;
-            if (this.loop) {
+            if (this.loop && data.reason !== 'LOAD_FAILED') {
                 this.songs.push(this.nowPlaying);
                 upcoming = this.songs[0];
-            } else if (this.repeat) {
+            } else if (this.repeat && data.reason !== 'LOAD_FAILED') {
                 upcoming = !this.nowPlaying ? this.songs[0] : this.nowPlaying;
             } else {
                 upcoming = this.songs[0];

@@ -1,3 +1,9 @@
+require('dotenv').config();
+process.on('unhandledRejection', error => {
+    console.error('Unhandled promise rejection:', error);
+});
+global.__basedir = __dirname;
+
 const winston = require('winston');
 const config = require('./config.json');
 const fs = require('fs');
@@ -15,6 +21,7 @@ global.logger = winston.createLogger({
         }),
         new(require("winston-daily-rotate-file"))({
             filename: `${logDir}/-results.log`,
+            level: 'info',
             format: winston.format.combine(
                 winston.format.timestamp(),
                 winston.format.json(),
@@ -33,21 +40,14 @@ global.logger = winston.createLogger({
     format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
 });
 
-require('dotenv').config();
-process.on('unhandledRejection', error => {
-    console.error('Unhandled promise rejection:', error);
-});
-global.__basedir = __dirname;
-
 if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
     global.sentry = require("@sentry/node");
     sentry.init({
         dsn: config.sentryDSNURL,
-        tracesSampleRate: 0.7,
+        tracesSampleRate: 0.8,
     });
     logger.log('info', '[SENTRY] Initialized!')
 };
-
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const schedule = require('node-schedule');
@@ -114,6 +114,11 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
             await storage.save();
             await client.charts.deleteMany({});
         } else {
+            if (!storage.lastChartReset) {
+                storage.lastChartReset = Date.now();
+                await storage.save();
+                return client.charts.deleteMany({});
+            };
             const lastReset = new Date(storage.lastChartReset);
             const today = new Date(Date.now());
             if (today.getUTCMonth() === lastReset.getUTCMonth()) {
