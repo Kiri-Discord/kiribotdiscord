@@ -7,7 +7,6 @@ exports.run = async(client, message, args) => {
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     queue.nowPlaying = undefined;
     queue.songs = [];
-    if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.stop();
     queue.stop('selfStop');
     return reactIfAble(message, client.user, '👌')
 };

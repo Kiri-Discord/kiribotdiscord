@@ -13,7 +13,6 @@ exports.run = async(client, message, args) => {
 
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     const song = queue.nowPlaying;
-    // const seek = song.startedPlaying ? (queue.pausedAt ? queue.pausedAt - song.startedPlaying : Date.now() - song.startedPlaying) : null;
     const seek = queue.player.state.position || 0;
 
     const duration = song.info.isStream ? null : song.info.length;

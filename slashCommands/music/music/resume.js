@@ -7,9 +7,7 @@ exports.run = async(client, interaction) => {
     if (queue.pending) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }], ephemeral: true });
     if (!queue.playing) {
         queue.playing = true;
-        if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume(queue.player);
-        else queue.player.resume();
-        queue.pausedAt = undefined;
+        queue.player.resume();
         interaction.reply(({ embeds: [{ color: "#bee7f7", description: `you resumed the current song ▶️` }] }));
 
         if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user.toString()} resumed the current song ▶️` }] });

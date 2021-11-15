@@ -109,13 +109,12 @@ module.exports = class ScrollingLyrics {
         this.playing = false;
         return true;
     }
-    resume(player) {
+    resume() {
         if (this.playing) return false;
         const seek = this.pauseTimestamp - this.playTimestamp;
         this.slots.forEach(subtitle => subtitle.time = subtitle.time - seek);
         this.slots = this.slots.filter(x => x.time > 0);
         this.start();
-        player.resume();
         return true;
     };
     change(channel) {

@@ -43,6 +43,8 @@ module.exports = class Queue {
         }
     }
     async stop(reason) {
+        if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
+        if (this.dcTimeout) clearTimeout(this.dcTimeout);
         if (reason === 'noSong' || reason === 'selfStop') {
             if (this.client.dcTimeout.has(this.guildId)) {
                 const timeout = this.client.dcTimeout.get(this.guildId);
@@ -61,9 +63,17 @@ module.exports = class Queue {
         };
         this.client.queue.delete(this.guildId);
         if (this.player) {
-            if (reason !== 'disconnected') this.player.stop();
+            if (reason === 'errorNode') {
+                if (this.channel.permissionsFor(this.me).has(Permissions.FLAGS.MOVE_MEMBERS)) this.me.voice.disconnect();
+                this.client.lavacordManager.players.delete(this.guildId);
+            } else if (reason === 'destroyOnly') {
+                this.player.destroy();
+            } else if (reason !== 'disconnected') {
+                this.player.stop();
+            };
             this.player.removeListener('end', this.endEvent);
             this.player.removeListener('start', this.startEvent);
+            this.player.removeListener('pause', this.pauseEvent);
         };
         await Guild.findOneAndUpdate({
             guildId: this.guildId
@@ -78,13 +88,12 @@ module.exports = class Queue {
     pause() {
         this.playing = false;
         this.player.pause(true);
-        this.pausedAt = Date.now();
-        if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.pause(this.pausedAt);
         this.dcTimeout = setTimeout(async() => {
             const embed = new MessageEmbed()
                 .setTitle("it's lonely here :(")
                 .setDescription(`it's been a while since the music queue was paused, so i left the voice channel to reserve data :pensive:\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${this.client.config.prefix}24/7\` for supporters! stay tuned <3`)
             this.textChannel.send({ embeds: [embed] });
+            this.dcTimeout = undefined;
             return this.client.lavacordManager.leave(this.guild.id);
         }, STAY_TIME * 1000);
         return true;
@@ -102,6 +111,75 @@ module.exports = class Queue {
         };
         this.play(upcoming, false);
     };
+    async initVc(node, voiceState) {
+        if (!this.pending) this.pending = true;
+        let targetNode;
+        if (node) {
+            targetNode = node.id;
+        } else {
+            targetNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id : this.client.lavacordManager.idealNodes[0].id;
+        }
+        if (this.player) {
+            this.player.removeListener('end', this.endEvent);
+            this.player.removeListener('start', this.startEvent);
+            this.player.removeListener('pause', this.pauseEvent);
+        }
+        this.player = await this.client.lavacordManager.join({
+            guild: this.guildId,
+            channel: this.channel.id,
+            node: targetNode
+        }, {
+            selfdeaf: true
+        });
+        if (voiceState) await this.player.connect(voiceState);
+        await delay(1500);
+        if (!this.me.voice.channelId) {
+            const tried = [];
+            tried.push(targetNode.host);
+            while (!this.me.voice.channelId) {
+                if (tried.length === this.client.lavacordManager.nodes.size) {
+                    this.stop('destroyOnly')
+                    return 'TRIED_TO_JOIN_WITH_NODES';
+                };
+                const tryCount = tried.length;
+                await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
+                await this.client.lavacordManager.leave(this.guildId);
+                await delay(1500);
+                const nextNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host) && x.id !== 'yt')[0] : this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0];
+
+                this.player = await this.client.lavacordManager.join({
+                    guild: this.guildId,
+                    channel: this.channel.id,
+                    node: nextNode.id
+                }, {
+                    selfdeaf: true
+                });
+                if (!this.me.voice.channelId) {
+                    tried.push(nextNode.host);
+                    await delay(1500);
+                    continue;
+                };
+            };
+        };
+        if (this.client.config.testSongBase64) {
+            this.player.play(this.client.config.testSongBase64, {
+                volume: 80,
+                noSkip: false
+            });
+            const resolved = await Promise.race([pEvent(this.player, 'end'), delay(5000, 'TIMED_OUT')]);
+
+            if (resolved === 'TIMED_OUT') {
+                this.client.lavacordManager.leave(this.guildId);
+                return 'CANT_VERIFY';
+            };
+        };
+        this.player.on('start', this.startEvent);
+        this.player.on('end', this.endEvent);
+        this.player.on('pause', this.pauseEvent);
+        this.pending = false;
+
+        return true;
+    }
     async play(song, noSkip) {
         if (this.client.dcTimeout.has(this.guildId)) {
             const timeout = this.client.dcTimeout.get(this.guildId);
@@ -111,70 +189,22 @@ module.exports = class Queue {
         if (!song) {
             return this.stop('noSong');
         };
-        let first;
-        if (!this.player) {
-            this.player = await this.client.lavacordManager.join({
-                guild: this.guildId,
-                channel: this.channel.id,
-                node: this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => x.id !== 'yt')[0].id : this.client.lavacordManager.idealNodes[0].id
-            }, {
-                selfdeaf: true
-            });
-            await delay(1500);
-            if (!this.me.voice.channelId) {
-                const tried = [];
-                while (!this.me.voice.channelId) {
-                    if (tried.length === this.client.lavacordManager.nodes.size) {
-                        await this.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
-                        await this.player.destroy();
-                        return this.client.queue.delete(this.guildId);
-                    };
-                    const tryCount = tried.length || 0;
-                    await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
-                    await this.client.lavacordManager.leave(this.guildId);
-                    await delay(1500);
-                    const nextNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host) && x.id !== 'yt')[0] : this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0];
-
-                    this.player = await this.client.lavacordManager.join({
-                        guild: this.guildId,
-                        channel: this.channel.id,
-                        node: nextNode.id
-                    }, {
-                        selfdeaf: true
-                    });
-                    if (!this.me.voice.channelId) {
-                        tried.push(this.player.node.host);
-                        await delay(1500);
-                        continue;
-                    };
-                };
+        if (!this.player || !this.player.state.connected) {
+            const state = await this.initVc();
+            if (state === 'TRIED_TO_JOIN_WITH_NODES') {
+                return this.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
+            } else if (state === 'CANT_VERIFY') {
+                const deadEmoji = this.client.customEmojis.get('dead');
+                return this.textChannel.send({ embeds: [{ description: `i can't verify if i have joined your channel or not. probably Discord has something to do with it ${deadEmoji} you can create a new queue instead if song won't play.` }] });
+            }
+        };
+        if (this.channel.type === 'GUILD_STAGE_VOICE' && this.me.voice.suppress) {
+            if (!this.me.permissions.has(Permissions.STAGE_MODERATOR)) {
+                this.me.voice.setRequestToSpeak(true);
+                this.textChannel.send({ embeds: [{ description: `i am in your Stage Channel, however since i'm not a speaker, i can't play your song publicly ;-; you can invite me to speak using **Right Click** -> **Invite to Speak** or accept my speak request!` }] });
+            } else {
+                await this.me.voice.setSuppressed(false);
             };
-            if (this.client.config.testSongBase64) {
-                this.player.play(this.client.config.testSongBase64, {
-                    volume: 80,
-                });
-                const resolved = await Promise.race([pEvent(this.player, 'end'), delay(5000, 'TIMED_OUT')]);
-
-                if (resolved === 'TIMED_OUT') {
-                    const deadEmoji = this.client.customEmojis.get('dead');
-                    await this.textChannel.send({ embeds: [{ description: `i can't verify if i have joined your channel or not. probably Discord has something to do with it ${deadEmoji} you can create a new queue instead if song won't play.` }] });
-                    return this.client.lavacordManager.leave(this.guild.id);
-                };
-
-            };
-            if (this.channel.type === 'GUILD_STAGE_VOICE') {
-                if (!this.me.permissions.has(Permissions.STAGE_MODERATOR)) {
-                    this.client.lavacordManager.leave(this.guild.id);
-                    return this.textChannel.send({ embeds: [{ description: `you tried to invite me to your Stage Channel, however i'm not a Stage Moderator ;-; you can make me a moderator of that stage then play again!` }] });
-                } else {
-                    await this.me.voice.setSuppressed(false).catch(() => null);
-                };
-            };
-            first = true;
-
-            this.player.on('start', this.startEvent);
-            this.player.on('end', this.endEvent);
-            this.pending = false;
         };
         if (song.type === 'sp') {
             const logo = this.client.customEmojis.get('spotify') ? this.client.customEmojis.get('spotify').toString() : '⚠️';
@@ -211,7 +241,7 @@ module.exports = class Queue {
             if (!this.repeat) this.songs.splice(0, 1);
             this.player.play(song.track, {
                 volume: this.volume || 100,
-                noReplace: first ? false : noSkip
+                noReplace: noSkip
             });
             if (song.type === 'yt' || song.type === 'sc' || song.type === 'sp') {
                 const fetched = await this.client.charts.findOne({
@@ -241,6 +271,7 @@ module.exports = class Queue {
     };
     startEvent = async(data) => this.start(data);
     endEvent = async(data) => this.end(data);
+    pauseEvent = async(pause) => this.pauseFuc(pause);
     async start(data) {
         try {
             let targetEmoji;
@@ -290,4 +321,11 @@ module.exports = class Queue {
             if (data.reason === 'LOAD_FAILED') this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
         };
     };
+    async pauseFuc(pause) {
+        if (pause) {
+            if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.pause(Date.now());
+        } else {
+            if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.resume();
+        }
+    }
 };

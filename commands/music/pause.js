@@ -1,5 +1,4 @@
-const { canModifyQueue, STAY_TIME } = require("../../util/musicutil");
-const { MessageEmbed } = require('discord.js');
+const { canModifyQueue } = require("../../util/musicutil");
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
