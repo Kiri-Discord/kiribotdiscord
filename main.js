@@ -1,7 +1,9 @@
 require('dotenv').config();
+
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
+
 global.__basedir = __dirname;
 
 const winston = require('winston');
@@ -37,8 +39,9 @@ global.logger = winston.createLogger({
             handleExceptions: true
         }),
     ],
-    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`),
+    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`)
 });
+
 
 if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
     global.sentry = require("@sentry/node");

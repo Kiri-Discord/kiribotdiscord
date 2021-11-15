@@ -42,7 +42,7 @@ module.exports = {
                     const targetNode = avaliableNodes[Math.floor(Math.random() * avaliableNodes.length)];
 
                     client.lavacordManager.players.delete(queue.guildId);
-                    console.log(voiceState)
+
                     const state = await queue.initVc(targetNode, voiceState);
                     if (state === 'TRIED_TO_JOIN_WITH_NODES') {
                         return queue.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
