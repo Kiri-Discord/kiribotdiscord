@@ -4,7 +4,7 @@ const cooldowns = new Collection();
 
 module.exports = async(client, interaction) => {
         if (!client.finished) return;
-        if (interaction.isCommand()) {
+        if (interaction.isCommand() || interaction.isContextMenu()) {
             let commandFile = client.slash.get(interaction.commandName);
             if (!commandFile) {
                 return interaction.reply({
@@ -69,7 +69,7 @@ module.exports = async(client, interaction) => {
         };
         try {
             commandFile.run(client, interaction);
-            logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran a slash command: /${interaction.commandName}`);
+            logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran an application command: ${interaction.commandName} (${interaction.type})`);
             let setting = client.guildsStorage.get(interaction.guild.id);
             if (!setting) {
                 const dbguilds = client.dbguilds;

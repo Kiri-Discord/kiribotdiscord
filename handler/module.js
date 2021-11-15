@@ -44,11 +44,11 @@ module.exports = async client => {
                 files.forEach(file => {
                     if (!file.endsWith(".js")) return;
                     let prop = require(`../slashCommands/${category}/${file}`);
-                    if (!prop.conf.adult) client.allSlashCmds.push(prop.conf.data.name);
-                    client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
+                    if (!prop.conf.adult && !prop.conf.context) client.allSlashCmds.push(prop.conf.data.name);
+                    if (!prop.conf.context) client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
                     prop.subCommand = [];
                     const command = prop.conf.rawData ? prop.conf.data : prop.conf.data.toJSON();
-                    if (command.options.length) {
+                    if (command.options && command.options.length) {
                         const { options } = command;
                         options.forEach(sub => {
                             if (sub.type === 1) {

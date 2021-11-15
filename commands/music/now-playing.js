@@ -1,7 +1,6 @@
 const { splitBar } = require("string-progressbar");
 const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
-require('moment-duration-format');
+const { formatDuration } = require('../../util/musicutil');
 
 exports.run = async(client, message, args) => {
     const queue = client.queue.get(message.guild.id);
@@ -23,7 +22,7 @@ exports.run = async(client, message, args) => {
     const status = queue.playing ? '`▶`' : '`⏸`';
 
     let nowPlaying = new MessageEmbed()
-        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]\n${status} ${bar} \`${moment.duration(seek).format('H[h] m[m] s[s]')}/${!duration ? "LIVE" : moment.duration(duration).format('H[h] m[m] s[s]')}\``)
+        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]\n${status} ${bar} \`${formatDuration(seek)}/${!duration ? "LIVE" : formatDuration(duration)}\``)
     return message.channel.send({ embeds: [nowPlaying] });
 };
 exports.help = {

@@ -1,6 +1,6 @@
-// const Pagination = require('discord-paginationembed');
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { paginateEmbed } = require('../../util/util');
+const { formatDuration } = require('../../util/musicutil');
 const moment = require('moment');
 require('moment-duration-format');
 
@@ -15,10 +15,10 @@ exports.run = async(client, message, args) => {
         let queueFields = [];
         const nowPlaying = queue.nowPlaying;
         let totalDuration = nowPlaying.info.length;
-        queueFields.push(`**NOW**: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)
+        queueFields.push(`**NOW**: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}] (${formatDuration(nowPlaying.info.length)})`)
         queue.songs.forEach((track, index) => {
-            if (queue.songs.some(song => song.isStream)) totalDuration += track.info.length;
-            queueFields.push(`\`${index + 1}\` - [${track.info.title}](${track.info.uri}) - ${track.info.author} [${track.requestedby}]`)
+            if (!queue.songs.some(song => song.info.isStream)) totalDuration += track.info.length;
+            queueFields.push(`\`${index + 1}\` - [${track.info.title}](${track.info.uri}) - ${track.info.author} [${track.requestedby}] (${formatDuration(track.info.length)})`)
         });
         const arrSplitted = [];
         while (queueFields.length) {
@@ -29,8 +29,8 @@ exports.run = async(client, message, args) => {
         arrSplitted.forEach((item, index) => {
                     const embed = new MessageEmbed()
                         .setAuthor(`Music queue for ${message.guild.name}`, message.guild.iconURL({ size: 4096, dynamic: true }))
-                        .setDescription(`Now playing: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}]`)
-                        .setFooter(`${queue.loop ? 'Currently looping the queue' : `${queue.songs.length} song${queue.songs.length === 1 ? '' : 's'} left in queue`} (queue duration: ${queue.songs.some(song => song.isStream) ? '∞' : moment.duration(totalDuration).format('H[h] m[m] s[s]')})`)
+                        .setDescription(`Now playing: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}] (${formatDuration(nowPlaying.info.length)})`)
+                        .setFooter(`${queue.loop ? 'Currently looping the queue' : `${queue.songs.length} song${queue.songs.length === 1 ? '' : 's'} left in queue`} (queue duration: ${queue.songs.some(song => song.info.isStream) ? '∞' : moment.duration(totalDuration).format('H[h] m[m] s[s]')})`)
                     .addField('\u200b', item.join('\n'));
     arrEmbeds.push(embed);
     });

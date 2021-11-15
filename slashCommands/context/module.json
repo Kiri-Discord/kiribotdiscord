@@ -1,0 +1,7 @@
+{
+    "displayName": "context menu",
+    "name": "context",
+    "desc": "all hidden context menu",
+    "hide": true,
+    "emoji": "⚙️"
+}

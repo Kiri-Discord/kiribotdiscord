@@ -1,6 +1,8 @@
 const web = require('../util/web.js');
 const { purgeDbGuild } = require('../util/util');
 const music = require('../util/music');
+const schedule = require('node-schedule');
+const request = require('node-superfetch');
 
 module.exports = async client => {
     logger.log('info', `[DISCORD] Logged in as ${client.user.tag}!`);
@@ -45,5 +47,22 @@ module.exports = async client => {
     await client.initGiveaway();
     if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;
-    client.user.setPresence({ activities: [{ name: ';-;', type: 'WATCHING' }], status: 'online' });
+
+    schedule.scheduleJob('*/60 * * * *', async() => {
+        if (!client.isReady()) return;
+        try {
+            const { body } = await request.get('https://kaomoji.party/api/getKaomoji');
+            const { kaomoji } = body;
+            return client.user.setPresence({ activities: [{ name: kaomoji, type: 'PLAYING' }], status: 'online' });
+        } catch {
+            return;
+        };
+    });
+    try {
+        const { body } = await request.get('https://kaomoji.party/api/getKaomoji');
+        const { kaomoji } = body;
+        return client.user.setPresence({ activities: [{ name: kaomoji, type: 'PLAYING' }], status: 'online' });
+    } catch {
+        client.user.setPresence({ activities: [{ name: ';-;', type: 'WATCHING' }], status: 'online' });
+    };
 };
