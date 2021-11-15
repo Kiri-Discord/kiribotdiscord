@@ -53,7 +53,6 @@ module.exports = {
 
                     queue.textChannel.send({ embeds: [{ description: `i have reconnected to your voice channel! :smile:` }] });
 
-                    if (queue.karaoke.isEnabled && queue.karaoke.instance) queue.karaoke.instance.resume();
                     queue.player.play(nowPlaying.track, {
                         volume: queue.volume || 100,
                         startTime: timestamp,

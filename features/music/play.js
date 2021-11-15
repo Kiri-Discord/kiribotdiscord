@@ -289,7 +289,8 @@ module.exports = class Queue {
 
             if (this.karaoke.isEnabled && this.karaoke.instance) {
                 if (this.karaoke.instance.success) embed.setFooter(this.karaoke.instance.success);
-                this.karaoke.instance.start();
+                if (this.karaoke.instance.pauseTimestamp) this.karaoke.instance.resume();
+                else this.karaoke.instance.start();
             };
             if (!this.repeat && !this.textChannel.deleted) {
                 const sent = await this.textChannel.send({ embeds: [embed] });
