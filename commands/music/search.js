@@ -104,8 +104,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
             });
             inactive = false;
             response.deferUpdate();
-            if (msg && msg.deletable) await msg.delete();
-            // if (loadingMessage && loadingMessage.deletable) await loadingMessage.delete();
+            if (msg.deletable) await msg.delete();
             if (response.values.length > 1) {
                 const bulk = response.values.map(song => lavalinkRes[song]);
                 client.commands

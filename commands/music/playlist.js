@@ -251,7 +251,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         let playlistEmbed = new MessageEmbed()
             .setDescription(`✅ Added **${newSongs.length}** ${newSongs.length > 1 ? `[tracks](${playlistURL || newSongs[0].info.uri})` : `[track](${playlistURL || newSongs[0].info.uri})`} to the queue [${message.author}]`);
         if (serverQueue && message.channel.id !== serverQueue.textChannel.id && !serverQueue.textChannel.deleted) {
-            serverQueue.textChannel.send({ embeds: [embed] });
+            serverQueue.textChannel.send({ embeds: [playlistEmbed] });
         };
         if (serverQueue && serverQueue.textChannel.deleted) serverQueue.textChannel = message.channel;
         message.channel.send({embeds: [playlistEmbed]});

@@ -92,7 +92,7 @@ exports.run = async(client, interaction) => {
 
 exports.suggestion = async(interaction) => {
     const query = interaction.options.getFocused();
-    if (!query || query === '') return interaction.respond([]);
+    if (!query) return interaction.respond([]);
     const res = await youtubeSuggest(query);
     if (!res.length) return interaction.respond([]);
     return interaction.respond(res.map(each => {

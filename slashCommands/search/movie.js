@@ -19,10 +19,12 @@ exports.run = async(client, interaction) => {
         }
         let find = search.body.results.find(m => m.title.toLowerCase() === query.toLowerCase()) || search.body.results[0];
         if (search.body.results.length > 1) {
-            const resultListFunc = (movie, i) => movie = {
-                label: movie.title,
-                description: movie.release_date || 'TBA',
-                value: i.toString(),
+            const resultListFunc = (movie, i) => {
+                return {
+                    label: movie.title,
+                    description: movie.release_date || 'TBA',
+                    value: i.toString(),
+                };
             };
             find = await pickWhenMany(interaction, search.body.results, find, resultListFunc);
         };
@@ -39,7 +41,7 @@ exports.run = async(client, interaction) => {
             .addField('\`🗓️\` Release date', body.release_date || '???', true)
             .addField('\`🎭\` Genres', body.genres.length ? body.genres.map(genre => genre.name).join(', ') : '???')
             .addField('\`🏢\` Companies', body.production_companies.length ? body.production_companies.map(c => c.name).join(', ') : '???');;
-        return interaction.editReply({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed], components: [] });
     } catch (error) {
         console.error(error)
         return interaction.editReply("opps, there was an error while fetching the movie's information. can you try it later? :p")

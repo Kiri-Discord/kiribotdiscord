@@ -10,6 +10,7 @@ const cooldownSchema = mongoose.Schema({
     lastDaily: Date,
     lastWater: Date,
     lastGamble: Date,
+    lastLottery: Date,
     ticketExpire: Date,
 });
 

@@ -83,7 +83,7 @@ exports.run = async(client, interaction) => {
             ${bonus ? `you collected __${bonusAmount}__ more token for voting :)` : ''}
             `)
             .setColor("#bee7f7")
-            .setFooter(`current balance: ⏣ ${storageAfter.balance} token`)
+            .setFooter(`you now have ⏣ ${storageAfter.balance} in your wallet.`)
             .setTitle(`here are your daily token, ${interaction.member.displayName}!`)
             return interaction.editReply({embeds: [embed]});
         }

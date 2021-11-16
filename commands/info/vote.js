@@ -23,8 +23,6 @@ exports.run = async(client, message, args, prefix) => {
     return message.channel.send({ embeds: [embed], components: [row] });
 };
 
-
-
 exports.help = {
     name: "vote",
     description: "get the links to vote for me and exchange for cool rewards!",

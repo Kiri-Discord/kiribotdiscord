@@ -11,7 +11,7 @@ exports.run = async(client, interaction) => {
     const amount = interaction.options.getInteger('amount');
     if (isNaN(amount)) return interaction.reply("that was not a valid number!");
     if (amount === 0) return interaction.reply("why did you transfer nothing?");
-    if (amount === 0 || amount < 0) return interaction.reply({ content: "that is an invalid amount of token! you can't neither transfer nothing or using a negative amount :pensive:", ephemeral: true });
+    if (amount < 0) return interaction.reply({ content: "that is an invalid amount of token! you can't neither transfer nothing or using a negative amount :pensive:", ephemeral: true });
 
     await interaction.deferReply();
     let storage = await client.money.findOne({

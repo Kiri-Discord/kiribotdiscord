@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 const Guild = require('../../model/music');
 const ISO6391 = require('iso-639-1');
 const { ChannelType } = require('discord-api-types/v9');
@@ -23,52 +24,82 @@ exports.run = async(client, interaction) => {
             })
             return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ scrolling lyric has been disabled` }] });
         } else if (interaction.options.getSubcommand() === "on") {
-            if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`/scrolling-lyrics set #channel\`!` }], ephemeral: true });
-            if (!serverQueue.karaoke.channel) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ the scrolling lyrics channel haven't been set yet. do \`/scrolling-lyrics set #channel\` to set it first!` }], ephemeral: true });
-            if (!serverQueue.karaoke.languageCode) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ you haven't set the language for the lyrics yet. do \`/scrolling-lyrics lang <language>\` to set it first!` }], ephemeral: true });
-            if (serverQueue.karaoke.isEnabled) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i thought scrolling lyrics is already enabled? :thinking:` }], ephemeral: true });
-            serverQueue.karaoke.isEnabled = true;
             await interaction.deferReply();
+            let board = await generateBoard();
+            if (!serverQueue) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`/scrolling-lyrics set #channel\`!` }, board] });
+            if (!serverQueue.karaoke.channel) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ the scrolling lyrics channel haven't been set yet. do \`/scrolling-lyrics set #channel\` to set it first!` }, board] });
+            if (!serverQueue.karaoke.languageCode) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ you haven't set the language for the lyrics yet. do \`/scrolling-lyrics lang <language>\` to set it first!` }, board] });
+            if (serverQueue.karaoke.isEnabled) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `i thought scrolling lyrics is already enabled? :thinking:` }, board] });
+            serverQueue.karaoke.isEnabled = true;
             await Guild.findOneAndUpdate({
-                    guildId: interaction.guild.id,
-                }, {
-                    KaraokeChannelID: serverQueue.karaoke.channel.id
-                }, {
-                    upsert: true,
-                    new: true,
-                })
-                .catch(err => logger.log('error', err));
-            return interaction.editReply(({ embeds: [{ color: "#bee7f7", description: `☑️ scrolling lyric is turned on in ${serverQueue.karaoke.channel}!` }] }));
+                guildId: interaction.guild.id,
+            }, {
+                KaraokeChannelID: serverQueue.karaoke.channel.id
+            }, {
+                upsert: true,
+                new: true,
+            });
+            board = await generateBoard();
+            return interaction.editReply(({ embeds: [{ color: "#bee7f7", description: `☑️ scrolling lyric is turned on in ${serverQueue.karaoke.channel}!` }, board] }));
 
         } else if (interaction.options.getSubcommand() === "lang") {
-            if (!serverQueue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`/scrolling-lyrics set #channel\`!` }], ephemeral: true });
+            await interaction.deferReply();
+            let board = await generateBoard();
+            if (!serverQueue) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ this sub command is only avaliable when you have a current music queue! however, you should set up your channel where all lyrics will be sent to first (if not done yet) using \`/scrolling-lyrics set #channel\`!` }, board] });
             const query = interaction.options.getString('language');
             const code = ISO6391.getCode(query.toLowerCase());
-            if (!ISO6391.validate(code)) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ sorry, \`${query}\` is not a valid language :pensive:` }], ephemeral: true });
+            if (!ISO6391.validate(code)) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ sorry, \`${query}\` is not a valid language :pensive:` }, board] });
             serverQueue.karaoke.languageCode = code;
-            return interaction.reply({ embeds: [{ color: "#bee7f7", description: `☑️ the lyric language has been set to \`${ISO6391.getName(code)}\`\n\ndo \`/scrolling-lyrics on\` to enable it :wink:` }], ephemeral: true });
+            board = await generateBoard();
+            return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `☑️ the lyric language has been set to \`${ISO6391.getName(code)}\`\n\ndo \`/scrolling-lyrics on\` to enable it :wink:` }, board] });
         } else if (interaction.options.getSubcommand() === 'set') {
+            await interaction.deferReply();
+            let board = await generateBoard();
             const channel = interaction.options.getChannel('channel');
-            if (!channel.viewable || !channel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages and embed links to ${channel}! can you check my perms? :pensive:` }], ephemeral: true });
+            if (!channel.viewable || !channel.permissionsFor(interaction.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send messages and embed links to ${channel}! can you check my perms? :pensive:` }, board] });
             if (serverQueue) {
                 serverQueue.karaoke.channel = channel;
                 if (serverQueue.karaoke.isEnabled && serverQueue.karaoke.instance) {
                     serverQueue.karaoke.instance.change(channel);
                 }
             };
-            await interaction.deferReply();
+
 
             await Guild.findOneAndUpdate({
-                    guildId: interaction.guild.id,
-                }, {
-                    KaraokeChannelID: channel.id
-                }, {
-                    upsert: true,
-                    new: true,
-                })
-                .catch(err => logger.log('error', err));
-            return interaction.editReply(({ embeds: [{ color: "#bee7f7", description: `☑️ the scrolling lyric channel has been set to ${channel}!${serverQueue ? `\n\ndo \`/scrolling-lyrics on\` to enable it :wink:` : ''}` }] }));
+                guildId: interaction.guild.id,
+            }, {
+                KaraokeChannelID: channel.id
+            }, {
+                upsert: true,
+                new: true,
+            });
+            board = await generateBoard();
+            return interaction.editReply(({ embeds: [{ color: "#bee7f7", description: `☑️ the scrolling lyric channel has been set to ${channel}!${serverQueue ? `\n\ndo \`/scrolling-lyrics on\` to enable it :wink:` : ''}` }, board] }));
     };
+    async function generateBoard() {
+        if (!serverQueue) {
+            let setting = await Guild.findOne({
+                guildId: interaction.guild.id,
+            });
+            if (!setting) setting = new Guild();
+            const channel = interaction.guild.channels.cache.get(setting.KaraokeChannelID);
+            const embed = new MessageEmbed()
+            .setTitle('🎹 scrolling lyrics setup board')
+            .setDescription(`below is a list of setting that you can set in order to turn on scrolling lyrics/karaoke correctly :slight_smile:\n\nsettings with 🔴 will need to be setup in order to enable the whole feature, those with 🟡 don't have to be setup and can be setup later (applied only when there isn't any queue) and 🟢 indicate a correctly setup setting (つ ≧ ▽ ≦) つ`)
+            .addField(channel ? `✅ lyrics channel` : `❌ lyrics channel`, `this is the channel where lyrics will be sent to. since this can be very spammy, you should create a dedicated channel for it! ${channel ? `(currently set to ${channel.toString()})` : ''}\nlyrics channel can be changed via \`/scrolling-lyrics set #channel\`!`)
+            .addField(`🟡 lyric language`, `set the preferred language for the lyrics that you want to display. you can change it to a valid language like English or Japanese using \`/scrolling-lyrics lang <language>\``)
+            .setFooter(`if all settings are indicated with ✅, you can now use /scrolling-lyrics on to turn on the scrolling lyrics feature!`)
+            return embed;
+        } else {
+            const embed = new MessageEmbed()
+            .setTitle('🎹 scrolling lyrics setup board')
+            .setDescription(`below is a list of setting that you can set in order to turn on scrolling lyrics/karaoke correctly :slight_smile:\n\nsettings with 🔴 will need to be setup in order to enable the whole feature, those with 🟡 don't have to be setup and can be setup later (applied only when there isn't any queue) and 🟢 indicate a correctly setup setting (つ ≧ ▽ ≦) つ`)
+            .addField(serverQueue.karaoke.channel ? `🟢 lyrics channel` : `🔴 lyrics channel`, `this is the channel where lyrics will be sent to. since this can be very spammy, you should create a dedicated channel for it! ${serverQueue.karaoke.channel ? `(currently set to ${serverQueue.karaoke.channel.toString()})` : ''}\nlyrics channel can be changed via \`/scrolling-lyrics set #channel\`!`)
+            .addField(serverQueue.karaoke.languageCode ? `🟢 lyric language` : `🔴 lyric language` , `set the preferred language for the lyrics that you want to display. you can change it to a valid language like English or Japanese using \`/scrolling-lyrics lang <language>\`${serverQueue.karaoke.languageCode ? `\n(currently set to ${ISO6391.getName(serverQueue.karaoke.languageCode)})` : ''}`)
+            .setFooter(`if all settings are indicated with 🟢, you can now use /scrolling-lyrics on to turn on the scrolling lyrics feature!`)
+            return embed;
+        }
+    }
 
 }
 exports.help = {

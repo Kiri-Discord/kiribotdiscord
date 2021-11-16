@@ -66,9 +66,7 @@ module.exports = class VerifyTimer {
                         })
                         return instance.send();
                     }
-                    await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** :pensive:`).catch(() => {
-                        null
-                    });
+                    await member.send(`i have kicked you from **${guild.name}** for not verifying in **${ms(time, {long: true})}** :pensive:`).catch(() => null);
                     await member.kick(reason);
                 };
             } finally {

@@ -28,7 +28,7 @@ exports.run = async(client, interaction) => {
 
 exports.suggestion = async(interaction) => {
     const query = interaction.options.getFocused();
-    if (!query || query === '') return interaction.respond([]);
+    if (!query) return interaction.respond([]);
     const { text } = await request
         .get('https://suggestqueries.google.com/complete/search')
         .query({

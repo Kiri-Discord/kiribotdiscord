@@ -18,11 +18,13 @@ exports.run = async(client, message, args) => {
         }
         let find = search.body.results.find(m => m.title.toLowerCase() === query.toLowerCase()) || search.body.results[0];
         if (search.body.results.length > 1) {
-            const resultListFunc = (movie, i) => movie = {
-                label: movie.title,
-                description: movie.release_date || 'TBA',
-                value: i.toString(),
-            };
+            const resultListFunc = (movie, i) => {
+                return {
+                    label: movie.title,
+                    description: movie.release_date || 'TBA',
+                    value: i.toString(),
+                };
+            }
             find = await pickWhenMany(message, search.body.results, find, resultListFunc);
         };
         const { body } = await request
@@ -38,7 +40,7 @@ exports.run = async(client, message, args) => {
             .addField('\`🗓️\` Release date', body.release_date || '???', true)
             .addField('\`🎭\` Genres', body.genres.length ? body.genres.map(genre => genre.name).join(', ') : '???')
             .addField('\`🏢\` Companies', body.production_companies.length ? body.production_companies.map(c => c.name).join(', ') : '???');;
-        return message.channel.send({ embeds: [embed] });
+        return message.channel.send({ embeds: [embed], components: [] });
     } catch (error) {
         return message.channel.send("Opps, there was an error while fetching the movie's information. Can you try it later? :p")
     };

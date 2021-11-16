@@ -49,7 +49,7 @@ module.exports = class ScrollingLyrics {
                 } else return true;
             };
             const text = await askString(this.queueChannel, filter);
-            if (!text || text === 0) return this.error('noChoose');
+            if (!text) return this.error('noChoose');
 
             track = avaliableLang[parseInt(text.content) - 1];
             notice = `displaying scrolling lyrics (${languages[track.languageCode]}) for this track (fallback from ${ISO6391.getName(this.lang)})`
