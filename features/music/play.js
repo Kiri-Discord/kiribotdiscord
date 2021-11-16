@@ -162,15 +162,19 @@ module.exports = class Queue {
             };
         };
         if (this.client.config.testSongBase64) {
-            this.player.play(this.client.config.testSongBase64, {
-                volume: 80,
-                noSkip: false
-            });
-            const resolved = await Promise.race([pEvent(this.player, 'end'), delay(5000, 'TIMED_OUT')]);
+            try {
+                await this.player.play(this.client.config.testSongBase64, {
+                    volume: 80,
+                    noSkip: false
+                });
+                const resolved = await Promise.race([pEvent(this.player, 'end'), delay(5000, 'TIMED_OUT')]);
 
-            if (resolved === 'TIMED_OUT') {
-                this.client.lavacordManager.leave(this.guildId);
-                return 'CANT_VERIFY';
+                if (resolved === 'TIMED_OUT') {
+                    this.client.lavacordManager.leave(this.guildId);
+                    return 'CANT_VERIFY';
+                };
+            } catch {
+                null;
             };
         };
         this.player.on('start', this.startEvent);
