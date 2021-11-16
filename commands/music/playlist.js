@@ -159,7 +159,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                     let options = [];
                     results.forEach((playlist, index) => {
                         options.push({
-                            label: playlist.title,
+                            label: shortenText(playlist.title, 90),
                             value: index.toString(),
                             description: shortenText(playlist.channelTitle, 45)
                         })
