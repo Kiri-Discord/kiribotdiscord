@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
         return message.reply(`that was fast! you need to wait **${ms(remaining, { long: true })}** before you can attempt to win a lottery again!`);
     };
     const lotto = Array.from({ length: 6 }, () => Math.floor(Math.random() * 70) + 1);
-    const similarities = lotto.filter((num, i) => args[i] === num).length;
+    const similarities = lotto.filter((num, i) => parseInt(args[i]) === num).length;
     const prize = prizes[similarities];
     const prizeNumber = prizesToNumber[prize];
     const emiliacry = client.customEmojis.get('emiliacry');
