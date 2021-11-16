@@ -69,7 +69,7 @@ module.exports = class ScrollingLyrics {
         subtitles.map((subtitle, index) => {
             this.slots.push({
                 text: subtitle.data.text.replace(/(<([^>]+)>)/gi, "").replace("\n", " "),
-                time: subtitle.data.start - 500,
+                time: subtitle.data.start - 550,
                 id: index
             })
         });

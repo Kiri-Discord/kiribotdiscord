@@ -292,7 +292,7 @@ module.exports = class Queue {
                 if (this.karaoke.instance.pauseTimestamp) this.karaoke.instance.resume();
                 else this.karaoke.instance.start();
             };
-            if (!this.repeat && !this.textChannel.deleted) {
+            if (!this.textChannel.deleted) {
                 const sent = await this.textChannel.send({ embeds: [embed] });
                 this.playingMessage = sent.id;
             };
@@ -303,7 +303,7 @@ module.exports = class Queue {
     async end(data) {
         if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
         if (this.playingMessage) {
-            if (this.songs.length && !this.repeat || this.loop) this.textChannel.messages.delete(this.playingMessage).catch(() => null);
+            await this.textChannel.messages.delete(this.playingMessage).catch(() => null);
             this.playingMessage = null;
         };
         if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
