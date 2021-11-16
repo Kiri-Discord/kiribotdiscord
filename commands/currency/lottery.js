@@ -14,12 +14,11 @@ const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args) => {
     let cooldown = 8.64e+7;
-    const amount = args[0];
     const stare = client.customEmojis.get('stare');
-    if (!amount) return message.reply(`what number would you like to choose? ${stare}`);
-    if (isNaN(amount)) return message.reply("that was not a number :frowning: you must choose a number between 1 and 70!");
+    if (!args.length) return message.reply(`you didn't provide any number ${stare} you need to provide 6 numbers to guess for the lottery!`);
+    if (args.some(a => isNaN(a))) return message.reply("some number you provided was not a number :frowning: you must choose an array of number that lay between 1 and 70!");
     const owostab = client.customEmojis.get('owostab');
-    if (amount < 1 || amount > 70) return message.reply(`the number you will choose can not be lower than 1 or greater than 70 ${owostab}`);
+    if (args.some(a => a < 1 || a > 70)) return message.reply(`some number you choose was lower than 1 or greater than 70 ${owostab}`);
     let cooldownStorage = await client.cooldowns.findOne({
         userId: message.author.id,
         guildId: message.guild.id
@@ -37,7 +36,7 @@ exports.run = async(client, message, args) => {
         return message.reply(`that was fast! you need to wait **${ms(remaining, { long: true })}** before you can attempt to win a lottery again!`);
     };
     const lotto = Array.from({ length: 6 }, () => Math.floor(Math.random() * 70) + 1);
-    const similarities = lotto.filter((num, i) => amount[i] === num).length;
+    const similarities = lotto.filter((num, i) => args[i] === num).length;
     const prize = prizes[similarities];
     const prizeNumber = prizesToNumber[prize];
     const emiliacry = client.customEmojis.get('emiliacry');
