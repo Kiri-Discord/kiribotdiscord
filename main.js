@@ -55,7 +55,7 @@ const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const schedule = require('node-schedule');
 const { AutoPoster } = require('topgg-autoposter');
-const { Intents } = require('discord.js');
+const { Intents, Options } = require('discord.js');
 
 const intents = new Intents();
 
@@ -77,9 +77,9 @@ intents.add(
 
 const client = new kiri({
     intents,
-    // makeCache: Options.cacheWithLimits({
-    //     MessageManager: 180,
-    // }),
+    makeCache: Options.cacheWithLimits({
+        MessageManager: 180,
+    }),
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: true

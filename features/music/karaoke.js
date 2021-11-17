@@ -69,7 +69,7 @@ module.exports = class ScrollingLyrics {
         subtitles.map((subtitle, index) => {
             this.slots.push({
                 text: subtitle.data.text.replace(/(<([^>]+)>)/gi, "").replace("\n", " "),
-                time: subtitle.data.start - 550,
+                time: subtitle.data.start - 580,
                 id: index
             })
         });
@@ -114,6 +114,7 @@ module.exports = class ScrollingLyrics {
         const seek = this.pauseTimestamp - this.playTimestamp;
         this.slots.forEach(subtitle => subtitle.time = subtitle.time - seek);
         this.slots = this.slots.filter(x => x.time > 0);
+        this.pauseTimestamp = null;
         this.start();
         return true;
     };

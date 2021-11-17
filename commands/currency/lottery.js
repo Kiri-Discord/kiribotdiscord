@@ -13,7 +13,7 @@ const prizesToNumber = {
 const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args) => {
-    let cooldown = 8.64e+7;
+    let cooldown = 3600000;
     const stare = client.customEmojis.get('stare');
     if (!args.length) return message.reply(`you didn't provide any number ${stare} you need to provide 6 numbers to guess for the lottery!`);
     if (args.some(a => isNaN(a))) return message.reply("some number you provided was not a number :frowning: you must choose an array of number that lay between 1 and 70!");

@@ -91,9 +91,9 @@ exports.run = async(client, message, args, prefix) => {
             const embed = new MessageEmbed()
             .setTitle('🎹 scrolling lyrics setup board')
             .setDescription(`below is a list of setting that you can set in order to turn on scrolling lyrics/karaoke correctly :slight_smile:\n\nsettings with 🔴 will need to be setup in order to enable the whole feature, those with 🟡 don't have to be setup and can be setup later (applied only when there isn't any queue) and 🟢 indicate a correctly setup setting (つ ≧ ▽ ≦) つ`)
-            .addField(channel ? `✅ lyrics channel` : `❌ lyrics channel`, `this is the channel where lyrics will be sent to. since this can be very spammy, you should create a dedicated channel for it! ${channel ? `(currently set to ${channel.toString()})` : ''}\nlyrics channel can be changed via \`${prefix}scrolling-lyrics set #channel\`!`)
+            .addField(channel ? `🟢 lyrics channel` : `❌ lyrics channel`, `this is the channel where lyrics will be sent to. since this can be very spammy, you should create a dedicated channel for it! ${channel ? `(currently set to ${channel.toString()})` : ''}\nlyrics channel can be changed via \`${prefix}scrolling-lyrics set #channel\`!`)
             .addField(`🟡 lyric language`, `set the preferred language for the lyrics that you want to display. you can change it to a valid language like English or Japanese using \`${prefix}scrolling-lyrics lang <language>\``)
-            .setFooter(`if all settings are indicated with ✅, you can now use ${prefix}scrolling-lyrics on to turn on the scrolling lyrics feature!`)
+            .setFooter(`if all settings are indicated with 🟢, you can now use ${prefix}scrolling-lyrics on to turn on the scrolling lyrics feature!`)
             return embed;
         } else {
             const embed = new MessageEmbed()
