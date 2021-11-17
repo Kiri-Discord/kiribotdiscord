@@ -77,9 +77,9 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "lottery",
-    description: "attempt to win the lottery with 6 numbers",
-    usage: ["lottery `<number>`"],
-    example: ["lottery `50`"]
+    description: "attempt to win the lottery with 6 numbers you give",
+    usage: ["lottery `<array of number>`"],
+    example: ["lottery `50 25 56 21 34 32`"]
 };
 
 exports.conf = {
