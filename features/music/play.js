@@ -306,9 +306,15 @@ module.exports = class Queue {
     };
     async end(data) {
         if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
-        if (this.playingMessage) {
-            await this.textChannel.messages.delete(this.playingMessage).catch(() => null);
-            this.playingMessage = null;
+        if (this.playingMessage && !this.textChannel.deleted) {
+            if (this.songs.length) {
+                try {
+                    this.textChannel.messages.delete(this.playingMessage);
+                } catch {
+                    null;
+                }
+                this.playingMessage = null;
+            };
         };
         if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;
         if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
