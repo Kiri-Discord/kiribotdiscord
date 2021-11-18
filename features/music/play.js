@@ -69,7 +69,7 @@ module.exports = class Queue {
             } else if (reason === 'destroyOnly') {
                 this.player.destroy();
             } else if (reason !== 'disconnected') {
-                this.player.destroy();
+                this.player.stop();
             };
             this.player.removeListener('end', this.endEvent);
             this.player.removeListener('start', this.startEvent);
