@@ -3,7 +3,7 @@ const { embedURL } = require('../util/util');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const VerifyTimer = require('../features/redis/verify');
 const ownGiveaway = require('../features/giveaway');
-const { parseMember } = require('../util/mentionParsing');
+const { parseMember } = sync.require('../util/mentionParsing');
 
 module.exports = class kiri extends Client {
         constructor(options) {
