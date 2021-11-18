@@ -3,12 +3,13 @@ const { embedURL } = require('../util/util');
 const PokemonStore = require('../features/pokemon/pokemonstore');
 const VerifyTimer = require('../features/redis/verify');
 const ownGiveaway = require('../features/giveaway');
+const { parseMember } = require('../util/mentionParsing');
 
 module.exports = class kiri extends Client {
         constructor(options) {
             super(options);
             this.utils = {
-                getMemberFromMention: require('../util/getMemberFromMention'),
+                parseMember
             }
             this.nodes = require('../lavalinkNodes.json');
             this.vote = require('../model/vote');
