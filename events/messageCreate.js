@@ -4,6 +4,7 @@ const { deleteIfAble, reactIfAble } = require('../util/util');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async(client, message) => {
+        // checking for ready event to finish
         if (!client.finished) return;
         if (message.author.bot) return;
         if (!Boolean(message.content)) return;
