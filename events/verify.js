@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { embedURL, deleteIfAble } = require('../util/util');
 const ms = require('ms');
 
@@ -20,13 +20,20 @@ module.exports = async(client, message, setting) => {
                     await client.verifytimers.setTimer(message.guild.id, !timeMs ? 900000 : timeMs, message.author.id, code, true, !timeMs ? true : false);
                 };
                 const footer = timeMs ? `you will be kicked from the server in ${ms(timeMs, {long: true})} to prevent bots and spams` : `this link is expiring in ${ms(900000, {long: true})}`;
+                const row = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                        .setStyle('LINK')
+                        .setURL(`${client.config.baseURL}verify?valID=${code}`)
+                        .setLabel('verify link <3')
+                    );
                 const dm = new MessageEmbed()
                     .setFooter(footer)
                     .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                     .setTitle(`welcome to ${message.guild.name}! wait, beep beep, boop boop?`)
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${message.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${client.config.baseURL}verify?valID=${code}`)}`)
                 try { 
-                    await message.author.send({content: `if your link was expired, type \`resend\` in ${message.channel.toString()} to get a new one!`, embeds: [dm]});
+                    await message.author.send({content: `if your link was expired, type \`resend\` in ${message.channel.toString()} to get a new one!`, embeds: [dm], components: [row]});
                     return message.channel.send(`<@!${message.author.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`)
                     .then(i => {
                         setTimeout(() => {

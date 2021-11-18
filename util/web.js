@@ -36,7 +36,7 @@ module.exports = {
                     .setDescription(stripIndents `
                     thank you for being generous and gave me a vote ${blush}
 
-                    you was given a 50% bonus on your next daily token collect, and a free 🎫 **Effect Ticket**!\ntype \`${config.prefix}daily\` in any server to collect your token, or \`${config.prefix}ticket\` to obtain your ticket :tada:${req.body.weekend ? '\n\nit is the weekend! i have increased your bonus by 80%!' : ''}
+                    you was given a 50% bonus on your next daily token collect, and a free 🎫 **Effect Ticket**!\ntype \`${config.prefix}daily\` in any server to collect your token, or \`${config.prefix}ticket\` to obtain your ticket :tada:${data.weekend ? '\n\nit is the weekend! i have increased your bonus by 80%!' : ''}
                     `)
                     .setFooter(`that is the only thing i got to offer right now :) keep voting to explore!`)
                 return user.send({ embeds: [embed], components: [row] }).catch(() => null);
