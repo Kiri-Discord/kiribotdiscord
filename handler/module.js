@@ -16,7 +16,7 @@ module.exports = async client => {
                 if (err) logger.log('error', err);
                 files.forEach(file => {
                     if (!file.endsWith(".js")) return;
-                    let prop = require(`../commands/${category}/${file}`);
+                    let prop = sync.require(`../commands/${category}/${file}`);
                     client.commands.set(prop.help.name, prop);
 
                     if (!prop.conf.adult && !prop.conf.owner) client.allNameCmds.push(prop.help.name);
@@ -43,7 +43,7 @@ module.exports = async client => {
                 if (err) logger.log('error', err);
                 files.forEach(file => {
                     if (!file.endsWith(".js")) return;
-                    let prop = require(`../slashCommands/${category}/${file}`);
+                    let prop = sync.require(`../slashCommands/${category}/${file}`);
                     if (!prop.conf.adult && !prop.conf.context) client.allSlashCmds.push(prop.conf.data.name);
                     if (!prop.conf.context) client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
                     prop.subCommand = [];

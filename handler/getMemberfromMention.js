@@ -1,4 +1,4 @@
-module.exports = async () => {
+module.exports = async() => {
     async function getMemberfromMention(mention, guild) {
         if (!mention) return;
         const id = mention.replace(/[<>@!]/g, "");

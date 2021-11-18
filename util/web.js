@@ -59,7 +59,7 @@ module.exports = {
                 if (member.partial) await member.fetch();
                 const roleExist = member._roles.includes(setting.verifyRole);
 
-                if (roleExist) return wsConnection.send(JSON.stringify({ code: 204, message: 'ALREADY_VERIFIED', uuid, type: 'verifyResponse', }));
+                if (roleExist) return wsConnection.send(JSON.stringify({ code: 204, message: 'ALREADY_VERIFIED', uuid, type: 'verifyResponse' }));
 
                 const verifyRole = guild.roles.cache.get(setting.verifyRole);
                 if (!verifyRole) return wsConnection.send(JSON.stringify({ code: 204, message: 'ROLE_NOT_EXIST', uuid, type: 'verifyResponse' }));
@@ -95,14 +95,14 @@ module.exports = {
         };
 
         wsConnection.onclose = (e) => {
-            console.log('[WEBSOCKET] Socket is closed. Reconnect will be attempted in 30 seconds.', e.reason);
+            logger.log('error', '[WEBSOCKET] Socket is closed. Reconnect will be attempted in 30 seconds.', e.reason);
             setTimeout(function() {
                 module.exports.init(client);
             }, 30000);
         };
 
         wsConnection.onerror = (err) => {
-            logger.log('error', `[WEBSOCKET] Socket encountered error and is restarting in 30 seconds (${err.message}):`);
+            logger.log('error', `[WEBSOCKET] Socket encountered error and is restarting in 30 seconds (${err.message})`);
             wsConnection.close();
             setTimeout(function() {
                 module.exports.init(client);

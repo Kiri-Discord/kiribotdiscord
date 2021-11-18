@@ -1,6 +1,6 @@
 const { splitBar } = require("string-progressbar");
 const { MessageEmbed } = require('discord.js');
-const { formatDuration } = require('../../util/musicutil');
+const { formatDuration } = require('../../../util/musicutil');
 
 exports.run = async(client, interaction) => {
     const queue = client.queue.get(interaction.guild.id);

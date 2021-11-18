@@ -2,7 +2,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { stripIndents } = require('common-tags');
 
 exports.run = async(client, message, args, prefix) => {
-    let member = await getMemberfromMention(args[0], message.guild) || message.member;
+    let member = client.utils.getMemberFromMention(message, args[0]) || message.member;
     let avatar;
     let original = true;
     let { user } = member;

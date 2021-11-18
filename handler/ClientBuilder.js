@@ -7,6 +7,9 @@ const ownGiveaway = require('../features/giveaway');
 module.exports = class kiri extends Client {
         constructor(options) {
             super(options);
+            this.utils = {
+                getMemberFromMention: require('../util/getMemberFromMention'),
+            }
             this.nodes = require('../lavalinkNodes.json');
             this.vote = require('../model/vote');
             this.isPlaying = new Map();

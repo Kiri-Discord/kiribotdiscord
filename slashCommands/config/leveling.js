@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const toggleCmd = require('./leveling/toggle');
-const announceCmd = require('./leveling/announce');
-const contentCmd = require('./leveling/content');
-const ignoreCmd = require('./leveling/ignore');
-const testCmd = require('./leveling/test');
+const toggleCmd = sync.require('./leveling/toggle');
+const announceCmd = sync.require('./leveling/announce');
+const contentCmd = sync.require('./leveling/content');
+const ignoreCmd = sync.require('./leveling/ignore');
+const testCmd = sync.require('./leveling/test');
 const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {

@@ -44,13 +44,21 @@ global.logger = winston.createLogger({
 
 
 if (config.sentryDSNURL && process.env.NO_SENTRY !== 'true') {
-    global.sentry = require("@sentry/node");
+    const sentry = require("@sentry/node");
     sentry.init({
         dsn: config.sentryDSNURL,
         tracesSampleRate: 0.8,
     });
     logger.log('info', '[SENTRY] Initialized!')
 };
+const Heatsync = require("heatsync");
+const sync = new Heatsync();
+
+sync.events.on("error", logger.error)
+sync.events.on("any", (file) => logger.info(`${file} was changed`));
+global.sync = sync;
+
+
 const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const schedule = require('node-schedule');
