@@ -3,7 +3,6 @@ const { Collection } = require("discord.js");
 const cooldowns = new Collection();
 
 module.exports = async(client, interaction) => {
-        // waiting for ready event to finish
         if (!client.finished) return;
         if (interaction.isCommand() || interaction.isContextMenu()) {
             let commandFile = client.slash.get(interaction.commandName);
@@ -70,7 +69,7 @@ module.exports = async(client, interaction) => {
         };
         try {
             commandFile.run(client, interaction);
-            logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran an application command: ${interaction.commandName} ${interaction.query.getSubcommandGroup()} ${interaction.query.getSubcommand()}`);
+            logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.inGuild() ? `${interaction.guild.name} (${interaction.guild.id})` : 'DM'} ran an application command: ${interaction.commandName}`);
             if (interaction.inGuild()) {
                 let setting = client.guildsStorage.get(interaction.guild.id);
                 if (!setting) {
