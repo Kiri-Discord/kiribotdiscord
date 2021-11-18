@@ -16,7 +16,7 @@ module.exports = async(client, interaction) => {
             const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
             if (commandFile.conf.maintenance && !client.config.owners.includes(interaction.user.id)) return interaction.reply(`\`/${interaction.commandName}\` is being maintained. try again later ${sed}`);
             if (!interaction.inGuild() && commandFile.conf.guildOnly) return interaction.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh').toString() : ':thinking:'}`);
-            if (!interaction.channel.nsfw && commandFile.conf.adult) {
+            if (interaction.inGuild() && !interaction.channel.nsfw && commandFile.conf.adult) {
                 if (!interaction.channel.permissionsFor(interaction.guild.me).has('EMBED_LINKS')) {
                     return interaction.reply({ content: `you can only use that in a NSFW channel! ${sed}`, ephemeral: true });
                 } else {
@@ -29,24 +29,24 @@ module.exports = async(client, interaction) => {
                 };
             };
 
-            if (commandFile.conf.channelPerms && interaction.channel.type !== 'DM' && commandFile.conf.channelPerms.length) {
+            if (interaction.inGuild() && commandFile.conf.channelPerms && commandFile.conf.channelPerms.length) {
                 if (!interaction.channel.permissionsFor(interaction.guild.me).has(commandFile.conf.channelPerms)) {
                     return interaction.reply({ content: `ouch! bruh it seems like i don't have the ${commandFile.conf.channelPerms.map(x => `\`${x}\``).join(" and ")} permission in this channel to properly do that for you :pensive:`, ephemeral: true});
             };
         };
-        if (commandFile.conf.userPerms && interaction.channel.type !== "DM" && commandFile.conf.userPerms.length) {
+        if (interaction.inGuild() && commandFile.conf.userPerms && commandFile.conf.userPerms.length) {
             if (!interaction.member.permissions.has(commandFile.conf.userPerms)) {
                 return interaction.reply({ content: `are you a mod? you don't seems to have the ${commandFile.conf.userPerms.map(x => `\`${x}\``).join(" and ")} permission for this dear :pensive:`, ephemeral: true});
             };
         };
-        if (commandFile.conf.clientPerms && interaction.channel.type !== "DM" && commandFile.conf.clientPerms.length) {
+        if (interaction.inGuild() && commandFile.conf.clientPerms && commandFile.conf.clientPerms.length) {
             if (!interaction.guild.me.permissions.has(commandFile.conf.clientPerms)) {
                 return interaction.reply({ content: `sorry, i don't have the ${commandFile.conf.clientPerms.map(x => `\`${x}\``).join(" and ")} permission across the server to do that ${sed}`, ephemeral: true });
             };
         };
         if (!cooldowns.has(commandFile.help.name)) cooldowns.set(commandFile.help.name, new Collection());
     
-        const cooldownID = interaction.channel.type === "DM" ? interaction.user.id : interaction.user.id + interaction.guild.id;
+        const cooldownID = interaction.inGuild() ? interaction.user.id + interaction.guild.id : interaction.user.id;
     
         const now = Date.now();
         const timestamps = cooldowns.get(commandFile.help.name);
@@ -70,15 +70,17 @@ module.exports = async(client, interaction) => {
         try {
             commandFile.run(client, interaction);
             logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran an application command: ${interaction.commandName} ${interaction.query.getSubcommandGroup()} ${interaction.query.getSubcommand()}`);
-            let setting = client.guildsStorage.get(interaction.guild.id);
-            if (!setting) {
-                const dbguilds = client.dbguilds;
-                setting = new dbguilds({
-                    guildID: interaction.guild.id
-                });
-                client.guildsStorage.set(interaction.guild.id, setting);
-                await setting.save();
-            };
+            if (interaction.inGuild()) {
+                let setting = client.guildsStorage.get(interaction.guild.id);
+                if (!setting) {
+                    const dbguilds = client.dbguilds;
+                    setting = new dbguilds({
+                        guildID: interaction.guild.id
+                    });
+                    client.guildsStorage.set(interaction.guild.id, setting);
+                    await setting.save();
+                };
+            }
         } catch (error) {
             logger.log('error', error);
             return interaction.reply({ content: `sorry, i got an error while executing that command for you. please seek some support if this happen frequently ${duh}`, ephemeral: true })
