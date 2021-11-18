@@ -5,6 +5,9 @@ const { Routes } = require('discord-api-types/v9');
 const globPromise = promisify(glob);
 const config = require('../config.json');
 
+const Heatsync = require("heatsync");
+global.sync = new Heatsync();
+
 const init = async() => {
     const cmdFiles = await globPromise(`${process.cwd()}/slashCommands/*/*.js`);
     console.log(`Found ${cmdFiles.length} application (/) commands`);
