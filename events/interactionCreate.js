@@ -3,6 +3,7 @@ const { Collection } = require("discord.js");
 const cooldowns = new Collection();
 
 module.exports = async(client, interaction) => {
+        // waiting for ready event to finish
         if (!client.finished) return;
         if (interaction.isCommand() || interaction.isContextMenu()) {
             let commandFile = client.slash.get(interaction.commandName);
