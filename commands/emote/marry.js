@@ -12,7 +12,7 @@ exports.run = async(client, message, args, prefix) => {
         };
     };
     if (!args[0]) return message.reply('who do you want to propose to?');
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply("i couldn't find that user in this server :pensive:");
     if (member.user.id === message.author.id) return message.reply('WHY DO YOU WANT TO MARRY YOURSELF?');
     if (member.user.id === client.user.id) return message.reply('aww i apreciated that but.. i am just a bot :(');

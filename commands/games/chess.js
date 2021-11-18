@@ -34,7 +34,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
     };
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(current.prompt);
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply("who do you want to play with? tag me to play with me if no one is arround :pensive:");
     const opponent = member.user;
     if (opponent.id === message.author.id) return message.reply("you can't play with yourself!");

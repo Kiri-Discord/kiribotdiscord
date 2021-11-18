@@ -2,7 +2,7 @@ const { MersenneTwister19937, integer } = require('random-js');
 const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+    const member = client.utils.parseMember(message, args[0]) || message.member;
     const { user } = member;
 
     let level;

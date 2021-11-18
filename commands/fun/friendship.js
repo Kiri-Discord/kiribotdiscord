@@ -4,13 +4,13 @@ exports.run = async(client, message, args) => {
     let first;
     let second;
     if (args[1]) {
-        first = await getMemberfromMention(args[0], message.guild);
-        second = await getMemberfromMention(args[1], message.guild);
+        first = client.utils.parseMember(message, args[0])
+        second = client.utils.parseMember(message, args[1])
         if (!first || !second) return message.channel.send("i don't quite recognize either the first or the second ID that you given :pensive:");
     } else {
         first = message.member;
         if (!args[0]) return message.channel.send('you got to mention a member in this server!');
-        second = await getMemberfromMention(args[0], message.guild);
+        second = client.utils.parseMember(message, args[0])
         if (!second) return message.channel.send("can you check the mention or ID again? i don't quite catch that :pensive:");
     };
     let level;

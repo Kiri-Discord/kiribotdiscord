@@ -1,16 +1,16 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const bakaCmd = require('./actions/baka');
-const cryCmd = require('./actions/cry');
-const cuddleCmd = require('./actions/cuddle');
-const feedCmd = require('./actions/feed');
-const hugCmd = require('./actions/hug');
-const kissCmd = require('./actions/kiss');
-const patCmd = require('./actions/pat');
-const pokeCmd = require('./actions/poke');
-const punchCmd = require('./actions/punch');
-const slapCmd = require('./actions/slap');
-const smugCmd = require('./actions/smug');
-const tickleCmd = require('./actions/tickle');
+const bakaCmd = sync.require('./actions/baka');
+const cryCmd = sync.require('./actions/cry');
+const cuddleCmd = sync.require('./actions/cuddle');
+const feedCmd = sync.require('./actions/feed');
+const hugCmd = sync.require('./actions/hug');
+const kissCmd = sync.require('./actions/kiss');
+const patCmd = sync.require('./actions/pat');
+const pokeCmd = sync.require('./actions/poke');
+const punchCmd = sync.require('./actions/punch');
+const slapCmd = sync.require('./actions/slap');
+const smugCmd = sync.require('./actions/smug');
+const tickleCmd = sync.require('./actions/tickle');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

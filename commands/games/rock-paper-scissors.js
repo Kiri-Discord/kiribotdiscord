@@ -170,7 +170,7 @@ class Game {
 };
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply('who do you want to play with ?');
     const challenged = member.user;
     if (challenged.id === message.author.id) return message.reply("you can't play against yourself!");

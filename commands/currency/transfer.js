@@ -1,5 +1,5 @@
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply("who do you want to send token to?");
     const user = member.user;
     if (user.id === client.user.id) return message.reply("wow you are so generous but.. that's me.");

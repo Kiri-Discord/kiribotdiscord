@@ -3,7 +3,7 @@ const { randomRange, buttonVerify } = require('../../util/util');
 
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild) || message.guild.me;
+    const member = client.utils.parseMember(message, args[0]) || message.guild.me;
     const opponent = member.user;
     if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
     const current = client.games.get(message.channel.id);

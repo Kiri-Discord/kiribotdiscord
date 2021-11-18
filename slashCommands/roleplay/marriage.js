@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const marryCmd = require('./marriage/marry');
-const statusCmd = require('./marriage/status');
-const divorceCmd = require('./marriage/divorce');
+const marryCmd = sync.require('./marriage/marry');
+const statusCmd = sync.require('./marriage/status');
+const divorceCmd = sync.require('./marriage/divorce');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

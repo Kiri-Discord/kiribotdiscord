@@ -1,4 +1,4 @@
-const Queue = require("../../features/music/play");
+const Queue = sync.require("../../features/music/play");
 const { fetchInfo, canModifyQueue } = require('../../util/musicutil');
 const { MessageEmbed } = require('discord.js');
 const scdl = require("soundcloud-downloader").default;

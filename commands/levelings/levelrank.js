@@ -2,7 +2,7 @@ const { Rank } = require('canvacord');
 const { MessageAttachment } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
-    let mention = await getMemberfromMention(args[0], message.guild) || message.member;
+    let mention = client.utils.parseMember(message, args[0]) || message.member;
 
     if (mention.user.id === client.user.id) return message.channel.send('that was me lmao');
     if (mention.user.bot) return message.channel.send({ embeds: [{ color: "#bee7f7", description: 'just to make this clear... bots can\'t level up :pensive:' }] })

@@ -16,7 +16,7 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Stone Serif LT
 
 exports.run = async(client, message, args) => {
     let rank;
-    let mention = await getMemberfromMention(args[0], message.guild) || message.member;
+    let mention = client.utils.parseMember(message, args[0]) || message.member;
 
     let target = await client.dbleveling.findOne({
         guildId: message.guild.id,

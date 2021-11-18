@@ -8,7 +8,7 @@ exports.run = async(client, message, args) => {
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
 
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare').toString() : ':pensive:';
     if (!member) return message.channel.send({ embeds: [{ color: "RED", description: `i can't find that user! please mention a valid member or user ID in this guild ${stareEmoji}` }] });
 

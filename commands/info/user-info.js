@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const { trimArray } = require('../../util/util');
 const permissions = require('../../assets//permission.json');
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+    const member = client.utils.parseMember(message, args[0]) || message.member;
     const presences = {
         "dnd": "Do not disturb",
         "idle": "Idle",

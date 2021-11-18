@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js")
 const request = require('node-superfetch');
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     const deadEmoji = client.customEmojis.get('dead') ? client.customEmojis.get('dead') : ':pensive:'
     if (!member) {

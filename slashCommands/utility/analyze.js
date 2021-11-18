@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const faceCmd = require('./analyze/face');
-const gnCmd = require('./analyze/gender-guess');
-const animeCmd = require('./analyze/anime');
+const faceCmd = sync.require('./analyze/face');
+const gnCmd = sync.require('./analyze/gender-guess');
+const animeCmd = sync.require('./analyze/anime');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const listCmd = require('./giveaway/list');
-const createCmd = require('./giveaway/create');
-const deleteCmd = require('./giveaway/delete');
-const endCmd = require('./giveaway/end');
-const rerollCmd = require('./giveaway/reroll');
+const listCmd = sync.require('./giveaway/list');
+const createCmd = sync.require('./giveaway/create');
+const deleteCmd = sync.require('./giveaway/delete');
+const endCmd = sync.require('./giveaway/end');
+const rerollCmd = sync.require('./giveaway/reroll');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

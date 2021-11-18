@@ -104,8 +104,7 @@ client.on("error", err => {
 });
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
-require("./handler/getUserfromMention.js")(client);
-require("./handler/getMemberfromMention.js")();
+
 if (config.topggkey && process.env.NO_TOPGG !== 'true') {
     const ap = AutoPoster(config.topggkey, client);
 

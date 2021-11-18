@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const catifyCmd = require('./text/catify');
-const owoCmd = require('./text/owo');
-const spoilerCmd = require('./text/spoiler');
+const catifyCmd = sync.require('./text/catify');
+const owoCmd = sync.require('./text/owo');
+const spoilerCmd = sync.require('./text/spoiler');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

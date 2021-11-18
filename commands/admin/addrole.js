@@ -5,7 +5,7 @@ exports.run = async(client, message, args, prefix) => {
     const guildDB = client.guildsStorage.get(message.guild.id);
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0]);
 
     const roleName = args.slice(1).join(' ');
 

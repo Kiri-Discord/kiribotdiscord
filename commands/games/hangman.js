@@ -168,7 +168,7 @@ exports.run = async(client, message, args) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(current.prompt);
 
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply('who do you want to play with ?');
     const challenged = member.user;
 

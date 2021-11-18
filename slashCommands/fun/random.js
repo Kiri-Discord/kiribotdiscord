@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const eightBallCmd = require('./random/8ball');
-const adviceCmd = require('./random/advice');
-const factCmd = require('./random/fact');
-const jokeCmd = require('./random/joke');
-const questionCmd = require('./random/question');
-const quoteCmd = require('./random/quote');
-const praiseCmd = require('./random/praise');
+const eightBallCmd = sync.require('./random/8ball');
+const adviceCmd = sync.require('./random/advice');
+const factCmd = sync.require('./random/fact');
+const jokeCmd = sync.require('./random/joke');
+const questionCmd = sync.require('./random/question');
+const quoteCmd = sync.require('./random/quote');
+const praiseCmd = sync.require('./random/praise');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

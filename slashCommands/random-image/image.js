@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const birdCmd = require('./art/bird');
-const catCmd = require('./art/cat');
-const dogCmd = require('./art/dog');
-const gooseCmd = require('./art/goose');
-const pandaCmd = require('./art/panda');
+const birdCmd = sync.require('./art/bird');
+const catCmd = sync.require('./art/cat');
+const dogCmd = sync.require('./art/dog');
+const gooseCmd = sync.require('./art/goose');
+const pandaCmd = sync.require('./art/panda');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

@@ -4,7 +4,7 @@ const slapSchema = require('../../model/slap')
 
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
 
     if (!member) {
         const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:'

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const timeoutCmd = require('./verify/timeout');
-const setupCmd = require('./verify/setup');
-const sendCmd = require('./verify/send');
+const timeoutCmd = sync.require('./verify/timeout');
+const setupCmd = sync.require('./verify/setup');
+const sendCmd = sync.require('./verify/send');
 const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {

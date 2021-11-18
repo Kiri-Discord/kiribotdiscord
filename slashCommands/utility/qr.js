@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const genCmd = require('./qr/generate');
-const readCmd = require('./qr/reader');
+const genCmd = sync.require('./qr/generate');
+const readCmd = sync.require('./qr/reader');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

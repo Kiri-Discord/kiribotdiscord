@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const shipCmd = require('./rate/ship');
-const friendshipCmd = require('./rate/friendship.js');
-const ppCmd = require('./rate/pp');
+const shipCmd = sync.require('./rate/ship');
+const friendshipCmd = sync.require('./rate/friendship.js');
+const ppCmd = sync.require('./rate/pp');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

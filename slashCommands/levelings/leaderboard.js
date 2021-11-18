@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const cuddleCmd = require('./leaderboard/cuddle');
-const hugCmd = require('./leaderboard/hug');
-const kissCmd = require('./leaderboard/kiss');
-const levelingCmd = require('./leaderboard/leveling');
-const patCmd = require('./leaderboard/pat');
-const richCmd = require('./leaderboard/richest');
-const slapCmd = require('./leaderboard/slap');
-const punchCmd = require('./leaderboard/punch');
+const cuddleCmd = sync.require('./leaderboard/cuddle');
+const hugCmd = sync.require('./leaderboard/hug');
+const kissCmd = sync.require('./leaderboard/kiss');
+const levelingCmd = sync.require('./leaderboard/leveling');
+const patCmd = sync.require('./leaderboard/pat');
+const richCmd = sync.require('./leaderboard/richest');
+const slapCmd = sync.require('./leaderboard/slap');
+const punchCmd = sync.require('./leaderboard/punch');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {

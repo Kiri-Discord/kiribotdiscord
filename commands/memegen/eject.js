@@ -9,7 +9,7 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-CJK.otf')
 registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Noto-Emoji.ttf'), { family: 'Noto' });
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply('who do you want to eject lol');
     const user = member.user;
     // if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');

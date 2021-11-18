@@ -1,5 +1,5 @@
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+    const member = client.utils.parseMember(message, args[0]) || message.member;
     if (!member) return message.reply("i couldn't find that user in this server :pensive:");
     const user = member.user;
     if (user.id === client.user.id) return message.reply('i am just a bot :(');

@@ -69,7 +69,7 @@ module.exports = class Queue {
             } else if (reason === 'destroyOnly') {
                 this.player.destroy();
             } else if (reason !== 'disconnected') {
-                this.player.stop();
+                this.player.destroy();
             };
             this.player.removeListener('end', this.endEvent);
             this.player.removeListener('start', this.startEvent);
@@ -314,6 +314,15 @@ module.exports = class Queue {
                     null;
                 }
                 this.playingMessage = null;
+            } else {
+                if (this.repeat || this.loop) {
+                    try {
+                        this.textChannel.messages.delete(this.playingMessage);
+                    } catch {
+                        null;
+                    }
+                    this.playingMessage = null;
+                };
             };
         };
         if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;

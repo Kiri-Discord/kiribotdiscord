@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require('common-tags');
 
 exports.run = async(client, message, args) => {
-    const member = await getMemberfromMention(args[0], message.guild) || message.member;
+    const member = client.utils.parseMember(message, args[0]) || message.member;
     const user = member.user;
     if (user.id === client.user.id) return message.reply({
         embeds: [{

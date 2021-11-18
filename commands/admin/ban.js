@@ -3,7 +3,7 @@ const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
 
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
 
     const guildDB = client.guildsStorage.get(message.guild.id);
 

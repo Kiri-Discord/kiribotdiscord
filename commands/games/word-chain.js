@@ -9,7 +9,7 @@ exports.run = async(client, message, args) => {
     const current = client.games.get(message.channel.id);
     if (current) return message.reply(current.prompt);
     if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    const member = await getMemberfromMention(args[0], message.guild);
+    const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply('you should tag someone to play with :(');
     const opponent = member.user;
     let time = args[1] || 10;

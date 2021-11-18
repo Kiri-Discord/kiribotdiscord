@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const offCmd = require('./goodbye/off');
-const channelCmd = require('./goodbye/channel');
-const contentCmd = require('./goodbye/content');
-const testCmd = require('./goodbye/test');
+const offCmd = sync.require('./goodbye/off');
+const channelCmd = sync.require('./goodbye/channel');
+const contentCmd = sync.require('./goodbye/content');
+const testCmd = sync.require('./goodbye/test');
 const { ChannelType } = require('discord-api-types/v9');
 
 exports.run = async(client, interaction) => {

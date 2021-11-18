@@ -1,14 +1,12 @@
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
-const Queue = require("../../features/music/play");
-const { shortenText } = require('../../util/util');
-const { fetchInfo, canModifyQueue } = require('../../util/musicutil');
+const Queue = sync.require("../../features/music/play");
+const { shortenText, verify, verifyLanguage } = require('../../util/util');
+const { fetchInfo, canModifyQueue, YOUTUBE_API_KEY, DEFAULT_VOLUME } = require('../../util/musicutil');
 const YouTubeAPI = require("simple-youtube-api");
 const scdl = require("soundcloud-downloader").default;
 const Guild = require('../../model/music');
-const { YOUTUBE_API_KEY, DEFAULT_VOLUME } = require("../../util/musicutil");
 const validUrl = require('valid-url');
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-const { verify, verifyLanguage } = require('../../util/util');
 const { getTracks } = require('spotify-url-info');
 
 exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
