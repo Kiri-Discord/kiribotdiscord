@@ -69,7 +69,7 @@ module.exports = async(client, interaction) => {
         };
         try {
             commandFile.run(client, interaction);
-            logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran an application command: ${interaction.commandName}`);
+            logger.log('info', `${interaction.user.tag} (${interaction.user.id}) from ${interaction.channel.type === 'DM' ? 'DM' : `${interaction.guild.name} (${interaction.guild.id})`} ran an application command: ${interaction.commandName} ${interaction.query.getSubcommandGroup()} ${interaction.query.getSubcommand()}`);
             let setting = client.guildsStorage.get(interaction.guild.id);
             if (!setting) {
                 const dbguilds = client.dbguilds;
