@@ -33,8 +33,10 @@ const init = async() => {
                 Routes.applicationCommands(config.applicationID), { body: slash },
             );
         };
+        process.exit(1);
     } catch (error) {
         console.log(error);
+        process.exit(1);
     };
 };
 init();
