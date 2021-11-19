@@ -14,6 +14,7 @@ exports.run = async(client, message, args) => {
         if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
         let queueFields = [];
         const nowPlaying = queue.nowPlaying;
+        if (!nowPlaying) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
         let totalDuration = nowPlaying.info.length;
         queueFields.push(`**NOW**: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}] (${formatDuration(nowPlaying.info.length)})`)
         queue.songs.forEach((track, index) => {
