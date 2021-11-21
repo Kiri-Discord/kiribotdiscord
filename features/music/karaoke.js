@@ -1,4 +1,3 @@
-const ytdl = require('ytdl-core');
 const { parseSync } = require('subtitle');
 const format = 'vtt';
 const request = require('node-superfetch');
@@ -26,53 +25,61 @@ module.exports = class ScrollingLyrics {
         if (!this.channel.viewable || !this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
         let notice = `displaying scrolling lyrics (${languages[this.lang]}) for this track`;
         if (this.song.info.sourceName !== 'youtube') return this.error('notSupported');
-        const info = await ytdl.getInfo(this.song.info.uri);
-        const foundCaption = info.player_response.captions;
-        if (!foundCaption) return this.error();
-        const tracks = foundCaption.playerCaptionsTracklistRenderer.captionTracks;
-        if (!tracks || !tracks.length) return this.error();
-        let track = tracks.find(t => t.languageCode === this.lang);
-        if (!track) {
-            const avaliableLang = tracks.filter(track => languages[track.languageCode]);
-            if (!avaliableLang.length) return this.error();
-            const list = avaliableLang.map(t => t.languageCode).map((lang, index) => `\`${index + 1}\` - ${languages[lang]}`)
-            const emoji = this.client.customEmojis.get('party');
-            const embed = new MessageEmbed()
-                .setAuthor(`no lyrics for this song in your preferred language (${languages[this.lang]})`)
-                .setDescription(`fortunately, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}\nchoose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:\n\n${list.join("\n")}`)
-                .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
-            await this.queueChannel.send({ embeds: [embed] });
-            const filter = res => {
-                const number = res.content;
-                if ((isNaN(number) || number > avaliableLang.length || number < 1) && res.content.toLowerCase() !== 'cancel') {
-                    return false;
-                } else return true;
+        try {
+            const captionRequest = await request
+                .post(this.client.config.lyricURL + 'subtitle')
+                .set({ Authorization: this.client.config.lyricsKey })
+                .query({
+                    video: this.song.info.uri
+                });
+            const tracks = captionRequest.body;
+            if (tracks.error) return this.error();
+            let track = tracks.find(t => t.languageCode === this.lang);
+            if (!track) {
+                const avaliableLang = tracks.filter(track => languages[track.languageCode]);
+                if (!avaliableLang.length) return this.error();
+                const list = avaliableLang.map(t => t.languageCode).map((lang, index) => `\`${index + 1}\` - ${languages[lang]}`)
+                const emoji = this.client.customEmojis.get('party');
+                const embed = new MessageEmbed()
+                    .setAuthor(`no lyrics for this song in your preferred language (${languages[this.lang]})`)
+                    .setDescription(`fortunately, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}\nchoose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:\n\n${list.join("\n")}`)
+                    .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
+                await this.queueChannel.send({ embeds: [embed] });
+                const filter = res => {
+                    const number = res.content;
+                    if ((isNaN(number) || number > avaliableLang.length || number < 1) && res.content.toLowerCase() !== 'cancel') {
+                        return false;
+                    } else return true;
+                };
+                const text = await askString(this.queueChannel, filter);
+                if (!text) return this.error('noChoose');
+
+                track = avaliableLang[parseInt(text.content) - 1];
+                notice = `displaying scrolling lyrics (${languages[track.languageCode]}) for this track (fallback from ${ISO6391.getName(this.lang)})`
             };
-            const text = await askString(this.queueChannel, filter);
-            if (!text) return this.error('noChoose');
+            const { body } = await request.get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
 
-            track = avaliableLang[parseInt(text.content) - 1];
-            notice = `displaying scrolling lyrics (${languages[track.languageCode]}) for this track (fallback from ${ISO6391.getName(this.lang)})`
-        };
-        const { body } = await request.get(`${track.baseUrl}&fmt=${format !== 'xml' ? format : ''}`);
-
-        const output = parseSync(body.toString());
-        const subtitles = output
-            .filter(x => x.type === 'cue')
-            .filter(x => x.data.text)
-            .filter(x => x.data.text !== '')
-            .filter((sub, index, arr) =>
-                index === arr.findIndex((t) => (
-                    t.data.start === sub.data.start && t.data.end === sub.data.end && t.data.text === sub.data.text
-                ))
-            );
-        subtitles.map((subtitle, index) => {
-            this.slots.push({
-                text: subtitle.data.text.replace(/(<([^>]+)>)/gi, "").replace("\n", " "),
-                time: subtitle.data.start - 580,
-                id: index
-            })
-        });
+            const output = parseSync(body.toString());
+            const subtitles = output
+                .filter(x => x.type === 'cue')
+                .filter(x => x.data.text)
+                .filter(x => x.data.text !== '')
+                .filter((sub, index, arr) =>
+                    index === arr.findIndex((t) => (
+                        t.data.start === sub.data.start && t.data.end === sub.data.end && t.data.text === sub.data.text
+                    ))
+                );
+            subtitles.map((subtitle, index) => {
+                this.slots.push({
+                    text: subtitle.data.text.replace(/(<([^>]+)>)/gi, "").replace("\n", " "),
+                    time: subtitle.data.start - 580,
+                    id: index
+                })
+            });
+        } catch (err) {
+            console.error(err);
+            return this.error();
+        }
         return this.success = notice;
     };
     start() {
