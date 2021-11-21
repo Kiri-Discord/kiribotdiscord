@@ -270,7 +270,7 @@ module.exports = class util {
 		});
 		collector.on('end', async() => {
 			row.components.forEach(button => button.setDisabled(true));
-			return msg.edit({
+			if (msg.editable) return msg.edit({
 				content: `page ${currentPage + 1} of ${array.length}`,
 				components: [row],
 				embeds: [array[currentPage]]

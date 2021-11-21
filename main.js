@@ -85,9 +85,9 @@ intents.add(
 
 const client = new kiri({
     intents,
-    makeCache: Options.cacheWithLimits({
-        MessageManager: 180,
-    }),
+    // makeCache: Options.cacheWithLimits({
+    //     ThreadManager: 0,
+    // }),
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: true

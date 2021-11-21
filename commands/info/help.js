@@ -97,7 +97,7 @@ exports.run = async(client, message, args, prefix) => {
         collector.on('end', async() => {
             row.components.forEach(button => button.setDisabled(true));
             row1.components.forEach(button => button.setDisabled(true));
-            return msg.edit({
+            if (msg.editable) return msg.edit({
                 components: [row1, row],
                 embeds: [arrEmbeds[currentPage]]
             });

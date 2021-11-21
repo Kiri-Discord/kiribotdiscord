@@ -306,7 +306,7 @@ module.exports = class Queue {
     };
     async end(data) {
         if (this.debug) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
-        if (this.playingMessage && !this.textChannel.deleted) {
+        if (this.playingMessage && !this.textChannel.deleted && (data.reason === "FINISHED" || data.reason === 'REPLACED')) {
             if (this.songs.length) {
                 try {
                     this.textChannel.messages.delete(this.playingMessage);
