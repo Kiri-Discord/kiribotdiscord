@@ -1,7 +1,7 @@
 {
     "displayName": "configuration",
     "name": "config",
-    "desc": "configure me to your liking, all settings are per server",
+    "desc": "configure my features to your liking, all settings are per server",
     "hide": false,
     "emoji": "⚙️"
 }

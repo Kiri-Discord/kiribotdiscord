@@ -1,7 +1,7 @@
 {
     "displayName": "moderation",
     "name": "mod",
-    "desc": "help you in moderating the server",
+    "desc": "moderation tools to help you moderate the server",
     "hide": false,
     "emoji": "🔨"
 }

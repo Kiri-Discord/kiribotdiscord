@@ -1,7 +1,7 @@
 {
-    "displayName": "economy",
-    "name": "economy",
-    "desc": "go betting, receive daily token earn money from gardening. token can also be claimed from playing games!",
+    "displayName": "currency",
+    "name": "currency",
+    "desc": "grind and manage your token and other currency!",
     "hide": false,
     "emoji": "💰"
 }

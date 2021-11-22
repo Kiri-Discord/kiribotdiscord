@@ -13,7 +13,8 @@ exports.run = async(client, interaction) => {
         const optionList = [{
             label: 'all',
             value: 'all',
-            emoji: '📔'
+            emoji: '📔',
+            description: 'display all commands avaliable!'
         }];
         let fullCmd = [];
         let list = [];
@@ -24,6 +25,7 @@ exports.run = async(client, interaction) => {
                 label: mod.displayName,
                 value: mod.name,
                 emoji: mod.emoji,
+                description: mod.desc
             })
             mod.cmds.forEach(x => x.type = mod.name);
             fullCmd.push(...mod.cmds);
