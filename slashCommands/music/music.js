@@ -1,90 +1,90 @@
 const youtubeSuggest = require("youtube-suggest");
+const debugCmd = sync.require('./music/debug');
+const disconnectCmd = sync.require('./music/disconnect');
+const fskipCmd = sync.require('./music/force-skip');
+const loopCmd = sync.require('./music/loop');
+const lyricsCmd = sync.require('./music/lyrics');
+const moveCmd = sync.require('./music/move');
+const npCmd = sync.require('./music/now-playing');
+const pauseCmd = sync.require('./music/pause');
+const playCmd = sync.require('./music/play');
+const playlistCmd = sync.require('./music/playlist');
+const queueCmd = sync.require('./music/queue');
+const removeCmd = sync.require('./music/remove');
+const repeatCmd = sync.require('./music/repeat');
+const resumeCmd = sync.require('./music/resume');
+const searchCmd = sync.require('./music/search');
+const seekCmd = sync.require('./music/seek');
+const shuffleCmd = sync.require('./music/shuffle');
+const skipToCmd = sync.require('./music/skip-to');
+const stopCmd = sync.require('./music/stop');
+const volumeCmd = sync.require('./music/volume');
+const skipCmd = sync.require('./music/skip');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
         case 'debug':
-            const debugCmd = sync.require('./music/debug');
             debugCmd.run(client, interaction);
             break;
         case 'disconnect':
-            const disconnectCmd = sync.require('./music/disconnect');
             disconnectCmd.run(client, interaction);
             break;
         case 'force-skip':
-            const fskipCmd = sync.require('./music/force-skip');
             if (!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({ content: `are you a mod? you don't seems to have the \`MANAGE_MESSAGES\` permission to forcefully modify the queue :pensive:`, ephemeral: true });
             fskipCmd.run(client, interaction);
             break;
         case 'loop':
-            const loopCmd = sync.require('./music/loop');
             loopCmd.run(client, interaction);
             break;
         case 'lyrics':
-            const lyricsCmd = sync.require('./music/lyrics');
             lyricsCmd.run(client, interaction);
             break;
         case 'move':
-            const moveCmd = sync.require('./music/move');
             moveCmd.run(client, interaction);
             break;
         case 'now-playing':
-            const npCmd = sync.require('./music/now-playing');
             npCmd.run(client, interaction);
             break;
         case 'pause':
-            const pauseCmd = sync.require('./music/pause');
             pauseCmd.run(client, interaction);
             break;
         case 'play':
-            const playCmd = sync.require('./music/play');
             playCmd.run(client, interaction);
             break;
         case 'playlist':
-            const playlistCmd = sync.require('./music/playlist');
             playlistCmd.run(client, interaction);
             break;
         case 'queue':
-            const queueCmd = sync.require('./music/queue');
             queueCmd.run(client, interaction);
             break;
         case 'remove':
-            const removeCmd = sync.require('./music/remove');
             removeCmd.run(client, interaction);
             break;
         case 'repeat':
-            const repeatCmd = sync.require('./music/repeat');
             repeatCmd.run(client, interaction);
             break;
         case 'resume':
-            const resumeCmd = sync.require('./music/resume');
             resumeCmd.run(client, interaction);
             break;
         case 'search':
-            const searchCmd = sync.require('./music/search');
             searchCmd.run(client, interaction);
             break;
         case 'seek':
-            const seekCmd = sync.require('./music/seek');
             seekCmd.run(client, interaction);
             break;
         case 'shuffle':
-            const shuffleCmd = sync.require('./music/shuffle');
             shuffleCmd.run(client, interaction);
             break;
         case 'skip-to':
-            const skipToCmd = sync.require('./music/skip-to');
             skipToCmd.run(client, interaction);
             break;
         case 'stop':
-            const stopCmd = sync.require('./music/stop');
             stopCmd.run(client, interaction);
             break;
         case 'volume':
-            const volumeCmd = sync.require('./music/volume');
             volumeCmd.run(client, interaction);
             break;
         case 'skip':
-            const skipCmd = sync.require('./music/skip');
             skipCmd.run(client, interaction);
             break;
     }
