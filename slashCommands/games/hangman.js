@@ -45,7 +45,7 @@ class Game {
             this.end();
             this.interaction.user.send('this game has expired lmao');
         });
-        this.word = word.get(Array.from(word.keys()).toString()).content;
+        this.word = word.first().content;
         this.displayWord = '';
         for (let i = 0; i < this.word.length; i++) this.displayWord += '-';
         this.msg.edit(`${this.stages[0]}\n\`${this.displayWord}\`\n wrong guesses: ${this.guesses}`);
@@ -61,7 +61,7 @@ class Game {
             this.end();
             this.msg.edit('this game has expired lmao');
         });
-        this.letter = word.get(Array.from(word.keys()).toString()).content;
+        this.letter = word.first().content;
         if (this.letter.length > 1) return this.run();
         if (this.guesses.includes(this.letter)) return this.run();
         if (this.word.toLowerCase().includes(this.letter.toLowerCase())) { this.letters++; } else {
