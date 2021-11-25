@@ -57,8 +57,9 @@ global.logger = winston.createLogger({
         }),
     ],
     format: winston.format.combine(
+        winston.format.timestamp(),
         errorStackFormat(),
-        winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}${log.error ? `\n${log.stack}` : ''}`)
+        winston.format.printf(log => `${log.timestamp} ${log.level.toUpperCase()}: ${log.message}${log.error ? `\n${log.stack}` : ''}`)
     )
 });
 
