@@ -1,45 +1,65 @@
 require('dotenv').config();
 
 process.on('unhandledRejection', error => {
-    console.error('Unhandled promise rejection:', error);
+    logger.error(error);
 });
 
 global.__basedir = __dirname;
 
 const winston = require('winston');
+require('winston-daily-rotate-file');
 const config = require('./config.json');
 const fs = require('fs');
 
-const logDir = "logs";
+if (!fs.existsSync('logs')) fs.mkdirSync('logs');
 
-if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir);
-};
+if (!fs.existsSync('logs/output')) fs.mkdirSync('logs/output');
+if (!fs.existsSync('logs/error')) fs.mkdirSync('logs/error');
+
+const errorStackFormat = winston.format(info => {
+    if (info instanceof Error) {
+        return Object.assign({}, info, {
+            stack: info.stack,
+            message: info.message,
+            error: true
+        })
+    }
+    return info
+});
+  
 
 global.logger = winston.createLogger({
     transports: [
         new winston.transports.Console({
             handleExceptions: true
         }),
-        new(require("winston-daily-rotate-file"))({
-            filename: `${logDir}/-results.log`,
+        new winston.transports.DailyRotateFile({
+            filename: 'logs/output/output-%DATE%.log',
+            datePattern: 'YYYY-MM-DD-HH',
+            maxSize: '20m',
             level: 'info',
             format: winston.format.combine(
                 winston.format.timestamp(),
                 winston.format.json(),
             )
         }),
-        new winston.transports.File({
-            filename: `${logDir}/error.log`,
+        new winston.transports.DailyRotateFile({
+            filename: 'logs/error/error-%DATE%.log',
+            datePattern: 'YYYY-MM-DD-HH',
+            maxSize: '20m',
             level: 'error',
             format: winston.format.combine(
+                winston.format.errors({ stack: true }),
                 winston.format.timestamp(),
-                winston.format.simple(),
+                winston.format.simple()
             ),
-            handleExceptions: true
+            handleExceptions: true,
         }),
     ],
-    format: winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}`)
+    format: winston.format.combine(
+        errorStackFormat(),
+        winston.format.printf(log => `[${log.level.toUpperCase()}] - ${log.message}${log.error ? `\n${log.stack}` : ''}`)
+    )
 });
 
 
@@ -85,9 +105,6 @@ intents.add(
 
 const client = new kiri({
     intents,
-    // makeCache: Options.cacheWithLimits({
-    //     ThreadManager: 0,
-    // }),
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: true
@@ -109,7 +126,7 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
     const ap = AutoPoster(config.topggkey, client);
 
     ap.on('posted', () => {
-        logger.log('info', 'Posted stats to Top.gg!');
+        logger.info('Posted stats to Top.gg!');
     });
 };
 
