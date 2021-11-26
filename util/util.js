@@ -499,7 +499,6 @@ module.exports = class util {
 	}
 	static async purgeDbGuild(client, id) {
 		client.guildsStorage.delete(id);
-		client.queue.delete(id);
 	
 		await client.dbguilds.findOneAndDelete({
 			guildID: id

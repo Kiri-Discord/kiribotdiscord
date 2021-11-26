@@ -22,7 +22,7 @@ module.exports = class ScrollingLyrics {
         this.client = client;
     };
     async init() {
-        if (!this.channel.viewable || !this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
+        if (!this.channel.viewable || this.channel.deleted || !this.channel.permissionsFor(this.queueChannel.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return this.error('perms');
         let notice = `displaying scrolling lyrics (${languages[this.lang]}) for this track`;
         if (this.song.info.sourceName !== 'youtube') return this.error('notSupported');
         try {
@@ -44,7 +44,7 @@ module.exports = class ScrollingLyrics {
                     .setAuthor(`no lyrics for this song in your preferred language (${languages[this.lang]})`)
                     .setDescription(`fortunately, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}\nchoose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:\n\n${list.join("\n")}`)
                     .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
-                await this.queueChannel.send({ embeds: [embed] });
+                if (!this.queueChannel.deleted) await this.queueChannel.send({ embeds: [embed] });
                 const filter = res => {
                     const number = res.content;
                     if ((isNaN(number) || number > avaliableLang.length || number < 1) && res.content.toLowerCase() !== 'cancel') {
@@ -130,9 +130,9 @@ module.exports = class ScrollingLyrics {
     };
     error(type) {
         if (type === 'notSupported') {
-            this.queueChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode works only with YouTube or Spotify source for now :pensive:` }] });
+            if (!this.queueChannel.deleted) this.queueChannel.send({ embeds: [{ description: `i'm sorry but auto-scroll lyrics mode works only with YouTube or Spotify source for now :pensive:` }] });
         } else if (type === 'perms') {
-            this.queueChannel.send({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
+            if (!this.queueChannel.deleted) this.queueChannel.send({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send lyrics to ${this.channel.toString()}! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again!` }] });
         } else if (type === 'noChoose') {
             return false;
         } else {
@@ -140,7 +140,7 @@ module.exports = class ScrollingLyrics {
                 .setTitle('No real-time lyrics was found :(')
                 .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric\n- Find a YouTube song with subtitles, and add it to the queue`)
                 .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
-            this.queueChannel.send({ embeds: [embed] });
+            if (!this.queueChannel.deleted) this.queueChannel.send({ embeds: [embed] });
         };
         return false;
     };
