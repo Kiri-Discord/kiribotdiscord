@@ -3,7 +3,7 @@ const { purgeDbGuild } = require('../util/util');
 module.exports = async(client, guild) => {
     if (!client.isReady() && !guild.avaliable) return;
     const queue = client.queue.get(guild.id);
-    queue.stop('disconnected');
+    if (queue) queue.stop('disconnected');
     
     await purgeDbGuild(client, guild.id);
     logger.log('info', `Guild left: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
