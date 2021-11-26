@@ -36,6 +36,7 @@ global.logger = winston.createLogger({
         new winston.transports.DailyRotateFile({
             filename: 'logs/output/output-%DATE%.log',
             datePattern: 'YYYY-MM-DD-HH',
+            frequency: '24h',
             maxSize: '20m',
             level: 'info',
             format: winston.format.combine(
@@ -47,6 +48,7 @@ global.logger = winston.createLogger({
             filename: 'logs/error/error-%DATE%.log',
             datePattern: 'YYYY-MM-DD-HH',
             maxSize: '20m',
+            frequency: '24h',
             level: 'error',
             format: winston.format.combine(
                 winston.format.errors({ stack: true }),
