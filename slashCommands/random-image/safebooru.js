@@ -25,7 +25,7 @@ exports.run = async(client, interaction) => {
         return interaction.editReply({ embeds: [embed] })
     } catch (error) {
         interaction.editReply("i can't fetch a post for you at this time! here is a hug for now 🤗");
-        return logger.log('error', err);
+        return logger.log('error', error);
     };
 };
 
