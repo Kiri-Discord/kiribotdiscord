@@ -13,6 +13,7 @@ exports.run = async(client, interaction) => {
 
     if (queue.pending) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }], ephemeral: true });
     const song = queue.nowPlaying;
+    if (!song) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: the song haven't played yet :pensive:` }], ephemeral: true });
     const seek = queue.player.state.position || 0;
 
     const duration = song.info.isStream ? null : song.info.length;

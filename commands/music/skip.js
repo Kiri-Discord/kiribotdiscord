@@ -7,6 +7,7 @@ exports.run = async(client, message, args) => {
     if (!queue) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: there isn't any ongoing music queue` }] });
     if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
+    if (!queue.nowPlaying) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }] });
     const playerListening = [...queue.channel.members.values()];
     let listening = playerListening.filter(x => !x.user.bot).length;
     if (listening >= 2 && queue.nowPlaying.requestedby.id !== message.author.id) {

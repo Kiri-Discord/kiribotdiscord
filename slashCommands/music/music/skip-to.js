@@ -9,6 +9,7 @@ exports.run = async(client, interaction) => {
     if (!canModifyQueue(interaction.member)) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }], ephemeral: true });
     if (!queue.songs.length) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `there isn't any song left in the queue :pensive:` }], ephemeral: true });
     if (queue.pending) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }], ephemeral: true });
+    if (!queue.nowPlaying) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: i'm still connecting to your voice channel! try again in a bit dear :slight_smile:` }], ephemeral: true });
     if (index > queue.songs.length) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `invaild queue position :pensive: the queue is only **${queue.songs.length}** songs long!` }], ephemeral: true });
 
 

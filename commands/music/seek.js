@@ -11,6 +11,7 @@ exports.run = async(client, message, args, prefix) => {
     if (queue.karaoke.isEnabled) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `seeking is not possible when scrolling-lyrics is on :pensive: you can turn it off by \`${prefix}scrolling-lyrics off\`` }] });
 
     const song = queue.nowPlaying;
+    if (!song) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: the song haven't played yet :pensive:` }] });
     if (!song.info.isSeekable) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `sorry, that song is unseekable :pensive:` }] });
     const seek = queue.player.state.position;
     if (!seek) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `the song haven't started yet :slight_smile:` }] });
