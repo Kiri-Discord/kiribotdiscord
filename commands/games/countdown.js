@@ -19,38 +19,40 @@ class Game {
 
     async run() {
         const filter = (reaction, user) => ['🇻', '🇨'].includes(reaction.emoji.name) && user.id === this.message.author.id;
-        await this.msg.awaitReactions({
+
+        const collected = await this.msg.awaitReactions({
             filter,
             max: 1,
-            time: 60000,
-            errors: ['time'],
-        }).then(async collected => {
-            const reaction = collected.first().emoji.name;
-            if (reaction === '🇻') this.letters += this.vowels[Math.round(Math.random() * this.vowels.length | 0)];
-            if (reaction === '🇨') this.letters += this.consenants[Math.round(Math.random() * this.consenants.length | 0)];
-            this.msg.edit(`${this.text} ${this.letters}`);
-            const userReactions = this.msg.reactions.cache
-                .filter(e => e.users.cache.has(this.message.author.id));
-            for (const e of userReactions.values()) {
-                await e.users.remove(this.message.author.id);
-            }
-        }).catch(() => {
-            this.msg.edit('this game has timed out lmao');
+            time: 60000
         });
+        if (!collected.size) {
+            this.msg.edit('this game has timed out lmao');
+            return this.client.games.delete(this.message.channel.id);
+        };
+        const reaction = collected.first().emoji.name;
+        if (reaction === '🇻') this.letters += this.vowels[Math.round(Math.random() * this.vowels.length | 0)];
+        if (reaction === '🇨') this.letters += this.consenants[Math.round(Math.random() * this.consenants.length | 0)];
+        this.msg.edit(`${this.text} ${this.letters}`);
+        const userReactions = this.msg.reactions.cache
+            .filter(e => e.users.cache.has(this.message.author.id));
+        for (const e of userReactions.values()) {
+            await e.users.remove(this.message.author.id);
+        };
         if (this.letters.length === 9) {
             this.msg.reactions.removeAll();
             this.msg.edit(`${this.text} your 30 seconds starts now: ${this.letters}`);
             setTimeout(async() => {
                 this.msg.edit(`${this.text} please enter the longest word you came up with.`);
-                let response = await this.message.channel.awaitMessages({
+                let responses = await this.message.channel.awaitMessages({
                     filter: m => m.author.id === this.message.author.id,
                     max: 1,
                     time: 30000,
-                    errors: ['time'],
-                }).catch(() => {
-                    this.msg.edit('this game has timed out lmao');
                 });
-                response = response.get(Array.from(response.keys()).toString()).content;
+                if (!responses.size) {
+                    this.msg.edit('this game has timed out lmao');
+                    return this.client.games.delete(this.message.channel.id);
+                }
+                const response = responses.first().content;
                 await fetch(`http://www.anagramica.com/all/:${this.letters}`)
                     .then(res => res.json())
                     .then(json => { this.solved = json; })

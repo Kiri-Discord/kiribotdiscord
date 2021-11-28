@@ -38,12 +38,12 @@ class Game {
         let word = await this.dmChannel.channel.awaitMessages({
             filter: m => m.author.id === this.message.author.id,
             max: 1,
-            time: 60000,
-            errors: ['time'],
-        }).catch(() => {
+            time: 60000
+        });
+        if (!word.size) {
             this.end();
             this.message.author.send('this game has expired lmao');
-        });
+        };
         this.word = word.first().content;
         this.displayWord = '';
         for (let i = 0; i < this.word.length; i++) this.displayWord += '-';
@@ -54,12 +54,12 @@ class Game {
         let word = await this.message.channel.awaitMessages({
             filter: m => m.author.id === this.challenged.id,
             max: 1,
-            time: 60000,
-            errors: ['time'],
-        }).catch(() => {
+            time: 60000
+        });
+        if (!word.size) {
             this.end();
             this.msg.edit('this game has expired lmao');
-        });
+        }
         this.letter = word.first().content;
         if (this.letter.length > 1) return this.run();
         if (this.guesses.includes(this.letter)) return this.run();
