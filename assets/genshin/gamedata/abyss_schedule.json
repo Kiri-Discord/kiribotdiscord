@@ -1,0 +1,618 @@
+{
+  "1": {
+    "start": "2020-10-01 04:00:00",
+    "end": "2020-10-16 03:59:59",
+    "buff": "Steel Moon",
+    "buffDesc": "Auras that increase your characters' Shield Strength will occasionally appear during the battle.\nWhen your character's Stamina is above 50%, a shockwave will be released upon attacking an opponent. Can occur once every 10s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "2": {
+    "start": "2020-10-16 04:00:00",
+    "end": "2020-11-01 03:59:59",
+    "buff": "Steel Moon",
+    "buffDesc": "Auras that increase your characters' Shield Strength will occasionally appear during the battle.\nWhen your character's Stamina is above 50%, a shockwave will be released upon attacking an opponent. Can occur once every 10s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "3": {
+    "start": "2020-11-01 04:00:00",
+    "end": "2020-11-16 03:59:59",
+    "buff": "Efflorescent Moon",
+    "buffDesc": "During the battle, Auras will occasionally appear which increase your characters' Normal ATK SPD and DMG.\nYour character gains increased DMG after rapidly attacking an opponent with Normal or Charged Attacks within a short time. This effect lasts for 1s and can stack up to 10 times, with a 50% chance of causing a shockwave when a stack is added.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "4": {
+    "start": "2020-11-16 04:00:00",
+    "end": "2020-12-01 03:59:59",
+    "buff": "Guardian Moon",
+    "buffDesc": "While protected by a shield, Character ATK +50%",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "5": {
+    "start": "2020-12-01 04:00:00",
+    "end": "2020-12-16 03:59:59",
+    "buff": "Bejeweled Moon",
+    "buffDesc": "When Crystallize occurs, the elemental shard obtained by the character deals Elemental DMG to surrounding opponents. Increased DMG is dealt when the shield is more powerful. DMG dealt scales based on Shield Strength.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "6": {
+    "start": "2020-12-16 04:00:00",
+    "end": "2021-01-01 03:59:59",
+    "buff": "Defiant Moon",
+    "buffDesc": "When a character protected by a shield is hit, it causes an energy explosion, dealing DMG to surrounding opponents. Can only occur once every 4s. DMG dealt scales based on Shield Strength.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "7": {
+    "start": "2021-01-01 04:00:00",
+    "end": "2021-01-16 03:59:59",
+    "buff": "Snowfall Moon",
+    "buffDesc": "When a character obtains an Elemental Shard created from a Crystallize Reaction between Geo and Cryo, a shockwave will be released, dealing DMG to surrounding opponents.\nWhen a character obtains an Elemental Shard created from a Crystallize Reaction between Geo and Cryo, Elemental Skill CD is decreased by 1s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "8": {
+    "start": "2021-01-16 04:00:00",
+    "end": "2021-02-01 03:59:59",
+    "buff": "Midwinter Moon",
+    "buffDesc": "When a character obtains an Elemental Shard created from a Crystallize Reaction between Geo and Cryo, gain 5% increased ATK, 5% increased ATK SPD, and 4% increased Movement SPD. This effect lasts for 20s, and has a maximum of 5 stacks.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "9": {
+    "start": "2021-02-01 04:00:00",
+    "end": "2021-02-16 03:59:59",
+    "buff": "Rime-Worn Moon",
+    "buffDesc": "When a character obtains an Elemental Shard created from a Crystallize Reaction between Geo and Cryo, gain 8% increased CRIT Rate. This effect lasts for 20s, and has a maximum of 5 stacks.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "10": {
+    "start": "2021-02-16 04:00:00",
+    "end": "2021-03-01 03:59:59",
+    "buff": "Righteous Moon",
+    "buffDesc": "When active character's HP is less than 70%, ATK is increased by 20% and ATK SPD is increased by 15%.\nWhen active character's HP is less than 35% and they are under the protection of a shield, CRIT Rate is increased by 20% and CRIT DMG is increased by 40%.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      17
+    ]
+  },
+  "11": {
+    "start": "2021-03-01 04:00:00",
+    "end": "2021-03-16 03:59:59",
+    "buff": "Refreshing Moon",
+    "buffDesc": "A Charge will accumulate every 10s, with a maximum of three existing at any one time. If the active character's HP is less than 50%, they will consume a Charge when they hit an opponent to create an unstable energy orb at the opponent's position. This orb will explode after 1s, and only one of them can be created every 2s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      17
+    ]
+  },
+  "12": {
+    "start": "2021-03-16 04:00:00",
+    "end": "2021-04-01 03:59:59",
+    "buff": "Majestic Moon",
+    "buffDesc": "When the active character's HP is less than 50%, they gain a 2% DMG Bonus for 10s after hitting an opponent. This effect can stack up to 10 times, and each character in the party will have their own independent stacks and durations. Each time the stack count or duration of this effect resets, there is a 50% chance to release an Energy Blast. An Energy Blast can be triggered once every 10s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      17
+    ]
+  },
+  "13": {
+    "start": "2021-04-01 04:00:00",
+    "end": "2021-04-16 03:59:59",
+    "buff": "Windward Moon",
+    "buffDesc": "Characters possess an ATK-increasing Windward Aura that can increase their ATK by a maximum of 60%. For every opponent who steps within the Aura, the Aura's effect is decreased by 25%. When 4 or more opponents are within the Aura, this effect will not provide an ATK increase.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      17
+    ]
+  },
+  "14": {
+    "start": "2021-04-16 04:00:00",
+    "end": "2021-05-01 03:59:59",
+    "buff": "Skyward Moon",
+    "buffDesc": "Hitting an opponent with a Plunging Attack decreases their DEF by 40% for 10s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      15,
+      17
+    ]
+  },
+  "15": {
+    "start": "2021-05-01 04:00:00",
+    "end": "2021-05-16 03:59:59",
+    "buff": "Blade-Dance Moon",
+    "buffDesc": "When a character scores consecutive hits on an opponent with Normal Attacks within 2s, this character's Physical DMG is increased by 5% for 10s. This effect stacks up to 5 times, and only 1 stack is added at a time regardless of how many enemies are hit in one strike. When 5 stacks have been obtained, further hits on opponents will unleash shockwaves that deal AoE DMG. A shockwave can be created in this manner once every 1s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      18,
+      19
+    ]
+  },
+  "16": {
+    "start": "2021-05-16 04:00:00",
+    "end": "2021-06-01 03:59:59",
+    "buff": "Thorny Moon",
+    "buffDesc": "A backlash will occur when opponents hit a character protected by a shield, unleashing a shockwave that deals AoE DMG. Can occur once every 6s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      18,
+      19
+    ]
+  },
+  "17": {
+    "start": "2021-06-01 04:00:00",
+    "end": "2021-06-16 03:59:59",
+    "buff": "Rebellious Moon",
+    "buffDesc": "When a character scores Normal, Charged, and Plunging Attack hits that deal Physical DMG to opponents, this character's CRIT Rate is increased by 3% for 10s. This effect stacks up to 5 times, and only 1 stack is added at a time regardless of how many enemies are hit in one strike. When 5 stacks have been obtained, CRIT Hits on opponents will unleash shockwaves that deal AoE DMG. A shockwave can be created in this manner once every 1s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      13,
+      14,
+      18,
+      19
+    ]
+  },
+  "18": {
+    "start": "2021-06-16 04:00:00",
+    "end": "2021-07-01 03:59:59",
+    "buff": "Whirlpool Moon",
+    "buffDesc": "When an active character triggers a Swirl reaction on a nearby opponent, they will trigger a shockwave at that opponent's position that deals AoE DMG. A shockwave can be triggered in this manner once every 3.5s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      20,
+      21,
+      22,
+      23
+    ]
+  },
+  "19": {
+    "start": "2021-07-01 04:00:00",
+    "end": "2021-07-16 03:59:59",
+    "buff": "Breezecall Moon",
+    "buffDesc": "When an active character triggers a Swirl reaction on a nearby opponent, they will regenerate 4 Energy for all characters in the party. This effect can be triggered once every 3.5s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      20,
+      21,
+      22,
+      23
+    ]
+  },
+  "20": {
+    "start": "2021-07-16 04:00:00",
+    "end": "2021-08-01 03:59:59",
+    "buff": "Brumous Moon",
+    "buffDesc": "When an active character triggers a Swirl reaction on nearby enemies, a Brumous Aura that lasts 8s will be left at the location of the Swirl reaction. Deals damage to enemies inside the Aura every 2s. A Brumous Aura can only be generated once every 9s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      20,
+      21,
+      22,
+      23
+    ]
+  },
+  "21": {
+    "start": "2021-08-01 04:00:00",
+    "end": "2021-08-16 03:59:59",
+    "buff": "Shattering Moon",
+    "buffDesc": "When an active character's Elemental Energy is fully charged, the DEF of opponents hit by the character's Normal, Charged or Plunging Attacks will be decreased by 7% for 10 seconds. Max 5 stacks. Each stack has an independent duration.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      26,
+      27
+    ]
+  },
+  "22": {
+    "start": "2021-08-16 04:00:00",
+    "end": "2021-09-01 03:59:59",
+    "buff": "Brimful Moon",
+    "buffDesc": "When an active character obtains an Elemental Orb or Elemental Particle, the character will unleash a shockwave that deals DMG to surrounding opponents. This kind of shockwave can be unleashed once every 4s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      26,
+      27
+    ]
+  },
+  "23": {
+    "start": "2021-09-01 04:00:00",
+    "end": "2021-09-16 03:59:59",
+    "buff": "Stalwart Moon",
+    "buffDesc": "After unleashing an Elemental Burst, the ATK of every character in the party will be increased by 20% for 10s. Max 3 stacks. Each stack has an independent duration.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      26,
+      27
+    ]
+  },
+  "24": {
+    "start": "2021-09-16 04:00:00",
+    "end": "2021-10-01 03:59:59",
+    "buff": "Renewing Moon",
+    "buffDesc": "After a character uses an Elemental Burst, all party members' ATK is increased by 6.5% for 15s. Maximum 7 stacks. When 7 stacks are reached, the active character's Normal Attacks will unleash a shockwave at the position of the opponent it hits, dealing AoE DMG. A shockwave can be unleashed in this manner once every 2s.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      28,
+      29
+    ]
+  },
+  "25": {
+    "start": "2021-10-01 04:00:00",
+    "end": "2021-10-16 03:59:59",
+    "buff": "Cavorting Moon",
+    "buffDesc": "For 10s after a character uses an Elemental Burst, that character's Normal and Charged Attacks will unleash a shockwave at the position of the opponent they hit at the cost of 1% of the character's HP, dealing AoE DMG. This effect will be cleared when this character leaves the field. A shockwave can be unleashed in this manner once every 1s. Active characters can go down as a result of this HP loss.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      28,
+      29
+    ]
+  },
+  "26": {
+    "start": "2021-10-16 04:00:00",
+    "end": "2021-11-01 03:59:59",
+    "buff": "Vanguard Moon",
+    "buffDesc": "After the challenge begins, when a character's Elemental Energy is greater than or equal to 50%, they will gain a 6.5% ATK Bonus every second. Max 10 stacks. When a character's Elemental Energy is less than 30%, the ATK Bonus gained this way will be cleared.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      30,
+      31
+    ]
+  },
+  "27": {
+    "start": "2021-11-01 04:00:00",
+    "end": "2021-11-16 03:59:59",
+    "buff": "Chiliastic Moon",
+    "buffDesc": "After the challenge begins, when a character's Elemental Energy is 100%, they will gain 1 stack of Auspice every second. Max 10 stacks. When this character unleashes their Elemental Burst, all Auspice stacks will be cleared, and the DMG dealt by this character will be increased by 5% for each stack cleared for the next 10s. While the character is enjoying the DMG Bonus gained via this method, they cannot gain any more stacks.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      30,
+      31
+    ]
+  },
+  "28": {
+    "start": "2021-11-16 04:00:00",
+    "end": "2021-12-01 03:59:59",
+    "buff": "Splendiferous Moon",
+    "buffDesc": "After the challenge begins, when the active character's Elemental Energy is greater than or equal to 50%, they will continuously release shockwaves that deal DMG to opponents. When their Elemental Energy reaches 100%, these shockwaves will deal even greater DMG.",
+    "regularFloors": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "spiralAbyssFloors": [
+      24,
+      25,
+      30,
+      31
+    ]
+  }
+}
