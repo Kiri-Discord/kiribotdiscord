@@ -115,7 +115,7 @@ exports.run = async(client, interaction, internal) => {
         } catch {
             if (inactive) {
                 row.components.forEach(component => component.setDisabled(true));
-                msg.editReply({
+                interaction.editReply({
                     embeds: [{
                         color: '#bee7f7',
                         description: `this command is now inactive! playing the first song for you...`
