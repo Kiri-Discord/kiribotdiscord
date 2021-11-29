@@ -5,6 +5,7 @@ const reqString = {
     required: true,
 };
 
+
 const confessSchema = mongoose.Schema({
     userId: reqString,
     guildId: reqString,
