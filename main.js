@@ -86,7 +86,7 @@ const mongo = require('./util/mongo');
 const kiri = require("./handler/ClientBuilder.js");
 const schedule = require('node-schedule');
 const { AutoPoster } = require('topgg-autoposter');
-const { Intents, Options } = require('discord.js');
+const { Intents } = require('discord.js');
 
 const intents = new Intents();
 

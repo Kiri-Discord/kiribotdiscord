@@ -30,15 +30,15 @@ exports.run = async (client, message, args, prefix) => {
 
     const elementFilter = []
     for (const element of elementTypes)
-        addArg(message.flags, [`-${element}`], () => elementFilter.push(element))
+        addArg(message.flags, [`${element}`], () => elementFilter.push(element))
 
     const weaponTypeFilter = []
     for (const weaponType of weaponTypes)
-        addArg(message.flags, [`-${weaponType}`], () => weaponTypeFilter.push(weaponType))
+        addArg(message.flags, [`${weaponType}`], () => weaponTypeFilter.push(weaponType))
 
     const starFilter = [];
     for (const star of possibleStars)
-        addArg(message.flags, [`-${star}`, `-${star}*`], () => starFilter.push(star))
+        addArg(message.flags, [`${star}`, `${star}*`], () => starFilter.push(star))
 
     let talentMode = "LITTLE"
     let defaultPage = 0
@@ -51,13 +51,13 @@ exports.run = async (client, message, args, prefix) => {
         talentMode = "HIGH"
         defaultPage = 4
     });
-    addArg(message.flags, ["-info", "-i"], () => defaultPage = 1)
-    addArg(message.flags, ["-art", "-a"], () => defaultPage = "Art")
-    addArg(message.flags, ["-stats", "-asc", "-ascensions", "-ascend"], () => defaultPage = 2)
-    addArg(message.flags, ["-books", "-talentupgrade"], () => defaultPage = 3)
-    addArg(message.flags, ["-skill", "-skills", "-talents", "-s", "-t"], () => defaultPage = 4)
-    addArg(message.flags, ["-passive", "-passives", "-p"], () => defaultPage = "Passives")
-    addArg(message.flags, ["-const", "-constellation", "-constellations", "-c"], () => defaultPage = "Constellations")
+    addArg(message.flags, ["info", "i"], () => defaultPage = 1)
+    addArg(message.flags, ["art", "a"], () => defaultPage = "Art")
+    addArg(message.flags, ["stats", "asc", "ascensions", "ascend"], () => defaultPage = 2)
+    addArg(message.flags, ["books", "talentupgrade"], () => defaultPage = 3)
+    addArg(message.flags, ["skill", "skills", "talents", "s", "t"], () => defaultPage = 4)
+    addArg(message.flags, ["passive", "passives", "p"], () => defaultPage = "Passives")
+    addArg(message.flags, ["const", "constellation", "constellations", "c"], () => defaultPage = "Constellations")
     if (elementFilter.includes("Anemo")) defaultPage = "Anemo"
     if (elementFilter.includes("Geo")) defaultPage = "Geo"
     if (elementFilter.includes("Electro")) defaultPage = "Electro"
@@ -70,7 +70,7 @@ exports.run = async (client, message, args, prefix) => {
     const sed = client.customEmojis.get("sed");
     if (name.length == 0) {
         const pages = getCharactersPages(elementFilter, weaponTypeFilter, starFilter)
-        if (pages.length == 0) return sendMessage(message, `no character data was loaded ${sed}`)
+        if (pages.length == 0) return sendMessage(message, `no character data was loaded! you should join my support server via \`${prefix}invite\` ${sed}`)
 
         await simplePaginator(message, (relativePage, currentPage, maxPages) => getCharacterPage(pages, relativePage, currentPage, maxPages), pages.length)
         return undefined
@@ -131,7 +131,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`Page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} / ${maxPages}`)
 
         if (relativePage == 0) {
             const maxAscension = char.ascensions[char.ascensions.length - 1]
@@ -189,7 +189,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
 **Affiliation**: ${char.meta.affiliation}
 **Constellation**: ${char.meta.constellation}
 **Element**: ${char.meta.element}`)
-                .addField("Voice Actors", `**Chinese**: ${char.meta.cvChinese}
+                .addField("Voice actors", `**Chinese**: ${char.meta.cvChinese}
 **Japanese**: ${char.meta.cvJapanese}
 **English**: ${char.meta.cvEnglish}
 **Korean**: ${char.meta.cvKorean}
@@ -204,7 +204,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`Page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} / ${maxPages}`)
 
         if (relativePage == 0) {
             const columns= []
@@ -235,7 +235,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                     rows,
                     [PAD_START]
                 ) + "\n```")
-                .setFooter(`${embed.footer?.text} - Use '${prefix}charstats ${char.name} [level] [A<ascension>]' for a specific level`)
+                .setFooter(`${embed.footer?.text} - use '${prefix}charstats ${char.name} [level] [A<ascension>]' to get info for a specific level!`)
 
             return embed
         } else if (relativePage == 1) {
@@ -255,7 +255,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`Page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} / ${maxPages}`)
 
         if (relativePage >= 0 && relativePage < char.imgs.length) {
             const img = char.imgs[relativePage]
@@ -273,7 +273,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`Page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} / ${maxPages}`)
 
         function showTalent(skill) {
             embed.setTitle(`${char.name}: ${skill.name}`)

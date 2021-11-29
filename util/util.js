@@ -502,15 +502,7 @@ module.exports = class util {
 			queries = [queries]
 	
 		const lowerArgs = args.map(a => a.toLowerCase())
-		for (let query of queries) {
-			query = query.toLowerCase()
-	
-			if (lowerArgs.includes(query)) {
-				exec()
-				args.splice(lowerArgs.indexOf(query), 1)
-				lowerArgs.splice(lowerArgs.indexOf(query), 1)
-			}
-		}
+		if (queries.some(q => lowerArgs.includes(q))) return exec();
 	};
 	static async purgeDbGuild(client, id) {
 		client.guildsStorage.delete(id);
