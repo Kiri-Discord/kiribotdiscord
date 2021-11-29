@@ -76,7 +76,7 @@ exports.run = async (client, message, args, prefix) => {
         return undefined
     }
 
-    const char = data.getCharacterByName(name)
+    const char = genshinData.getCharacterByName(name)
     if (char == undefined) {
 
         return sendMessage(message, `i couldn't find that character, sorry ${sed}`)
@@ -94,7 +94,7 @@ exports.run = async (client, message, args, prefix) => {
             .filter((char) => elementFilter.length == 0 || elementFilter.find(elem => getElementIcons(char).includes(elem)))
             .filter((char) => weaponTypeFilter.length == 0 || weaponTypeFilter.includes(char.weaponType))
             .sort((a, b) => b.releasedOn.localeCompare(a.releasedOn) || b.star - a.star || a.name.localeCompare(b.name))
-            .map((char) => `**${char.name}**: ${getElementIcons(char)} ${char.star}★ ${data.emoji(char.weaponType, true)} user`)
+            .map((char) => `${getElementIcons(char)} ${char.star} **${char.name}**: ${data.emoji(char.weaponType, true)} user`)
     
         const pages = []
         let paging = "", c = 0
@@ -117,7 +117,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle("Character list")
             .setDescription(pages[relativePage])
-            .setFooter(`Page ${currentPage} / ${maxPages} - See '${prefix}help char' for more info about what you can do`)
+            .setFooter(`page ${currentPage} / ${maxPages} - use '${prefix}character <name>' to get info about a character!`)
             .setColor(Colors.GREEN)
     
         return embed
@@ -136,7 +136,7 @@ exports.run = async (client, message, args, prefix) => {
         if (relativePage == 0) {
             const maxAscension = char.ascensions[char.ascensions.length - 1]
             embed.setTitle(`${char.name}: Description`)
-                .addField("Basics", `${getElementIcons(char)} ${char.star}★ ${data.emoji(char.weaponType, true)} user`)
+                .addField("Basics", `${getElementIcons(char)} ${char.star} :star: ${data.emoji(char.weaponType, true)} user`)
                 .setDescription(char.desc)
                 .addField("Base stats", `${
                     Object.entries(data.getCharStatsAt(char, 1, 0))
@@ -149,7 +149,6 @@ exports.run = async (client, message, args, prefix) => {
                         .join("\n")
                 }`, true)
 
-            // This is ugly, but is for Traveler/other multi-book characters, also enforces some order/grade of item
             const talentCostLv2 = char.skills[0]?.ult.costs[2]?.items,
                   talentCostLv3 = char.skills[0]?.ult.costs[3]?.items,
                   talentCostLv4 = char.skills[0]?.ult.costs[4]?.items,
@@ -261,7 +260,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         if (relativePage >= 0 && relativePage < char.imgs.length) {
             const img = char.imgs[relativePage]
             embed.setTitle(`${char.name}`)
-                .setDescription(`[Open image in browser](${img})`)
+                .setDescription(`[Image URL](${img})`)
                 .setImage(img)
             embed.thumbnail = null
             return embed
@@ -310,11 +309,11 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
             if (skill.type)
                 embed.addField("Element type", skill.type, true)
             if (hasLevels && talentMode == "HIGH")
-                embed.setFooter(`${embed.footer?.text} - Use '${prefix}c ${char.name} -low' to display lower levels`)
+                embed.setFooter(`${embed.footer?.text} - use '${prefix}character ${char.name} -low' to display lower levels`)
             else if (hasLevels && talentMode == "LOW")
-                embed.setFooter(`${embed.footer?.text} - Use '${prefix}c ${char.name} -high' to display higher levels`)
+                embed.setFooter(`${embed.footer?.text} - use '${prefix}character ${char.name} -high' to display higher levels`)
             else if (hasLevels && talentMode == "LITTLE")
-                embed.setFooter(`${embed.footer?.text} - Use '${prefix}c ${char.name} -high' (or -low) to display higher (or lower) levels`)
+                embed.setFooter(`${embed.footer?.text} - Use '${prefix}character ${char.name} -high' (or -low) to display higher (or lower) levels`)
         }
 
         let page = 0

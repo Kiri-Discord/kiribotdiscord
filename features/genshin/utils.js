@@ -99,6 +99,9 @@ module.exports = class util {
             return source.author.id
         else
             return source.user.id
+    };
+    static searchClean(str) {
+        return str.toLowerCase().replace(/'/g, "")
     }
     static async sendMessage(source, response, components, ephemeral) {
         let embeds
@@ -206,24 +209,53 @@ module.exports = class util {
             invisible: true
         }], startPage)
     };
+    static fuzzySearchScore(a, b) {
+        if (a.length == 0) return 0
+        if (b.length == 0) return 0
+    
+        // swap to save some memory O(min(a,b)) instead of O(a)
+        if (a.length > b.length) [a, b] = [b, a]
+    
+        const row = []
+        // init the row
+        for (let i = 0; i <= a.length; i++)
+            row[i] = i
+    
+    
+        // fill in the rest
+        for (let i = 1; i <= b.length; i++) {
+            let prev = i
+            for (let j = 1; j <= a.length; j++) {
+                const val = (b.charAt(i - 1) == a.charAt(j - 1)) ? row[j - 1] : Math.min(row[j - 1] + 1, prev + 1, row[j] + 1)
+                row[j - 1] = prev
+                prev = val
+            }
+            row[a.length] = prev
+        }
+    
+        return b.length - row[a.length]
+    };
+    static caps(str) {
+        return str.split("").filter(k => k != k.toLowerCase()).join("")
+    }
     static findFuzzy(target, search) {
-        const cleaned = searchClean(search)
-        const found = target.find(t => searchClean(t) == search)
+        const cleaned = util.searchClean(search)
+        const found = target.find(t => util.searchClean(t) == search)
         if (found)
             return found
     
-        const dists = target.map(e => fuzzySearchScore(searchClean(e), cleaned) + fuzzySearchScore(caps(e), caps(search)))
+        const dists = target.map(e => util.fuzzySearchScore(util.searchClean(e), cleaned) + util.fuzzySearchScore(util.caps(e), util.caps(search)))
         const max = Math.max(...dists)
     
         let candidates = target.filter((_, index) => dists[index] == max)
     
-        let filteredCandidates = candidates.filter(t => searchClean(t).startsWith(cleaned.substring(0, 3)) || searchClean(t).endsWith(cleaned.substring(cleaned.length - 3)))
+        let filteredCandidates = candidates.filter(t => util.searchClean(t).startsWith(cleaned.substring(0, 3)) || util.searchClean(t).endsWith(cleaned.substring(cleaned.length - 3)))
         if (filteredCandidates.length != 0) candidates = filteredCandidates
     
-        filteredCandidates = candidates.filter(t => caps(t).includes(search[0].toUpperCase()))
+        filteredCandidates = candidates.filter(t => util.caps(t).includes(search[0].toUpperCase()))
         if (filteredCandidates.length != 0) candidates = filteredCandidates
     
-        filteredCandidates = candidates.filter(t => caps(t) == caps(search))
+        filteredCandidates = candidates.filter(t => util.caps(t) == util.caps(search))
         if (filteredCandidates.length != 0) candidates = filteredCandidates
     
         const lengths = candidates.map(t => t.length)
@@ -272,14 +304,14 @@ module.exports = class util {
             new MessageButton()
                 .setCustomId("prev")
                 .setLabel("Previous")
-                .setStyle("PRIMARY")
+                .setStyle("SECONDARY")
                 .setDisabled(currentPage == 0)
                 .setEmoji('888053581532520488'),
     
             new MessageButton()
                 .setCustomId("next")
                 .setLabel("Next")
-                .setStyle("PRIMARY")
+                .setStyle("SECONDARY")
                 .setDisabled(currentPage >= maxPages - 1)
                 .setEmoji('888053581758988319'),
     
