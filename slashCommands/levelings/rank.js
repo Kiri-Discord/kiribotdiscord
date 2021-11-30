@@ -51,7 +51,7 @@ exports.run = async(client, interaction) => {
         songData: {
             title: mention.user.tag,
             cover: avatar,
-            album: `level ${target.level} | ranked ${rank + ordinal(rank)}`
+            album: `level ${target.level} | ranked ${ordinal(rank)}`
         },
         currentTime: target.xp,
         totalTime: neededXP,
