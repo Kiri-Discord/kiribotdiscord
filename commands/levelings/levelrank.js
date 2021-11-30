@@ -1,5 +1,8 @@
-const { Rank } = require('canvacord');
 const { MessageAttachment } = require('discord.js');
+const { generate } = require('spotify-card');
+const ordinal = require('ordinal');
+const ColorThief = require("colorthief");
+const parse = require('parse-color');
 
 exports.run = async(client, message, args, prefix) => {
     let mention = client.utils.parseMember(message, args[0]) || message.member;
@@ -41,24 +44,24 @@ exports.run = async(client, message, args, prefix) => {
             rank = counter + 1;
         };
     };
-    const rankboard = new Rank()
-        .renderEmojis(true)
-        .setAvatar(mention.user.displayAvatarURL({ size: 1024, dynamic: false, format: 'png' }))
-        .setCurrentXP(target.xp)
-        .setRequiredXP(neededXP)
-        .setStatus(mention.presence ? mention.presence.status || 'offline' : 'offline')
-        .setLevel(target.level)
-        .setRank(rank)
-        .setDiscriminator(mention.user.discriminator)
-        .setUsername(mention.user.username)
-        .setProgressBar("#e6e6ff", "COLOR")
-        .setBackground("IMAGE", 'https://i.ibb.co/yV1PRjr/shinjuku-tokyo-mimimal-4k-o8.jpg')
-
-    rankboard.build().then(data => {
-        return message.channel.send({
-            content: `*behold, the rank card for* **${mention.user.username}**!`,
-            files: [new MessageAttachment(data, 'rank.png')]
-        })
+    const avatar = mention.user.displayAvatarURL({ size: 1024, dynamic: false, format: 'png' });
+    const color = await ColorThief.getColor(avatar, 3);
+    const image = await generate({
+        songData: {
+            title: mention.user.tag,
+            cover: avatar,
+            album: `level ${target.level} | ranked ${rank + ordinal(rank)}`
+        },
+        currentTime: target.xp,
+        totalTime: neededXP,
+        background: parse(color).hex,
+        blurImage: true,
+        adaptiveTextcolor: true,
+        progressBar: true
+    });
+    return message.channel.send({
+        files: [new MessageAttachment(image, 'rank.png')],
+        content: mention.user.id === message.author.id ? `this is your rank card, **${mention.user.username}**! ✨` : `this is **${mention.user.username}**'s rank card! ✨`
     });
 };
 
