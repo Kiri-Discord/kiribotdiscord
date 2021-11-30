@@ -6,7 +6,7 @@ const {
 
 const { MessageEmbed } = require('discord.js')
 
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, prefix) => {
     if (args.length < 1)
         return message.channel.send({
             embeds: [
@@ -102,6 +102,7 @@ ${createTable(
     };
 
     const embed = new MessageEmbed()
+        .setFooter(`you can display stats for a specific level or ascension using ${prefix}charstats <name> [level] A[ascension]!`)
         .setTitle(`${char.name}'s stats`)
         .setColor(Colors[char.meta.element] ?? "")
         .setDescription(getCharStats(char, level, ascension))

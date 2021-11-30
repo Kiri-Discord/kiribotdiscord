@@ -117,7 +117,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle("Character list")
             .setDescription(pages[relativePage])
-            .setFooter(`page ${currentPage} / ${maxPages} - use '${prefix}character <name>' to get info about a character!`)
+            .setFooter(`page ${currentPage} of ${maxPages} - use '${prefix}character <name>' to get info about a character!`)
             .setColor(Colors.GREEN)
     
         return embed
@@ -131,7 +131,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} of ${maxPages}`)
 
         if (relativePage == 0) {
             const maxAscension = char.ascensions[char.ascensions.length - 1]
@@ -204,7 +204,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} of ${maxPages}`)
 
         if (relativePage == 0) {
             const columns= []
@@ -255,7 +255,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} of ${maxPages}`)
 
         if (relativePage >= 0 && relativePage < char.imgs.length) {
             const img = char.imgs[relativePage]
@@ -273,7 +273,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter(`page ${currentPage} of ${maxPages}`)
 
         function showTalent(skill) {
             embed.setTitle(`${char.name}: ${skill.name}`)
@@ -309,11 +309,11 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
             if (skill.type)
                 embed.addField("Element type", skill.type, true)
             if (hasLevels && talentMode == "HIGH")
-                embed.setFooter(`${embed.footer?.text} - use '${prefix}character ${char.name} -low' to display lower levels`)
+                embed.setFooter(`${embed.footer?.text} - you can use '${prefix}character ${char.name} -low' to display lower levels`)
             else if (hasLevels && talentMode == "LOW")
-                embed.setFooter(`${embed.footer?.text} - use '${prefix}character ${char.name} -high' to display higher levels`)
+                embed.setFooter(`${embed.footer?.text} - you can use '${prefix}character ${char.name} -high' to display higher levels`)
             else if (hasLevels && talentMode == "LITTLE")
-                embed.setFooter(`${embed.footer?.text} - Use '${prefix}character ${char.name} -high' (or -low) to display higher (or lower) levels`)
+                embed.setFooter(`${embed.footer?.text} - you can use '${prefix}character ${char.name} -high' (or -low) to display higher (or lower) levels`)
         }
 
         let page = 0
