@@ -1,5 +1,4 @@
 const { canModifyQueue } = require("../../util/musicutil");
-const eq = require('../../assets/equalizer');
 
 exports.run = async(client, message, args, prefix) => {
     const queue = client.queue.get(message.guild.id);
@@ -21,27 +20,30 @@ exports.run = async(client, message, args, prefix) => {
     };
     let expire = cooldownStorage.ticketExpire;
     if (!expire || expire < Date.now()) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your 🎫 **Effect Ticket** was expired, or you don't have one! obtain one with \`${prefix}ticket\`!` }] });
-    const body = eq.vaporwave;
 
+    const rate = args[0];
+    if (!rate) return message.reply({ embeds: [{ color: "#bee7f7", description: `you should specify the speed rate, ranging from 0.1 to 10! :pensive:` }] });
+    if (isNaN(rate)) return message.reply({ embeds: [{ color: "#bee7f7", description: `the amount of speed rate must be a number ❌ (0.1 to 10)` }] });
+    if (Number(rate) < 0.1 || Number(rate) > 10) return message.reply({ embeds: [{ color: "#bee7f7", description: `the amount of speed up rate should lie between 0.1 and 10 :pensive:` }] });
+
+    const body = {
+        timescale: { Number(rate) }
+    }
     queue.player.node.send({
         op: 'filters',
         guildId: queue.guildId,
         ...body,
     });
-
     const sayoriEmoji = client.customEmojis.get("sayori");
-
-    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied vaporwave to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` });
+    message.channel.send({ embeds: [{ color: "#bee7f7", description: `changed the speed rate of the current queue to **${Number(rate).toFixed(1)}x**! ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
+    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} changed the speed rate of the current queue to **${rate.toFixed(1)}x**! ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
     if (queue.textChannel.deleted) queue.textChannel = message.channel;
-    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied vaporwave to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` })
 };
-
-
 exports.help = {
-    name: "vaporwave",
-    description: "apply vaporwave to your current music queue 😔",
-    usage: ["vaporwave"],
-    example: ["vaporwave"]
+    name: "speed",
+    description: "speed up or slow down songs in the current queue",
+    usage: ["speed `<rate>`"],
+    example: ["speed `2`"]
 };
 
 exports.conf = {

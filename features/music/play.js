@@ -6,6 +6,7 @@ const { fetchInfo } = require('../../util/musicutil');
 const { embedURL, delay } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
 const pEvent = require('p-event');
+const eq = require('../../assets/equalizer');
 
 module.exports = class Queue {
     constructor(guild, client, textChannel, voiceChannel) {
@@ -240,6 +241,13 @@ module.exports = class Queue {
             this.karaoke.instance = new ScrollingLyrics(song, this.karaoke.channel, this.karaoke.languageCode, this.textChannel, this.client.guildsStorage.get(this.guildId).prefix || this.client.config.prefix, this.client);
             const success = await this.karaoke.instance.init();
             if (!success) this.karaoke.instance = null;
+            const body = eq.reset;
+            if (this.player.node.ws) this.player.node.send({
+                op: 'filters',
+                guildId: this.guildId,
+                ...body,
+            });
+            this.player.volume(this.volume);
         };
         this.nowPlaying = song;
         try {

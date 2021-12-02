@@ -1,26 +1,30 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const resetCmd = sync.require('./filter/reset');
+const bassboostCmd = sync.require('./filter/bassboost');
+const earrapeCmd = sync.require('./filter/earrape');
+const nightcoreCmd = sync.require('./filter/nightcore');
+const vaporwaveCmd = sync.require('./filter/vaporwave');
+const speedCmd = sync.require('./filter/speed');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
         case 'reset':
-            const resetCmd = require('./filter/reset');
             resetCmd.run(client, interaction);
             break;
         case 'bassboost':
-            const bassboostCmd = require('./filter/bassboost');
             bassboostCmd.run(client, interaction);
             break;
         case 'earrape':
-            const earrapeCmd = require('./filter/earrape');
             earrapeCmd.run(client, interaction);
             break;
         case 'nightcore':
-            const nightcoreCmd = require('./filter/nightcore');
             nightcoreCmd.run(client, interaction);
             break;
         case 'vaporwave':
-            const vaporwaveCmd = require('./filter/vaporwave');
             vaporwaveCmd.run(client, interaction);
+            break;
+        case 'speed':
+            speedCmd.run(client, interaction);
             break;
     }
 }
@@ -45,6 +49,14 @@ exports.conf = {
         .addSubcommand(sub => sub
             .setName('earrape')
             .setDescription("apply earrape to your current music queue 😳")
+        )
+        .addSubcommand(sub => sub
+            .setName('speed')
+            .setDescription("speed up or slow down songs in the current queue")
+            .addStringOption(option => option
+                .setName('rate')
+                .setDescription('what is the speed rate that you want to apply? (ranging from 0.1 to 2)')
+                .setRequired(true))
         )
         .addSubcommand(sub => sub
             .setName('nightcore')
