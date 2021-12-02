@@ -215,7 +215,7 @@ exports.run = async(client, message, args, prefix) => {
                 return message.channel.send({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel dear ${dead}` }] });
             };
             let name = command.help.name;
-            let desc = command.help.description;
+            let desc = command.help.longDescription || command.help.description;
             let cooldown = command.conf.cooldown + " second(s)";
             let aliases = command.conf.aliases.join(", ") ? command.conf.aliases.join(", ") : "no aliases provided.";
             let usage = command.help.usage ? command.help.usage.join(", ") : "no usage provided.";

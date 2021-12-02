@@ -117,7 +117,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle("Character list")
             .setDescription(pages[relativePage])
-            .setFooter(`page ${currentPage} of ${maxPages} - use '${prefix}character <name>' to get info about a character!`)
+            .setFooter(`page ${currentPage} of ${maxPages} - you can use '${prefix}character <name>' to get info about a character!`)
             .setColor(Colors.GREEN)
     
         return embed
@@ -422,9 +422,10 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
 
 exports.help = {
     name: "character",
-    description: "displays a Genshin Impact character information. if no name is provided, a list of all characters will be displayed.",
+    longDescription: "displays a Genshin Impact character information. if no name is provided, a list of all characters will be displayed.\nto directly skip to a certain section, you can use \`characters <name> -[info|art|stats|books|skill|passive|const]\` to directly skip to that page!\nfor the Traveler (or any other future character with multiple elements) you can only use \`characters <name> -[info|art|stats|anemo|geo|...]\`",
     usage: ["character \`[name]\`"],
-    example: ["character `Ganyu`"]
+    example: ["character `Ganyu`"],
+    description: "displays Genshin Impact characters information"
 };
 
 exports.conf = {

@@ -237,6 +237,81 @@ module.exports = class util {
     };
     static caps(str) {
         return str.split("").filter(k => k != k.toLowerCase()).join("")
+    };
+    static relativeTimestampFromString(timestamp, timezone = "+08:00") {
+        return util.displayTimestamp(util.getDate(timestamp, timezone), "R")
+    };
+    static displayTimestamp(time, display = "R") {
+        return `<t:${Math.floor(time.getTime() / 1000)}:${display}>`
+    }
+    static getEventEmbed(event) {
+        const embed = new MessageEmbed()
+    
+        embed.setTitle(event.name)
+        if (event.img) embed.setImage(event.img)
+        if (event.link) embed.setURL(event.link)
+        embed.addField(event.type == 'Unlock' ? "Unlock Time" : "Start Time", event.start ? `${event.prediction ? "(prediction) " : ""}${event.start}${event.timezone?` (GMT${event.timezone})`:""}\n${util.relativeTimestampFromString(event.start, event.timezone)}` : "Unknown", true)
+        if (event.end) embed.addField("End Time", `${event.end}${event.timezone?` (GMT${event.timezone})`:""}\n${util.relativeTimestampFromString(event.end, event.timezone)}`, true)
+        if (event.type && event.type !== 'Unlock') embed.addField("Type", event.type, true)
+    
+        return embed
+    }
+    static parseNewsContent(content, maxLength = 1000) {
+        const target = []
+        let currentLine = ""
+    
+        const matches = content.match(/<(p|div|h\d).*?>(.*?)<\/(p|div|h\d)>/g)
+        if (!matches) return target
+    
+        for (const paragraph of matches) {
+            let middle = paragraph.match(/<(p|div|h\d).*?>(.*?)<\/(p|div|h\d)>/)?.[2]
+            if (!middle) continue
+            middle = middle
+                .replace(/<\/?br.*?>/g, "\n")
+                .replace(/&gt;/g, ">")
+                .replace(/&nbsp;/g, " ")
+                .replace(/&amp;/g, "&")
+                .replace(/&lt;/g, "<")
+                .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n))
+                .replace(/<\/?span.*?>/g, "")
+                .replace(/<\/?strong.*?>/g, "**")
+                // .replace(/<\/?b.*?>/g, "**")
+                // .replace(/<\/?i.*?>/g, "*")
+                // .replace(/<\/?em.*?>/g, "*")
+                .replace(/<a.*?href="(.*?)".*?>(.*?)<\/a>/g, (_, link, title) => `[${title}](${link})`)
+                .replace(/<iframe.*?src="(.*?)"><\/iframe>/g, (_, link) => `[Link](${link})`)
+    
+            const imgFinder = middle.match(/<img.*?src="(.*?)".*?>/)
+    
+            if (imgFinder && currentLine.trim().length > 0) {
+                target.push({ text: util.clean(currentLine) })
+                currentLine = ""
+            } else if (currentLine.length >= maxLength) {
+                let splitted = [];
+                ({ splitted, currentLine } = util.split(splitted, currentLine, /\n\s*\n/g))
+    
+                if (splitted.length > 0)
+                    target.push({ text: util.clean(splitted.join("\n\n")) })
+                else {
+                    ({ splitted, currentLine } = util.split(splitted, currentLine, "\n"))
+    
+                    if (splitted.length > 0)
+                        target.push({ text: util.clean(splitted.join("\n")) })
+                }
+            }
+    
+            if (imgFinder) {
+                target.push({ img: imgFinder[1] })
+            } else {
+                currentLine += middle
+            }
+            currentLine += "\n"
+        }
+    
+        if (currentLine.trim().length > 0)
+            target.push({ text: util.clean(currentLine) })
+    
+        return target
     }
     static findFuzzy(target, search) {
         const cleaned = util.searchClean(search)
@@ -267,6 +342,15 @@ module.exports = class util {
         timestamp = timestamp.replace(" ", "T")
         if (!timestamp.includes("T")) timestamp += "T23:59:59"
         return new Date(`${timestamp}${timezone}`)
+    };
+    static split(splitted, currentLine, toSplit) {
+        splitted = currentLine.split(toSplit)
+        currentLine = splitted.pop() ?? ""
+    
+        while (currentLine.trim().length == 0 || splitted.join("\n\n").length >= 1000)
+            currentLine = (splitted.pop() ?? "") + currentLine
+    
+        return { splitted, currentLine }
     }
     
     static getButtons(pageInfo, currentPage, maxPages) {
