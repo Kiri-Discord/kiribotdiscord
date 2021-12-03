@@ -114,6 +114,7 @@ exports.help = {
     name: "charstats",
     description:
         "display stats for a specific character! when no level or ascension is provided, the levels around all the ascensions will be shown.",
+    longDescription: "display stats for a specific Genshin Impact character!\n\nexample for searching for a specific level: \`charstats Hu Tao 84\`\nexample for searching for specific ascension: \`charstats Hu Tao A6\`\nexample for searching for a specific level and ascension: \`charstats Hu Tao 80 A6\`\n\n*if no level or ascension is provided, the levels around all the ascensions will be shown instead!*",
     usage: ["charstats `<name> [level] A[ascension]`"],
     example: ["cs `Ganyu 50`", "cs `Hu Tao 80 A6`"],
 };
