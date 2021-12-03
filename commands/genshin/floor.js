@@ -60,7 +60,6 @@ exports.run = async (client, message, args, prefix) => {
         if (floor)
             return getSpiralFloor(floor, abyss.regularFloors.length + relativePage)
                 .setFooter(footer)
-
         return undefined
     };
     function getSpiralFloor(floorId, num) {
@@ -79,8 +78,7 @@ exports.run = async (client, message, args, prefix) => {
                 const status = `${+ind+1}/${chamber.monsters.length}`
                 embed.addField(`${names[status] ?? status}: (Lv. ${chamber.level})`, `${monsters.join("\n")}${chamber == lastChamber ? "" : "\n\u200B"}`, true)
             }
-        }
-
+        };
         return embed
     }
 };
