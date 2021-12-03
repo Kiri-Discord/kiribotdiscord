@@ -496,7 +496,14 @@ module.exports = class util {
         minutes = (minutes < 10) ? '0' + minutes : minutes;
         seconds = (seconds < 10) ? '0' + seconds : seconds;
         return hours + ':' + minutes + ':' + seconds;
-	}
+	};
+	static addArg(args, queries, exec) {
+		if (typeof queries == "string")
+			queries = [queries]
+	
+		const lowerArgs = args.map(a => a.toLowerCase())
+		if (queries.some(q => lowerArgs.includes(q))) return exec();
+	};
 	static async purgeDbGuild(client, id) {
 		client.guildsStorage.delete(id);
 	

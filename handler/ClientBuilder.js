@@ -4,13 +4,14 @@ const PokemonStore = require('../features/pokemon/pokemonstore');
 const VerifyTimer = require('../features/redis/verify');
 const ownGiveaway = require('../features/giveaway');
 const { parseMember } = sync.require('../util/mentionParsing');
-
+const DataManager = require('../features/genshin/DataManager');
 module.exports = class kiri extends Client {
         constructor(options) {
             super(options);
             this.utils = {
                 parseMember
-            }
+            };
+            this.genshinData = new DataManager();
             this.nodes = require('../lavalinkNodes.json');
             this.vote = require('../model/vote');
             this.isPlaying = new Map();
