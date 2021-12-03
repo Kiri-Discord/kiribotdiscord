@@ -21,10 +21,16 @@ exports.run = async(client, interaction) => {
     let expire = cooldownStorage.ticketExpire;
     if (!expire || expire < Date.now()) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `your 🎫 **Effect Ticket** was expired, or you don't have one! obtain one with \`/ticket\`!` }] });
 
-    const bands = new Array(6).fill(null).map((n, i) => ({ band: i, gain: 0.5 }));
-    queue.player.equalizer(bands);
-    queue.player.volume(350);
+    const body = {
+        rotation: { rotationHz: 0.2 }
+    }
+    queue.player.node.send({
+        op: 'filters',
+        guildId: queue.guildId,
+        ...body,
+    });
+
     const sayoriEmoji = client.customEmojis.get("sayori");
-    interaction.editReply({ embeds: [{ color: "#bee7f7", description: `applied earrape to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` })
-    if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} applied earrape to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` });
+    interaction.editReply({ embeds: [{ color: "#bee7f7", description: `applied 8D effect to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` })
+    if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} applied 8D effect to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` });
 };

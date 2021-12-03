@@ -27,7 +27,7 @@ exports.run = async(client, interaction) => {
     if (Number(rate) < 0.1 || Number(rate) > 10) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `the amount of speed up rate should lie between 0.1 and 10 :pensive:` }] });
 
     const body = {
-        timescale: { rate: Number(rate) }
+        timescale: { speed: Number(rate) }
     }
     queue.player.node.send({
         op: 'filters',

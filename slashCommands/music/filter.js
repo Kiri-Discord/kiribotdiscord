@@ -5,6 +5,7 @@ const earrapeCmd = sync.require('./filter/earrape');
 const nightcoreCmd = sync.require('./filter/nightcore');
 const vaporwaveCmd = sync.require('./filter/vaporwave');
 const speedCmd = sync.require('./filter/speed');
+const eightDCmd = sync.require('./filter/eightD');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
@@ -25,6 +26,9 @@ exports.run = async(client, interaction) => {
             break;
         case 'speed':
             speedCmd.run(client, interaction);
+            break;
+        case '8d':
+            eightDCmd.run(client, interaction);
             break;
     }
 }
@@ -49,6 +53,10 @@ exports.conf = {
         .addSubcommand(sub => sub
             .setName('earrape')
             .setDescription("apply earrape to your current music queue 😳")
+        )
+        .addSubcommand(sub => sub
+            .setName('8d')
+            .setDescription("generate 8d effect for the current music queue")
         )
         .addSubcommand(sub => sub
             .setName('speed')
