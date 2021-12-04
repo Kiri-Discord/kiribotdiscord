@@ -35,6 +35,7 @@
         "discord.js": "^13.3.1",
         "dotenv": "^10.0.0",
         "duck-duck-scrape": "^2.1.5",
+        "erlpack": "github:discord/erlpack",
         "fen-validator": "^1.4.1",
         "fs-extra": "^10.0.0",
         "gifencoder": "^2.0.1",
@@ -81,6 +82,7 @@
         "winston": "^3.3.3",
         "winston-daily-rotate-file": "^4.5.5",
         "ws": "^8.2.3",
-        "youtube-suggest": "^1.1.2"
+        "youtube-suggest": "^1.1.2",
+        "zlib-sync": "^0.1.7"
     }
 }
