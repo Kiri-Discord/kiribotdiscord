@@ -132,7 +132,9 @@ exports.run = async(client, interaction, internal, bulkAdd) => {
                     uri: info.external_urls.spotify,
                     title: info.name,
                     author: info.artists.map(x => x.name).join(", "),
-                    length: info.duration_ms
+                    length: info.duration_ms,
+                    isStream: false,
+                    isSeekable: false
                 },
                 type: 'sp',
                 requestedby: interaction.user

@@ -121,7 +121,9 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                                 uri: data.external_urls.spotify,
                                 title: data.name,
                                 author: data.artists.map(x => x.name).join(", "),
-                                length: data.duration_ms
+                                length: data.duration_ms,
+                                isStream: false,
+                                isSeekable: false
                             },
                             type: 'sp',
                             requestedby: message.author
