@@ -20,6 +20,7 @@ const skipToCmd = sync.require('./music/skip-to');
 const stopCmd = sync.require('./music/stop');
 const volumeCmd = sync.require('./music/volume');
 const skipCmd = sync.require('./music/skip');
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
@@ -109,159 +110,147 @@ exports.help = {
 };
 
 exports.conf = {
-    data: {
-        name: "music",
-        description: "stream music right from Discord from a variety of sources!",
-        options: [{
-            type: 1,
-            name: "disconnect",
-            description: "disconnect from the current music voice channel and clear the queue"
-        }, {
-            type: 1,
-            name: "force-skip",
-            description: "skip the currently playing song forcefully"
-        }, {
-            type: 1,
-            name: "loop",
-            description: "loop the entire queue"
-        }, {
-            type: 1,
-            name: "lyrics",
-            description: "get the lyrics for a song",
-            options: [{
-                type: 3,
-                name: "song",
-                description: "the name of song do you want me to search the lyric for",
-                required: false
-            }]
-        }, {
-            type: 1,
-            name: "move",
-            description: "move the current playing song around in the queue",
-            options: [{
-                type: 4,
-                name: "from",
-                description: "what is the index of the song that you want to move?",
-                required: true
-            }, {
-                type: 4,
-                name: "to",
-                description: "where would you want to move it?",
-                required: true
-            }]
-        }, {
-            type: 1,
-            name: "debug",
-            description: "turn on debugging mode for the current queue"
-        }, {
-            type: 1,
-            name: "now-playing",
-            description: "display the status of the current playing song"
-        }, {
-            type: 1,
-            name: "pause",
-            description: "pause a playing song"
-        }, {
-            type: 1,
-            name: "play",
-            description: "play a song from a URL or from search query (lots of source supported!)",
-            options: [{
-                type: 3,
-                name: "query",
-                description: "what would you want to play?",
-                required: true,
-                autocomplete: true
-            }]
-        }, {
-            type: 1,
-            name: "playlist",
-            description: "play an entire playlist or album from a URL or search query (lots of source supported)",
-            options: [{
-                type: 3,
-                name: "query",
-                description: "what would you want to play?",
-                required: true,
-                autocomplete: true
-            }]
-        }, {
-            type: 1,
-            name: "queue",
-            description: "display the music queue that i'm playing"
-        }, {
-            type: 1,
-            name: "remove",
-            description: "remove one or many songs from the queue",
-            options: [{
-                type: 3,
-                name: "index",
-                description: "index(es) of the song that you want to remove in the queue (for example: 1 or 2, 3, 7)",
-                required: true
-            }]
-        }, {
-            type: 1,
-            name: "repeat",
-            description: "repeat the currently playing song"
-        }, {
-            type: 1,
-            name: "resume",
-            description: "resume a previously paused song"
-        }, {
-            type: 1,
-            name: "search",
-            description: "search a songs to play from (avaliable for YouTube and SoundCloud)",
-            options: [{
-                type: 3,
-                name: "query",
-                description: "what song would you want to search?",
-                required: true,
-                autocomplete: true
-            }]
-        }, {
-            type: 1,
-            name: "seek",
-            description: "seek to a certain point of the song",
-            options: [{
-                type: 3,
-                name: "timestamp",
-                description: "where would you want to seek to? (for example 04:05 or 2m 6s)",
-                required: true
-            }]
-        }, {
-            type: 1,
-            name: "shuffle",
-            description: "shuffle the current queue"
-        }, {
-            type: 1,
-            name: "skip-to",
-            description: "skip to the selected song in the queue",
-            options: [{
-                type: 4,
-                name: "index",
-                description: "the index of the song that you want to skip to",
-                required: true
-            }]
-        }, {
-            type: 1,
-            name: "skip",
-            description: "skip the currently playing song"
-        }, {
-            type: 1,
-            name: "stop",
-            description: "stop the music and clear the queue"
-        }, {
-            type: 1,
-            name: "volume",
-            description: "change the volume of the current queue",
-            options: [{
-                type: 4,
-                name: "amount",
-                description: "the amount of volume that you want to set",
-                required: false
-            }]
-        }]
-    },
+    data: new SlashCommandBuilder()
+    .setName(exports.help.name)
+    .setDescription(exports.help.description)
+    .addSubcommand(sub => sub
+        .setName('disconnect')
+        .setDescription("disconnect from the current music voice channel and clear the queue")
+    )
+    .addSubcommand(sub => sub
+        .setName('force-skip')
+        .setDescription("skip the currently playing song forcefully")
+    )
+    .addSubcommand(sub => sub
+        .setName('loop')
+        .setDescription("loop the entire queue")
+    )
+    .addSubcommand(sub => sub
+        .setName('lyrics')
+        .setDescription("get the lyrics for a song")
+        .addStringOption(option => option
+            .setName('song')
+            .setDescription('the name of song do you want me to search the lyric for')
+            .setRequired(false)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('move')
+        .setDescription("move the current playing song around in the queue")
+        .addIntegerOption(option => option
+            .setName('from')
+            .setDescription("what is the index of the song that you want to move?")
+            .setRequired(true)
+        )
+        .addIntegerOption(option => option
+            .setName('to')
+            .setDescription("where would you want to move it?")
+            .setRequired(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('debug')
+        .setDescription("turn on debugging mode for the current queue")
+    )
+    .addSubcommand(sub => sub
+        .setName('now-playing')
+        .setDescription("display the status of the current playing song")
+    )
+    .addSubcommand(sub => sub
+        .setName('pause')
+        .setDescription("pause a playing song")
+    )
+    .addSubcommand(sub => sub
+        .setName('play')
+        .setDescription("play a song from a URL or from search query (lots of source supported!)")
+        .addStringOption(option => option
+            .setName('query')
+            .setDescription('what would you want to play?')
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('playlist')
+        .setDescription("play an entire playlist or album from a URL or search query (lots of source supported)")
+        .addStringOption(option => option
+            .setName('query')
+            .setDescription('what would you want to play?')
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('queue')
+        .setDescription("display the music queue that i'm playing")
+    )
+    .addSubcommand(sub => sub
+        .setName('remove')
+        .setDescription("remove one or many songs from the queue")
+        .addStringOption(option => option
+            .setName('index')
+            .setDescription('index(es) of the song that you want to remove in the queue (for example: 1 or 2, 3, 7)')
+            .setRequired(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('repeat')
+        .setDescription("repeat the currently playing song")
+    )
+    .addSubcommand(sub => sub
+        .setName('resume')
+        .setDescription("resume a previously paused song")
+    )
+    .addSubcommand(sub => sub
+        .setName('search')
+        .setDescription("search a songs to play from (avaliable for YouTube and SoundCloud)")
+        .addStringOption(option => option
+            .setName('query')
+            .setDescription('what song would you want to search?')
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('seek')
+        .setDescription(`seek to a certain point of the song`)
+        .addStringOption(option => option
+            .setName('timestamp')
+            .setDescription('where would you want to seek to? (for example 04:05 or 2m 6s)')
+            .setRequired(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('shuffle')
+        .setDescription(`shuffle the current queue`)
+    )
+    .addSubcommand(sub => sub
+        .setName('skip-to')
+        .setDescription("skip to the selected song in the queue")
+        .addIntegerOption(option => option
+            .setName('index')
+            .setDescription('the index of the song that you want to skip to')
+            .setRequired(true)
+        )
+    )
+    .addSubcommand(sub => sub
+        .setName('skip')
+        .setDescription(`skip the currently playing song`)
+    )
+    .addSubcommand(sub => sub
+        .setName('stop')
+        .setDescription(`stop the music and clear the queue`)
+    )
+    .addSubcommand(sub => sub
+        .setName('volume')
+        .setDescription("change the volume of the current queue")
+        .addIntegerOption(option => option
+            .setName('amount')
+            .setDescription('the amount of volume that you want to set')
+            .setRequired(false)
+        )
+    ),
     cooldown: 3,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],
-    rawData: true
 };
