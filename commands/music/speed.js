@@ -19,7 +19,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     };
     let expire = cooldownStorage.ticketExpire;
-    // if (!expire || expire < Date.now()) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your 🎫 **Effect Ticket** was expired, or you don't have one! obtain one with \`${prefix}ticket\`!` }] });
+    if (!expire || expire < Date.now()) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `your 🎫 **Effect Ticket** was expired, or you don't have one! obtain one with \`${prefix}ticket\`!` }] });
 
     const rate = args[0];
     if (!rate) return message.reply({ embeds: [{ color: "#bee7f7", description: `you should specify the speed rate, ranging from 0.1 to 10! :pensive:` }] });
