@@ -2,6 +2,8 @@ const DDG = require('duck-duck-scrape');
 const { cleanAnilistHTML } = require('../../util/util');
 const { MessageEmbed } = require("discord.js");
 const request = require("node-superfetch");
+const { SlashCommandBuilder } = require("@discordjs/builders");
+
 
 exports.run = async(client, interaction) => {
     let query = interaction.options.getString('query');
@@ -53,19 +55,15 @@ exports.help = {
 };
 
 exports.conf = {
-    data: {
-        name: exports.help.name,
-        description: exports.help.description,
-        options: [{
-            type: 3,
-            name: "query",
-            description: "what image would you like to search for?",
-            required: true,
-            autocomplete: true
-        }]
-    },
+    data: new SlashCommandBuilder()
+    .setName(exports.help.name)
+    .setDescription(exports.help.description)
+    .addStringOption(option => option
+        .setName('query')
+        .setDescription('what image would you like to search for?')
+        .setRequired(true)
+        .setAutocomplete(true)),
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],
-    rawData: true
 };

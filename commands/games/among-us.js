@@ -11,7 +11,7 @@ exports.run = async(client, message, args, prefix) => {
         client.games.set(message.channel.id, { prompt: `please wait until the ongoing Among Us game is finished :(` });
         try {
             const awaitedPlayers = await awaitPlayers(message.author.id, message, playersCount, 3);
-            if (!awaitedPlayers) {
+            if (!awaitedPlayers.length) {
                 client.games.delete(message.channel.id);
                 return message.channel.send('game could not be started...');
             };

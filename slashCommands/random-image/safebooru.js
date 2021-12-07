@@ -1,6 +1,7 @@
 //credit to my friend Crocodile#6300 for this command
 const { MessageEmbed } = require('discord.js');
 const request = require('node-superfetch');
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
 exports.run = async(client, interaction) => {
     const query = interaction.options.getString('tag') || '';
@@ -38,18 +39,14 @@ exports.help = {
 };
 
 exports.conf = {
-    data: {
-        name: exports.help.name,
-        description: exports.help.description,
-        options: [{
-            type: 3,
-            name: "tag",
-            description: "what tag would you like to search for?",
-            required: false
-        }]
-    },
+    data: new SlashCommandBuilder()
+    .setName(exports.help.name)
+    .setDescription(exports.help.description)
+    .addStringOption(option => option
+        .setName('tag')
+        .setDescription('what tag would you like to search for?')
+        .setRequired(false)),
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],
-    rawData: true
 };

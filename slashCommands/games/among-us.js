@@ -16,7 +16,7 @@ exports.run = async(client, interaction) => {
         try {
             const message = await interaction.reply({ content: 'beginning the Among Us game...', fetchReply: true });
             const awaitedPlayers = await awaitPlayers(interaction.user.id, message, playersCount, 3);
-            if (!awaitedPlayers) {
+            if (!awaitedPlayers.length) {
                 client.games.delete(interaction.channel.id);
                 return interaction.channel.send('game could not be started...');
             };

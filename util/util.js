@@ -122,7 +122,7 @@ module.exports = class util {
                 return true;
             };
             const verify = await message.channel.awaitMessages({ filter, max: max - 1, time: 60000 });
-            if (verify.size < min - 1) return false;
+            if (verify.size < min - 1) return [];
             const players = [...verify.values()];
             return players.map(player => player.author.id);
         };
