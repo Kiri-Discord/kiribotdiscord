@@ -147,7 +147,7 @@ module.exports = class util {
     }
     static paginatorLoop(id, reply, pageInfo, currentPage = 0) {
         reply.awaitMessageComponent( {
-            filter: (interaction) => (interaction.user.id == id || config.admins.includes(interaction.user.id)),
+            filter: (interaction) => (interaction.user.id == id),
             time: 60000
         }).then(async (r) => {
             const name = r.customId
