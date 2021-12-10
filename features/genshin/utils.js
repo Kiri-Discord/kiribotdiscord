@@ -38,6 +38,37 @@ module.exports = class util {
     
         "None": "#545353",
     };
+    static getServerTimeInfo() {
+        const offsets = {
+            America: -5,
+            Europe: 1,
+            Asia: +8,
+            "TW, HK, MO": +8,
+        };
+        const servers = Object.keys(offsets);
+        return servers.map(server => {
+            const now = new Date()
+            const offset = offsets[server]
+            now.setUTCHours(now.getUTCHours() + offset)
+    
+            const nextDailyReset = new Date(now.getTime())
+            nextDailyReset.setUTCHours(4, 0, 0, 0)
+            while (nextDailyReset.getTime() < now.getTime())
+                nextDailyReset.setUTCDate(nextDailyReset.getUTCDate() + 1)
+    
+            const nextWeeklyReset = new Date(nextDailyReset.getTime())
+            while (nextWeeklyReset.getDay() !== 1)
+                nextWeeklyReset.setUTCDate(nextWeeklyReset.getUTCDate() + 1)
+    
+            return {
+                server,
+                offset: offset < 0 ? offset.toString() : `+${offset}`,
+                time: now,
+                nextDailyReset,
+                nextWeeklyReset
+            }
+        })
+    }
     static createTable(names, rows, pads = [util.PAD_END]) {
         const maxColumns = Math.max(...rows.map(row => row.length))
         let title = "", currentInd = 0

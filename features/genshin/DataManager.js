@@ -9,6 +9,9 @@ const artifactsMainLevels = require("../../assets/genshin/gamedata/artifact_main
 const characterData = require("../../assets/genshin/gamedata/characters.json")
 const characterCurves = require("../../assets/genshin/gamedata/character_curves.json")
 const characterLevels = require("../../assets/genshin/gamedata/character_levels.json")
+const booksData = require("../../assets/genshin/gamedata/books.json")
+
+const paimonShop = require("../../assets/genshin/gamedata/paimon_shop.json")
 
 const weaponData = require("../../assets/genshin/gamedata/weapons.json")
 const weaponCurves = require("../../assets/genshin/gamedata/weapon_curves.json")
@@ -31,14 +34,15 @@ const defaultStore = {};
 module.exports = class DataManager {
     constructor() {
         this.store = defaultStore
-
+        this.books = booksData
         this.max_resin = 160
         this.minutes_per_resin = 8;
     
         this.artifacts = artifactsData;
         this.artifactMainStats = artifactsMainStats;
         this.artifactMainLevels = artifactsMainLevels;
-        this.characterLevels = characterLevels
+        this.characterLevels = characterLevels;
+        this.paimonsBargains = paimonShop;
     
         this.characters = characterData;
         this.weapons = weaponData;

@@ -3,11 +3,8 @@ const { MessageEmbed } = require("discord.js");
 exports.run = (client, message, args) => {
     const { genshinData } = client;
 
-    const books = {
-        "Monday & Thursday": ["Freedom", "Prosperity", "Transience"],
-        "Tuesday & Friday": ["Resistance", "Diligence", "Elegance"],
-        "Wednesday & Saturday": ["Ballad", "Gold", "Light"],
-    };
+    const { books } = genshinData;
+    
     const embed = new MessageEmbed()
     .setThumbnail('https://static.wikia.nocookie.net/gensin-impact/images/1/1a/Item_Guide_to_Freedom.png/revision/latest?cb=20210106071929')
     .setColor('#cbd4c2')
