@@ -9,6 +9,11 @@ exports.canModifyQueue = (member) => {
     };
     return true;
 };
+
+exports.interactionReply = async(interaction, content) => {
+    if (interaction.replied) return interaction.editReply(content);
+    else return interaction.reply(content);
+}
 exports.fetchInfo = async(client, query, search, id) => {
     const nodes = client.lavacordManager.idealNodes;
     const node = id ? nodes.filter(x => x.id !== id)[0] : nodes[0];
