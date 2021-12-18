@@ -310,7 +310,7 @@ module.exports = class util {
                 // .replace(/<\/?i.*?>/g, "*")
                 // .replace(/<\/?em.*?>/g, "*")
                 .replace(/<a.*?href="(.*?)".*?>(.*?)<\/a>/g, (_, link, title) => `[${title}](${link})`)
-                .replace(/<iframe.*?src="(.*?)"><\/iframe>/g, (_, link) => `[Link](${link})`)
+                .replace(/<iframe.*?src="(.*?)".*?><\/iframe>/g, (_, link) => `[Link](${link})`)
     
             const imgFinder = middle.match(/<img.*?src="(.*?)".*?>/)
     

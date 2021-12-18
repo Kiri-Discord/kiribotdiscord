@@ -251,6 +251,9 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
 
         return undefined
     }
+    function isValueTable(talent) {
+        return talent.values != undefined
+    }
     function getArtPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
@@ -283,9 +286,14 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                 embed.addField("Charges", skill.charges.toString())
 
             let hasLevels = false
-            for (const { name, values } of skill.talentTable) {
-                if (values.filter(k => k != values[0]).length > 0) {
-                    hasLevels= true
+            for (const talent of skill.talentTable) {
+                const { name } = talent
+
+                if (isValueTable(talent)) {
+                    const values = talent.values;
+                    hasLevels = true;
+
+                    const maxLevel = values.length;
                     embed.addField(name, "```\n"+ createTable(
                         undefined,
                         Object.entries(values)
@@ -293,18 +301,17 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                             .filter(([lv]) => {
                                 switch (talentMode) {
                                     case "HIGH":
-                                        return lv >= 6 && lv <= 13
+                                        return lv >= 6
                                     case "LOW":
                                         return lv <= 6
                                     case "LITTLE":
                                     default:
-                                        return [6, 9, 12].includes(+lv)
+                                        return [6, 9, maxLevel - 1].includes(+lv)
                                 }
                             }),
                         [PAD_START, PAD_END]
                     ) + "\n```", true)
-                } else
-                    embed.addField(name, values[0], true)
+                } else embed.addField(name, talent.value, true)
             }
             if (hasLevels && talentMode == "HIGH")
                 embed.setFooter(`${embed.footer?.text} - you can use '${prefix}character ${char.name} -low' to display lower levels`)
