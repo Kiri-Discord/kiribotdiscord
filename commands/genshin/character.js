@@ -306,8 +306,6 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                 } else
                     embed.addField(name, values[0], true)
             }
-            if (skill.type)
-                embed.addField("Element type", skill.type, true)
             if (hasLevels && talentMode == "HIGH")
                 embed.setFooter(`${embed.footer?.text} - you can use '${prefix}character ${char.name} -low' to display lower levels`)
             else if (hasLevels && talentMode == "LOW")
@@ -334,7 +332,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
 
             if (page++ == relativePage) {
                 embed.setTitle(`${char.name}: Passives`)
-                for (const passive of skills.passive.sort((a, b) => a.minAscension - b.minAscension)) {
+                for (const passive of skills.passive) {
                     embed.addField(passive.name, `${passive.desc}
     
 *${passive.minAscension > 0 ? `Unlocks at ascension **${passive.minAscension}**` : "Unlocked by **default**"}*`)
