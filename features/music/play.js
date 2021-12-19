@@ -171,6 +171,7 @@ module.exports = class Queue {
                 const resolved = await Promise.race([pEvent(this.player, 'end'), delay(5000, 'TIMED_OUT')]);
 
                 if (resolved === 'TIMED_OUT') {
+                    this.stop('disconnected');
                     this.client.lavacordManager.leave(this.guildId);
                     return 'CANT_VERIFY';
                 };

@@ -23,9 +23,16 @@ module.exports = {
             let succeded = 0;
             for (const queue of queues) {
                 const { nowPlaying } = queue;
-                const avaliableNodes = (queue.songs.some(song => song.info.sourceName === 'soundcloud') || nowPlaying.info.sourceName === 'soundcloud') ?
+                let avaliableNodes;
+                if (queue.songs.length) {
+                    avaliableNodes = (queue.songs.some(song => song.info.sourceName === 'soundcloud') || nowPlaying.info.sourceName === 'soundcloud') ?
                     client.lavacordManager.idealNodes.filter(no => no.ws && no.id !== 'yt' && no.id !== node.id) :
                     client.lavacordManager.idealNodes.filter(no => no.ws && no.id !== node.id);
+                } else {
+                    avaliableNodes = nowPlaying.info.sourceName === 'soundcloud' ?
+                    client.lavacordManager.idealNodes.filter(no => no.ws && no.id !== 'yt' && no.id !== node.id) :
+                    client.lavacordManager.idealNodes.filter(no => no.ws && no.id !== node.id);
+                }
 
                 if (!avaliableNodes.length) {
                     queue.stop('errorNode');
