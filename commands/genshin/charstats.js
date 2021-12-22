@@ -40,7 +40,7 @@ exports.run = (client, message, args, prefix) => {
     const name = args.join(" ");
     const { genshinData } = client;
 
-    const char = genshinData.getCharacterByName(name);
+    const char = genshinData.getReleasedCharacterByName(name);
     if (char == undefined) return message.channel.send({
         embeds: [
             {

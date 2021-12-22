@@ -22,6 +22,7 @@ const abyssSchedule = require("../../assets/genshin/gamedata/abyss_schedule.json
 
 const emojiData = require("../../assets/genshin/emojis.json")
 const eventData = require("../../assets/genshin/events.json");
+const guideData = require("../../assets/genshin/guides.json");
 
 const { findFuzzy, getDate } = require('./utils')
 const existsP = async (path) => new Promise((resolve) => exists(path, resolve));
@@ -45,6 +46,7 @@ module.exports = class DataManager {
         this.paimonsBargains = paimonShop;
     
         this.characters = characterData;
+        this.guides = guideData;
         this.weapons = weaponData;
         this.weaponLevels = weaponLevels;
     
@@ -104,9 +106,15 @@ module.exports = class DataManager {
         return found
     }
     getCharacters() {
+        return Object.values(this.characters)
+    }
+    getReleasedCharacters() {
         return Object.values(this.characters).filter(char =>
-            Date.now() >= getDate(char.releasedOn).getTime()
+            this.isFullCharacter(char)
         )
+    }
+    isFullCharacter(char) {
+        return typeof char.releasedOn == "string";
     }
     getAbyssSchedules() {
         return Object.values(this.abyssSchedule).filter(schedule =>
@@ -141,11 +149,11 @@ module.exports = class DataManager {
     }
     getCharStatsAt(char, level, ascension) {
         const stats = {
-            "Base HP": char.hpBase,
-            "Base ATK": char.attackBase,
-            "Base DEF": char.defenseBase,
-            "CRIT Rate": char.criticalBase,
-            "CRIT DMG": char.criticalHurtBase,
+            "Base HP": char.baseStats.hpBase,
+            "Base ATK": char.baseStats.attackBase,
+            "Base DEF": char.baseStats.defenseBase,
+            "CRIT Rate": char.baseStats.criticalBase,
+            "CRIT DMG": char.baseStats.criticalDmgBase,
         }
 
         for (const curve of char.curves) {
@@ -159,6 +167,15 @@ module.exports = class DataManager {
         }
 
         return stats
+    }
+    getReleasedCharacterByName(name) {
+        const targetNames = this.getReleasedCharacters().map(c => c.name)
+        const target = findFuzzy(targetNames, name)
+
+        if (target)
+            return this.characters[target]
+
+        return undefined
     }
     getWeaponStatsAt(weapon, level, ascension) {
         const stats = {}

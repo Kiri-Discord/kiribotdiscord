@@ -11,31 +11,15 @@ module.exports = class util {
     
         RED: "#F7322E",
         DARK_RED: "#F4231F",
-    
         AQUA: "#07EADB",
         PURPLE: "#6B68B1",
-    
         "Anemo": "#32D39F",
-        "Wind": "#32D39F",
-    
         "Cryo": "#79E8EB",
-        "Ice": "#79E8EB",
-    
         "Electro": "#CA7FFF",
-        "Electric": "#CA7FFF",
-    
         "Geo": "#FEE263",
-        "Rock": "#FEE263",
-    
         "Hydro": "#06E5FE",
-        "Water": "#06E5FE",
-    
         "Pyro": "#FFAA6E",
-        "Fire": "#FFAA6E",
-    
         "Dendro": "#B2EB28",
-        "Grass": "#B2EB28",
-    
         "None": "#545353",
     };
     static getServerTimeInfo() {
@@ -68,6 +52,37 @@ module.exports = class util {
                 nextWeeklyReset
             }
         })
+    };
+    static findFuzzyBestCandidates(target, search, amount) {
+        const cleaned = util.searchClean(search)
+        const found = target.find(t => util.searchClean(t) == search)
+        if (found)
+            return [found]
+    
+        const dists = target.map(e => util.fuzzySearchScore(util.searchClean(e), cleaned) + util.fuzzySearchScore(caps(e), util.caps(search)) - e.length / 100 + 1)
+        const max = Math.max(...dists)
+    
+        return target
+            .map((t, i) => {
+                return {
+                    t,
+                    d: dists[i]
+                }
+            })
+            .sort((a, b) => b.d - a.d)
+            .filter((e, i) => i < amount && e.d > max * 0.65)
+            .map(({ t, d }) => {
+                if (util.searchClean(t).startsWith(cleaned.substring(0, 3)) || util.searchClean(t).endsWith(cleaned.substring(cleaned.length - 3)))
+                    d += 1
+                if (caps(t).includes(search[0]?.toUpperCase()))
+                    d += 1.5
+                if (caps(t) == caps(search))
+                    d += 0.5
+    
+                return { t, d }
+            })
+            .sort((a, b) => b.d - a.d)
+            .map(e => e.t)
     }
     static createTable(names, rows, pads = [util.PAD_END]) {
         const maxColumns = Math.max(...rows.map(row => row.length))
