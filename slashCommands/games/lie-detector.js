@@ -165,6 +165,8 @@ exports.conf = {
         .setName('player-count')
         .setDescription('how many players that you want to have?')
         .setRequired(true)
+        .setMaxValue(20)
+        .setMinValue(1)
     ),
     cooldown: 5,
 	guildOnly: true,

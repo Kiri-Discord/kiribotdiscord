@@ -129,6 +129,7 @@ exports.conf = {
             .setName('amount')
             .setDescription('how many items that you want to buy?')
             .setRequired(true)
+            .setMinValue(1)
         )
         .addStringOption(option => option
             .setName('item')

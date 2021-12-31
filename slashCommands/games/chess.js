@@ -509,6 +509,7 @@ exports.conf = {
             .addIntegerOption(option => option
                 .setDescription('how long should the chess timers be set for (in minutes)? use 0 for infinite.')
                 .setName('time')
+                .setMaxValue(120)
                 .setRequired(true)
             )
             .addStringOption(option => option

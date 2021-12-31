@@ -163,6 +163,8 @@ exports.conf = {
         )
         .addIntegerOption(option => option
             .setName('timeout')
+            .setMinValue(3)
+            .setMaxValue(15)
             .setDescription('what is the answer duration that you want to give for each player? (in seconds)')
             .setRequired(false)
         ),

@@ -124,6 +124,7 @@ exports.conf = {
         .setName(exports.help.name)
         .setDescription(exports.help.description)
         .addIntegerOption(option => option
+            .setMinValue(1)
             .setName('amount')
             .setDescription('how much token do you want to contribute?')
             .setRequired(true)
