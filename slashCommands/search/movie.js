@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const request = require('node-superfetch');
 const { shorten, pickWhenMany } = require('../../util/util');
+const { interactionReply } = require('../../util/musicutil');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
@@ -44,7 +45,7 @@ exports.run = async(client, interaction) => {
         return interaction.editReply({ embeds: [embed], components: [] });
     } catch (error) {
         console.error(error)
-        return interaction.editReply("opps, there was an error while fetching the movie's information. can you try it later? :p")
+        return interactionReply(interaction, "opps, there was an error while fetching the movie's information. can you try it later? :p")
     };
 };
 

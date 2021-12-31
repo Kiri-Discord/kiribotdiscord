@@ -14,6 +14,11 @@ module.exports = async(client, interaction) => {
             };
             const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
             const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
+            if (!interaction.inGuild() && !interaction.channel.permissionsFor(interaction.guild.me).has("SEND_MESSAGES"))
+                return interaction.reply({
+                    content: `due to the nature of some commands requiring sending additional messages (not replies of slash command), i will need the \`SEND_MESSAGES\` perms in this channel ${sed}`,
+                    ephemeral: true
+                });
             if (commandFile.conf.maintenance && !client.config.owners.includes(interaction.user.id)) return interaction.reply(`\`/${interaction.commandName}\` is being maintained. try again later ${sed}`);
             if (!interaction.inGuild() && commandFile.conf.guildOnly) return interaction.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh').toString() : ':thinking:'}`);
             if (interaction.inGuild() && !interaction.channel.nsfw && commandFile.conf.adult) {
