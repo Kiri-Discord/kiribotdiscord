@@ -31,13 +31,13 @@ exports.run = async(client, message, args) => {
 
     const logembed = new MessageEmbed()
         .setColor(15158332)
-        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
         .setTitle('User banned')
         .setThumbnail(member.user.displayAvatarURL())
         .addField('Username', member.user.username)
         .addField('User ID', member.id)
         .addField('Moderator', message.author.toString())
-        .setFooter('Banned at')
+        .setFooter({ text: 'Banned at'})
         .addField('Reason', reason)
         .setTimestamp()
     if (!member.user.bot) await member.send(`🔨 you were \`banned\` from **${message.guild.name}** \n**reason**: ${reason}`).catch(() => null);
