@@ -13,6 +13,8 @@ const booksData = require("../../assets/genshin/gamedata/books.json")
 
 const paimonShop = require("../../assets/genshin/gamedata/paimon_shop.json")
 
+const costTemplates = require("../../assets/genshin/gamedata/cost_templates.json")
+
 const weaponData = require("../../assets/genshin/gamedata/weapons.json")
 const weaponCurves = require("../../assets/genshin/gamedata/weapon_curves.json")
 const weaponLevels = require("../../assets/genshin/gamedata/weapon_levels.json")
@@ -24,7 +26,7 @@ const emojiData = require("../../assets/genshin/emojis.json")
 const eventData = require("../../assets/genshin/events.json");
 const guideData = require("../../assets/genshin/guides.json");
 
-const { findFuzzy, getDate } = require('./utils')
+const { findFuzzy } = require('./utils')
 const existsP = async (path) => new Promise((resolve) => exists(path, resolve));
 
 const path = join(__dirname, '..', '..', 'assets', 'genshin')
@@ -38,6 +40,7 @@ module.exports = class DataManager {
         this.books = booksData
         this.max_resin = 160
         this.minutes_per_resin = 8;
+        this.costTemplates = costTemplates;
     
         this.artifacts = artifactsData;
         this.artifactMainStats = artifactsMainStats;
@@ -117,9 +120,17 @@ module.exports = class DataManager {
         return typeof char.releasedOn == "string";
     }
     getAbyssSchedules() {
-        return Object.values(this.abyssSchedule).filter(schedule =>
-            Date.now() >= getDate(schedule.start).getTime()
-        )
+        return Object.values(this.abyssSchedule)
+    }
+    getCostsFromTemplate(costTemplate) {
+        const template = this.costTemplates[costTemplate.template]
+        return template.map(c => ({
+            mora: c.mora,
+            items: c.items.map(i => ({
+                count: i.count,
+                name:  i.name.replace(/<(.*?)>/g, (_, x) => costTemplate.mapping[x])
+            }))
+        }))
     }
     getArtifactByName(name) {
         const targetNames = Object.keys(this.artifacts)
@@ -180,11 +191,11 @@ module.exports = class DataManager {
     getWeaponStatsAt(weapon, level, ascension) {
         const stats = {}
 
-        for (const curve of weapon.weaponCurve) {
+        for (const curve of weapon.weaponCurve ?? []) {
             stats[curve.stat] = curve.init * weaponCurves[curve.curve][level - 1]
         }
 
-        const asc = weapon.ascensions.find(a => a.level == ascension)
+        const asc = (weapon.ascensions ?? []).find(a => a.level == ascension)
 
         for (const statup of asc?.statsUp ?? []) {
             stats[statup.stat] = (stats[statup.stat] ?? 0) + statup.value

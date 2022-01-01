@@ -222,7 +222,7 @@ module.exports = class util {
         }).catch(async (error) => {
             if (error.name == "Error [INTERACTION_COLLECTOR_ERROR]") {
                 const user = client.user;
-                if (user == undefined || reply.deleted) return
+                if (user == undefined || !reply.editable) return
                 await reply.edit({ components: [] })
             } else {
                 logger.error("Error during pagination: ", error);

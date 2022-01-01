@@ -46,20 +46,22 @@ exports.run = async (client, message, args, prefix) => {
     };
     const weapon = genshinData.getWeaponByName(name)
     if (weapon == undefined) return sendMessage(message, `i couldn't find that weapon, sorry ${sed}`);
-    const hasRefinements = weapon.refinement.length > 0 && weapon.refinement[0].length > 0
+    const hasRefinements = weapon.refinements && weapon.refinements.length > 0
 
     const pages = [{
         bookmarkEmoji: "📝",
         bookmarkName: "General",
         maxPages: 1,
         pages: (rp, cp, mp) => getMainWeaponPage(weapon, rp, cp, mp)
-    }, {
-        bookmarkEmoji: "-",
-        bookmarkName: "Stats",
-        maxPages: 1,
-        pages: (rp, cp, mp) => getStatsWeaponPage(weapon, rp, cp, mp),
-        invisible: true
     }]
+    if (weapon.weaponCurve)
+        pages.push({
+            bookmarkEmoji: "-",
+            bookmarkName: "Stats",
+            maxPages: 1,
+            pages: (rp, cp, mp) => getStatsWeaponPage(weapon, rp, cp, mp),
+            invisible: true
+        })
     if (hasRefinements)
         pages.push({
             bookmarkEmoji: "🇷",
@@ -67,24 +69,28 @@ exports.run = async (client, message, args, prefix) => {
             maxPages: 1,
             pages: (rp, cp, mp) => getRefinementWeaponPage(weapon, rp, cp, mp)
         })
+    if (weapon.lore)
+        pages.push({
+            bookmarkEmoji: "-",
+            bookmarkName: "Lore",
+            maxPages: 1,
+            pages: (rp, cp, mp) => getLoreWeaponPage(weapon, rp, cp, mp),
+            invisible: true
+        })
     pages.push({
-        bookmarkEmoji: "-",
-        bookmarkName: "Lore",
-        maxPages: 1,
-        pages: (rp, cp, mp) => getLoreWeaponPage(weapon, rp, cp, mp),
-        invisible: true
-    }, {
         bookmarkEmoji: "🎨",
         bookmarkName: "Art",
         maxPages: 1,
         pages: (rp, cp, mp) => getArtWeaponPage(weapon, rp, cp, mp)
-    }, {
-        bookmarkEmoji: "-",
-        bookmarkName: "Art 2",
-        maxPages: 1,
-        pages: (rp, cp, mp) => getSecondArtWeaponPage(weapon, rp, cp, mp),
-        invisible: true
     })
+    if (weapon.awakenIcon)
+        pages.push({
+            bookmarkEmoji: "-",
+            bookmarkName: "Art 2",
+            maxPages: 1,
+            pages: (rp, cp, mp) => getSecondArtWeaponPage(weapon, rp, cp, mp),
+            invisible: true
+        })
 
     await paginator(message, pages, defaultPage)
     return undefined
@@ -94,7 +100,7 @@ exports.run = async (client, message, args, prefix) => {
             .filter(([_, info]) => weaponFilter.length == 0 || weaponFilter.includes(info.weaponType))
             .filter(([_, info]) => starFilter.length == 0 || starFilter.includes(info.stars))
             .sort(([an, a],  [bn, b]) => b.stars - a.stars || a.weaponType.localeCompare(b.weaponType) || an.localeCompare(bn))
-            .map(([name, info]) => `${info.stars}★ ${genshinData.emoji(info.weaponType, true)}: **${name}**`)
+            .map(([name, info]) => `${info.stars}★ ${genshinData.emoji(info.weaponType, true)}: **${name}**${info.placeholder ? " [Not yet available]" : ""}`)
 
         const pages = []
         let paging = "", c = 0
@@ -122,30 +128,43 @@ exports.run = async (client, message, args, prefix) => {
         return embed
     }
     function getMainWeaponPage(weapon, relativePage, currentPage, maxPages) {
-        const hasRefinements = weapon.refinement.length > 0 && weapon.refinement[0].length > 0
+        const hasRefinements = weapon.refinements && weapon.refinements.length > 0
         const embed = new MessageEmbed()
+            .setTitle(`${weapon.name}: Basic info`)
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
             .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setDescription(weapon.desc + (weapon.placeholder ? "\n\n*This weapon is currently not yet available :(*" : ""))
+            .addField("Basics", `${weapon.stars} :star: ${genshinData.emoji(weapon.weaponType)}`, (weapon.placeholderStats && !weapon.weaponCurve) ? true : false)
 
-        const maxAscension = weapon.ascensions[weapon.ascensions.length - 1]
-        embed.setTitle(`${weapon.name}: Basic info`)
-            .setDescription(weapon.desc)
-            .addField("Basics", `${weapon.stars} :star: ${genshinData.emoji(weapon.weaponType)}`)
-            .addField("Base stats", `${
-                Object.entries(genshinData.getWeaponStatsAt(weapon, 1, 0))
-                    .map(([name, value]) => `**${name}**: ${genshinData.stat(name, value)}`)
-                    .join("\n")
-            }`, true)
-            .addField(`Lv. ${maxAscension.maxLevel} A${maxAscension.level} stats`, `${
-                Object.entries(genshinData.getWeaponStatsAt(weapon, maxAscension.maxLevel, maxAscension.level))
-                    .map(([name, value]) => `**${name}**: ${genshinData.stat(name, value)}`)
-                    .join("\n")
-            }`, true)
-
-        if (hasRefinements)
-            embed.addField(`${weapon.refinement[0][0].name} (at R1)`, weapon.refinement[0][0].desc)
-        embed.addField("Upgrade material", `Ascensions: ${weapon.ascensions[2]?.cost.items.map(i => genshinData.emoji(i.name)).join("")}`)
+            const maxAscension = weapon.ascensions?.[weapon.ascensions.length - 1]
+            if (weapon.weaponCurve && maxAscension)
+                embed
+                    .addField("Base stats", `${
+                        Object.entries(genshinData.getWeaponStatsAt(weapon, 1, 0))
+                            .map(([name, value]) => `**${name}**: ${genshinData.stat(name, value)}`)
+                            .join("\n")
+                    }`, true)
+                    .addField(`Lv. ${maxAscension.maxLevel} A${maxAscension.level} stats`, `${
+                        Object.entries(genshinData.getWeaponStatsAt(weapon, maxAscension.maxLevel, maxAscension.level))
+                            .map(([name, value]) => `**${name}**: ${genshinData.stat(name, value)}`)
+                            .join("\n")
+                    }`, true)
+            else if (weapon.placeholderStats) {
+                embed.addField(`Lv. ${weapon.placeholderStats.level} stats`, `${
+                    Object.entries(weapon.placeholderStats.stats)
+                        .map(([name, value]) => `**${name}**: ${genshinData.stat(name, value)}`)
+                        .join("\n")
+                }`, true)
+            }
+            if (weapon.refinements && hasRefinements)
+                embed.addField(`${weapon.refinements[0].name} (at R1)`, weapon.refinements[0].desc)
+            if (weapon.ascensionCosts)
+                embed.addField("Upgrade material", `Ascensions: ${[
+                    weapon.ascensionCosts.mapping.WeaponAsc2,
+                    weapon.ascensionCosts.mapping.EnemyDropTierA1,
+                    weapon.ascensionCosts.mapping.EnemyDropTierB1,
+                ].map(i => genshinData.emoji(i)).join("")}`)
         return embed
     }
     function getStatsWeaponPage(weapon, relativePage, currentPage, maxPages) {
@@ -167,13 +186,16 @@ exports.run = async (client, message, args, prefix) => {
         }
 
         let previousMax = 1
-        for (const asc of weapon.ascensions) {
-            addRow(weapon, previousMax, asc.level)
-            previousMax = asc.maxLevel
-            addRow(weapon, previousMax, asc.level)
-
-            if (asc.cost.mora || asc.cost.items.length > 0)
-                embed.addField(`Ascension ${asc.level} costs`, genshinData.getCosts(asc.cost), true)
+        if (weapon.ascensionCosts) {
+            const costs = genshinData.getCostsFromTemplate(weapon.ascensionCosts)
+            for (const asc of weapon.ascensions ?? []) {
+                addRow(weapon, previousMax, asc.level)
+                previousMax = asc.maxLevel
+                addRow(weapon, previousMax, asc.level)
+                const cost = costs[asc.level]
+                if (cost.mora || cost.items.length > 0)
+                    embed.addField(`Ascension ${asc.level} costs`, genshinData.getCosts(cost), true)
+            }
         }
 
         embed.setTitle(`${weapon.name}: Ascensions + stats`)
@@ -192,9 +214,8 @@ exports.run = async (client, message, args, prefix) => {
             .setFooter(`page ${currentPage} / ${maxPages}`)
 
         embed.setTitle(`${weapon.name}: Refinements`)
-        for (const ref of weapon.refinement)
-            for (const [refinement, info] of Object.entries(ref))
-                embed.addField(`${info.name} ${+refinement+1}`, info.desc)
+        for (const [refinement, info] of Object.entries(weapon.refinements ?? []))
+            embed.addField(`${info.name} R${+refinement+1}`, info.desc)
 
         return embed
     }
@@ -205,7 +226,7 @@ exports.run = async (client, message, args, prefix) => {
             .setThumbnail(weapon.icon)
             .setFooter(`page ${currentPage} / ${maxPages}`)
             .setTitle(`${weapon.name}: Lore`)
-            .setDescription(weapon.lore)
+            .setDescription(weapon.lore ?? "Unavailable")
         return embed
     }
 
@@ -216,7 +237,7 @@ exports.run = async (client, message, args, prefix) => {
             .setFooter(`page ${currentPage} / ${maxPages}`)
             .setTitle(`${weapon.name}: Base`)
             .setDescription(`[Image URL](${weapon.icon})`)
-            .setImage(weapon.icon)
+            .setImage(weapon.awakenIcon ?? "")
         embed.thumbnail = null
         return embed
     }

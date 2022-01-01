@@ -44,7 +44,6 @@ module.exports = async client => {
         await client.verifytimers.fetchAll();
         web.init(client);
     };
-    await client.initGiveaway();
     if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;
 

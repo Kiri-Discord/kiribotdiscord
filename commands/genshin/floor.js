@@ -1,6 +1,7 @@
 const {
     sendMessage,
     simplePaginator,
+    getDate
 } = require("../../features/genshin/utils");
 const { MessageEmbed } = require("discord.js");
 const names = {
@@ -23,7 +24,9 @@ exports.run = async (client, message, args, prefix) => {
     };
     const { genshinData } = client;
     const schedule = genshinData.getAbyssSchedules();
-    let abyss = schedule[schedule.length - 1];
+    let abyss = schedule.filter(schedule =>
+        Date.now() >= getDate(schedule.start).getTime()
+    ).pop()
     if (abyssSchedule) {
         const matchedDate = abyssSchedule.match(/^(\d\d\d\d)-(\d\d?)-(\d)$/)
         if (!matchedDate)
@@ -34,6 +37,7 @@ exports.run = async (client, message, args, prefix) => {
         if (!abyss)
             return sendMessage(message, `i couldn't find abyss \`${line}\`. can you recheck?`)
     }
+    if (!abyss) return sendMessage(message, "i couldn't find the last abyss :pensive:")
     if (floor > 0 && floor <= abyss.regularFloors.length) {
         return sendMessage(message, getSpiralFloor(abyss.regularFloors[floor - 1], floor))
     };
@@ -70,13 +74,14 @@ exports.run = async (client, message, args, prefix) => {
             .setTitle(`Floor ${num}`)
             .setDescription(floor.leyline)
 
-        const lastChamber = floor.chambers[floor.chambers.length - 1]
-        for (const chamber of floor.chambers) {
-            embed.addField(`Chamber ${chamber.chamber}: Conditions`, chamber.conds)
-
-            for (const [ind, monsters] of Object.entries(chamber.monsters)) {
-                const status = `${+ind+1}/${chamber.monsters.length}`
-                embed.addField(`${names[status] ?? status}: (Lv. ${chamber.level})`, `${monsters.join("\n")}${chamber == lastChamber ? "" : "\n\u200B"}`, true)
+        if (floor.chambers) {
+            const lastChamber = floor.chambers[floor.chambers.length - 1]
+            for (const chamber of floor.chambers) {
+                embed.addField(`Chamber ${chamber.chamber}: Conditions`, chamber.conds)
+                for (const [ind, monsters] of Object.entries(chamber.monsters)) {
+                    const status = `${+ind+1}/${chamber.monsters.length}`
+                    embed.addField(`${names[status] ?? status}: (Lv. ${chamber.level})`, `${monsters.join("\n")}${chamber == lastChamber ? "" : "\n\u200B"}`, true)
+                }
             }
         };
         return embed
