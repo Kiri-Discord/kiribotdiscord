@@ -9,8 +9,8 @@ exports.run = async(client, message, args) => {
     if (queue.playing) {
         queue.pause();
         message.channel.send({ embeds: [{ color: "#bee7f7", description: `you paused the current song ⏸️` }] });
-        if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} paused the current song ⏸️` }] })
-        if (queue.textChannel.deleted) queue.textChannel = message.channel;
+        if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} paused the current song ⏸️` }] })
+        if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
     } else {
         return message.channel.send('the music is already paused :thinking:')
     }

@@ -31,6 +31,6 @@ exports.run = async(client, interaction) => {
 
     queue.player.seek(timeMs);
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `you seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})**! 🚚` }] })
-    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] 🚚` }] });
-    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
+    if (queue.textChannel.id !== interaction.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `seeked to **${humanize(timeMs)}** of **[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] 🚚` }] });
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = interaction.channel;
 };

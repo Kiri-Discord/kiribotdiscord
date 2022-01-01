@@ -11,8 +11,8 @@ exports.run = async(client, message, args) => {
     queue.songs = shuffled;
     client.queue.set(message.guild.id, queue);
 
-    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} has shuffled the queue 🔀` }] });
-    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} has shuffled the queue 🔀` }] });
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
     return message.channel.send({ embeds: [{ color: "#bee7f7", description: `${message.author}, you has shuffled the queue 🔀` }] });
 };
 

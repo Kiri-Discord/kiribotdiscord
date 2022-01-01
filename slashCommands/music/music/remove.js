@@ -20,12 +20,12 @@ exports.run = async(client, interaction) => {
             else return true;
         });
         interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${removed.map((song) => song.info.title).join("\n")}** from the queue` }] });
-        if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} removed **${removed.map((song) => song.info.title).join("\n")}** from the queue ❌` }] });
-        if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
+        if (queue.textChannel.id !== interaction.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} removed **${removed.map((song) => song.info.title).join("\n")}** from the queue ❌` }] });
+        if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = interaction.channel;
     } else if (!isNaN(arguments) && songs.length <= 1 && arguments > 1 && arguments <= queue.songs.length) {
         interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ you removed **${queue.songs.splice(arguments - 1, 1)[0].info.title}** from the queue ❌` }] });
-        if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} removed **${queue.songs.splice(arguments - 1, 1)[0].info.title}** from the queue ❌` }] });
-        if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
+        if (queue.textChannel.id !== interaction.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} removed **${queue.songs.splice(arguments - 1, 1)[0].info.title}** from the queue ❌` }] });
+        if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = interaction.channel;
     } else {
         return interaction.reply({ embeds: [{ color: "#bee7f7", description: `your indexes are invalid or doesn't follow the format! (/music remove \`1\` or /music remove \`2, 5, 6\`)` }], ephemeral: true });
     };

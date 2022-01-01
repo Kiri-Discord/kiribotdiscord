@@ -14,9 +14,9 @@ exports.run = async(client, message, args, prefix) => {
     let song = queue.songs[args[0] - 1];
     queue.songs = move(queue.songs, args[0] - 1, args[1] - 1);
     const index = args[1];
-    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} moved **${song.info.title}** to position ${index} 🚚` }] });
+    if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} moved **${song.info.title}** to position ${index} 🚚` }] });
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `you moved **${song.info.title}** to position ${index} 🚚` }] });
-    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
 }
 
 exports.help = {

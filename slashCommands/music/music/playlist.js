@@ -470,10 +470,10 @@ exports.run = async (client, interaction, internal, bulkAdd) => {
     if (
         serverQueue &&
         interaction.channel.id !== serverQueue.textChannel.id &&
-        !serverQueue.textChannel.deleted
+        !client.deletedChannels.has(serverQueue.textChannel)
     )
         serverQueue.textChannel.send({ embeds: [playlistEmbed] });
-    if (serverQueue && serverQueue.textChannel.deleted)
+    if (serverQueue && client.deletedChannels.has(serverQueue.textChannel))
         serverQueue.textChannel = interaction.channel;
     interaction.editReply({ embeds: [playlistEmbed], components: [] });
     if (!serverQueue) {

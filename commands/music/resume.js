@@ -8,8 +8,8 @@ exports.run = async(client, message, args) => {
     if (!queue.playing) {
         queue.playing = true;
         queue.player.resume();
-        if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author.toString()} resumed the current song ▶️` }] });
-        if (queue.textChannel.deleted) queue.textChannel = message.channel;
+        if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author.toString()} resumed the current song ▶️` }] });
+        if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
         message.channel.send({ embeds: [{ color: "#bee7f7", description: `you resumed the current song ▶️` }] });
 
         clearTimeout(queue.dcTimeout);

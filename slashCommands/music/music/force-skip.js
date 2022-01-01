@@ -10,6 +10,6 @@ exports.run = async(client, interaction) => {
     queue.skip();
 
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `${interaction.user}, you skipped to the next track in the queue ⏭` }] })
-    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} force skipped to the next track in the queue ⏭` }] });
-    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
+    if (queue.textChannel.id !== interaction.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} force skipped to the next track in the queue ⏭` }] });
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = interaction.channel;
 };

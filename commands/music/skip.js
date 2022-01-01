@@ -45,7 +45,7 @@ async function skip(queue, message, client, sentMessage) {
     if (queue.repeat) queue.nowPlaying = undefined;
     queue.skip();
     reactIfAble(message, client.user, '👌');
-    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
     if (sentMessage) {
         for (let msg of sentMessage) {
             msg.delete();

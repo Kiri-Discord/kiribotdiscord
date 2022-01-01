@@ -58,7 +58,7 @@ module.exports = class Queue {
                 if (newQueue) return;
                 await this.client.lavacordManager.leave(this.guildId);
                 const waveEmoji = this.client.customEmojis.get('wave') ? this.client.customEmojis.get('wave') : ':wave:';
-                if (!this.textChannel.deleted) this.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
+                if (!this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [{ description: `i'm leaving the voice channel... ${waveEmoji}` }] });
             }, STAY_TIME * 1000);
             this.client.dcTimeout.set(this.guildId, timeout);
         };
@@ -93,7 +93,7 @@ module.exports = class Queue {
             const embed = new MessageEmbed()
                 .setTitle("it's lonely here :(")
                 .setDescription(`it's been a while since the music queue was paused, so i left the voice channel to reserve data :pensive:\nto keep me staying the the voice chat 24/7, there is a upcoming command called \`${this.client.config.prefix}24/7\` for supporters! stay tuned <3`)
-            if (!this.textChannel.deleted) this.textChannel.send({ embeds: [embed] });
+            if (!this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [embed] });
             this.dcTimeout = undefined;
             return this.client.lavacordManager.leave(this.guild.id);
         }, STAY_TIME * 1000);
@@ -143,7 +143,7 @@ module.exports = class Queue {
                     return 'TRIED_TO_JOIN_WITH_NODES';
                 };
                 const tryCount = tried.length;
-                if (!this.textChannel.deleted) await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
+                if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
                 await this.client.lavacordManager.leave(this.guildId);
                 await delay(1500);
                 const nextNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host) && x.id !== 'yt')[0] : this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0];
@@ -197,9 +197,9 @@ module.exports = class Queue {
         };
         if (!this.player || !this.player.state.connected) {
             const state = await this.initVc();
-            if (state === 'TRIED_TO_JOIN_WITH_NODES' && !this.textChannel.deleted) {
+            if (state === 'TRIED_TO_JOIN_WITH_NODES' && !this.client.deletedChannels.has(this.textChannel)) {
                 return this.textChannel.send({ embeds: [{ color: "RED", description: `i can't join your voice channel somehow. probably Discord has something to do with it or my music nodes are down :pensive:` }] });
-            } else if (state === 'CANT_VERIFY' && !this.textChannel.deleted) {
+            } else if (state === 'CANT_VERIFY' && !this.client.deletedChannels.has(this.textChannel)) {
                 const deadEmoji = this.client.customEmojis.get('dead');
                 return this.textChannel.send({ embeds: [{ description: `i can't verify if i have joined your channel or not. probably Discord has something to do with it ${deadEmoji} you can create a new queue instead if song won't play.` }] });
             }
@@ -207,7 +207,7 @@ module.exports = class Queue {
         if (this.channel.type === 'GUILD_STAGE_VOICE' && this.me.voice.suppress) {
             if (!this.me.permissions.has(Permissions.STAGE_MODERATOR)) {
                 this.me.voice.setRequestToSpeak(true);
-                if (!this.textChannel.deleted) this.textChannel.send({ embeds: [{ description: `i am in your Stage Channel, however since i'm not a speaker, i can't play your song publicly ;-; you can invite me to speak using **Right Click** -> **Invite to Speak** or accept my speak request!` }] });
+                if (!this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [{ description: `i am in your Stage Channel, however since i'm not a speaker, i can't play your song publicly ;-; you can invite me to speak using **Right Click** -> **Invite to Speak** or accept my speak request!` }] });
             } else {
                 await this.me.voice.setSuppressed(false);
             };
@@ -216,29 +216,29 @@ module.exports = class Queue {
             const logo = this.client.customEmojis.get('spotify') ? this.client.customEmojis.get('spotify').toString() : '⚠️';
             try {
                 let msg;
-                if (!this.textChannel.deleted) msg = await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
+                if (!this.client.deletedChannels.has(this.textChannel)) msg = await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
                 const ytUrl = await spotifyToYT.trackGet(song.info.uri);
                 if (msg) msg.delete();
                 if (!ytUrl || !ytUrl.url) {
                     this.songs.shift();
-                    if (!this.textChannel.deleted) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                     return this.play(this.songs[0]);
                 };
                 const [res] = await fetchInfo(this.client, ytUrl.url, null);
                 if (!res) {
                     this.songs.shift();
-                    if (!this.textChannel.deleted) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                     return this.play(this.songs[0]);
                 };
                 song.track = res.track;
             } catch (error) {
                 this.songs.shift();
-                if (!this.textChannel.deleted) await this.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "RED", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                 return this.play(this.songs[0]);
             };
         };
         if (this.karaoke.isEnabled) {
-            if (!this.textChannel.deleted) this.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
+            if (!this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [{ description: `fetching lyrics... :mag_right:` }] });
             this.karaoke.instance = new ScrollingLyrics(song, this.karaoke.channel, this.karaoke.languageCode, this.textChannel, this.client.guildsStorage.get(this.guildId).prefix || this.client.config.prefix, this.client);
             const success = await this.karaoke.instance.init();
             if (!success) this.karaoke.instance = null;
@@ -280,7 +280,7 @@ module.exports = class Queue {
             console.error(error);
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
             this.client.lavacordManager.leave(this.guild.id);
-            if (!this.textChannel.deleted) return this.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
+            if (!this.client.deletedChannels.has(this.textChannel)) return this.textChannel.send({ embeds: [{ description: `there was an error while playing the music! i had left the voice channel :pensive:` }] });
         };
     };
     startEvent = async(data) => this.start(data);
@@ -306,7 +306,7 @@ module.exports = class Queue {
                 if (this.karaoke.instance.pauseTimestamp) this.karaoke.instance.resume();
                 else this.karaoke.instance.start();
             };
-            if (!this.textChannel.deleted) {
+            if (!this.client.deletedChannels.has(this.textChannel)) {
                 const sent = await this.textChannel.send({ embeds: [embed] });
                 this.playingMessage = sent.id;
             };
@@ -315,8 +315,8 @@ module.exports = class Queue {
         };
     };
     async end(data) {
-        if (this.debug && !this.textChannel.deleted) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
-        if (this.playingMessage && !this.textChannel.deleted && (data.reason === "FINISHED" || data.reason === 'REPLACED')) {
+        if (this.debug && !this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
+        if (this.playingMessage && !this.client.deletedChannels.has(this.textChannel) && (data.reason === "FINISHED" || data.reason === 'REPLACED')) {
             if (this.songs.length) {
                 try {
                     this.textChannel.messages.delete(this.playingMessage);
@@ -348,7 +348,7 @@ module.exports = class Queue {
                 upcoming = this.songs[0];
             };
             this.play(upcoming);
-            if (data.reason === 'LOAD_FAILED' && !this.textChannel.deleted) this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
+            if (data.reason === 'LOAD_FAILED' && !this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [{ color: "RED", description: `sorry, i can't seem to be able to load that song! skipping to the next one for you now...` }] });
         };
     };
     async pauseFuc(pause) {

@@ -101,7 +101,7 @@ module.exports = class util {
             return null;
         };
         static async deleteIfAble(message) {
-            if (message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
+            if (message.deletable) {
                 await message.delete();
             } else return null;
         };

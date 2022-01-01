@@ -10,6 +10,7 @@ module.exports = class kiri extends Client {
             parseMember,
         };
         this.genshinData = new DataManager();
+        this.deletedChannels = new WeakSet();
         this.nodes = require("../lavalinkNodes.json");
         this.vote = require("../model/vote");
         this.isPlaying = new Map();

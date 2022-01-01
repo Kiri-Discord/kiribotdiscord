@@ -15,6 +15,6 @@ exports.run = async(client, interaction) => {
     queue.songs = move(queue.songs, from - 1, to - 1);
     const index = to;
     interaction.reply({ embeds: [{ color: "#bee7f7", description: `${interaction.user}, you moved **${song.info.title}** to position ${index} 🚚` }] });
-    if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} moved **${song.info.title}** to position ${index} 🚚` }] });
-    if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
+    if (queue.textChannel.id !== interaction.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} moved **${song.info.title}** to position ${index} 🚚` }] });
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = interaction.channel;
 };

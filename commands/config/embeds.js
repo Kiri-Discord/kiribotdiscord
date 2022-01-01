@@ -84,7 +84,7 @@ exports.run = async (client, message, args, prefix) => {
                 .setTimestamp()
                 .setImage("https://i.imgur.com/XnDAHF9.png");
             while (!name) {
-                if (!setupMessage || setupMessage.deleted)
+                if (!setupMessage)
                     setupMessage = await message.channel.send({
                         embeds: [embed],
                     });
@@ -111,7 +111,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -121,7 +121,7 @@ exports.run = async (client, message, args, prefix) => {
                 name = id;
             }
             while (!targetEmbed.color) {
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage)
                     displayMessage = await message.channel.send({
                         embeds: [targetEmbed],
                     });
@@ -139,7 +139,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -180,7 +180,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -190,7 +190,7 @@ exports.run = async (client, message, args, prefix) => {
                 await deleteIfAble(res);
                 targetEmbed.color = color;
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -228,7 +228,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -276,7 +276,7 @@ exports.run = async (client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -316,7 +316,7 @@ exports.run = async (client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -331,7 +331,7 @@ exports.run = async (client, message, args, prefix) => {
                 if (iconUrl) targetEmbed.author.icon_url = iconUrl.trim();
                 if (url) targetEmbed.author.url = url.trim();
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -367,7 +367,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -402,7 +402,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -414,7 +414,7 @@ exports.run = async (client, message, args, prefix) => {
                     targetEmbed.description = null;
                 targetEmbed.title = text;
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -454,7 +454,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -489,7 +489,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -500,7 +500,7 @@ exports.run = async (client, message, args, prefix) => {
                 // if (targetEmbed.description === empty) targetEmbed.description = null;
                 targetEmbed.description = text;
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -537,7 +537,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -586,7 +586,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -598,7 +598,7 @@ exports.run = async (client, message, args, prefix) => {
                     url: iconUrl,
                 };
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -642,7 +642,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -711,7 +711,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -721,7 +721,7 @@ exports.run = async (client, message, args, prefix) => {
                 await deleteIfAble(res);
                 targetEmbed.fields = fieldsArray;
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -758,7 +758,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -807,7 +807,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -819,7 +819,7 @@ exports.run = async (client, message, args, prefix) => {
                     url: iconUrl,
                 };
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -857,7 +857,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -901,7 +901,7 @@ exports.run = async (client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -940,7 +940,7 @@ exports.run = async (client, message, args, prefix) => {
                 > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                 > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -954,7 +954,7 @@ exports.run = async (client, message, args, prefix) => {
                 };
                 if (iconUrl) targetEmbed.footer.icon_url = iconUrl.trim();
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -992,7 +992,7 @@ exports.run = async (client, message, args, prefix) => {
                     > variable are supported! go check out \`${prefix}variable\` to fill in your embed!
                     > [] optional, <> required. don't includes these things while setting up the embed :)
                 `);
-                    if (!setupMessage || setupMessage.deleted)
+                    if (!setupMessage || !setupMessage.editable)
                         setupMessage = await message.channel.send({
                             embeds: [embed],
                         });
@@ -1014,7 +1014,7 @@ exports.run = async (client, message, args, prefix) => {
                 await deleteIfAble(res);
                 targetEmbed.timestamp = true;
                 ongoing = false;
-                if (!displayMessage || displayMessage.deleted)
+                if (!displayMessage || !displayMessage.editable)
                     displayMessage = await message.channel.send({
                         embeds: [
                             varReplace.replaceEmbed(
@@ -1052,7 +1052,13 @@ exports.run = async (client, message, args, prefix) => {
                 creator: message.author.id,
             });
             await storage.save();
-            return setupMessage.edit({ embeds: [embed2] });
+            if (!setupMessage || !setupMessage.editable) {
+                return message.channel.send({
+                    embeds: [embed2],
+                });
+            } else {
+                return setupMessage.edit({ embeds: [embed2] });
+            }
         } catch (err) {
             logger.error(err);
             return ending(3);

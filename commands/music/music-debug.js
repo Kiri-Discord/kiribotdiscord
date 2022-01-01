@@ -6,7 +6,7 @@ exports.run = async(client, message, args, prefix) => {
     if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     queue.debug = !queue.debug;
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `music debugging is turned ${queue.debug ? "on" : "off"} for the current queue! feel free to check \`${prefix}invite\` to get more info about support servers if i'm stuck somewhere ^^` }] });
-    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
 };
 exports.help = {
     name: "music-debug",

@@ -40,7 +40,7 @@ exports.run = async(client, message, args) => {
                     
                     ${answers.map((answer, i) => `- **${choices[i]}.** ${answer.text}`).join('\n')}
                 `)
-                if (!displayMessage || displayMessage.deleted) displayMessage = await message.channel.send({
+                if (!displayMessage || !displayMessage.editable) displayMessage = await message.channel.send({
                     embeds: [embed]
                 });
                 else await displayMessage.edit({ embeds: [embed]})

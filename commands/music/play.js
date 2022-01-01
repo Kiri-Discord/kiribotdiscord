@@ -175,8 +175,8 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         serverQueue.songs.push(song);
         const embed = new MessageEmbed()
             .setDescription(`✅ Added **${embedURL(song.info.title, song.info.uri)}** by **${song.info.author}** to the queue [${song.requestedby}]`);
-        if (message.channel.id !== serverQueue.textChannel.id && !serverQueue.textChannel.deleted) serverQueue.textChannel.send({ embeds: [embed] });
-        if (serverQueue.textChannel.deleted) serverQueue.textChannel = message.channel;
+        if (message.channel.id !== serverQueue.textChannel.id && !client.deletedChannels.has(serverQueue.textChannel)) serverQueue.textChannel.send({ embeds: [embed] });
+        if (client.deletedChannels.has(serverQueue.textChannel)) serverQueue.textChannel = message.channel;
         return message.channel.send({ embeds: [embed] })
     };
     queueConstruct.songs.push(song);

@@ -7,9 +7,9 @@ exports.run = async(client, message, args) => {
     queue.playing = true;
     if (queue.repeat) queue.nowPlaying = undefined;
     queue.skip();
-    if (queue.textChannel.id !== message.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped to the next track in the queue ⏭` }] });
+    if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} skipped to the next track in the queue ⏭` }] });
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `you skipped to the next track in the queue ⏭` }] });
-    if (queue.textChannel.deleted) queue.textChannel = message.channel;
+    if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
 };
 exports.help = {
     name: "force-skip",

@@ -8,8 +8,8 @@ exports.run = async(client, interaction) => {
 
     if (queue.playing) {
         queue.pause();
-        if (queue.textChannel.id !== interaction.channel.id && !queue.textChannel.deleted) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} paused the current song ⏸️` }] });
-        if (queue.textChannel.deleted) queue.textChannel = interaction.channel;
+        if (queue.textChannel.id !== interaction.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} paused the current song ⏸️` }] });
+        if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = interaction.channel;
         interaction.reply({ embeds: [{ color: "#bee7f7", description: `you paused the current song ⏸️` }] });
     } else {
         return interaction.reply({ content: 'the music is already paused :thinking:', ephemeral: true });
