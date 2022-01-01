@@ -31,7 +31,7 @@ exports.run = async(client, message, args, prefix) => {
     const grass = client.customEmojis.get("dirt");
     const embed = new MessageEmbed()
         .setColor("#bee7f7")
-        .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
+        .setAuthor({name: `🌼 ${message.author.username}'s garden`, iconURL: message.author.displayAvatarURL()})
         .setDescription(`${f1}${f2}${f3}\n${grass}${grass}${grass}\n\n\nuse \`${prefix}water\` to water your plant or use \`${prefix}plant\` to grow more tree!`)
         .setFooter(`you can only water your plant every 24 hours!`)
     return message.channel.send({ embeds: [embed] })

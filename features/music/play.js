@@ -318,21 +318,16 @@ module.exports = class Queue {
         if (this.debug && !this.client.deletedChannels.has(this.textChannel)) this.textChannel.send({ embeds: [{ description: `[DEBUG]: recieved \`STOP\` event with type \`${data.reason}\`!` }] })
         if (this.playingMessage && !this.client.deletedChannels.has(this.textChannel) && (data.reason === "FINISHED" || data.reason === 'REPLACED')) {
             if (this.songs.length) {
-                try {
-                    this.textChannel.messages.delete(this.playingMessage);
-                } catch {
-                    null;
-                }
+                await this.textChannel.messages.delete(this.playingMessage)
+                .catch(() => {
+                    logger.error(`Unable to delete playing message with ID: ${this.playingMessage}`);
+                });
                 this.playingMessage = null;
-            } else {
-                if (this.repeat || this.loop) {
-                    try {
-                        this.textChannel.messages.delete(this.playingMessage);
-                    } catch {
-                        null;
-                    }
-                    this.playingMessage = null;
-                };
+            } else if (this.repeat || this.loop) {
+                await this.textChannel.messages.delete(this.playingMessage).catch(() => {
+                    logger.error(`Unable to delete this playing message with ID: ${this.playingMessage}`);
+                });
+                this.playingMessage = null;
             };
         };
         if (data.reason === 'REPLACED' || data.reason === "STOPPED") return;

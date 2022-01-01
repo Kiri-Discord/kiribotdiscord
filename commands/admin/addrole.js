@@ -32,7 +32,7 @@ exports.run = async(client, message, args, prefix) => {
         .setColor('f3f3f3')
 
     const rolelog = new MessageEmbed()
-        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
         .setDescription(`Role added to ${member.user.toString()}`)
         .setThumbnail(member.user.displayAvatarURL())
         .addField('Role added', role.toString())

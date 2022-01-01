@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
     const data = body.url;
     const embed = new MessageEmbed()
         .setColor('#7DBBEB')
-        .setAuthor(`${message.author.username} said baka 😕`, message.author.displayAvatarURL())
+        .setAuthor({name: `${message.author.username} said baka 😕`, iconURL: message.author.displayAvatarURL()})
         .setImage(data)
     return message.channel.send({ embeds: [embed] });
 

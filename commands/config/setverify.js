@@ -21,7 +21,7 @@ exports.run = async(client, message, args, prefix) => {
         if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `the verification role was deleted or invalid! can you setup the verification feature again? :pensive:` }] })
         const embed = new MessageEmbed()
             .setColor('#cbd4c2')
-            .setAuthor(message.guild.name, message.guild.iconURL({ size: 4096, dynamic: true }))
+            .setAuthor({name: message.guild.name, iconURL: message.guild.iconURL({ size: 4096, dynamic: true })})
             .setTitle(`hey, welcome to ${message.guild.name}!`)
             .setThumbnail(client.user.displayAvatarURL({ size: 4096, dynamic: true }))
             .setDescription(`can you see any channel or chat in our server yet? if you can't, it's probably that the admins here have setup me to provide the verification for you :slight_smile:\nto begin the verification, head to your DM (Direct Message), where i will send your verification link to continue!\n\nthe verification role that you will get is ${role.toString()}`)
@@ -84,7 +84,7 @@ exports.run = async(client, message, args, prefix) => {
     });
     const embed = new MessageEmbed()
         .setColor('#cbd4c2')
-        .setAuthor(message.guild.name, message.guild.iconURL({ size: 4096, dynamic: true }))
+        .setAuthor({name: message.guild.name, iconURL: message.guild.iconURL({ size: 4096, dynamic: true })})
         .setTitle(`hey, welcome to ${message.guild.name}!`)
         .setThumbnail(client.user.displayAvatarURL({ size: 4096, dynamic: true }))
         .setDescription(`can you see any channel or chat in our server yet? if you can't, it's probably that the admins here have setup me to provide the verification for you :slight_smile:\nto begin the verification, head to your DM (Direct Message), where i will send your verification link to continue!\n\nthe verification role that you will get is ${role.toString()}`)

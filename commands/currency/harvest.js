@@ -118,7 +118,7 @@ exports.run = async(client, message, args, prefix) => {
         });
 
         const embed = new MessageEmbed()
-            .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
+            .setAuthor({name: `🌼 ${message.author.username}'s garden`, iconURL: message.author.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you harvested and sold **${rarity}** :${getPlant}: **${names[getPlant]}** that worth ⏣ **${worth}**!`)
 
@@ -127,7 +127,7 @@ exports.run = async(client, message, args, prefix) => {
 
             const embed2 = new MessageEmbed()
                 .setColor("#bee7f7")
-                .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
+                .setAuthor({name: `🌼 ${message.author.username}'s garden`, iconURL: message.author.displayAvatarURL()})
                 .setDescription(`you harvested and sold **${rarity}** ${chest} **${names[getPlant]}** that worth ⏣ **${worth}**!`)
             return message.channel.send({ embeds: [embed2] })
         } else return message.channel.send({ embeds: [embed] })

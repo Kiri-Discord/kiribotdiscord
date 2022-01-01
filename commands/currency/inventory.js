@@ -38,8 +38,7 @@ exports.run = async(client, message, args, prefix) => {
     };
     if (!array.length) return message.channel.send('you have no items in your inventory dear :pensive:');
     const embed = new MessageEmbed()
-        .setAuthor(`${message.author.username}'s inventory`)
-        // .setThumbnail(message.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+        .setAuthor({name: `${message.author.username}'s inventory`})
         .setColor("#bee7f7")
         .setFooter(`your current balance: ⏣ ${money.balance}`)
     const list = array.map(item => {

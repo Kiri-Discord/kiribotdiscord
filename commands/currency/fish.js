@@ -112,7 +112,7 @@ exports.run = async(client, message, args, prefix) => {
     });
 
     const embed = new MessageEmbed()
-        .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
+        .setAuthor({name: `🎣 ${message.author.username} went fishing!`, iconURL: message.author.displayAvatarURL()})
         .setColor("#bee7f7")
         .setDescription(`you caught a **${rarity}** :${fish}: **${names[fish]}** that worth ⏣ **${worth}**!`)
 
@@ -120,19 +120,19 @@ exports.run = async(client, message, args, prefix) => {
         const nemo = "🐠";
 
         const embed2 = new MessageEmbed()
-            .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
+            .setAuthor({name: `🎣 ${message.author.username} went fishing!`, iconURL: message.author.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you caught a **${rarity}** \\${nemo} **Nemo** that worth ⏣ **${worth}**!`)
         return message.channel.send({ embeds: [embed2] })
     } else if (fish === "chest") {
         const embed2 = new MessageEmbed()
-            .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
+            .setAuthor({name: `🎣 ${message.author.username} went fishing!`, iconURL: message.author.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you found a **${rarity}** **Chest** that worth ⏣ **${worth}**!`)
         return message.channel.send({ embeds: [embed2] })
     } else if (fish === "nothing") {
         const embed2 = new MessageEmbed()
-            .setAuthor(`🎣 ${message.author.username} went fishing!`, message.author.displayAvatarURL())
+            .setAuthor({name: `🎣 ${message.author.username} went fishing!`, iconURL: message.author.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you really did found **NOTHING**! take a deep breath, grind, and try again :pensive:`)
         return message.channel.send({ embeds: [embed2] })

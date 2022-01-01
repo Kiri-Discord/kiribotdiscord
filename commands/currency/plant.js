@@ -97,7 +97,7 @@ exports.run = async(client, message, args, prefix) => {
             new: true,
         });
         const embed = new MessageEmbed()
-            .setAuthor(`🌼 ${message.author.username}'s garden`, message.author.displayAvatarURL())
+            .setAuthor({name: `🌼 ${message.author.username}'s garden`, iconURL: message.author.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you have planted seed on slot \`${args[0]}\``)
             .setFooter(`seeds can be grown to tree by watering via ${prefix}water!`)
