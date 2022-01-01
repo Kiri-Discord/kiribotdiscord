@@ -31,7 +31,7 @@ exports.run = async(client, message, args) => {
             return
         } else {
             const logembed = new MessageEmbed()
-            .setAuthor(client.user.username, client.user.displayAvatarURL())
+            .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
             .setDescription(`${amount} messages was deleted in ${message.channel.toString()}:\n\n${userMessageMap.map(([user, messages]) => `From **${user}** : ${messages}`).join('\n')}`)
             .addField('Moderator', message.author.toString());
             const instance = new sendHook(client, logChannel, {

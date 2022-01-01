@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
 
     const oldNick = member.displayName;
     const rolelog = new MessageEmbed()
-        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
         .setDescription(`**${user}** nickname was changed to **${nick}**`)
         .addField('Before', oldNick)
         .addField('Moderator', message.author.toString())
