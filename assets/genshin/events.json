@@ -825,10 +825,12 @@
     {
         "name": "\"Marvelous Merchandise\" Event",
         "type": "In-game",
-        "img": "https://i.imgur.com/T6cb9Nx.png",
+        "link": "https://www.hoyolab.com/article/1760828",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/24/1015537/fe1810442ec95239e9d7ac54c0a59718_7783824457765907756.jpg",
         "start": "2021-12-27 10:00:00",
         "end": "2022-01-03 03:59:00",
-        "reminder": "end"
+        "reminder": "daily",
+        "remindtime": "04:00:00"
     },
     {
         "name": "\"Traveler's Picture Book\" Web Event",
@@ -849,17 +851,159 @@
         "reminder": "end"
     },
     {
+        "name": "2.4 Special Program",
+        "type": "Stream",
+        "link": "https://www.hoyolab.com/article/1749662",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/22/1015537/b593c2c502b14a7215ef0a2a24548c0e_1191598823807887624.jpg",
+        "start": "2021-12-26 07:00:00",
+        "timezone": "-05:00"
+    },
+    {
+        "name": "2.4 Maintenance",
+        "type": "Maintenance",
+        "link": "https://www.hoyolab.com/article/1822661",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/16e082ef2173a4baced7e2e2394139bb_5603790739136021780.jpg",
+        "start": "2022-01-05 06:00:00",
+        "end": "2022-01-05 11:00:00"
+    },
+    {
+        "name": "Event Wishes \"The Transcendent One Returns\"",
+        "type": "Banner",
+        "link": "https://www.hoyolab.com/article/1823224",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/ce08eefda22a1a4600a5ca3e850ef982_6338416199084824666.jpg",
+        "start": "2022-01-05 11:00:00",
+        "end": "2022-01-25 17:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wishes \"Invitation to Mundane Life\"",
+        "type": "Banner",
+        "link": "https://www.hoyolab.com/article/1823212",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/a843e23224ad57d6beea24f0a1865c30_5955783831679103604.jpg",
+        "start": "2022-01-05 11:00:00",
+        "end": "2022-01-25 17:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wish \"Epitome Invocation\"",
+        "type": "Banner",
+        "link": "https://www.hoyolab.com/article/1823187",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/5443c79b66ed862ecffbbd9dfbee241d_1610682672805067671.jpg",
+        "start": "2022-01-05 11:00:00",
+        "end": "2022-01-25 17:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wishes \"Gentry of Hermitage\"",
+        "type": "Banner",
+        "link": "https://www.hoyolab.com/article/1823206",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/41bdedbbd2e33ef43d0ebed543ce8da7_8859267799879114442.jpg",
+        "start": "2022-01-25 18:00:00",
+        "end": "2022-02-15 14:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wishes  \"Adrift in the Harbor\"",
+        "type": "Banner",
+        "link": "https://www.hoyolab.com/article/1823218",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/0e949cb2aeddf92a6fa53e0fdf6394cf_5388940225818973429.jpg",
+        "start": "2022-01-25 18:00:00",
+        "end": "2022-02-15 14:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wish \"Epitome Invocation\"",
+        "type": "Banner",
+        "link": "https://www.hoyolab.com/article/1823188",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/05914e91375f91f57edfbe492c1e459b_3561163579292380979.jpg",
+        "start": "2022-01-25 18:00:00",
+        "end": "2022-02-15 14:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Fleeting Colors in Flight\" Event",
+        "type": "In-game",
+        "link": "https://www.hoyolab.com/article/1823189",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/0889776bac179df75614aa43550687ec_2627619739961240805.jpg",
+        "start": "2022-01-25 10:00:00",
+        "end": "2022-02-12 03:59:59",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Flowing Lights and Colors\" Event",
+        "type": "In-game",
+        "link": "https://www.hoyolab.com/article/1823191",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/036f505de82f9f49106f7d28e4da2f53_3906871705671582517.jpg",
+        "start": "2022-02-09 00:00:00",
+        "end": "2022-02-16 06:00:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"May Fortune Find You\" Event",
+        "type": "In-game",
+        "link": "https://www.hoyolab.com/article/1823190",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/7bd948c60dc45537c1f242d767849ec6_6963048355299034647.jpg",
+        "start": "2022-01-25 04:00:00",
+        "end": "2022-02-09 03:59:59",
+        "reminder": "end"
+    },
+    {
+        "name": "\"A Study in Potions\" Event",
+        "type": "In-game",
+        "link": "https://www.hoyolab.com/article/1823207",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/1383805c77de53fcad4618894bf0f363_1619917490687291029.jpeg",
+        "start": "2022-01-07 10:00:00",
+        "end": "2022-01-17 03:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Eight Locales Over Mountains and Seas\" Event",
+        "type": "In-game",
+        "link": "https://www.hoyolab.com/article/1823207",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/e2351044bb5ea1a884028788f75fe62c_4730920659786339115.jpeg",
+        "start": "2022-02-04 10:00:00",
+        "end": "2022-02-14 03:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Windtrace\" Event",
+        "type": "In-game",
+        "link": "https://www.hoyolab.com/article/1823207",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/163ae410922ddf3b6f2605b99a615d6f_1402963856535128553.jpeg",
+        "start": "2022-01-13 10:00:00",
+        "end": "2022-01-27 03:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Enchanting Journey of Snow and Stars\" Web Event",
+        "type": "Web",
+        "link": "https://www.hoyolab.com/article/1807353",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/29/1015537/131afdd28437679999611dc18f69d101_14479871194717569.jpg",
+        "start": "2021-12-28 11:00:00",
+        "end": "2022-01-09 23:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"The Crane in the Clouds\" Web Event",
+        "type": "Web",
+        "link": "https://www.hoyolab.com/article/1823311",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2021/12/30/1015537/d529118b0b446898658540f82434a3b3_755738806370006427.jpg",
+        "start": "2021-12-31 11:00:00",
+        "end": "2022-01-04 23:59:00",
+        "reminder": "end"
+    },
+    {
         "name": "Next Special Program",
         "type": "Stream",
         "prediction": true,
-        "start": "2021-12-24 07:00:00",
+        "start": "2022-02-04 07:00:00",
         "timezone": "-05:00"
     },
     {
         "name": "Next Maintenance",
         "type": "Maintenance",
         "prediction": true,
-        "start": "2022-01-05 06:00:00",
-        "end": "2022-01-05 11:00:00"
+        "start": "2022-02-16 06:00:00",
+        "end": "2022-02-16 11:00:00"
     }
 ]

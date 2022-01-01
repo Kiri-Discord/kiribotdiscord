@@ -44,12 +44,13 @@ exports.run = async (client, message, args, prefix) => {
     function getGuides() {
         const guides = client.genshinData.guides
             .map((guide) => `**${guide.name}**:
-${guide.pages.map(p => `- ${p.name}`).join("\n")}`)
+            ${guide.pages.map(p => `- ${p.url ? `[${p.name}](${p.url})` : p.name}`).join("\n")}`)
+        const pages = [`**List of categories:**
+        ${client.genshinData.guides.map((guide) => `- *${guide.name}*: ${guide.pages.length} ${guide.pages.length == 1 ? "guide" : "guides"}`).join("\n")}`]
 
-        const pages = []
         let paging = "", c = 0
         for (const guide of guides) {
-            if (paging.length + guide.length > 1800 || c > 15) {
+            if (paging.length + guide.length > 1900 || c > 20) {
                 pages.push(paging.trim())
                 paging = guide
                 c = paging.split("\n").length

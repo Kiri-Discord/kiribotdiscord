@@ -170,6 +170,8 @@ exports.conf = {
     .setName(exports.help.name)
     .setDescription(exports.help.description)
     .addIntegerOption(option => option
+        .setMinValue(3)
+        .setMaxValue(20)
         .setName('player-count')
         .setDescription('how many players that you want to have?')
         .setRequired(true)

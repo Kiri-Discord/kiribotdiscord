@@ -76,6 +76,7 @@ exports.conf = {
             .setDescription('which member would you like to transfer to?')
         )
         .addIntegerOption(option => option
+            .setMinValue(1)
             .setName('amount')
             .setDescription('how many token that you want to give?')
             .setRequired(true)

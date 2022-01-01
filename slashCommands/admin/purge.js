@@ -58,6 +58,8 @@ exports.conf = {
     .setName(exports.help.name)
     .setDescription(exports.help.description)
     .addIntegerOption(option => option
+        .setMaxValue(100)
+        .setMinValue(1)
         .setName('amount')
         .setRequired(true)
         .setDescription('how many message would you like to purge?')),

@@ -46,7 +46,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     addArg(message.flags, ["art", "a"], () => defaultPage = "Art")
     addArg(message.flags, ["stats", "asc", "ascensions", "ascend"], () => defaultPage = 2)
     addArg(message.flags, ["books", "talentupgrade"], () => defaultPage = 3)
-    addArg(message.flags, ["skill", "skills", "talents", "s", "t"], () => defaultPage = 4)
+    addArg(message.flags, ["skill", "skills", "talents", "s", "t"], () => defaultPage = "Talents")
     addArg(message.flags, ["passive", "passives", "p"], () => defaultPage = "Passives")
     addArg(message.flags, ["const", "constellation", "constellations", "c"], () => defaultPage = "Constellations")
 
@@ -117,10 +117,10 @@ const possibleStars = client.genshinData.getReleasedCharacters()
 
         return embed
     }
-    function getElementIcons(char) {
-
-        if (data.isFullCharacter(char))
-            return char.skills.map(skill => data.emoji(skill.ult.type)).join(", ")
+    function getElementIcons(char) {            
+        const emoji = char.skills?.map(skill => skill.ult && data.emoji(skill.ult.type)).filter(x => x)
+        if (emoji && emoji?.length > 0)
+            return emoji.join(", ")
         else
             return data.emoji(char.meta.element)
     }
@@ -149,29 +149,41 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                             .map(([name, value]) => `**${name}**: ${data.stat(name, value)}`)
                             .join("\n")
                     }`, true)
-                const talentCostLv2 = char.skills[0]?.ult.costs[2]?.items,
-                      talentCostLv3 = char.skills[0]?.ult.costs[3]?.items,
-                      talentCostLv4 = char.skills[0]?.ult.costs[4]?.items,
-                      talentCostLv5 = char.skills[0]?.ult.costs[5]?.items
 
-                let talentMat = [
-                    talentCostLv4[0],
-                    talentCostLv4[1],
-                    ...talentCostLv5.slice(2),
-                ]
-
-                if (talentCostLv3[0].name !== talentCostLv4[0].name) {
-                    talentMat = [
-                        talentCostLv3[0],
-                        talentCostLv4[0],
-                        talentCostLv2[0],
-                        talentCostLv4[1],
-                        ...talentCostLv5.slice(2),
-                    ]
+                const upgradeLines = []
+                if (char.ascensionCosts ) {
+                    const ascensionCosts = [
+                        char.ascensionCosts.mapping.Gem4,
+                        char.ascensionCosts.mapping.BossMat,
+                        char.ascensionCosts.mapping.Specialty,
+                        char.ascensionCosts.mapping.EnemyDropTier3,
+                    ].filter(x => x)
+                    upgradeLines.push(`Ascensions: ${ascensionCosts.map(i => data.emoji(i)).join("")}`)
                 }
-
-                embed.addField("Upgrade material", `Ascensions: ${char.ascensions[4]?.cost.items.map(i => data.emoji(i.name)).join("")}
-Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
+                if (char.skills) {
+                    const talents = char.skills
+                        .flatMap(s => [...(s.talents ?? []), s.ult ])
+                        .filter(x => x)
+                    const books = talents
+                        .flatMap(s => [
+                            s?.costs?.mapping.Book,
+                            s?.costs?.mapping.Book1,
+                            s?.costs?.mapping.Book2,
+                            s?.costs?.mapping.Book3,
+                        ])
+                        .filter((x, i, a) => x && a.indexOf(x) == i)
+                        .map(x => `Guide to ${x}`)
+                    const mats = talents
+                        .map(s => s?.costs?.mapping.BossMat)
+                        .filter((x, i, a) => x && a.indexOf(x) == i)
+                    const drops = talents
+                        .map(s => s?.costs?.mapping.EnemyDropTier3)
+                        .filter((x, i, a) => x && a.indexOf(x) == i)
+                    const all = [...books, ...mats, ...drops]
+                    if (all.length > 0)
+                        upgradeLines.push(`Talents: ${all.map(i => data.emoji(i)).join("")}`)
+                }
+                if (upgradeLines.length > 0) embed.addField("Upgrade material", upgradeLines.join("\n"))
             }
 
 
@@ -205,13 +217,17 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
 
             embed.setTitle(`${char.name}: Information`)
                 .setDescription(metadata.trim())
-
+            const va = []
             if (char.meta.cvChinese)
-                embed.addField("Voice Actors", `**Chinese**: ${char.meta.cvChinese}
-**Japanese**: ${char.meta.cvJapanese}
-**English**: ${char.meta.cvEnglish}
-**Korean**: ${char.meta.cvKorean}
-`)
+                va.push(`**Chinese**: ${char.meta.cvChinese}`)
+            if (char.meta.cvJapanese)
+                va.push(`**Japanese**: ${char.meta.cvJapanese}`)
+            if (char.meta.cvEnglish)
+                va.push(`**English**: ${char.meta.cvEnglish}`)
+            if (char.meta.cvKorean)
+                va.push(`**Korean**: ${char.meta.cvKorean}`)
+            if (va.length>0)
+                embed.addField("Voice actors", va.join("\n"))
             return embed
         }
 
@@ -249,13 +265,16 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
             }
 
             let previousMax = 1
+            const costs = data.getCostsFromTemplate(char.ascensionCosts)
             for (const asc of char.ascensions) {
                 addRow(char, previousMax, asc.level)
                 previousMax = asc.maxLevel
                 addRow(char, previousMax, asc.level)
 
-                if (asc.cost.mora || asc.cost.items.length > 0)
-                    embed.addField(`Ascension ${asc.level} costs`, data.getCosts(asc.cost), true)
+                const cost = costs[asc.level]
+                if (cost.mora || cost.items.length > 0)
+                    embed.addField(`Ascension ${asc.level} costs`, data.getCosts(cost), true)
+
             }
 
             embed.setTitle(`${char.name}: Ascensions + stats`)
@@ -267,14 +286,18 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                 .setFooter(`${embed.footer?.text} - you can use '${prefix}charstats ${char.name} [level] [A<ascension>]' for a specific level!`)
 
             return embed
-        } else if (relativePage == 1) {
+        } else if (relativePage >= 1) {
+            const skills = char.skills[relativePage - 1]
+            const template = skills.ult?.costs
+            if (!template) return embed
+
             let i = 1
-            for (const cost of char.skills[0].ult.costs) {
+            for (const cost of data.getCostsFromTemplate(template)) {
                 if (cost.mora || cost.items.length > 0)
                     embed.addField(`Talent lv ${++i} costs`, data.getCosts(cost), true)
             }
 
-            embed.setTitle(`${char.name}: Talent upgrade costs`)
+            embed.setTitle(`${char.name}: Talent upgrade costs`).setColor(Colors[skills.ult?.type ?? "None"])
             return embed
         }
 
@@ -301,8 +324,9 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
     function getCharTalentPage(char, relativePage, currentPage, maxPages, talentMode) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setThumbnail(char.icon)
             .setFooter(`page ${currentPage} / ${maxPages}`)
+
+        if (char.icon) embed.setThumbnail(char.icon)
 
         function isValueTable(talent) {
             return talent.values != undefined
@@ -312,18 +336,18 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
             embed.setTitle(`${char.name}: ${skill.name}`)
                 .setDescription(skill.desc)
 
-            if (skill.charges > 1)
+            if (skill.charges)
                 embed.addField("Charges", skill.charges.toString())
 
             let hasLevels = false
-            for (const talent of skill.talentTable) {
+            for (const talent of skill.talentTable ?? []) {
                 const { name } = talent
 
                 if (isValueTable(talent)) {
                     const values = talent.values
                     hasLevels = true
 
-                    const maxLevel = values.length
+                    const talents = skill.video ? [9] : [6, 9, values.length - 1]
                     embed.addField(name, "```\n"+ createTable(
                         undefined,
                         Object.entries(values)
@@ -336,7 +360,7 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                                         return lv <= 6
                                     case "LITTLE":
                                     default:
-                                        return [6, 9, maxLevel - 1].includes(+lv)
+                                        return talents.includes(+lv)
                                 }
                             }),
                         [PAD_START, PAD_END]
@@ -350,35 +374,43 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                 embed.setFooter(`${embed.footer?.text} - you can use '${prefix}c ${char.name} -high' to display higher levels`)
             else if (hasLevels && talentMode == "LITTLE")
                 embed.setFooter(`${embed.footer?.text} - you can use '${prefix}c ${char.name} -high' (or -low) to display higher (or lower) levels`)
+            if (skill.video) {
+                embed.setImage(skill.video)
+                    .setThumbnail("")
+            }
         }
 
         let page = 0
-        for (const skills of char.skills) {
-            embed.setColor(Colors[skills.ult.type ?? "None"])
+        for (const skills of char.skills ?? []) {
+            embed.setColor(Colors[skills.ult?.type ?? "None"])
 
-            for (const talent of skills.talents) {
+            for (const talent of skills.talents ?? []) {
                 if (page++ == relativePage) {
                     showTalent(talent)
                     return embed
                 }
             }
 
-            if (page++ == relativePage) {
+            if (skills.ult && page++ == relativePage) {
                 showTalent(skills.ult)
                 return embed
             }
 
-            if (page++ == relativePage) {
+            if (skills.passive && page++ == relativePage) {
                 embed.setTitle(`${char.name}: Passives`)
                 for (const passive of skills.passive) {
-                    embed.addField(passive.name, `${passive.desc}
+                    if (passive.minAscension) {
+                        embed.addField(passive.name, `${passive.desc}
     
 *${passive.minAscension > 0 ? `Unlocks at ascension **${passive.minAscension}**` : "Unlocked by **default**"}*`)
+                    } else {
+                        embed.addField(passive.name, passive.desc)
+                    }
                 }
                 return embed
             }
 
-            if (page++ == relativePage) {
+            if (skills.constellations && page++ == relativePage) {
                 embed.setTitle(`${char.name}: Constellations`)
                     .setThumbnail(skills.constellations[0]?.icon)
                 let c = 0
@@ -402,41 +434,60 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
             }
         ]
 
-        if (data.isFullCharacter(char)) {
+        if (data.isFullCharacter(char))
             pages.push(
                 {
                     bookmarkEmoji: "🚀",
                     bookmarkName: "Stats",
-                    maxPages: 2,
+                    maxPages: 1 + char.skills.length,
                     pages: (rp, cp, mp) => getStatsPage(char, rp, cp, mp)
                 })
-            if (char.skills.length == 1) {
-                const skills = char.skills[0]
+
+        if (char.skills?.length == 1) {
+            const skills = char.skills[0]
+            let offset = 0
+            if (skills.talents) {
+                const off = offset
+                const ult = skills.ult ? 1 : 0
                 pages.push({
                     bookmarkEmoji: data.emojis[char.weaponType] ?? "⚔️",
                     bookmarkName: "Talents",
-                    maxPages: skills.talents.length + 1,
-                    pages: (rp, cp, mp) => getCharTalentPage(char, rp, cp, mp, talentMode)
-                }, {
+                    maxPages: skills.talents.length + ult,
+                    pages: (rp, cp, mp) => getCharTalentPage(char, rp + off, cp, mp, talentMode)
+                })
+                offset += skills.talents.length + ult
+            }
+
+            if (skills.talents) {
+                const off = offset
+                pages.push({
                     bookmarkEmoji: "💤",
                     bookmarkName: "Passives",
                     maxPages: 1,
-                    pages: (rp, cp, mp) => getCharTalentPage(char, rp + skills.talents.length + 1, cp, mp, talentMode)
-                }, {
+                    pages: (rp, cp, mp) => getCharTalentPage(char, rp + off, cp, mp, talentMode)
+                })
+                offset++
+            }
+
+            if (skills.constellations) {
+                const off = offset
+                pages.push({
                     bookmarkEmoji: "🇨",
                     bookmarkName: "Constellations",
                     maxPages: 1,
-                    pages: (rp, cp, mp) => getCharTalentPage(char, rp + skills.talents.length + 2, cp, mp, talentMode)
+                    pages: (rp, cp, mp) => getCharTalentPage(char, rp + off, cp, mp, talentMode)
                 })
+                offset++
+            }
+        } else {
+            let currentPage = 0
+            for (const skills of char.skills ?? []) {
+                const offset = currentPage
 
-            } else {
-                let currentPage = 0
-                for (const skills of char.skills) {
-                    const offset = currentPage
-
+                if (skills.talents) {
                     pages.push({
-                        bookmarkEmoji: data.emojis[skills.ult.type] ?? "❔",
-                        bookmarkName: skills.ult.type ?? "Unknown",
+                        bookmarkEmoji: data.emojis[skills.ult?.type] ?? "❔",
+                        bookmarkName: skills.ult?.type ?? "Unknown",
                         maxPages: skills.talents.length + 3,
                         pages: (rp, cp, mp) => getCharTalentPage(char, rp + offset, cp, mp, talentMode)
                     })
@@ -445,7 +496,6 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
                 }
             }
         }
-
         pages.push({
             bookmarkEmoji: "🎨",
             bookmarkName: "Art",
@@ -455,7 +505,6 @@ Talents: ${talentMat.map(i => data.emoji(i.name)).join("")}`)
 
         return pages
     }
-
 }
 
 

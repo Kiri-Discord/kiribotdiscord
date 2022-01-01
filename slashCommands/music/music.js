@@ -245,6 +245,8 @@ exports.conf = {
         .setName('volume')
         .setDescription("change the volume of the current queue")
         .addIntegerOption(option => option
+            .setMinValue(0)
+            .setMaxValue(100)
             .setName('amount')
             .setDescription('the amount of volume that you want to set')
             .setRequired(false)
