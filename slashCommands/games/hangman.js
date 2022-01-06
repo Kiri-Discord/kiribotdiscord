@@ -36,32 +36,34 @@ class Game {
         };
         this.msg = await this.interaction.channel.send(`${this.stages[0]}\nwaiting for <@${this.interaction.user.id}> to enter a word from their DM...`);
 
-        let word = await this.dmChannel.channel.awaitMessages({
-            filter: m => m.author.id === this.interaction.user.id,
+        const words = await this.dmChannel.channel.awaitMessages({
+            filter: m => m.author.id === this.interaction.user.id && m.content,
             max: 1,
-            time: 60000,
-            errors: ['time'],
-        }).catch(() => {
-            this.end();
-            this.interaction.user.send('this game has expired lmao');
+            time: 60000
         });
-        this.word = word.first().content;
+        const word = words.first();
+        if (!words.size || !word) {
+            this.end();
+            this.interaction.user.send(`this game has expired since you didn't provide any valid word :pensive:`);
+        }
+        this.word = word.content;
         this.displayWord = '';
         for (let i = 0; i < this.word.length; i++) this.displayWord += '-';
         this.msg.edit(`${this.stages[0]}\n\`${this.displayWord}\`\n wrong guesses: ${this.guesses}`);
         this.run();
     };
     async run() {
-        let word = await this.interaction.channel.awaitMessages({
-            filter: m => m.author.id === this.challenged.id,
+        const words = await this.interaction.channel.awaitMessages({
+            filter: m => m.author.id === this.challenged.id && m.content,
             max: 1,
-            time: 60000,
-            errors: ['time'],
-        }).catch(() => {
+            time: 60000
+        });
+        const word = words.first();
+        if (!words.size || !word) {
             this.end();
             this.msg.edit('this game has expired lmao');
-        });
-        this.letter = word.first().content;
+        }
+        this.letter = word.content;
         if (this.letter.length > 1) return this.run();
         if (this.guesses.includes(this.letter)) return this.run();
         if (this.word.toLowerCase().includes(this.letter.toLowerCase())) { this.letters++; } else {
