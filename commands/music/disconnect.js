@@ -1,6 +1,6 @@
 const { reactIfAble } = require('../../util/util');
 const { canModifyQueue } = require("../../util/musicutil");
-exports.run = async(client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
     const queue = client.queue.get(message.guild.id);
     if (queue) {
         if (queue.pending) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `:x: i'm still being connected to a queue! you can wait until i finish to disconnect :slight_smile: if this is taking too long, use ${prefix}invite to visit my support server!` }] });

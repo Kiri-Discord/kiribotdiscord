@@ -51,7 +51,7 @@ exports.run = async(client, interaction) => {
         return interaction.editReply(`what song do you want me to search the lyric for :thinking: ?`);
     };
 
-    const [first, ...rest] = Util.splitMessage(shortenText(lyrics, 12000), { maxLength: 3900, char: ' ' });
+    const [first, ...rest] = Util.splitMessage(shortenText(lyrics, 12000), { maxLength: 3900, char: '' });
 
     if (rest.length) {
         embed.setDescription(first)
