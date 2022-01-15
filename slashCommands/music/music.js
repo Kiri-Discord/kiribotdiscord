@@ -1,4 +1,5 @@
 const youtubeSuggest = require("youtube-suggest");
+const validUrl = require('valid-url');
 const debugCmd = sync.require('./music/debug');
 const disconnectCmd = sync.require('./music/disconnect');
 const fskipCmd = sync.require('./music/force-skip');
@@ -94,6 +95,7 @@ exports.run = async(client, interaction) => {
 exports.suggestion = async(interaction) => {
     const query = interaction.options.getFocused();
     if (!query) return interaction.respond([]);
+    if (validUrl.isWebUri(query)) return interaction.respond([]);
     const res = await youtubeSuggest(query);
     if (!res.length) return interaction.respond([]);
     return interaction.respond(res.map(each => {

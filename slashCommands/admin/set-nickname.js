@@ -10,7 +10,7 @@ exports.run = async(client, interaction) => {
 
 
     const member = interaction.options.getMember('user');
-    const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare').toString() : ':pensive:';
+    const stareEmoji = client.customEmojis.get('staring') ? client.customEmojis.get('staring').toString() : ':pensive:';
     const { user } = member;
     if (!member.manageable) return interaction.reply({ embeds: [{ color: "RED", description: `i can't change that user's nickname! they may either be an admin, or their roles are way higher than me.` }], ephemeral: true });
 

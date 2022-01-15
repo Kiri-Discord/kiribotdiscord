@@ -14,7 +14,7 @@ const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args) => {
     let cooldown = 3600000;
-    const stare = client.customEmojis.get('stare');
+    const stare = client.customEmojis.get('staring');
     if (!args.length) return message.reply(`you didn't provide any number ${stare} you need to provide 6 numbers to guess for the lottery!`);
     if (args.some(a => isNaN(a))) return message.reply("some number you provided was not a number :frowning: you must choose an array of number that lay between 1 and 70!");
     const owostab = client.customEmojis.get('owostab');
@@ -39,7 +39,7 @@ exports.run = async(client, message, args) => {
     const similarities = lotto.filter((num, i) => parseInt(args[i]) === num).length;
     const prize = prizes[similarities];
     const prizeNumber = prizesToNumber[prize];
-    const emiliacry = client.customEmojis.get('emiliacry');
+    const emiliacry = client.customEmojis.get('emillacry');
     const msg = prizeNumber > 0 ? 'congratulation :tada:' : `try again next time ${emiliacry}`;
     await client.cooldowns.findOneAndUpdate({
         guildId: message.guild.id,
