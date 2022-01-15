@@ -18,7 +18,7 @@ exports.run = async(client, interaction) => {
                 'https://www.worldometers.info/coronavirus/' :
                 `https://www.worldometers.info/coronavirus/country/${data.countryInfo.iso2}/`)
             .setThumbnail(country === 'all' ? null : data.countryInfo.flag || null)
-            .setFooter('I updated this data in', client.user.displayAvatarURL())
+            .setFooter({text: 'I updated this data in', iconURL: client.user.displayAvatarURL()})
             .setTimestamp(data.updated)
             .addField('🧍 Total cases', `${formatNumber(data.cases)} (${formatNumber(data.todayCases)} Today)`, true)
             .addField('💀 Total deaths', `${formatNumber(data.deaths)} (${formatNumber(data.todayDeaths)} Today)`, true)

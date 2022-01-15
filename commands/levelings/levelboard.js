@@ -46,7 +46,7 @@ exports.run = async(client, message, args, prefix) => {
             .setColor('#bee7f7')
             .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`you can level up by [sending messages](https://support.discord.com/hc/en-us/articles/360034632292-Sending-Messages) in ${message.guild.name}!`)
-            .setFooter(`you are ranked ${ordinal(rank)} in this guild :)`)
+            .setFooter({text: `you are ranked ${ordinal(rank)} in this guild :)`})
             .addField('\u200b', item.join('\n'))
         arrEmbeds.push(embed);
     });

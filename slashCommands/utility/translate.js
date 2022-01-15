@@ -13,7 +13,7 @@ exports.run = async(client, interaction) => {
         const embed = new MessageEmbed()
             .setColor('#4A91E2')
             .setDescription(shorten(res.text, 4095))
-            .setFooter(`From "${res.from.text.autoCorrected || res.from.text.didYouMean ? shorten(res.from.text.value, 1980) : query}" (${language[res.from.language.iso]})`)
+            .setFooter({text: `From "${res.from.text.autoCorrected || res.from.text.didYouMean ? shorten(res.from.text.value, 1980) : query}" (${language[res.from.language.iso]})`})
         return interaction.editReply({ embeds: [embed] });
     } catch (err) {
         return interaction.editReply(`sorry, the server is overloaded! please try again later :pensive:`);

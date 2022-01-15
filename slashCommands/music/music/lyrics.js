@@ -68,13 +68,13 @@ exports.run = async(client, interaction) => {
         const embed3 = new MessageEmbed()
             .setColor(interaction.member.displayHexColor)
             .setDescription(lastContent)
-            .setFooter(interaction.member.displayName, interaction.user.displayAvatarURL({ dynamic: true }))
+            .setFooter({text: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL({ dynamic: true })})
             .setTimestamp()
         return interaction.channel.send({ embeds: [embed3] });
     } else {
         embed
             .setTimestamp()
-            .setFooter(interaction.member.displayName, interaction.user.displayAvatarURL({ dynamic: true }))
+            .setFooter({text: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL({ dynamic: true })})
             .setColor(interaction.member.displayHexColor)
             .setDescription(first)
         return interaction.editReply({ embeds: [embed] });

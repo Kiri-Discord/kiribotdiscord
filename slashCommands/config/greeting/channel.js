@@ -17,6 +17,6 @@ exports.run = async(client, interaction, db) => {
     const embed = new MessageEmbed()
         .setColor("#bee7f7")
         .setDescription(`☑️ the greetings feature has been set to ${channel}!\n${note}`)
-        .setFooter(`the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`)
+        .setFooter({text: `the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`})
     return interaction.editReply({ embeds: [embed] });
 };

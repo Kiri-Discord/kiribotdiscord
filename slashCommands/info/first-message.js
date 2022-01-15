@@ -21,7 +21,7 @@ exports.run = async(client, interaction) => {
         .setAuthor({name: msg.author.tag})
         .setDescription(msg.content)
         .setTimestamp(msg.createdAt)
-        .setFooter(`ID: ${msg.id}`)
+        .setFooter({text: `ID: ${msg.id}`})
         .addField('Jump to message', `[Click me to jump](${msg.url})`);
     return interaction.editReply({ embeds: [embed] });
 };

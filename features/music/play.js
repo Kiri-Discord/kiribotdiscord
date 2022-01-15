@@ -302,7 +302,7 @@ module.exports = class Queue {
             const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
 
             if (this.karaoke.isEnabled && this.karaoke.instance) {
-                if (this.karaoke.instance.success) embed.setFooter(this.karaoke.instance.success);
+                if (this.karaoke.instance.success) embed.setFooter({text: this.karaoke.instance.success});
                 if (this.karaoke.instance.pauseTimestamp) this.karaoke.instance.resume();
                 else this.karaoke.instance.start();
             };

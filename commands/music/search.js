@@ -76,7 +76,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
         const embed = new MessageEmbed()
             .setDescription('select all the song that you want to add in with the menu below! (multiple choices are supported)')
             .setColor("#bee7f7")
-            .setFooter('timing out in 15 seconds');
+            .setFooter({text: 'timing out in 15 seconds'});
         const msg = await message.channel.send({
             embeds: [embed],
             components: [row],

@@ -175,7 +175,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                     const embed = new MessageEmbed()
                         .setDescription('select the playlist that you want to add in with the menu below!')
                         .setColor("#bee7f7")
-                        .setFooter('timing out in 30 seconds');
+                        .setFooter({text: 'timing out in 30 seconds'});
                     const msg = await message.channel.send({
                         embeds: [embed],
                         components: [row],

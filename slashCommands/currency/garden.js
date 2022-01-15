@@ -35,7 +35,7 @@ exports.run = async(client, interaction) => {
         .setColor("#bee7f7")
         .setAuthor({name: `🌼 ${interaction.user.username}'s garden`, iconURL: interaction.user.displayAvatarURL()})
         .setDescription(`${f1}${f2}${f3}\n${grass}${grass}${grass}\n\n\nuse \`/water\` to water your plant or use \`/plant\` to grow more tree!`)
-        .setFooter(`you can only water your plant every 24 hours!`)
+        .setFooter({text: `you can only water your plant every 24 hours!`})
     return interaction.editReply({ embeds: [embed] })
 };
 exports.help = {

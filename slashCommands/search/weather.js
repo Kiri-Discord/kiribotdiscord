@@ -19,7 +19,7 @@ exports.run = async(client, interaction) => {
             .setThumbnail(current.imageUrl)
             .setTimestamp()
             .setColor(interaction.guild.me.displayHexColor)
-            .setFooter(interaction.member.displayName, interaction.user.displayAvatarURL({ dynamic: true }))
+            .setFooter({text: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL({ dynamic: true })})
 
         embed.addField("Latitude", location.lat, true)
             .addField("Longitude", location.long, true)

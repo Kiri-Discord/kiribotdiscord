@@ -84,7 +84,7 @@ exports.run = async (client, message, args) => {
         if (event == undefined) return undefined;
 
         const embed = getEventEmbed(event)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setColor("#F4231F");
 
         if (event.start)
@@ -95,7 +95,7 @@ exports.run = async (client, message, args) => {
     function getSummary(pages, relativePage, currentPage, maxPages) {
         return pages[relativePage]
             .setTitle("Events")
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setColor("#7DBBEB")
             .setThumbnail('https://static.wikia.nocookie.net/gensin-impact/images/d/d4/Icon_Events.png');
     }

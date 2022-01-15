@@ -50,7 +50,7 @@ exports.run = async (client, message, args, prefix) => {
         const footer = `page ${currentPage} / ${maxPages}`
         const embed = new MessageEmbed()
             .setColor('#4A91E2')
-            .setFooter(footer)
+            .setFooter({text: footer})
 
         if (relativePage == 0) {
             embed.setTitle(`Spiral Abyss: ${abyss.buff}`)
@@ -63,7 +63,7 @@ exports.run = async (client, message, args, prefix) => {
         const floor = abyss.spiralAbyssFloors[relativePage - 1]
         if (floor)
             return getSpiralFloor(floor, abyss.regularFloors.length + relativePage)
-                .setFooter(footer)
+                .setFooter({text: footer})
         return undefined
     };
     function getSpiralFloor(floorId, num) {

@@ -68,13 +68,13 @@ exports.run = async(client, message, args) => {
         const embed3 = new MessageEmbed()
             .setColor(message.member.displayHexColor)
             .setDescription(lastContent)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
+            .setFooter({text: message.member.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
             .setTimestamp()
         return message.channel.send({ embeds: [embed3] });
     } else {
         embed
             .setTimestamp()
-            .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
+            .setFooter({text: message.member.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
             .setColor(message.member.displayHexColor)
             .setDescription(first)
         return message.channel.send({ embeds: [embed] });

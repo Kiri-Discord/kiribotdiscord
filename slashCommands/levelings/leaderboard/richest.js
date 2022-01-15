@@ -47,7 +47,7 @@ exports.run = async(client, interaction) => {
             .setColor('#bee7f7')
             .setThumbnail(interaction.guild.iconURL({ size: 4096, dynamic: true }))
             .setDescription(`token (⏣) can be claimed by winning games, betting and economy related features.`)
-            .setFooter(`you are ranked ${ordinal(rank)} in this guild :)`)
+            .setFooter({text: `you are ranked ${ordinal(rank)} in this guild :)`})
             .addField('\u200b', item.join('\n'))
         arrEmbeds.push(embed);
     });

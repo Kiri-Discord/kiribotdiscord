@@ -28,7 +28,7 @@ exports.run = async(client, message, args) => {
                 .setImage(post[randomnumber].data.url)
                 .setColor("#7DBBEB")
                 .setTimestamp(post[randomnumber].data.created_utc * 1000)
-                .setFooter(`⬆ ${post[randomnumber].data.ups} 💬 ${post[randomnumber].data.num_comments}`)
+                .setFooter({text: `⬆ ${post[randomnumber].data.ups} 💬 ${post[randomnumber].data.num_comments}`})
             return message.channel.send({ embeds: [embed] })
         });
 }

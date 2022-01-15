@@ -38,7 +38,7 @@ module.exports = {
 
                     you was given a 50% bonus on your next daily token collect, and a free 🎫 **Effect Ticket**!\ntype \`${config.prefix}daily\` in any server to collect your token, or \`${config.prefix}ticket\` to obtain your ticket :tada:${data.weekend ? '\n\nit is the weekend! i have increased your bonus by 80%!' : ''}
                     `)
-                    .setFooter(`that is the only thing i got to offer right now :) keep voting to explore!`)
+                    .setFooter({text: `that is the only thing i got to offer right now :) keep voting to explore!`})
                 return user.send({ embeds: [embed], components: [row] }).catch(() => null);
             };
             if (data.type === 'verifyRequest') {

@@ -76,7 +76,7 @@ exports.run = async(client, interaction, internal) => {
         const embed = new MessageEmbed()
             .setDescription('select all the song that you want to add in with the menu below! (multiple choices are supported)')
             .setColor("#bee7f7")
-            .setFooter('timing out in 30 seconds');
+            .setFooter({text: 'timing out in 30 seconds'});
         const msg = await interaction.editReply({
             embeds: [embed],
             components: [row],

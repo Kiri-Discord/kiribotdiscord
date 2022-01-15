@@ -38,7 +38,7 @@ exports.run = async(client, message, args, prefix) => {
             const embed = new MessageEmbed()
                 .setColor('#FFE6CC')
                 .setDescription(item.join('\n'))
-                .setFooter(`page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`)
+                .setFooter({text: `page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`})
             arrEmbeds.push(embed);
         });
         let components = [];
@@ -122,7 +122,7 @@ exports.run = async(client, message, args, prefix) => {
                         const embed = new MessageEmbed()
                             .setColor('#FFE6CC')
                             .setDescription(item.join('\n'))
-                            .setFooter(`page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`)
+                            .setFooter({text: `page ${index + 1} of ${arrSplitted.length} | do ${prefix}help <command> for more help info on a command!`})
                         arrEmbeds.push(embed);
                     });
                     components = [];
@@ -231,7 +231,7 @@ exports.run = async(client, message, args, prefix) => {
                 .setTitle(`${prefix}${name}`)
                 .setDescription(desc)
                 .setThumbnail(client.user.displayAvatarURL())
-                .setFooter("[] are optional and <> are required. don't includes these things while typing a command :)")
+                .setFooter({text: "[] are optional and <> are required. don't includes these things while typing a command :)"})
                 .addField("cooldown", cooldown, true)
                 .addField("aliases", aliases, true)
                 .addField("usage", usage, true)

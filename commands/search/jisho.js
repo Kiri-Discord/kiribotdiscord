@@ -14,7 +14,7 @@ exports.run = async(client, message, args) => {
         const embed = new MessageEmbed()
             .setColor('#4A91E2')
             .setDescription(`"${query}" means: ` + data.senses[0].english_definitions.join('\n'))
-            .setFooter(`${data.japanese[0].word || data.japanese[0].reading}`);
+            .setFooter({text: `${data.japanese[0].word || data.japanese[0].reading}`});
         return message.channel.send({ embeds: [embed] });
     } catch (err) {
         console.error(err);

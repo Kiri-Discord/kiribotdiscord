@@ -16,6 +16,6 @@ exports.run = async(client, interaction) => {
         .setTitle('pp meter machine')
         .setDescription(`${user.username} peepee\n8${('=').repeat(level)}D`)
         .setColor(member.displayHexColor);
-    if (level < 3) embed.setFooter(`that size is fixed to ${user.id === interaction.user.id ? 'your' : 'their'} DNA, running this again won't change anything ¯\\_(ツ)_/¯`)
+    if (level < 3) embed.setFooter({text: `that size is fixed to ${user.id === interaction.user.id ? 'your' : 'their'} DNA, running this again won't change anything ¯\\_(ツ)_/¯`})
     return interaction.reply({ embeds: [embed] });
 };

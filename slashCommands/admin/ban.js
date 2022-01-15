@@ -23,7 +23,7 @@ exports.run = async(client, interaction) => {
         .addField('Username', member.user.username)
         .addField('User ID', member.id)
         .addField('Moderator', interaction.user.toString())
-        .setFooter('Banned at')
+        .setFooter({text: 'Banned at'})
         .addField('Reason', reason)
         .setTimestamp()
 

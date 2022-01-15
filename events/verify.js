@@ -28,7 +28,7 @@ module.exports = async(client, message, setting) => {
                         .setLabel('verify link <3')
                     );
                 const dm = new MessageEmbed()
-                    .setFooter(footer)
+                    .setFooter({text: footer})
                     .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                     .setTitle(`welcome to ${message.guild.name}! wait, beep beep, boop boop?`)
                     .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${message.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${client.config.baseURL}verify?valID=${code}`)}`)
@@ -50,7 +50,7 @@ module.exports = async(client, message, setting) => {
             let valID = verifydb.valID;
             await deleteIfAble(message);
             const dm = new MessageEmbed()
-                .setFooter(`you will be kicked from the server in ${ms(new Date(verifydb.endTimestamp) - new Date(), {long: true})} to prevent bots and spams`)
+                .setFooter({text: `you will be kicked from the server in ${ms(new Date(verifydb.endTimestamp) - new Date(), {long: true})} to prevent bots and spams`})
                 .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }))
                 .setTitle(`welcome to ${message.guild.name}! wait, beep beep, boop boop?`)
                 .setDescription(`please solve the CAPTCHA at this link below to make sure you're human before you join ${message.guild.name}. enter the link below and solve the captcha to verify yourself :slight_smile:\n${embedURL('click me to start the verify process', `${client.config.baseURL}verify?valID=${valID}`)}`)

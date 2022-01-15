@@ -27,7 +27,7 @@ exports.run = async(client, interaction) => {
     const top = array.shift();
     let string = `by **${top.songAuthor}** (${millify(top.timesPlayed)} play${top.timesPlayed === 1 ? '' : 's'})`
     const embed = new MessageEmbed()
-        .setFooter(`reset on the first day of every month (UTC + 0)`)
+        .setFooter({text: `reset on the first day of every month (UTC + 0)`})
         .setTitle(`#1 - ${top.songName}`)
         .setURL(top.songID);
     if (array.length) {

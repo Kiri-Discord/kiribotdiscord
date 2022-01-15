@@ -337,7 +337,7 @@ exports.run = async (client, interaction, internal, bulkAdd) => {
                         "select the playlist that you want to add in with the menu below!"
                     )
                     .setColor("#bee7f7")
-                    .setFooter("timing out in 30 seconds");
+                    .setFooter({text: "timing out in 30 seconds"});
                 const msg = await interaction.editReply({
                     embeds: [embed],
                     components: [row],

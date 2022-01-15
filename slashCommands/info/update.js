@@ -19,7 +19,7 @@ exports.run = async(client, interaction) => {
                 .setAuthor({name: `Staff: ${msg.author.tag}`, iconURL: msg.author.displayAvatarURL({ format: 'png', dynamic: true })})
                 .setDescription(msg.content)
                 .setTimestamp(msg.createdAt)
-                .setFooter(client.user.username)
+                .setFooter({text: client.user.username})
             embedArray.push(embed);
         });
         return targetChannel.send({

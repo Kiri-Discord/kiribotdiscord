@@ -18,7 +18,7 @@ exports.run = async(client, message, args) => {
             .setThumbnail(current.imageUrl)
             .setTimestamp()
             .setColor(message.guild.me.displayHexColor)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
+            .setFooter({text: message.member.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
 
         embed.addField("Latitude", location.lat, true)
             .addField("Longitude", location.long, true)

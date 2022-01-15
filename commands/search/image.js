@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
         .setURL(result.url)
         .setColor(message.guild.me.displayHexColor)
         .setImage(result.image)
-        .setFooter('DuckDuckGo', 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png', 'https://duckduckgo.com/')
+        .setFooter({text: 'DuckDuckGo', iconURL: 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png'})
     return message.channel.send({ embeds: [embed] });
 };
 exports.help = {

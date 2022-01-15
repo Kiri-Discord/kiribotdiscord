@@ -122,7 +122,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle("Weapons")
             .setDescription(pages[relativePage])
-            .setFooter(`page ${currentPage} / ${maxPages} - you can use '${prefix}weapon <name>' to get info about a weapon!`)
+            .setFooter({text: `page ${currentPage} / ${maxPages} - you can use '${prefix}weapon <name>' to get info about a weapon!`})
             .setColor(Colors.GREEN)
 
         return embed
@@ -133,7 +133,7 @@ exports.run = async (client, message, args, prefix) => {
             .setTitle(`${weapon.name}: Basic info`)
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setDescription(weapon.desc + (weapon.placeholder ? "\n\n*This weapon is currently not yet available :(*" : ""))
             .addField("Basics", `${weapon.stars} :star: ${genshinData.emoji(weapon.weaponType)}`, (weapon.placeholderStats && !weapon.weaponCurve) ? true : false)
 
@@ -171,7 +171,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         const columns = []
         const rows = []
@@ -204,14 +204,14 @@ exports.run = async (client, message, args, prefix) => {
                 rows,
                 [PAD_START]
             ) + "\n```")
-            .setFooter(`${embed.footer?.text} - you can use '${prefix}weaponstats ${weapon.name} [level] [A<ascension>]' for more info about a specific level!`)
+            .setFooter({text: `${embed.footer?.text} - you can use '${prefix}weaponstats ${weapon.name} [level] [A<ascension>]' for more info about a specific level!`})
         return embed
     };
     function getRefinementWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         embed.setTitle(`${weapon.name}: Refinements`)
         for (const [refinement, info] of Object.entries(weapon.refinements ?? []))
@@ -224,7 +224,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Lore`)
             .setDescription(weapon.lore ?? "Unavailable")
         return embed
@@ -234,7 +234,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Base`)
             .setDescription(`[Image URL](${weapon.icon})`)
             .setImage(weapon.awakenIcon ?? "")
@@ -246,7 +246,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(weapon.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: 2nd Ascension`)
             .setDescription(`[Image URL](${weapon.awakenIcon})`)
             .setImage(weapon.awakenIcon)

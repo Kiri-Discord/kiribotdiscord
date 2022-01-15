@@ -103,7 +103,7 @@ exports.run = async(client, interaction) => {
             .setAuthor({name: `🌼 ${interaction.user.username}'s garden`, iconURL: interaction.user.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you have planted seed on slot \`${slot}\``)
-            .setFooter(`seeds can be grown to tree by watering via /water!`)
+            .setFooter({text: `seeds can be grown to tree by watering via /water!`})
         return interaction.editReply({ embeds: [embed] })
     } else {
         return interaction.editReply(`:seedling: you need to specify which slot you want to plant the seed in (1-3).`)

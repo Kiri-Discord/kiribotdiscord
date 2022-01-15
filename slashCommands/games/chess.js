@@ -149,7 +149,7 @@ exports.run = async(client, interaction, args) => {
                     can't think of a move? use \`help\` *coward*
                     `)
                     .setTitle(`${interaction.user.username} vs ${opponent.username}`)
-                    .setFooter(`time remaining: ${displayTime} (max 10 minutes per turn)`)
+                    .setFooter({text: `time remaining: ${displayTime} (max 10 minutes per turn)`})
                     .setColor('#34e363')
                     .setImage(`attachment://chess.png`)
                 await interaction.channel.send({
@@ -303,7 +303,7 @@ exports.run = async(client, interaction, args) => {
             });
             EndEmbed
                 .setDescription(`⏣ __${amount}__ token was placed in your wallet as a reward!`)
-                .setFooter(`your current balance: ${storageAfter.balance} token`)
+                .setFooter({text: `your current balance: ${storageAfter.balance} token`})
         };
         return interaction.channel.send({
             embeds: [EndEmbed],

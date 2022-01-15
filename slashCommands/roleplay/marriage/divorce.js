@@ -66,7 +66,7 @@ async function divorce(client, interaction, member) {
         );
     const embed = new MessageEmbed()
         .setColor('#7DBBEB')
-        .setFooter('i will be going in a minute.')
+        .setFooter({text: 'i will be going in a minute.'})
         .setDescription(stripIndent `
         ${member}, it seems like ${interaction.user} is asking for a divorce...
         

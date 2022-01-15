@@ -69,7 +69,7 @@ exports.run = async(client, interaction) => {
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`⏣ **${amount}** token was taken from your wallet 💵`)
-                .setFooter(`current balance: ⏣ ${storageAfter.balance} token`)
+                .setFooter({text: `current balance: ⏣ ${storageAfter.balance} token`})
                 .setTitle(`ahh, noooo! you lost, ${interaction.member.displayName}!`)
             return interaction.editReply({ embeds: [embed] });
         } else {
@@ -106,7 +106,7 @@ exports.run = async(client, interaction) => {
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`⏣ **${finalAmount}** token was added to your wallet!\n\nyou can get more rewards by voting [here](https://top.gg/bot/859116638820761630)${bonus ? `\nyou collected __${bonusAmount}__ more token for voting :)` : ''}`)
-                .setFooter(`current balance: ${storageAfter.balance}`)
+                .setFooter({text: `current balance: ${storageAfter.balance}`})
                 .setTitle(`yeeet! you won, ⏣ ${interaction.member.displayName}!`)
         return interaction.editReply({ embeds: [embed] });
     };

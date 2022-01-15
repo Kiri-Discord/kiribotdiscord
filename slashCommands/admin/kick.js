@@ -26,7 +26,7 @@ exports.run = async(client, interaction) => {
         .addField('User ID', member.id)
         .addField('Moderator', interaction.user.toString())
         .addField('Reason', reason)
-        .setFooter('Kicked at')
+        .setFooter({text: 'Kicked at'})
         .setTimestamp()
 
     try {

@@ -68,7 +68,7 @@ function makeEmbed(question, tries, suggestions, display) {
     const embed = new MessageEmbed()
         .setTitle(`${question}...?`)
         .setDescription('type the choice that you guess is a suggestion for the question.')
-        .setFooter(`${tries} ${tries === 1 ? 'try' : 'tries'} remaining!`);
+        .setFooter({text: `${tries} ${tries === 1 ? 'try' : 'tries'} remaining!`});
     for (let i = 0; i < suggestions.length; i++) {
         const num = formatNumber(10000 - (i * 1000));
         embed.addField(`\`${i + 1}\` ${num}`, display[i], true);

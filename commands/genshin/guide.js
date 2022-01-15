@@ -69,7 +69,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle("Avaliable guides")
             .setDescription(pages[relativePage])
-            .setFooter(`page ${currentPage} / ${maxPages} - you can use '${prefix}guide <name>' to view a guide!`)
+            .setFooter({text: `page ${currentPage} / ${maxPages} - you can use '${prefix}guide <name>' to view a guide!`})
             .setColor(Colors.GREEN)
 
         return embed
@@ -86,9 +86,9 @@ exports.run = async (client, message, args, prefix) => {
             .setColor('#4A91E2')
     
         if (maxPages > 1)
-            embed.setFooter(`page ${currentPage} / ${maxPages} - ${guide.name}`)
+            embed.setFooter({text: `page ${currentPage} / ${maxPages} - ${guide.name}`})
         else if (guide.name !== page.name)
-            embed.setFooter(guide.name)
+            embed.setFooter({ text: guide.name })
     
         if (page.desc)
             embed.setDescription(page.desc.replace(/\${(.*?)}/g, (_, name) => data.emoji(name)))

@@ -29,8 +29,7 @@ exports.run = async(client, interaction) => {
 
                     you can get more rewards by voting [here](https://top.gg/bot/859116638820761630)`)
                     .setTitle(`${interaction.member.displayName}, you've already claimed your daily today!`)
-                    .setFooter(`each daily is reseted after 24 hours, regardless of timezone.
-                    `)
+                    .setFooter({text: `each daily is reseted after 24 hours, regardless of timezone.`})
                 return interaction.editReply({ embeds: [embed] });
             } else {
                 let bonus;
@@ -83,7 +82,7 @@ exports.run = async(client, interaction) => {
             ${bonus ? `you collected __${bonusAmount}__ more token for voting :)` : ''}
             `)
             .setColor("#bee7f7")
-            .setFooter(`you now have ⏣ ${storageAfter.balance} in your wallet.`)
+            .setFooter({text: `you now have ⏣ ${storageAfter.balance} in your wallet.`})
             .setTitle(`here are your daily token, ${interaction.member.displayName}!`)
             return interaction.editReply({embeds: [embed]});
         }

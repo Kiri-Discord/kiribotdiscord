@@ -23,7 +23,7 @@ exports.run = async(client, interaction) => {
         .setURL(result.url)
         .setColor(interaction.guild.me.displayHexColor)
         .setImage(result.image)
-        .setFooter('DuckDuckGo', 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png', 'https://duckduckgo.com/')
+        .setFooter({text: 'DuckDuckGo', iconURL: 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png'})
     return interaction.editReply({ embeds: [embed] });
 };
 

@@ -42,7 +42,7 @@ exports.run = async(client, interaction) => {
     const embed = new MessageEmbed()
         .setAuthor({name: `${interaction.user.username}'s inventory`})
         .setColor("#bee7f7")
-        .setFooter(`your current balance: ⏣ ${money.balance}`)
+        .setFooter({text: `your current balance: ⏣ ${money.balance}`})
     const list = array.map(item => {
         return `**${item.name}** - ${item.amount}\n*${item.desc}*`;
     });

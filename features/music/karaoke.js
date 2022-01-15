@@ -43,7 +43,7 @@ module.exports = class ScrollingLyrics {
                 const embed = new MessageEmbed()
                     .setAuthor({name: `no lyrics for this song in your preferred language (${languages[this.lang]})`})
                     .setDescription(`fortunately, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}\nchoose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:\n\n${list.join("\n")}`)
-                    .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
+                    .setFooter({text: 'scrolling lyrics will be temporary turned off for this song if no choices were made :('});
                 if (!this.client.deletedChannels.has(this.queueChannel)) await this.queueChannel.send({ embeds: [embed] });
                 else this.channel.send({ embeds: [embed] });
                 const filter = res => {
@@ -141,7 +141,7 @@ module.exports = class ScrollingLyrics {
             let embed = new MessageEmbed()
                 .setTitle('No real-time lyrics was found :(')
                 .setDescription(`**No real-time lyric was found for your song. How to solve this?**\n- Set an another language using \`${this.prefix}scrolling-lyrics lang <language>\` (takes effect only on your next song)\n- Use \`${this.prefix}lyrics\` to fetch a normal lyric\n- Find a YouTube song with subtitles, and add it to the queue`)
-                .setFooter(`don't know what is this about? karaoke mode is currently set to ON in your guild setting`)
+                .setFooter({text: `don't know what is this about? karaoke mode is currently set to ON in your guild setting`})
             if (!this.client.deletedChannels.has(this.queueChannel)) this.queueChannel.send({ embeds: [embed] });
         };
         return false;

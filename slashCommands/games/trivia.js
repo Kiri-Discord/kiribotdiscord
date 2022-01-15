@@ -29,7 +29,7 @@ exports.run = async(client, interaction, args) => {
     const shuffled = shuffle(answers);
     const questionEmbed = new MessageEmbed()
         .setColor('#7DBBEB')
-        .setFooter(`this question will be timed out in 15 seconds`)
+        .setFooter({text: `this question will be timed out in 15 seconds`})
         .setTitle('Trivia')
         .addField('Topic', `\`${decodeURIComponent(body.results[0].category)}\``, true)
         .addField('Question', `**${decodeURIComponent(body.results[0].question)}**`, true)
@@ -83,13 +83,13 @@ exports.run = async(client, interaction, args) => {
                 new: true,
             });
             answerEmbed
-                .setFooter(`your current balance: ${storageAfter.balance}`)
+                .setFooter({text: `your current balance: ${storageAfter.balance}`})
                 .setTitle(`you gave the correct answer, ${winner.username}`)
                 .setDescription(`⏣ **${amount}** token was placed in your wallet :boom:`)
             res.editReply({ embeds: [answerEmbed] });
         } else {
             answerEmbed
-                .setFooter('better luck next time!')
+                .setFooter({text: 'better luck next time!'})
                 .setTitle(`sorry, you provided a wrong answer!`)
                 .setDescription(`the correct answer was: \`${correct}\` ${sadEmoji}`)
             res.editReply({ embeds: [answerEmbed] });

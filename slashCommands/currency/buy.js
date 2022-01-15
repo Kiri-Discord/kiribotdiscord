@@ -30,7 +30,7 @@ exports.run = async(client, interaction) => {
             .setColor("#bee7f7")
             .setAuthor({name: 'purchase successful (=^･ω･^=)', iconURL: interaction.user.displayAvatarURL()})
             .setDescription(`you have bought __${quantity}__ **${items}** (⏣ ${price}) which cost you ⏣ __${total}__ token`)
-            .setFooter(`your current balance: ⏣ ${money - price}`)
+            .setFooter({text: `your current balance: ⏣ ${money - price}`})
 
         if (item === 'rings') {
             await client.inventory.findOneAndUpdate({

@@ -44,7 +44,7 @@ exports.run = async (client, interaction) => {
             .setDescription(cleanAnilistHTML(result.description))
             .setURL(result.url)
             .setColor(interaction.guild.me.displayHexColor)
-            .setFooter(result.hostname, result.icon)
+            .setFooter({text: result.hostname, iconURL: result.icon})
             .setAuthor({
                 name: "DuckDuckGo",
                 iconURL: "http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png",
@@ -57,7 +57,7 @@ exports.run = async (client, interaction) => {
         .setDescription(href.snippet)
         .setURL(href.link)
         .setColor(interaction.guild.me.displayHexColor)
-        .setFooter(href.displayLink)
+        .setFooter({text: href.displayLink})
         .setAuthor({
             name: "Google",
             iconURL: "https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png",
