@@ -36,7 +36,7 @@ module.exports = {
 
                 if (!avaliableNodes.length) {
                     queue.stop('errorNode');
-                    const cry = client.customEmojis.get('cry');
+                    const cry = client.customEmojis.get('emiliacry');
                     return queue.textChannel.send({ embeds: [{ description: `Discord had terminated my voice connection! i had cleared the queue ${cry}` }] });
                 } else {
                     succeded++;

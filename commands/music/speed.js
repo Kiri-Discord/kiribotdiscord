@@ -34,7 +34,7 @@ exports.run = async(client, message, args, prefix) => {
         guildId: queue.guildId,
         ...body,
     });
-    const sayoriEmoji = client.customEmojis.get("sayori");
+    const sayoriEmoji = client.customEmojis.get("smug");
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `changed the speed rate of the current queue to **${Number(rate).toFixed(1)}x**! ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
     if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} changed the speed rate of the current queue to **${rate.toFixed(1)}x**! ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
     if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;

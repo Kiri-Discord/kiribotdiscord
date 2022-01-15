@@ -29,7 +29,7 @@ exports.run = async(client, interaction) => {
         guildId: queue.guildId,
         ...body,
     });
-    const sayoriEmoji = client.customEmojis.get("sayori");
+    const sayoriEmoji = client.customEmojis.get("smug");
     interaction.editReply({ embeds: [{ color: "#bee7f7", description: `applied nightcore to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`` })
     if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} applied nightcore to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`` });
 };

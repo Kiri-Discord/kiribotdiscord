@@ -50,7 +50,7 @@ exports.run = async(client, message, args) => {
         )];
         const smile = face.smile.value > face.smile.threshold;
         const beautyScore = face.gender.value === 'Male' ? face.beauty.female_score : face.beauty.male_score;
-        const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare') : ':grimacing:';;
+        const stareEmoji = client.customEmojis.get('staring') ? client.customEmojis.get('staring') : ':grimacing:';;
         return message.reply(oneLine `
             i think this is a photo of a ${face.age.value} year old ${face.gender.value.toLowerCase()} ${stareEmoji}
             

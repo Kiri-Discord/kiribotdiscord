@@ -23,7 +23,7 @@ exports.run = async(client, message, args, prefix) => {
     const bands = new Array(6).fill(null).map((n, i) => ({ band: i, gain: 0.5 }));
     queue.player.equalizer(bands);
     queue.player.volume(350);
-    const sayoriEmoji = client.customEmojis.get("sayori");
+    const sayoriEmoji = client.customEmojis.get("smug");
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied earrape to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` })
     if (queue.textChannel.id !== message.channel.id && !client.deletedChannels.has(queue.textChannel)) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied bassboost to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`!` });
     if (client.deletedChannels.has(queue.textChannel)) queue.textChannel = message.channel;
