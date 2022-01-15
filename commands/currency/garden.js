@@ -33,7 +33,7 @@ exports.run = async(client, message, args, prefix) => {
         .setColor("#bee7f7")
         .setAuthor({name: `🌼 ${message.author.username}'s garden`, iconURL: message.author.displayAvatarURL()})
         .setDescription(`${f1}${f2}${f3}\n${grass}${grass}${grass}\n\n\nuse \`${prefix}water\` to water your plant or use \`${prefix}plant\` to grow more tree!`)
-        .setFooter(`you can only water your plant every 24 hours!`)
+        .setFooter({text: `you can only water your plant every 24 hours!`})
     return message.channel.send({ embeds: [embed] })
 };
 exports.help = {

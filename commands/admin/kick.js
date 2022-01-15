@@ -29,7 +29,7 @@ exports.run = async(client, message, args) => {
         .addField('User ID', member.id)
         .addField('Moderator', message.author.toString())
         .addField('Reason', reason)
-        .setFooter('Kicked at')
+        .setFooter({text: 'Kicked at'})
         .setTimestamp()
     if (!member.user.bot) await member.send(`🔨 you were \`kicked\` from **${message.guild.name}** \n**reason**: ${reason}`).catch(() => null);
     try {

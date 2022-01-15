@@ -45,11 +45,11 @@ exports.run = async (client, interaction) => {
             .setURL(result.url)
             .setColor(interaction.guild.me.displayHexColor)
             .setFooter(result.hostname, result.icon)
-            .setAuthor(
-                "DuckDuckGo",
-                "http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png",
-                "https://duckduckgo.com/"
-            );
+            .setAuthor({
+                name: "DuckDuckGo",
+                iconURL: "http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png",
+                url: "https://duckduckgo.com/"
+            });
         return interaction.editReply({ embeds: [embed] });
     }
     const embed = new MessageEmbed()
@@ -58,11 +58,11 @@ exports.run = async (client, interaction) => {
         .setURL(href.link)
         .setColor(interaction.guild.me.displayHexColor)
         .setFooter(href.displayLink)
-        .setAuthor(
-            "Google",
-            "https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png",
-            "https://google.com"
-        );
+        .setAuthor({
+            name: "Google",
+            iconURL: "https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png",
+            url: "https://google.com"
+        });
     if (href.pagemap && Array.isArray(href.pagemap.cse_image)) {
         embed.setImage(href.pagemap.cse_image[0].src);
     }

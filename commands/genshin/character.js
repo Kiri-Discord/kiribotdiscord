@@ -112,7 +112,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
         const embed = new MessageEmbed()
             .setTitle("Character list")
             .setDescription(pages[relativePage])
-            .setFooter(`page ${currentPage} / ${maxPages} - see '${prefix}help char' for more info about a character!`)
+            .setFooter({text: `page ${currentPage} / ${maxPages} - see '${prefix}help char' for more info about a character!`})
             .setColor(Colors.GREEN)
 
         return embed
@@ -127,7 +127,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     function getMainPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (char.icon)
             embed.setThumbnail(char.icon)
@@ -249,7 +249,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setThumbnail(char.icon)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (relativePage == 0) {
             const columns = []
@@ -283,7 +283,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                     rows,
                     [PAD_START]
                 ) + "\n```")
-                .setFooter(`${embed.footer?.text} - you can use '${prefix}charstats ${char.name} [level] [A<ascension>]' for a specific level!`)
+                .setFooter({text: `${embed.footer?.text} - you can use '${prefix}charstats ${char.name} [level] [A<ascension>]' for a specific level!`})
 
             return embed
         } else if (relativePage >= 1) {
@@ -306,7 +306,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     function getArtPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setFooter(`Page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
         if (char.icon)
             embed.setThumbnail(char.icon)
 
@@ -324,7 +324,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     function getCharTalentPage(char, relativePage, currentPage, maxPages, talentMode) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (char.icon) embed.setThumbnail(char.icon)
 
@@ -369,11 +369,11 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                     embed.addField(name, talent.value, true)
             }
             if (hasLevels && talentMode == "HIGH")
-                embed.setFooter(`${embed.footer?.text} - you can use '${prefix}c ${char.name} -low' to display lower levels`)
+                embed.setFooter({text: `${embed.footer?.text} - you can use '${prefix}c ${char.name} -low' to display lower levels`})
             else if (hasLevels && talentMode == "LOW")
-                embed.setFooter(`${embed.footer?.text} - you can use '${prefix}c ${char.name} -high' to display higher levels`)
+                embed.setFooter({text: `${embed.footer?.text} - you can use '${prefix}c ${char.name} -high' to display higher levels`})
             else if (hasLevels && talentMode == "LITTLE")
-                embed.setFooter(`${embed.footer?.text} - you can use '${prefix}c ${char.name} -high' (or -low) to display higher (or lower) levels`)
+                embed.setFooter({text: `${embed.footer?.text} - you can use '${prefix}c ${char.name} -high' (or -low) to display higher (or lower) levels`})
             if (skill.video) {
                 embed.setImage(skill.video)
                     .setThumbnail("")

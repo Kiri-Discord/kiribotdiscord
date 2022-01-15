@@ -35,7 +35,7 @@ exports.run = async(client, interaction, db) => {
         });
         const embed = new MessageEmbed()
             .setColor('#cbd4c2')
-            .setAuthor(interaction.guild.name, interaction.guild.iconURL({ size: 4096, dynamic: true }))
+            .setAuthor({name: interaction.guild.name, iconURL: interaction.guild.iconURL({ size: 4096, dynamic: true })})
             .setTitle(`hey, welcome to ${interaction.guild.name}!`)
             .setThumbnail(client.user.displayAvatarURL({ size: 4096, dynamic: true }))
             .setDescription(`can you see any channel or chat in our server yet? if you can't, it's probably that the admins here have setup me to provide the verification for you :slight_smile:\nto begin the verification, head to your DM (Direct Message), where i will send your verification link to continue!\n\nthe verification role that you will get is ${role.toString()}`)

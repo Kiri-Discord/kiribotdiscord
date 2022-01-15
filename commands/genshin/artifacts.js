@@ -46,7 +46,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle("Artifact sets")
             .setDescription(pages[relativePage])
-            .setFooter(`page ${currentPage} of ${maxPages}`)
+            .setFooter({text: `page ${currentPage} of ${maxPages}`})
             .setColor(Colors.GREEN)
 
         return embed
@@ -55,7 +55,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(set.icon)
-            .setFooter(`page ${currentPage} of ${maxPages}`)
+            .setFooter({text: `page ${currentPage} of ${maxPages}`})
 
         if (relativePage == 0) {
             for (const bonus of set.bonuses)

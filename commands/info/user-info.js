@@ -78,7 +78,7 @@ exports.run = async(client, message, args) => {
     const perms = Object.keys(serialized).filter(perm => serialized[perm] && permissions[perm]);
     const embed = new MessageEmbed()
         .setDescription(member.user.toString())
-        .setAuthor(member.user.tag, avatar)
+        .setAuthor({name: member.user.tag, iconURL: avatar})
         .setThumbnail(avatar)
         .setTimestamp()
         .setColor(member.displayHexColor)

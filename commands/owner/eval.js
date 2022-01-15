@@ -4,7 +4,6 @@ const { post } = require("node-superfetch");
 exports.run = async(client, message, args) => {
     const embed = new MessageEmbed()
         .addField("Input", "```js\n" + args.join(" ") + "```")
-        .setAuthor(client.user.username, client.user.displayAvatarURL())
 
     try {
         const code = args.join(" ");

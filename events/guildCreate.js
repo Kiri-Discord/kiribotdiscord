@@ -49,7 +49,7 @@ module.exports = async(client, guild) => {
         if you have any questions come ask us in our support server or commmunity server!
         `)
         .setColor('#DAF7A6')
-        .setAuthor("hi, i'm Kiri!")
+        .setAuthor({name: "hi, i'm Kiri!"})
         .setTimestamp()
         .setThumbnail(client.user.displayAvatarURL({ size: 4096 }))
     client.config.logChannels.forEach(id => {

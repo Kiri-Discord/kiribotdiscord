@@ -100,7 +100,7 @@ exports.run = async(client, message, args, prefix) => {
             .setAuthor({name: `🌼 ${message.author.username}'s garden`, iconURL: message.author.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you have planted seed on slot \`${args[0]}\``)
-            .setFooter(`seeds can be grown to tree by watering via ${prefix}water!`)
+            .setFooter({text: `seeds can be grown to tree by watering via ${prefix}water!`})
         return message.reply({ embeds: [embed] })
     } else {
         return message.reply(`:seedling: you need to specify which slot you want to plant the seed in (1-3).`)

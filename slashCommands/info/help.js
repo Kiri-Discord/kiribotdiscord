@@ -215,7 +215,7 @@ exports.run = async(client, interaction) => {
                 return interaction.reply({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel dear ${dead}` }], ephemeral: true });
             };
             let name = command.help.name;
-            let desc = command.help.description;
+            let desc = command.help.longDescription || command.help.description;
             let cooldown = command.conf.cooldown + " second(s)";
             let usage = command.help.usage ? command.help.usage.join(", ") : "no usage provided.";
             let example = command.help.example ? command.help.example.join(", ") : "no example provided.";
@@ -227,7 +227,7 @@ exports.run = async(client, interaction) => {
 
             let embed = new MessageEmbed()
                 .setColor('#bee7f7')
-                .setAuthor('command information (=^･ω･^=)')
+                .setAuthor({name: 'command information (=^･ω･^=)'})
                 .setTitle(`/${name}`)
                 .setDescription(desc)
                 .setThumbnail(client.user.displayAvatarURL())

@@ -7,7 +7,7 @@ exports.run = async(client, interaction, args) => {
 
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
-        .setAuthor(`${interaction.user.username} just smugged 😏`, interaction.user.displayAvatarURL())
+        .setAuthor({name: `${interaction.user.username} just smugged 😏`, iconURL: interaction.user.displayAvatarURL()})
         .setImage(body.url)
     return interaction.editReply({ embeds: [embed] })
 };

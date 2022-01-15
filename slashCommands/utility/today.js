@@ -15,7 +15,7 @@ exports.run = async(client, interaction) => {
         const event = events[Math.floor(Math.random() * events.length)];
         const embed = new MessageEmbed()
             .setTitle(body.date)
-            .setAuthor(`On this day...`)
+            .setAuthor({name: `On this day...`})
             .setColor(interaction.guild.me.displayHexColor)
             .setURL(body.url)
             .setTimestamp()

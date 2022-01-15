@@ -17,7 +17,7 @@ exports.run = async(client, interaction) => {
         .setColor("#ff0000")
     const logembed = new MessageEmbed()
         .setColor(15158332)
-        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
         .setTitle('User banned')
         .setThumbnail(member.user.displayAvatarURL())
         .addField('Username', member.user.username)

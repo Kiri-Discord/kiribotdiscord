@@ -26,7 +26,7 @@ exports.run = async(client, interaction) => {
 
     if (toSecond > 21600) return interaction.reply({ embeds: [{ color: "RED", description: "the cooldown duration must not be equal to or more than 6 hours!" }], ephemeral: true });
     const rolelog = new MessageEmbed()
-        .setAuthor(client.user.username, client.user.displayAvatarURL())
+        .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
         .setDescription(`Slowmode is set on <#${channel.id}> for **${ms(ms(time), {long: true})}**.`)
         .addField('Moderator', interaction.user.toString())
         .setTimestamp();

@@ -21,14 +21,14 @@ exports.run = async(client, message, args) => {
             .setTimestamp(new Date())
             .setTitle(`${body.items[0].snippet.title} - ${body.items[0].snippet.channelTitle}`)
             .setDescription(body.items[0].snippet.description)
-            .setAuthor('YouTube', 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png')
+            .setAuthor({name: 'YouTube', iconURL: 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png'})
             .setURL(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`)
             .setThumbnail(body.items[0].snippet.thumbnails.default.url)
         message.channel.send({ embeds: [embed] }).catch(err => logger.log('error', err));
     } catch (err) {
         if (err.status === 404) return message.reply('i cant find any results for that video :(');
         logger.log('error', err);
-        return message.channel.send(`sorry! i got an error while trying to get you a result. try again later :pensive:`);
+        return message.channel.send(`sorry! i got an error while trying to get you a result. try again later :pensiveW:`);
     };
 };
 

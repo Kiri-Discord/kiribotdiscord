@@ -18,7 +18,7 @@ exports.run = async(client, interaction) => {
     const embed = new MessageEmbed()
         .setColor(msg.member ? msg.member.displayHexColor : 0x00AE86)
         .setThumbnail(msg.author.displayAvatarURL({ format: 'png', dynamic: true }))
-        .setAuthor(msg.author.tag)
+        .setAuthor({name: msg.author.tag})
         .setDescription(msg.content)
         .setTimestamp(msg.createdAt)
         .setFooter(`ID: ${msg.id}`)

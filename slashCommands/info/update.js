@@ -16,7 +16,7 @@ exports.run = async(client, interaction) => {
         messages.each(msg => {
             const embed = new MessageEmbed()
                 .setThumbnail(client.user.displayAvatarURL({ size: 4096 }))
-                .setAuthor(`Staff: ${msg.author.tag}`, msg.author.displayAvatarURL({ format: 'png', dynamic: true }))
+                .setAuthor({name: `Staff: ${msg.author.tag}`, iconURL: msg.author.displayAvatarURL({ format: 'png', dynamic: true })})
                 .setDescription(msg.content)
                 .setTimestamp(msg.createdAt)
                 .setFooter(client.user.username)

@@ -13,7 +13,7 @@ exports.run = async(client, message, args) => {
         let location = result[0].location;
 
         const embed = new MessageEmbed()
-            .setAuthor(current.observationpoint)
+            .setAuthor({name: current.observationpoint})
             .setTitle(`${current.skytext}`)
             .setThumbnail(current.imageUrl)
             .setTimestamp()

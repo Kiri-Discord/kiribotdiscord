@@ -24,7 +24,7 @@ exports.run = async(client, interaction) => {
             const randomnumber = Math.floor(Math.random() * post.length)
             let url = `https://www.reddit.com${post[randomnumber].data.permalink}`
             const embed = new MessageEmbed()
-                .setAuthor(`r/${subreddit}`, icon, `https://reddit.com/r/${subreddit}`)
+                .setAuthor({name: `r/${subreddit}`, iconURL: icon, url: `https://reddit.com/r/${subreddit}`})
                 .setTitle(post[randomnumber].data.title)
                 .setURL(url)
                 .setImage(post[randomnumber].data.url)

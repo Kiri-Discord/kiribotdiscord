@@ -49,7 +49,7 @@ exports.run = async(client, interaction) => {
                 .setColor(interaction.member.displayHexColor)
                 .setTimestamp(new Date())
                 .setThumbnail(icon)
-                .setAuthor(`Information for ${guild.name}:`, client.user.displayAvatarURL())
+                .setAuthor({name: `Information for ${guild.name}:`, iconURL: client.user.displayAvatarURL()})
                 .setDescription(`**ID:** \`${guild.id}\``)
                 .addField("\`📅\` Date created", `${created}\n${h}`, true)
                 .addField("\`👑\` Owner", `<@${guild.ownerId}>\n\`${guild.ownerId}\``, true)
@@ -138,7 +138,7 @@ exports.run = async(client, interaction) => {
         const perms = Object.keys(serialized).filter(perm => serialized[perm] && permissions[perm]);
         const embed = new MessageEmbed()
             .setDescription(member.user.toString())
-            .setAuthor(member.user.tag, avatar)
+            .setAuthor({name: member.user.tag, iconURL: avatar})
             .setThumbnail(avatar)
             .setTimestamp()
             .setColor(member.displayHexColor)

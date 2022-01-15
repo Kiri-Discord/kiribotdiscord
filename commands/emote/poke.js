@@ -23,7 +23,7 @@ exports.run = async(client, message, args) => {
     let image = body.url;
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
-        .setAuthor(`${message.author.username} poke at ${target.username}!`, message.author.displayAvatarURL())
+        .setAuthor({name: `${message.author.username} poke at ${target.username}!`, iconURL: message.author.displayAvatarURL()})
         .setImage(image)
     return message.channel.send({ embeds: [embed] })
 }

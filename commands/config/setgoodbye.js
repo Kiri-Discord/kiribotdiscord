@@ -33,14 +33,14 @@ exports.run = async(client, message, args, prefix) => {
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`☑️ the goodbye feature has been set to ${channel}!\n${note}`)
-                .setFooter(`the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`)
+                .setFooter({text: `the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`})
             return message.channel.send({ embeds: [embed] });
         };
         if (args[0].toLowerCase() === 'content') {
             let contentObject;
             const types = ['plain', 'embed'];
             const embed = new MessageEmbed()
-                .setFooter('this message will be timed out in 20 seconds')
+                .setFooter({text: 'this message will be timed out in 20 seconds'})
                 .setDescription(`what type of message do you want to set as the goodbye message? type either ${types.map(x => `\`${x}\``).join(' or ')} to choose :slight_smile:`)
         await message.channel.send({embeds: [embed]});
         const filter = res => {
@@ -57,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
         if (type.content.toLowerCase() === 'plain') {
             const embed2 = new MessageEmbed()
                 .setDescription(`plain it is! so what content do you want to put in the goodbye message?\ntips: variable is supported! feel free to check out at \`${prefix}variables\`.`)
-                .setFooter('this message will be timed out in 2 minutes. you can also cancel this setup by "cancel"');
+                .setFooter({text: 'this message will be timed out in 2 minutes. you can also cancel this setup by "cancel"'});
             await message.channel.send({ embeds: [embed2] })
             const content = await askString(message.channel, res => res.author.id === message.author.id, { time: 120000 });
             if (!content) return message.channel.send(`the setup is cancelled :pensive:`);
@@ -77,7 +77,7 @@ exports.run = async(client, message, args, prefix) => {
             if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             const embed2 = new MessageEmbed()
                 .setDescription(`what is the embed ID that you want to apply? :slight_smile:`)
-                .setFooter('this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"');
+                .setFooter({text: 'this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"'});
             await message.channel.send({ embeds: [embed2] });
             const content = await askString(message.channel, res => res.author.id === message.author.id);
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);

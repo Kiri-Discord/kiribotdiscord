@@ -22,7 +22,7 @@ exports.run = async(client, interaction) => {
             .setTimestamp(new Date())
             .setTitle(`${body.items[0].snippet.title} - ${body.items[0].snippet.channelTitle}`)
             .setDescription(body.items[0].snippet.description)
-            .setAuthor('YouTube', 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png')
+            .setAuthor({name: 'YouTube', iconURL: 'https://seeklogo.net/wp-content/uploads/2020/03/YouTube-icon-SVG-512x512.png'})
             .setURL(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`)
             .setThumbnail(body.items[0].snippet.thumbnails.default.url)
         interaction.editReply({ embeds: [embed] }).catch(err => logger.log('error', err));

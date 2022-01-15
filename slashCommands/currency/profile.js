@@ -84,7 +84,7 @@ exports.run = async(client, interaction) => {
 
     const embed = new MessageEmbed()
         .setColor("#bee7f7")
-        .setAuthor(`${user.username}'s profile in ${interaction.guild.name}`)
+        .setAuthor({name: `${user.username}'s profile in ${interaction.guild.name}`})
         .setThumbnail(user.displayAvatarURL({ size: 4096, dynamic: true, format: 'png' }))
         .addField(`Leveling`, `✨ XP: \`${xp}\`\n:arrow_up: Level: \`${level}\``)
         .addField(`Currency`, `:moneybag: Balance: ⏣ \`${storage.balance}\`\nOwn \`${item}\` item (total \`${itemTotal}\`) that worth ⏣ ${worth}`)

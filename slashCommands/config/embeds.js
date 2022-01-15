@@ -68,7 +68,7 @@ exports.run = async (client, interaction) => {
         try {
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
-                .setAuthor("step 1 of 9")
+                .setAuthor({name: "step 1 of 9"})
                 .setTitle("alright, how do you want to call your embed?")
                 .setDescription(
                     stripIndents`
@@ -100,7 +100,7 @@ exports.run = async (client, interaction) => {
                 if (storage.embeds.toObject().find((x) => x._id === id)) {
                     await deleteIfAble(res);
                     embed
-                        .setAuthor("step 1 of 9")
+                        .setAuthor({name: "step 1 of 9"})
                         .setTitle("oops, that doesn't seems right...")
                         .setDescription(stripIndents`
                     that embed name has already been used!
@@ -129,7 +129,7 @@ exports.run = async (client, interaction) => {
                     });
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 2 of 9 (optional)")
+                        .setAuthor({name: "step 2 of 9 (optional)"})
                         .setTitle(
                             "great! now what color would you like this embed to be?"
                         ).setDescription(stripIndents`
@@ -215,7 +215,7 @@ exports.run = async (client, interaction) => {
             while (!targetEmbed.author) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 3 of 9 (optional)")
+                        .setAuthor({name: "step 3 of 9 (optional)"})
                         .setTitle(
                             "next, we'll be editing the author of the embed."
                         ).setDescription(stripIndents`
@@ -356,7 +356,7 @@ exports.run = async (client, interaction) => {
             while (!targetEmbed.title) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 4 of 9 (optional)")
+                        .setAuthor({name: "step 4 of 9 (optional)"})
                         .setTitle("now, let's set the title of your embed.")
                         .setDescription(stripIndents`
                     this text will be a bit larger / bold than the description in your embed can stay above the embed description.
@@ -445,7 +445,7 @@ exports.run = async (client, interaction) => {
             ) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 5 of 9 (optional)")
+                        .setAuthor({name: "step 5 of 9 (optional)"})
                         .setTitle(
                             "now, let's set the description of your embed."
                         ).setDescription(stripIndents`
@@ -532,7 +532,7 @@ exports.run = async (client, interaction) => {
             while (!targetEmbed.thumbnail) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 6 of 9 (optional)")
+                        .setAuthor({name: "step 6 of 9 (optional)"})
                         .setTitle("coming up, we'll be editing the thumbnail.")
                         .setDescription(stripIndents`
                     thumbnail is the small image that lie on the right of the embed.
@@ -630,7 +630,7 @@ exports.run = async (client, interaction) => {
                 let fieldsArray = [];
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 7 of 9 (optional)")
+                        .setAuthor({name: "step 7 of 9 (optional)"})
                         .setTitle(
                             "coming up, we'll be adding fields to the embed"
                         ).setDescription(stripIndents`
@@ -752,7 +752,7 @@ exports.run = async (client, interaction) => {
             while (!targetEmbed.image) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 7 of 9 (optional)")
+                        .setAuthor({name: "step 7 of 9 (optional)"})
                         .setTitle(
                             "Oki doki! now, let's edit the main image of the embed."
                         ).setDescription(stripIndents`
@@ -850,7 +850,7 @@ exports.run = async (client, interaction) => {
             while (!targetEmbed.footer) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 8 of 9 (optional)")
+                        .setAuthor({name: "step 8 of 9 (optional)"})
                         .setTitle(
                             "next, we'll be editing the footer of the embed."
                         ).setDescription(stripIndents`
@@ -989,7 +989,7 @@ exports.run = async (client, interaction) => {
             while (!targetEmbed.timestamp) {
                 if (!ongoing) {
                     embed
-                        .setAuthor("step 9 of 9 (optional)")
+                        .setAuthor({name: "step 9 of 9 (optional)"})
                         .setTitle(
                             "finally, would you like to set a timestamp for the embed?"
                         ).setDescription(stripIndents`
@@ -1197,7 +1197,7 @@ exports.run = async (client, interaction) => {
         const embed = new MessageEmbed()
             .setDescription(array.join("\n"))
             .setColor(interaction.guild.me.displayHexColor)
-            .setAuthor(`all embeds created in ${interaction.guild.name}:`)
+            .setAuthor({name: `all embeds created in ${interaction.guild.name}:`})
             .setThumbnail(
                 interaction.guild.iconURL({ size: 4096, dynamic: true })
             );

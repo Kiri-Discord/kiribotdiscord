@@ -227,7 +227,7 @@ exports.run = async(client, message, args, prefix) => {
 
             let embed = new MessageEmbed()
                 .setColor('#bee7f7')
-                .setAuthor('command information (=^･ω･^=)')
+                .setAuthor({name: 'command information (=^･ω･^=)'})
                 .setTitle(`${prefix}${name}`)
                 .setDescription(desc)
                 .setThumbnail(client.user.displayAvatarURL())

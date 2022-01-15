@@ -28,7 +28,7 @@ exports.run = async(client, interaction) => {
         const items = quantity < 1 ? list[item].displayName : list[item].displayName + 's';
         const embed = new MessageEmbed()
             .setColor("#bee7f7")
-            .setAuthor('purchase successful (=^･ω･^=)', interaction.user.displayAvatarURL())
+            .setAuthor({name: 'purchase successful (=^･ω･^=)', iconURL: interaction.user.displayAvatarURL()})
             .setDescription(`you have bought __${quantity}__ **${items}** (⏣ ${price}) which cost you ⏣ __${total}__ token`)
             .setFooter(`your current balance: ⏣ ${money - price}`)
 

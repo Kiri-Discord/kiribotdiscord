@@ -32,7 +32,7 @@ module.exports = class VerifyTimer {
                     if (verifyRole || !verifyChannel || !roleExist) return;
                     const logChannel = await guild.channels.cache.get(setting.logChannelID);
                     const logembed = new MessageEmbed()
-                        .setAuthor(`Verification`, this.client.user.displayAvatarURL())
+                        .setAuthor({name: `Verification`, iconURL: this.client.user.displayAvatarURL()})
                         .setTitle(`${member.user.tag} was kicked`)
                         .setColor("#ff0000")
                         .setThumbnail(member.user.displayAvatarURL({ size: 4096, dynamic: true }))
@@ -42,7 +42,7 @@ module.exports = class VerifyTimer {
                         .addField('Reason', reason)
                         .setTimestamp()
                     const logerror = new MessageEmbed()
-                        .setAuthor(`Verification`, this.client.user.displayAvatarURL())
+                        .setAuthor({name: `Verification`, iconURL: this.client.user.displayAvatarURL()})
                         .setTitle(`Failed while kicking ${member.user.tag}`)
                         .setDescription(`i can't kick that unverified member because critical permission was not met :pensive:`)
                         .setColor('#ff0000')

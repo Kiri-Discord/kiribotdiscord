@@ -8,7 +8,7 @@ exports.run = async(client, interaction) => {
         const { body } = await request.get('https://nekos.best/api/v1/nekos');
         const embed = new MessageEmbed()
             .setColor("#7DBBEB")
-            .setAuthor(body.artist_name, null, body.artist_href)
+            .setAuthor({name: body.artist_name, url: body.artist_href})
             .setImage(body.url);
         return interaction.editReply({ embeds: [embed] })
     } catch (error) {

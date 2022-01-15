@@ -38,7 +38,7 @@ exports.run = async(client, interaction) => {
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
-        .setAuthor(`${interaction.user.username} cuddled ${target.username} ❤️ they was cuddled ${amount} time${addS}!`, interaction.user.displayAvatarURL())
+        .setAuthor({name: `${interaction.user.username} cuddled ${target.username} ❤️ they was cuddled ${amount} time${addS}!`, iconURL: interaction.user.displayAvatarURL()})
         .setImage(data)
     return interaction.editReply({ embeds: [embed] })
 };

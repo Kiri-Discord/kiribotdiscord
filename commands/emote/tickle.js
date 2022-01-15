@@ -22,7 +22,7 @@ exports.run = async(client, message, args) => {
     const { body } = await request.get('https://nekos.best/api/v1/tickle');
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
-        .setAuthor(`${message.author.username} tickled ${target.username}!`, message.author.displayAvatarURL())
+        .setAuthor({name: `${message.author.username} tickled ${target.username}!`, iconURL: message.author.displayAvatarURL()})
         .setImage(body.url)
     return message.channel.send({ embeds: [embed] })
 };

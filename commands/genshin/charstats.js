@@ -102,7 +102,7 @@ ${createTable(
     };
 
     const embed = new MessageEmbed()
-        .setFooter(`you can display stats for a specific level or ascension using ${prefix}charstats <name> [level] A[ascension]!`)
+        .setFooter({text: `you can display stats for a specific level or ascension using ${prefix}charstats <name> [level] A[ascension]!`})
         .setTitle(`${char.name}'s stats`)
         .setColor(Colors[char.meta.element] ?? "")
         .setDescription(getCharStats(char, level, ascension))

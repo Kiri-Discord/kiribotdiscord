@@ -100,7 +100,7 @@ exports.run = async(client, interaction) => {
             new: true,
         });
         const embed = new MessageEmbed()
-            .setAuthor(`🌼 ${interaction.user.username}'s garden`, interaction.user.displayAvatarURL())
+            .setAuthor({name: `🌼 ${interaction.user.username}'s garden`, iconURL: interaction.user.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you have planted seed on slot \`${slot}\``)
             .setFooter(`seeds can be grown to tree by watering via /water!`)

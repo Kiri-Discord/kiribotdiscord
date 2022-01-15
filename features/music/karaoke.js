@@ -41,7 +41,7 @@ module.exports = class ScrollingLyrics {
                 const list = avaliableLang.map(t => t.languageCode).map((lang, index) => `\`${index + 1}\` - ${languages[lang]}`)
                 const emoji = this.client.customEmojis.get('party');
                 const embed = new MessageEmbed()
-                    .setAuthor(`no lyrics for this song in your preferred language (${languages[this.lang]})`)
+                    .setAuthor({name: `no lyrics for this song in your preferred language (${languages[this.lang]})`})
                     .setDescription(`fortunately, there ${avaliableLang.length === 1 ? 'is' : 'are'} **${avaliableLang.length}** lyric${avaliableLang.length === 1 ? '' : 's'} in other language${avaliableLang.length === 1 ? '' : 's'} avaliable ${emoji}\nchoose your desired language **(1 - ${avaliableLang.length})** or type 'cancel' to skip scrolling lyrics for this song:\n\n${list.join("\n")}`)
                     .setFooter('scrolling lyrics will be temporary turned off for this song if no choices were made :(');
                 if (!this.client.deletedChannels.has(this.queueChannel)) await this.queueChannel.send({ embeds: [embed] });

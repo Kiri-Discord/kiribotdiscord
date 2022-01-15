@@ -21,7 +21,7 @@ exports.run = async(client, message, args) => {
         const data = body[Math.floor(Math.random() * body.length)];
         const embed = new MessageEmbed()
             .setColor("#7DBBEB")
-            .setAuthor(`${data.id} (${data.owner})`)
+            .setAuthor({name: `${data.id} (${data.owner})`})
             .setImage(`https://safebooru.org/images/${data.directory}/${data.image}`);
         return message.channel.send({ embeds: [embed] })
     } catch (error) {

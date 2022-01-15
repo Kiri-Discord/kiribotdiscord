@@ -32,7 +32,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setColor('#F4EDB4')
                     .setThumbnail(client.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
-                    .setAuthor(`hey ${user.username}, thanks for voting ＼(=^‥^)/’`)
+                    .setAuthor({name: `hey ${user.username}, thanks for voting ＼(=^‥^)/’`})
                     .setDescription(stripIndents `
                     thank you for being generous and gave me a vote ${blush}
 

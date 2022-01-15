@@ -22,7 +22,7 @@ exports.run = async(client, interaction) => {
     let image = body.url;
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
-        .setAuthor(`${interaction.user.username} poke at ${target.username}!`, interaction.user.displayAvatarURL())
+        .setAuthor({name: `${interaction.user.username} poke at ${target.username}!`, iconURL: interaction.user.displayAvatarURL()})
         .setImage(image)
     return interaction.editReply({ embeds: [embed] })
 };

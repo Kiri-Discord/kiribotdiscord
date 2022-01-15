@@ -12,7 +12,7 @@ exports.run = async(client, interaction) => {
         const embed = new MessageEmbed()
             .setDescription(`You can use \`/covid <country>\` to get the information in a country, or just leave it blank to get global stats.`)
             .setColor("#7DBBEB")
-            .setAuthor('COVID-19 stats', 'https://s.rfi.fr/media/display/d306164a-8db0-11ea-a3c1-005056a98db9/w:1280/p:16x9/int0005b.200504100504.webp', 'https://www.worldometers.info/coronavirus/')
+            .setAuthor({name: 'COVID-19 stats', iconURL: 'https://s.rfi.fr/media/display/d306164a-8db0-11ea-a3c1-005056a98db9/w:1280/p:16x9/int0005b.200504100504.webp', url: 'https://www.worldometers.info/coronavirus/'})
             .setTitle(`Stats for ${country === 'all' ? 'global' : data.country}`)
             .setURL(country === 'all' ?
                 'https://www.worldometers.info/coronavirus/' :

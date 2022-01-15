@@ -24,7 +24,7 @@ exports.run = async(client, message, args) => {
             const randomnumber = Math.floor(Math.random() * allowed.length)
             let url = `https://www.reddit.com${allowed[randomnumber].data.permalink}`
             let embed = new MessageEmbed()
-                .setAuthor(`r/${memes}`, icon, `https://reddit.com/r/${memes}`)
+                .setAuthor({name: `r/${memes}`, iconURL: icon, url: `https://reddit.com/r/${memes}`})
                 .setTitle(allowed[randomnumber].data.title)
                 .setURL(url)
                 .setImage(allowed[randomnumber].data.url)

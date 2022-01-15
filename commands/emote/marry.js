@@ -57,7 +57,7 @@ exports.run = async(client, message, args, prefix) => {
         do you accept this proposal? please select **Yes** or **No**.
         *this proposal will expire in a minute.*
         `)
-        .setFooter('this proposal will expire in a minute.')
+        .setFooter({text: 'this proposal will expire in a minute.'})
     const msg = await message.channel.send({ embeds: [embed], components: [row] });
     const filter = async(res) => {
         if (res.user.id !== member.user.id) {

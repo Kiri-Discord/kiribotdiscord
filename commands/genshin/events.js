@@ -72,7 +72,7 @@ exports.run = async (client, message, args) => {
         if (event == undefined) return undefined;
 
         const embed = getEventEmbed(event)
-            .setFooter(`page ${currentPage} / ${maxPages}`)
+            .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setColor("#7DBBEB");
 
         if (event.end) embed.setTimestamp(getDate(event.end, event.timezone));

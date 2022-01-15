@@ -121,7 +121,7 @@ exports.run = async(client, interaction) => {
         });
 
         const embed = new MessageEmbed()
-            .setAuthor(`🌼 ${interaction.user.username}'s garden`, interaction.user.displayAvatarURL())
+            .setAuthor({name: `🌼 ${interaction.user.username}'s garden`, iconURL: interaction.user.displayAvatarURL()})
             .setColor("#bee7f7")
             .setDescription(`you harvested and sold **${rarity}** :${getPlant}: **${names[getPlant]}** that worth ⏣ **${worth}**!`)
 
@@ -130,7 +130,7 @@ exports.run = async(client, interaction) => {
 
             const embed2 = new MessageEmbed()
                 .setColor("#bee7f7")
-                .setAuthor(`🌼 ${interaction.user.username}'s garden`, interaction.user.displayAvatarURL())
+                .setAuthor({name: `🌼 ${interaction.user.username}'s garden`, iconURL: interaction.user.displayAvatarURL()})
                 .setDescription(`you harvested and sold **${rarity}** ${chest} **${names[getPlant]}** that worth ⏣ **${worth}**!`)
             return interaction.editReply({ embeds: [embed2] })
         } else return interaction.editReply({ embeds: [embed] })

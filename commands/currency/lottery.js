@@ -71,7 +71,7 @@ exports.run = async(client, message, args) => {
         **${lotto.join(', ')}**
         you matched **${similarities}** numbers, which gives you **${prize}**! ${msg}
         `)
-        .setFooter(`you have ⏣ ${storageAfter.balance} in your wallet.`)
+        .setFooter({text: `you have ⏣ ${storageAfter.balance} in your wallet.`})
     return message.reply({ embeds: [embed] });
 };
 

@@ -26,8 +26,7 @@ exports.run = async(client, message, args) => {
 
                     want to get more token on your next daily collect? vote me [here](https://top.gg/bot/859116638820761630)`)
                     .setTitle(`${message.member.displayName}, you've already claimed your daily today!`)
-                    .setFooter(`each daily is reseted after 24 hours, regardless of timezone.
-                    `)
+                    .setFooter({text: `each daily is reseted after 24 hours, regardless of timezone.`})
                 return message.channel.send({ embeds: [embed] });
             } else {
                 let bonus;
@@ -81,7 +80,7 @@ exports.run = async(client, message, args) => {
             ${bonus ? `you collected __${bonusAmount}__ more token for voting :)` : ''}
             `)
             .setColor("#bee7f7")
-            .setFooter(`you now have ⏣ ${storageAfter.balance} in your wallet.`)
+            .setFooter({text: `you now have ⏣ ${storageAfter.balance} in your wallet.`})
             .setTitle(`here are your daily token, ${message.member.displayName}!`)
             return message.channel.send({embeds: [embed]});
         }

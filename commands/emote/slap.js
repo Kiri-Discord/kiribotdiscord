@@ -43,7 +43,7 @@ exports.run = async(client, message, args) => {
     const addS = amount === 1 ? '' : 's';
     const embed = new MessageEmbed()
         .setColor("#7DBBEB")
-        .setAuthor(`${message.author.username} slap ${target.username} 😔 they was slapped ${amount} time${addS}!`, message.author.displayAvatarURL())
+        .setAuthor({name: `${message.author.username} slap ${target.username} 😔 they was slapped ${amount} time${addS}!`, iconURL: message.author.displayAvatarURL()})
         .setImage(image)
 
     return message.channel.send({ embeds: [embed] })

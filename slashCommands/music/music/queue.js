@@ -31,7 +31,7 @@ exports.run = async(client, interaction) => {
         const arrEmbeds = [];
         arrSplitted.forEach((item, index) => {
                     const embed = new MessageEmbed()
-                        .setAuthor(`Music queue for ${interaction.guild.name}`, interaction.guild.iconURL({ size: 4096, dynamic: true }))
+                        .setAuthor({name: `Music queue for ${interaction.guild.name}`, iconURL: interaction.guild.iconURL({ size: 4096, dynamic: true })})
                         .setDescription(`Now playing: **[${nowPlaying.info.title}](${nowPlaying.info.uri}) - ${nowPlaying.info.author}** [${nowPlaying.requestedby}] (${formatDuration(nowPlaying.info.length)})`)
                         .setFooter(`${queue.loop ? 'Currently looping the queue' : `${queue.songs.length} song${queue.songs.length === 1 ? '' : 's'} left in queue`} (queue duration: ${queue.songs.some(song => song.info.isStream) ? '∞' : moment.duration(totalDuration).format('H[h] m[m] s[s]')})`)
                     .addField('\u200b', item.join('\n'));

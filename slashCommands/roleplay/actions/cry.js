@@ -5,7 +5,7 @@ exports.run = async(client, interaction, args) => {
     await interaction.deferReply();
     const embed = new MessageEmbed()
         .setColor('#7DBBEB')
-        .setAuthor(`${interaction.user.username} cried :(`, interaction.user.displayAvatarURL())
+        .setAuthor({name: `${interaction.user.username} cried :(`, iconURL: interaction.user.displayAvatarURL()})
 
     fetch('https://nekos.best/api/v1/cry')
         .then(res => res.json())

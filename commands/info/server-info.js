@@ -46,7 +46,7 @@ exports.run = async(client, message, args) => {
             .setColor(message.member.displayHexColor)
             .setTimestamp(new Date())
             .setThumbnail(icon)
-            .setAuthor(`Information for ${guild.name}:`, client.user.displayAvatarURL())
+            .setAuthor({name: `Information for ${guild.name}:`, iconURL: client.user.displayAvatarURL()})
             .setDescription(`**ID:** \`${guild.id}\``)
             .addField("\`📅\` Date created", `${created}\n${h}`, true)
             .addField("\`👑\` Owner", `<@${guild.ownerId}>\n\`${guild.ownerId}\``, true)

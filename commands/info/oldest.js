@@ -11,7 +11,7 @@ exports.run = async(client, message, args) => {
         .setColor('#bee7f7')
         .setTimestamp()
         .setImage(mem.user.displayAvatarURL({ size: 4096, dynamic: true }))
-        .setAuthor(`the oldest user in ${message.guild.name} is ${mem.user.tag}!`)
+        .setAuthor({name: `the oldest user in ${message.guild.name} is ${mem.user.tag}!`})
         .setDescription(`${mem.toString()} joined Discord in ${createdate} !`);
     return message.channel.send({ embeds: [embed] });
 };

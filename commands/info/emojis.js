@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
             .setDescription(first)
             .setColor(message.guild.me.displayHexColor)
             .setThumbnail(icon)
-            .setAuthor(`${message.guild.name}'s emoji(s)`, client.user.displayAvatarURL());
+            .setAuthor({name: `${message.guild.name}'s emoji(s)`, iconURL: client.user.displayAvatarURL()});
         if (rest.length) {
             const lastContent = rest.pop();
             if (rest.length) {
