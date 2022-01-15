@@ -19,7 +19,7 @@ exports.run = async(client, message, args, prefix) => {
         ...body,
     });
 
-    const sayoriEmoji = client.customEmojis.get("sayori");
+    const sayoriEmoji = client.customEmojis.get("smug");
     message.channel.send({ embeds: [{ color: "#bee7f7", description: `applied \`${args[0].toLowerCase()}\` equalizer preset to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` })
     if (queue.textChannel.id !== message.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${message.author} applied \`${args[0].toLowerCase()}\` equalizer preset to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`${prefix}reset\`` });
 };

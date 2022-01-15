@@ -24,7 +24,7 @@ exports.run = async(client, interaction) => {
     const bands = new Array(6).fill(null).map((n, i) => ({ band: i, gain: 0.5 }));
     queue.player.equalizer(bands);
     queue.player.volume(350);
-    const sayoriEmoji = client.customEmojis.get("sayori");
+    const sayoriEmoji = client.customEmojis.get("smug");
     interaction.editReply({ embeds: [{ color: "#bee7f7", description: `applied earrape to your current queue! this might take a few second... ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` })
     if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} applied earrape to the current queue ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` });
 };

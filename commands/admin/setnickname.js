@@ -9,7 +9,7 @@ exports.run = async(client, message, args) => {
 
 
     const member = client.utils.parseMember(message, args[0])
-    const stareEmoji = client.customEmojis.get('stare') ? client.customEmojis.get('stare').toString() : ':pensive:';
+    const stareEmoji = client.customEmojis.get('staring') ? client.customEmojis.get('staring').toString() : ':pensive:';
     if (!member) return message.channel.send({ embeds: [{ color: "RED", description: `i can't find that user! please mention a valid member or user ID in this guild ${stareEmoji}` }] });
 
     if (!member.manageable) return message.reply({ embeds: [{ color: "RED", description: `i can't change that user's nickname! they may either be an admin, or their roles are way higher than me.` }] });

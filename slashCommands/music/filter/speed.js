@@ -35,7 +35,7 @@ exports.run = async(client, interaction) => {
         ...body
     });
 
-    const sayoriEmoji = client.customEmojis.get("sayori");
+    const sayoriEmoji = client.customEmojis.get("smug");
     interaction.editReply({ embeds: [{ color: "#bee7f7", description: `changed the speed rate of the current queue to **${Number(rate).toFixed(1)}x**! ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` })
     if (queue.textChannel.id !== interaction.channel.id) queue.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${interaction.user} changed the speed rate of the current queue to **${Number(rate).toFixed(1)}x**! ${sayoriEmoji}` }], content: `to reset all effect, use \`/reset\`!` });
 };
