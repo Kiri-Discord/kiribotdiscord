@@ -22,6 +22,15 @@ module.exports = class util {
         "Dendro": "#B2EB28",
         "None": "#545353",
     };
+    static getLinkToGuide(guide, page) {
+        return `[${page.name}](${client.data.baseURL}guides/${urlify(guide.name, false)}/${urlify(page.name, true)})`
+    };
+    static urlify(input, shouldRemoveBrackets) {
+        if (shouldRemoveBrackets)
+            input = removeBrackets(input)
+        return input.toLowerCase().replace(/\(|\)|:/g, "").trim().replace(/ +/g, "-")
+    }
+    
     static getServerTimeInfo() {
         const offsets = {
             America: -5,
@@ -53,6 +62,10 @@ module.exports = class util {
             }
         })
     };
+    static removeBrackets(input) {
+        return input.replace(/\(.*\)/g, "").replace(/ +:/, ":")
+    }
+    
     static findFuzzyBestCandidates(target, search, amount) {
         const cleaned = util.searchClean(search)
         const found = target.find(t => util.searchClean(t) == search)

@@ -14,7 +14,7 @@ module.exports = async(client, interaction) => {
             };
             const sed = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
             const duh = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':blush:';
-            if (!interaction.inGuild() && !interaction.channel.permissionsFor(interaction.guild.me).has("SEND_MESSAGES"))
+            if (interaction.inGuild() && !interaction.channel.permissionsFor(interaction.guild.me).has("SEND_MESSAGES"))
                 return interaction.reply({
                     content: `due to the nature of some commands requiring sending additional messages (not replies of slash command), i will need the \`SEND_MESSAGES\` perms in this channel ${sed}`,
                     ephemeral: true

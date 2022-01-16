@@ -11,7 +11,9 @@ const characterCurves = require("../../assets/genshin/gamedata/character_curves.
 const characterLevels = require("../../assets/genshin/gamedata/character_levels.json")
 const booksData = require("../../assets/genshin/gamedata/books.json")
 
-const paimonShop = require("../../assets/genshin/gamedata/paimon_shop.json")
+const paimonShop = require("../../assets/genshin/gamedata/paimon_shop.json");
+
+const enemyData = require("../../assets/genshin/gamedata/enemies.json")
 
 const costTemplates = require("../../assets/genshin/gamedata/cost_templates.json")
 
@@ -45,6 +47,8 @@ module.exports = class DataManager {
         this.artifacts = artifactsData;
         this.artifactMainStats = artifactsMainStats;
         this.artifactMainLevels = artifactsMainLevels;
+        this.enemies = enemyData;
+
         this.characterLevels = characterLevels;
         this.paimonsBargains = paimonShop;
     
@@ -121,6 +125,24 @@ module.exports = class DataManager {
     }
     getAbyssSchedules() {
         return Object.values(this.abyssSchedule)
+    }
+
+    getGuides(type, name) {
+        return this.guides
+            .flatMap(guide => guide.pages
+                .filter(page => page.links?.[type]?.includes(name))
+                .map(page => ({
+                    guide, page
+                }))
+            )
+    }
+    
+    getEnemyByName(name) {
+        const targetNames = Object.keys(this.enemies)
+        const target = findFuzzy(targetNames, name)
+        if (target)
+            return this.enemies[target]
+        return undefined
     }
     getCostsFromTemplate(costTemplate) {
         const template = this.costTemplates[costTemplate.template]

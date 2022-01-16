@@ -67,6 +67,7 @@ exports.run = async (client, message, args, prefix) => {
         return undefined
     };
     function getSpiralFloor(floorId, num) {
+        const data = client.genshinData;
         const floor = client.genshinData.abyssFloors[floorId]
 
         const embed = new MessageEmbed()
@@ -80,7 +81,7 @@ exports.run = async (client, message, args, prefix) => {
                 embed.addField(`Chamber ${chamber.chamber}: Conditions`, chamber.conds)
                 for (const [ind, monsters] of Object.entries(chamber.monsters)) {
                     const status = `${+ind+1}/${chamber.monsters.length}`
-                    embed.addField(`${names[status] ?? status}: (Lv. ${chamber.level})`, `${monsters.join("\n")}${chamber == lastChamber ? "" : "\n\u200B"}`, true)
+                    embed.addField(`${names[status] ?? status}: (Lv. ${chamber.level})`, `${monsters.map(m => data.emoji(m, true)).join("\n")}${chamber == lastChamber ? "" : "\n\u200B"}`, true)
                 }
             }
         };

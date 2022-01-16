@@ -132,7 +132,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle(`${weapon.name}: Basic info`)
             .setColor(Colors.AQUA)
-            .setThumbnail(weapon.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setDescription(weapon.desc + (weapon.placeholder ? "\n\n*This weapon is currently not yet available :(*" : ""))
             .addField("Basics", `${weapon.stars} :star: ${genshinData.emoji(weapon.weaponType)}`, (weapon.placeholderStats && !weapon.weaponCurve) ? true : false)
@@ -170,7 +170,7 @@ exports.run = async (client, message, args, prefix) => {
     function getStatsWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(weapon.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         const columns = []
@@ -210,7 +210,7 @@ exports.run = async (client, message, args, prefix) => {
     function getRefinementWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(weapon.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         embed.setTitle(`${weapon.name}: Refinements`)
@@ -223,7 +223,7 @@ exports.run = async (client, message, args, prefix) => {
     function getLoreWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(weapon.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Lore`)
             .setDescription(weapon.lore ?? "Unavailable")
@@ -233,11 +233,11 @@ exports.run = async (client, message, args, prefix) => {
     function getArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(weapon.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Base`)
-            .setDescription(`[Image URL](${weapon.icon})`)
-            .setImage(weapon.awakenIcon ?? "")
+            .setDescription(`[Image URL](https://genshin.flatisjustice.moe/${weapon.icon})`)
+            .setImage(`https://genshin.flatisjustice.moe/` + weapon.icon)
         embed.thumbnail = null
         return embed
     }
@@ -245,11 +245,11 @@ exports.run = async (client, message, args, prefix) => {
     function getSecondArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(weapon.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.awakenIcon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: 2nd Ascension`)
-            .setDescription(`[Image URL](${weapon.awakenIcon})`)
-            .setImage(weapon.awakenIcon)
+            .setDescription(`[Image URL](${`https://genshin.flatisjustice.moe/` + weapon.awakenIcon})`)
+            .setImage(`https://genshin.flatisjustice.moe/${weapon.awakenIcon}`)
         embed.thumbnail = null
         return embed
     }

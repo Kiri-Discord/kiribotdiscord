@@ -54,7 +54,7 @@ exports.run = async (client, message, args, prefix) => {
     function getArti(set, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(set.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${set.artis.find(x => x.icon)?.icon ?? "img/unknown.png"}`)
             .setFooter({text: `page ${currentPage} of ${maxPages}`})
 
         if (relativePage == 0) {
@@ -81,7 +81,7 @@ ${createTable(
         mainStats.sort((a, b) => b.weight - a.weight).map(am => [`${(am.weight / total * 100).toFixed(1)}%`, am.name])
     )}
 \`\`\``)
-                .setThumbnail(arti.icon)
+                .setThumbnail(`https://genshin.flatisjustice.moe/${arti.icon}`)
 
             return embed
         }

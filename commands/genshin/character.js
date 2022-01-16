@@ -90,7 +90,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                     return -1
                 else return a.name.localeCompare(b.name)
             })
-            .map((char) => `**${char.name}**: ${getBasicInfo(char)}`)
+            .map((char) => `**${data.emoji(char.name, true)}**: ${getBasicInfo(char)}`)
 
         const pages = []
         let paging = "", c = 0
@@ -130,12 +130,19 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (char.icon)
-            embed.setThumbnail(char.icon)
+            embed.setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
 
         if (relativePage == 0) {
             embed.setTitle(`${char.name}: Description`)
                 .setDescription(char.desc)
-                .addField("Basics", getBasicInfo(char))
+                .addField("Basics", getBasicInfo(char));
+            
+            if (char.media.videos)
+                embed.setDescription(`${char.desc}\n${
+                    Object.entries(char.media.videos)
+                        .map(([title, url]) => `[${title.split(" - ")[0].replace(/^New/i, "").trim()}](${url})`)
+                        .join(" / ")
+                }`)
 
             if (data.isFullCharacter(char)) {
                 const maxAscension = char.ascensions[char.ascensions.length - 1]
@@ -166,10 +173,10 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                         .filter(x => x)
                     const books = talents
                         .flatMap(s => [
-                            s?.costs?.mapping.Book,
-                            s?.costs?.mapping.Book1,
-                            s?.costs?.mapping.Book2,
-                            s?.costs?.mapping.Book3,
+                            s?.costs?.mapping?.Book,
+                            s?.costs?.mapping?.Book1,
+                            s?.costs?.mapping?.Book2,
+                            s?.costs?.mapping?.Book3,
                         ])
                         .filter((x, i, a) => x && a.indexOf(x) == i)
                         .map(x => `Guide to ${x}`)
@@ -248,7 +255,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     function getStatsPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setThumbnail(char.icon)
+            .setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (relativePage == 0) {
@@ -303,30 +310,37 @@ const possibleStars = client.genshinData.getReleasedCharacters()
 
         return undefined
     }
-    function getArtPage(char, relativePage, currentPage, maxPages) {
+    function getMediaPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
+            .setTitle(`${char.name}`)
         if (char.icon)
-            embed.setThumbnail(char.icon)
-
-        if (relativePage >= 0 && relativePage < char.imgs.length) {
-            const img = char.imgs[relativePage]
-            embed.setTitle(`${char.name}`)
-                .setDescription(`[Image URL](${img})`)
-                .setImage(img)
+            embed.setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
+            const videos = char.media.videos ? (`**Promotional videos**
+            ${Object
+                .entries(char.media.videos)
+                .map(([title, url]) => `[${title}](${url})`)
+                .join("\n")
+            }\n\n`) : ""
+            
+        if (char.media.imgs && relativePage >= 0 && relativePage < char.media.imgs.length) {
+            const img = char.media.imgs[relativePage]
+            embed.setDescription(`${videos}[Image URL](${img})`)     
+            .setImage(img)
             embed.thumbnail = null
             return embed
+        } else {
+            embed.setDescription(videos)
+            return embed
         }
-
-        return undefined
     }
     function getCharTalentPage(char, relativePage, currentPage, maxPages, talentMode) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
-        if (char.icon) embed.setThumbnail(char.icon)
+        if (char.icon) embed.setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
 
         function isValueTable(talent) {
             return talent.values != undefined
@@ -412,7 +426,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
 
             if (skills.constellations && page++ == relativePage) {
                 embed.setTitle(`${char.name}: Constellations`)
-                    .setThumbnail(skills.constellations[0]?.icon)
+                    .setThumbnail(`https://genshin.flatisjustice.moe/${skills.constellations[0]?.icon}`)
                 let c = 0
                 for (const constellation of skills.constellations)
                     embed.addField(`C${++c}: ${constellation.name}`, constellation.desc)
@@ -499,8 +513,8 @@ const possibleStars = client.genshinData.getReleasedCharacters()
         pages.push({
             bookmarkEmoji: "🎨",
             bookmarkName: "Art",
-            maxPages: char.imgs.length,
-            pages: (rp, cp, mp) => getArtPage(char, rp, cp, mp)
+            maxPages: (char.media.imgs?.length ?? (char.media.videos ? 1 : 0)),
+            pages: (rp, cp, mp) => getMediaPage(char, rp, cp, mp)
         })
 
         return pages
