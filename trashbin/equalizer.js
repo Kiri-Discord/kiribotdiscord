@@ -13,6 +13,7 @@ exports.run = async(client, message, args, prefix) => {
 
     const body = eq[args[0].toLowerCase()];
 
+
     queue.player.node.send({
         op: 'filters',
         guildId: queue.guildId,
