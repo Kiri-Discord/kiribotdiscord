@@ -36,7 +36,7 @@ exports.run = async(client, interaction) => {
                 if (!queue.songs.length) return interaction.channel.send({ embeds: [{ color: "#bee7f7", description: `there isn't any song left in the queue :pensive:` }], ephemeral: true });
                 const number = index - 1;
                 interaction.channel.send({ embeds: [{ color: "#bee7f7", description: `you skipped ${number} songs! ⏭` }] })
-                return skip(queue, interaction, index, sentMessage);
+                return skip(queue, interaction, index, sentMessage, client);
             }
             const sent = await interaction.channel.send(`**${vote}** member voted to skip ⏭ only **${leftMembers - vote}** member left!`);
             sentMessage.push(sent);
@@ -47,11 +47,11 @@ exports.run = async(client, interaction) => {
     } else {
         const number = index - 1;
         interaction.reply({ embeds: [{ color: "#bee7f7", description: `⏭ you skipped ${number} songs!` }] })
-        return skip(queue, interaction, index);
+        return skip(queue, interaction, index, null, client);
     };
 };
 
-async function skip(queue, interaction, index, sentMessage) {
+async function skip(queue, interaction, index, sentMessage, client) {
     queue.playing = true;
     if (queue.loop) {
         for (let i = 0; i < index - 1; i++) {
@@ -59,7 +59,7 @@ async function skip(queue, interaction, index, sentMessage) {
         }
     } else {
         queue.songs = queue.songs.slice(index - 1);
-    };
+    }
     if (queue.repeat) queue.nowPlaying = undefined;
     queue.skip();
     const number = index - 1;

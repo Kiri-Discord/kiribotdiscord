@@ -31,7 +31,7 @@ exports.run = async(client, message, args, prefix) => {
             vote = vote + 1;
             if (vote === leftMembers) {
                 collector.stop();
-                return skip(queue, message, args, sentMessage);
+                return skip(queue, message, args, sentMessage, client);
             }
             const sent = await message.channel.send(`**${vote}** member voted to skip ⏭ only **${leftMembers - vote}** member left!`);
             sentMessage.push(sent);
@@ -40,11 +40,11 @@ exports.run = async(client, message, args, prefix) => {
             if (vote !== leftMembers) return message.channel.send(`not enough people to skip song!`);
         });
     } else {
-        return skip(queue, message, args);
+        return skip(queue, message, args, null, client);
     }
 };
 
-async function skip(queue, message, args, sentMessage) {
+async function skip(queue, message, args, sentMessage, client) {
     if (!queue.songs.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `there isn't any song left in the queue :pensive:` }] });
     queue.playing = true;
     if (queue.loop) {

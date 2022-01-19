@@ -29,7 +29,7 @@ exports.run = async(client, interaction) => {
             if (vote === leftMembers) {
                 collector.stop();
                 interaction.channel.send({ embeds: [{ color: "#bee7f7", description: `skipped to the next track in the queue ⏭` }] });
-                return skip(queue, interaction, sentMessage);
+                return skip(queue, interaction, sentMessage, client);
             };
             const sent = await interaction.channel.send(`**${vote}** member voted to skip the current song ⏭ only **${leftMembers - vote}** member left!`);
             sentMessage.push(sent);
@@ -39,10 +39,10 @@ exports.run = async(client, interaction) => {
         });
     } else {
         interaction.reply({ embeds: [{ color: "#bee7f7", description: `skipped to the next track in the queue ⏭` }] });
-        return skip(queue, interaction);
+        return skip(queue, interaction, null, client);
     };
 };
-async function skip(queue, interaction, sentMessage) {
+async function skip(queue, interaction, sentMessage, client) {
     queue.playing = true;
     if (queue.repeat) queue.nowPlaying = undefined;
     queue.skip();
