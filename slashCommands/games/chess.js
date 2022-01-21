@@ -1,4 +1,4 @@
-const jsChess = require('js-chess-engine');
+const jsChess = require('js-chess-engine');//wtf
 const { createCanvas, loadImage } = require('canvas');
 const { msToHMS } = require('../../util/util');
 const validateFEN = require('fen-validator').default;
