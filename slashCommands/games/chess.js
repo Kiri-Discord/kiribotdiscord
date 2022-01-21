@@ -113,6 +113,8 @@ exports.run = async(client, interaction, args) => {
                         userId: interaction.user.id
                     });
                 } catch {
+                    client.isPlaying.delete(interaction.user.id);
+                    client.isPlaying.delete(opponent.id);
                     client.games.delete(interaction.channel.id);
                     await client.gameStorage.findOneAndDelete({
                         guildId: interaction.guild.id,

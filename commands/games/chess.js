@@ -103,6 +103,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
                         userId: message.author.id
                     });
                 } catch {
+                    client.isPlaying.delete(message.author.id);
+                    client.isPlaying.delete(opponent.id);
                     client.games.delete(message.channel.id);
                     await client.gameStorage.findOneAndDelete({
                         guildId: message.guild.id,
