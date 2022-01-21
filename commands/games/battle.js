@@ -126,6 +126,8 @@ exports.run = async(client, message, args) => {
             return message.channel.send(`the match is over! congrats, ${winner}!`);
         }
     } catch (err) {
+        client.isPlaying.delete(message.author.id);
+        client.isPlaying.delete(opponent.id);
         client.games.delete(message.channel.id);
         throw err;
     };

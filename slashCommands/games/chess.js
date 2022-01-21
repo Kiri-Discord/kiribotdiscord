@@ -1,4 +1,4 @@
-const jsChess = require('js-chess-engine');
+const jsChess = require('js-chess-engine');//wtf
 const { createCanvas, loadImage } = require('canvas');
 const { msToHMS } = require('../../util/util');
 const validateFEN = require('fen-validator').default;
@@ -113,6 +113,8 @@ exports.run = async(client, interaction, args) => {
                         userId: interaction.user.id
                     });
                 } catch {
+                    client.isPlaying.delete(interaction.user.id);
+                    client.isPlaying.delete(opponent.id);
                     client.games.delete(interaction.channel.id);
                     await client.gameStorage.findOneAndDelete({
                         guildId: interaction.guild.id,
@@ -483,6 +485,8 @@ exports.run = async(client, interaction, args) => {
         };
     } catch (err) {
         client.games.delete(interaction.channel.id);
+        client.isPlaying.delete(interaction.user.id);
+        client.isPlaying.delete(opponent.id);
         throw err;
     };
 };
