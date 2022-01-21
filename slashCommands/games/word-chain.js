@@ -10,7 +10,7 @@ exports.run = async(client, interaction, args) => {
     const current = client.games.get(interaction.channel.id);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
 
-    if (client.isPlaying.get(interaction.author.id)) return interaction.reply({ content: 'you are already in a game. please finish that first.', ephemeral: true });
+    if (client.isPlaying.get(interaction.user.id)) return interaction.reply({ content: 'you are already in a game. please finish that first.', ephemeral: true });
 
     const member = interaction.options.getMember('opponent');
 
@@ -30,7 +30,7 @@ exports.run = async(client, interaction, args) => {
             client.games.delete(interaction.channel.id);
             return interaction.editReply('looks like they declined...');
         };
-        client.isPlaying.set(interaction.author.id, true);
+        client.isPlaying.set(interaction.user.id, true);
         client.isPlaying.set(opponent.id, true);
 
         const startWord = startWords[Math.floor(Math.random() * startWords.length)];
