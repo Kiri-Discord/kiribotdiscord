@@ -485,6 +485,8 @@ exports.run = async(client, interaction, args) => {
         };
     } catch (err) {
         client.games.delete(interaction.channel.id);
+        client.isPlaying.delete(interaction.user.id);
+        client.isPlaying.delete(opponent.id);
         throw err;
     };
 };

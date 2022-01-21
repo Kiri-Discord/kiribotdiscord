@@ -474,6 +474,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         };
     } catch (err) {
+        client.isPlaying.delete(message.author.id);
+        client.isPlaying.delete(opponent.id);
         client.games.delete(message.channel.id);
         throw err;
     };
