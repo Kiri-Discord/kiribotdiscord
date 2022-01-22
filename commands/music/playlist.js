@@ -123,7 +123,8 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
                                 author: data.artists.map(x => x.name).join(", "),
                                 length: data.duration_ms,
                                 isStream: false,
-                                isSeekable: false
+                                isSeekable: true,
+                                sourceName: 'youtube'
                             },
                             type: 'sp',
                             requestedby: message.author

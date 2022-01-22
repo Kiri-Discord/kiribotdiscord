@@ -21,6 +21,7 @@ const skipToCmd = sync.require('./music/skip-to');
 const stopCmd = sync.require('./music/stop');
 const volumeCmd = sync.require('./music/volume');
 const skipCmd = sync.require('./music/skip');
+const autoPlayCmd = sync.require('./music/autoplay');
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 exports.run = async(client, interaction) => {
@@ -89,6 +90,9 @@ exports.run = async(client, interaction) => {
         case 'skip':
             skipCmd.run(client, interaction);
             break;
+        case 'autoplay':
+            autoPlayCmd.run(client, interaction);
+            break;
     }
 };
 
@@ -118,6 +122,10 @@ exports.conf = {
     .addSubcommand(sub => sub
         .setName('disconnect')
         .setDescription("disconnect from the current music voice channel and clear the queue")
+    )
+    .addSubcommand(sub => sub
+        .setName('autoplay')
+        .setDescription("automatically play related songs after your queue ends based on the last song in your queue")
     )
     .addSubcommand(sub => sub
         .setName('force-skip')

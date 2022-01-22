@@ -23,7 +23,7 @@ exports.run = async(client, message, args) => {
     const status = queue.playing ? '`▶`' : '`⏸`';
 
     let nowPlaying = new MessageEmbed()
-        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]\n${status} ${bar} \`${formatDuration(seek)}/${!duration ? "LIVE" : formatDuration(duration)}\``)
+        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] ${song.autoQueued ? '(auto-enqueued)': ''}\n${status} ${bar} \`${formatDuration(seek)}/${!duration ? "LIVE" : formatDuration(duration)}\``)
     return message.channel.send({ embeds: [nowPlaying] });
 };
 exports.help = {

@@ -2,8 +2,8 @@ const { MessageEmbed, Permissions } = require('discord.js');
 const { STAY_TIME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const ScrollingLyrics = require("./karaoke");
-const { fetchInfo } = require('../../util/musicutil');
-const { embedURL, delay } = require('../../util/util');
+const { fetchInfo, fetchRelated } = require('../../util/musicutil');
+const { embedURL, delay, deleteIfAble } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
 const pEvent = require('p-event');
 const eq = require('../../assets/equalizer');
@@ -20,6 +20,7 @@ module.exports = class Queue {
         this.guild = guild;
         this.me = null;
         this.client = client;
+        this.autoPlay = false;
         this.songs = [];
         this.loop = false;
         this.repeat = false;
@@ -212,24 +213,27 @@ module.exports = class Queue {
                 await this.me.voice.setSuppressed(false);
             };
         };
-        if (song.type === 'sp') {
+        if (song.type === 'sp' && !song.track) {
             const logo = this.client.customEmojis.get('spotify') ? this.client.customEmojis.get('spotify').toString() : '⚠️';
             try {
                 let msg;
                 if (!this.client.deletedChannels.has(this.textChannel)) msg = await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} fetching info from Spotify (this might take a while)...` }] });
                 const ytUrl = await spotifyToYT.trackGet(song.info.uri);
-                if (msg) msg.delete();
                 if (!ytUrl || !ytUrl.url) {
                     this.songs.shift();
-                    if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    if (msg && msg.editable) await msg.edit({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    else if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                     return this.play(this.songs[0]);
                 };
+                song.info.originalUrl = ytUrl.url;
                 const [res] = await fetchInfo(this.client, ytUrl.url, null);
                 if (!res) {
                     this.songs.shift();
-                    if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    if (msg && msg.editable) await msg.edit({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
+                    else if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "#bee7f7", description: `${logo} Spotify has rejected the request :pensive: skipping to the next song...` }] })
                     return this.play(this.songs[0]);
                 };
+                song.loadingMessage = msg;
                 song.track = res.track;
             } catch (error) {
                 this.songs.shift();
@@ -299,7 +303,7 @@ module.exports = class Queue {
             } else {
                 targetEmoji = this.client.customEmojis.get(this.nowPlaying.info.sourceName) ? `${this.client.customEmojis.get(this.nowPlaying.info.sourceName)} ` : '';
             };
-            const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}]`);
+            const embed = new MessageEmbed().setDescription(`${targetEmoji}Now playing **${embedURL(this.nowPlaying.info.title, this.nowPlaying.info.uri)}** by **${this.nowPlaying.info.author}** [${this.nowPlaying.requestedby}] ${this.nowPlaying.autoQueued ? '(auto-enqueued)': ''}`);
 
             if (this.karaoke.isEnabled && this.karaoke.instance) {
                 if (this.karaoke.instance.success) embed.setFooter({text: this.karaoke.instance.success});
@@ -307,8 +311,17 @@ module.exports = class Queue {
                 else this.karaoke.instance.start();
             };
             if (!this.client.deletedChannels.has(this.textChannel)) {
-                const sent = await this.textChannel.send({ embeds: [embed] });
-                this.playingMessage = sent.id;
+                let sent;
+                if (this.nowPlaying.loadingMessage && this.nowPlaying.loadingMessage.editable) {
+                    sent = await this.nowPlaying.loadingMessage.edit({ embeds: [embed] });
+                    this.nowPlaying.loadingMessage = undefined;
+                    const { id } = sent; 
+                    this.playingMessage = id;
+                } else {
+                    sent = await this.textChannel.send({ embeds: [embed] });
+                    const { id } = sent; 
+                    this.playingMessage = id;
+                };
             };
         } catch (error) {
             console.error(error);
@@ -334,7 +347,26 @@ module.exports = class Queue {
         if (data.reason === "FINISHED" || data.reason === "LOAD_FAILED") {
             if (this.karaoke.isEnabled && this.karaoke.instance) this.karaoke.instance.stop();
             let upcoming;
-            if (this.loop && data.reason !== 'LOAD_FAILED') {
+            if (this.autoPlay && !this.songs.length && !this.repeat && !this.loop && !this.client.deletedChannels.has(this.textChannel) && this.nowPlaying.info.sourceName === 'youtube') {
+                const annoying = this.client.customEmojis.get('annoyedgirl') ? this.client.customEmojis.get('annoyedgirl') : '😐';
+                const cute = this.client.customEmojis.get('cutelove') ? this.client.customEmojis.get('cutelove') : '';
+                const embed = new MessageEmbed().setColor('#4A91E2').setDescription(`the queue is empty! finding a good song for you to play... ${cute}`);
+                const sent = await this.textChannel.send({ embeds: [embed] });
+                const url = this.nowPlaying.type === 'yt' ? this.nowPlaying.info.uri : this.nowPlaying.info.originalUrl;
+
+                const video = await fetchRelated(this.client, url);
+                if (!video) {
+                    if (sent.editable) sent.edit({ embeds: [{ color: "RED", description: `:x: there was no related song found for the last song in queue! autoplay is now disabled ${annoying}` }] });
+                    else this.textChannel.send({ embeds: [{ color: "RED", description: `:x: there was no related song found for the last song in queue! autoplay is now disabled ${annoying}` }] });
+                    upcoming = null;
+                } else {
+                    video.type = 'yt';
+                    video.requestedby = this.nowPlaying.requestedby;
+                    video.autoQueued = true;
+                    video.loadingMessage = sent;
+                    upcoming = video;
+                }
+            } else if (this.loop && data.reason !== 'LOAD_FAILED') {
                 this.songs.push(this.nowPlaying);
                 upcoming = this.songs[0];
             } else if (this.repeat && data.reason !== 'LOAD_FAILED') {

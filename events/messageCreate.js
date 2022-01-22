@@ -113,7 +113,7 @@ module.exports = async (client, message) => {
         !client.config.owners.includes(message.author.id)
     )
         return message.reply(
-            `\`${prefix}${cmd}\` is being maintained. try again later ${sed}`
+            `\`${prefix}${cmd}\` is under maintenance or is only avaliable for a limited number of people. try again later ${sed}`
         );
     if (message.channel.type === "DM" && commandFile.conf.guildOnly)
         return message.reply(
@@ -134,8 +134,9 @@ module.exports = async (client, message) => {
         if (
             !message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")
         ) {
+            const dead = client.customEmojis.get("dead") ? client.customEmojis.get("dead") : "😑";
             return message.channel.send(
-                "seriously, turn to a nsfw channel pls"
+                `seriously, use this command in a NSFW channel please ${dead}`
             );
         } else {
             const embed2 = new MessageEmbed()

@@ -1197,7 +1197,7 @@ exports.run = async (client, message, args, prefix) => {
                 ],
             });
         const array = [];
-        storage.embeds.toObject().map((each, index) => {
+        storage.embeds.toObject().forEach((each, index) => {
             const author = message.guild.members.cache.get(each.creator);
             array.push(
                 `\`${index + 1}\` - ${each._id} [${
@@ -1207,9 +1207,8 @@ exports.run = async (client, message, args, prefix) => {
         });
         const embed = new MessageEmbed()
             .setDescription(array.join("\n"))
-            .setColor(message.guild.me.displayHexColor)
-            .setAuthor({name: `all embeds created in ${message.guild.name}:`})
-            .setThumbnail(message.guild.iconURL({ size: 4096, dynamic: true }));
+            .setColor('#cbd4c2')
+            .setAuthor({name: `all embeds created in ${message.guild.name}:`, iconURL: message.guild.iconURL({ size: 4096, dynamic: true })});
         return message.channel.send({ embeds: [embed] });
     } else
         return message.channel.send({

@@ -25,7 +25,7 @@ exports.run = async(client, interaction) => {
         case 'pat':
             patCmd.run(client, interaction);
             break;
-        case 'rich':
+        case 'richest':
             richCmd.run(client, interaction);
             break;
         case 'slap':

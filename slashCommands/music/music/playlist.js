@@ -249,7 +249,8 @@ exports.run = async (client, interaction, internal, bulkAdd) => {
                             author: data.artists.map((x) => x.name).join(", "),
                             length: data.duration_ms,
                             isStream: false,
-                            isSeekable: false,
+                            isSeekable: true,
+                            sourceName: 'youtube'
                         },
                         type: "sp",
                         requestedby: interaction.user,

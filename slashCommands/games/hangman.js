@@ -45,8 +45,9 @@ class Game {
         if (!words.size || !word) {
             this.end();
             this.interaction.user.send(`this game has expired since you didn't provide any valid word :pensive:`);
-        }
-        this.word = word.content;
+        };
+        const content = word.content;
+        this.word = content;
         this.displayWord = '';
         for (let i = 0; i < this.word.length; i++) this.displayWord += '-';
         this.msg.edit(`${this.stages[0]}\n\`${this.displayWord}\`\n wrong guesses: ${this.guesses}`);
@@ -62,8 +63,9 @@ class Game {
         if (!words.size || !word) {
             this.end();
             this.msg.edit('this game has expired lmao');
-        }
-        this.letter = word.content;
+        };
+        const content = word.content;
+        this.letter = content;
         if (this.letter.length > 1) return this.run();
         if (this.guesses.includes(this.letter)) return this.run();
         if (this.word.toLowerCase().includes(this.letter.toLowerCase())) { this.letters++; } else {

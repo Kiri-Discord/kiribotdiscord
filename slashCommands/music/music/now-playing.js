@@ -23,6 +23,6 @@ exports.run = async(client, interaction) => {
     const bar = splitBar(duration == 0 || !duration ? fixedSeek : duration / 1000, fixedSeek, 16, '▬', cursor)[0];
     const status = queue.playing ? '`▶`' : '`⏸`';
     let nowPlaying = new MessageEmbed()
-        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}]\n${status} ${bar} \`${formatDuration(seek)}/${!duration ? "LIVE" : formatDuration(duration)}\``)
+        .setDescription(`**[${song.info.title}](${song.info.uri})** - **${song.info.author}** [${song.requestedby}] ${song.autoQueued ? '(auto-enqueued)': ''}\n${status} ${bar} \`${formatDuration(seek)}/${!duration ? "LIVE" : formatDuration(duration)}\``)
     return interaction.reply({ embeds: [nowPlaying] });
 };

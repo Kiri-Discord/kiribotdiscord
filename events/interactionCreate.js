@@ -23,7 +23,8 @@ module.exports = async(client, interaction) => {
             if (!interaction.inGuild() && commandFile.conf.guildOnly) return interaction.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh').toString() : ':thinking:'}`);
             if (interaction.inGuild() && !interaction.channel.nsfw && commandFile.conf.adult) {
                 if (!interaction.channel.permissionsFor(interaction.guild.me).has('EMBED_LINKS')) {
-                    return interaction.reply({ content: `you can only use that in a NSFW channel! ${sed}`, ephemeral: true });
+                    const dead = client.customEmojis.get("dead") ? client.customEmojis.get("dead") : "😑";
+                    return interaction.reply({ content: `seriously, use this command in a NSFW channel please ${dead}`, ephemeral: true });
                 } else {
                     const embed2 = new MessageEmbed()
                         .setColor(0x7289DA)
@@ -59,7 +60,6 @@ module.exports = async(client, interaction) => {
     
         if (!timestamps.has(cooldownID)) {
             if (!client.config.owners.includes(interaction.user.id)) {
-    
                 timestamps.set(cooldownID, now);
             }
         } else {
@@ -93,7 +93,8 @@ module.exports = async(client, interaction) => {
     } else if (interaction.isButton()) {
         if (interaction.customId === 'verify_unsolve_captcha') {
             const embed = new MessageEmbed()
-            .addField('**possible problems:**', `
+            .addField('**possible problems:**', 
+            `
             - the link might have been used before. don't share your link with anyone!
             - you might have been banned from the server.
             - your link has been expired. every verification link is valid for 15 minutes. type \`resend\` in the verification channel to start the verification process again!
@@ -105,7 +106,8 @@ module.exports = async(client, interaction) => {
             return interaction.reply({ embeds: [embed], ephemeral: true });
         } else if (interaction.customId === 'verify_didnt_recieve') {
             const embed = new MessageEmbed()
-            .addField('**possible problems:**', `
+            .addField('**possible problems:**', 
+            `
             - make sure to enable your DM for this server in Privacy Setting (image below) after that you can type \`resend\` here to request another link!
             - if you have finished the method above and the message still isn't arrive yet, there is probably something wrong with me. please call an admin to manually verify you, and report the bug to my dev!
             `)
@@ -114,7 +116,8 @@ module.exports = async(client, interaction) => {
             return interaction.reply({ embeds: [embed], ephemeral: true })
         } else if (interaction.customId === 'verify_cant_talk') {
             const embed = new MessageEmbed()
-            .addField('**possible problems:**', `
+            .addField('**possible problems:**', 
+            `
             - the server admins forgot to add permission for the role! in this case, call an admin.
             - i don't have the \`MANAGE_ROLES\` permission to add the role for you, or my roles are lower than that verification role! in this case, call an admin.
             `)

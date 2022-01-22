@@ -1,4 +1,5 @@
-const { youtubekey, soundcloudkey } = require('../config.json');
+const { youtubekey, soundcloudkey, autoplayToken } = require('../config.json');
+const YouTubeAPI = require("simple-youtube-api");
 const request = require('node-superfetch');
 
 exports.canModifyQueue = (member) => {
@@ -19,14 +20,38 @@ exports.fetchInfo = async(client, query, search, id) => {
     const node = id ? nodes.filter(x => x.id !== id)[0] : nodes[0];
     const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
     const searchType = search || 'ytsearch';
-
-    const { body } = await request
+    try {
+        const { body } = await request
         .get(`http://${node.host}:${node.port}/loadtracks`)
         .set({ Authorization: node.password })
         .query({
             identifier: urlRegex.test(query) ? query : `${searchType}:${query}`,
         });
-    return body.tracks;
+        return body.tracks;
+    } catch (error) {
+        return [];
+    }
+};
+
+exports.fetchRelated = async(client, url) => {
+    const { video } = YouTubeAPI.util.parseURL(url);
+    if (!video) return null;
+    try {
+        const { body } = await request
+        .get('https://www.googleapis.com/youtube/v3/search')
+        .query({
+            relatedToVideoId: video,
+            type: 'video',
+            key: autoplayToken,
+            part: 'snippet'
+        });
+        if (!body.items || !body.items.length) return null;
+        const relatedVideo = `https://www.youtube.com/watch?v=${body.items[0].id.videoId}`;
+        const [resolvedVideo] = await exports.fetchInfo(client, relatedVideo, null);
+        return resolvedVideo;
+    } catch (error) {
+        return null;
+    }
 };
 
 exports.formatDuration = (milliseconds) => {
@@ -92,6 +117,7 @@ exports.formatDuration = (milliseconds) => {
 };
 
 exports.YOUTUBE_API_KEY = youtubekey;
+exports.AUTOPLAY_API_KEY = autoplayToken;
 exports.SOUNDCLOUD_CLIENT_ID = soundcloudkey;
 exports.MAX_PLAYLIST_SIZE = "100"
 exports.PRUNING = false;

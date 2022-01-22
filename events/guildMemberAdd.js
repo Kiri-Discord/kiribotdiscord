@@ -43,13 +43,13 @@ module.exports = async(client, member) => {
                 verifyChannel.send(`<@!${member.user.id}>, please verify yourself using the link i sent you via DM to gain access to the server :)`)
                 .then(i => {
                     setTimeout(() => {
-                        i.delete()
+                        if (i.deletable) i.delete();
                     }, 600000);
                 });
             } catch {
                 verifyChannel.send(`<@!${member.user.id}> uh, your DM is locked so i can't send you the verify link. can you unlock it first and type \`resend\` here?`)
                     .then(i => setTimeout(() => {
-                        i.delete()
+                        if (i.deletable) i.delete();
                     }, 600000));
             };
         };
