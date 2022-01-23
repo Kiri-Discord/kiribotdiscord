@@ -22,5 +22,6 @@ exports.conf = {
     aliases: ['auto-play'],
     cooldown: 3,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS"]
+    channelPerms: ["EMBED_LINKS"],
+    maintenance: true
 };

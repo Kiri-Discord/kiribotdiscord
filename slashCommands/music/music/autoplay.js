@@ -1,6 +1,7 @@
 const { canModifyQueue } = require("../../../util/musicutil");
 
 exports.run = async(client, interaction) => {
+    if (!client.config.owners.includes(interaction.user.id)) return interaction.reply({ content: `/\`${interaction.commandName}${interaction.options.getSubcommand()}\` is under maintenance or is only avaliable for a limited number of people. try again later :pensive:`, ephemeral: true })
     const queue = client.queue.get(interaction.guild.id);
     if (!queue) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `:x: there isn't any ongoing music queue` }], ephemeral: true });
     if (!canModifyQueue(interaction.member)) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }], ephemeral: true });

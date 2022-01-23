@@ -19,7 +19,7 @@ module.exports = async(client, interaction) => {
                     content: `due to the nature of some commands requiring sending additional messages (not replies of slash command), i will need the \`SEND_MESSAGES\` perms in this channel ${sed}`,
                     ephemeral: true
                 });
-            if (commandFile.conf.maintenance && !client.config.owners.includes(interaction.user.id)) return interaction.reply(`\`/${interaction.commandName}\` is being maintained. try again later ${sed}`);
+            if (commandFile.conf.maintenance && !client.config.owners.includes(interaction.user.id)) return interaction.reply(`\`/${interaction.commandName}\` is under maintenance or is only avaliable for a limited number of people. try again later ${sed}`);
             if (!interaction.inGuild() && commandFile.conf.guildOnly) return interaction.reply(`i can't execute that command inside DMs! ${client.customEmojis.get('duh') ? client.customEmojis.get('duh').toString() : ':thinking:'}`);
             if (interaction.inGuild() && !interaction.channel.nsfw && commandFile.conf.adult) {
                 if (!interaction.channel.permissionsFor(interaction.guild.me).has('EMBED_LINKS')) {

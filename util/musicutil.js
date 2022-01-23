@@ -50,6 +50,7 @@ exports.fetchRelated = async(client, url) => {
         const [resolvedVideo] = await exports.fetchInfo(client, relatedVideo, null);
         return resolvedVideo;
     } catch (error) {
+        logger.error(`There was an error while fetching related video with error: ${error} (URL: ${url})`);
         return null;
     }
 };
