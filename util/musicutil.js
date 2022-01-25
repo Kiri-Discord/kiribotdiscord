@@ -46,7 +46,8 @@ exports.fetchRelated = async(client, url) => {
             part: 'snippet'
         });
         if (!body.items || !body.items.length) return null;
-        const relatedVideo = `https://www.youtube.com/watch?v=${body.items[0].id.videoId}`;
+        const avaliable = body.items.filter(x => x.snippet)[0];
+        const relatedVideo = `https://www.youtube.com/watch?v=${avaliable.id.videoId}`;
         const [resolvedVideo] = await exports.fetchInfo(client, relatedVideo, null);
         return resolvedVideo;
     } catch (error) {
