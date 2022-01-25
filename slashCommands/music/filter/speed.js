@@ -7,12 +7,12 @@ exports.run = async(client, interaction) => {
     if (!canModifyQueue(interaction.member)) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }], ephemeral: true });
     if (queue.karaoke.isEnabled) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `setting the speed is not possible when scrolling-lyrics is on :pensive: you can turn it off by \`/scrolling-lyrics off\`` }], ephemeral: true });
     await interaction.deferReply();
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns;
+        const model = client.db.cooldowns;
         cooldownStorage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id

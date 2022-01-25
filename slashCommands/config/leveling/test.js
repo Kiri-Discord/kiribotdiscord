@@ -3,7 +3,7 @@ const varReplace = require('../../../util/variableReplace');
 exports.run = async(client, interaction, db) => {
     await interaction.deferReply({ ephemeral: true });
     let channel;
-    const setting = await client.dbguilds.findOne({
+    const setting = await client.db.guilds.findOne({
         guildID: interaction.guild.id
     });
     if (!setting.levelings.destination) channel = interaction.channel;

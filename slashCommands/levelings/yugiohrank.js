@@ -19,7 +19,7 @@ exports.run = async(client, interaction, args) => {
     let rank;
     let mention = interaction.options.getMember('user') || interaction.member;
 
-    let target = await client.dbleveling.findOne({
+    let target = await client.db.leveling.findOne({
         guildId: interaction.guild.id,
         userId: mention.user.id
     });
@@ -30,7 +30,7 @@ exports.run = async(client, interaction, args) => {
 
     let neededXP = res.lowerBound - target.xp
 
-    const result = await client.dbleveling.find({
+    const result = await client.db.leveling.find({
         guildId: interaction.guild.id,
     }).sort({
         xp: -1
@@ -42,7 +42,7 @@ exports.run = async(client, interaction, args) => {
     for (let counter = 0; counter < result.length; ++counter) {
         let member = interaction.guild.members.cache.get(result[counter].userId)
         if (!member) {
-            client.dbleveling.findOneAndDelete({
+            client.db.leveling.findOneAndDelete({
                 userId: result[counter].userId,
                 guildId: interaction.guild.id,
             }, (err) => {

@@ -7,12 +7,12 @@ exports.run = async(client, message, args, prefix) => {
     if (!canModifyQueue(message.member)) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you have to be in ${queue.channel} to do this command :(` }] });
     if (queue.karaoke.isEnabled) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `setting the speed is not possible when scrolling-lyrics is on :pensive: you can turn it off by \`${prefix}scrolling-lyrics off\`` }] });
 
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns;
+        const model = client.db.cooldowns;
         cooldownStorage = new model({
             userId: message.author.id,
             guildId: message.guild.id

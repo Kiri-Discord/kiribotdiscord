@@ -17,7 +17,7 @@ module.exports = async(client, message, setting) => {
     let recent = client.recent;
     if (recent.has(message.author.id)) return;
 
-    let userprof = await client.dbleveling.findOneAndUpdate({
+    let userprof = await client.db.leveling.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {
@@ -33,7 +33,7 @@ module.exports = async(client, message, setting) => {
 
 
     if (client.leveling.getLevel(userprof.xp) > userprof.level) {
-        await client.dbleveling.findOneAndUpdate({
+        await client.db.leveling.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {

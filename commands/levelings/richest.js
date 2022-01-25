@@ -4,7 +4,7 @@ const { millify } = require('millify');
 const ordinal = require('ordinal');
 
 exports.run = async(client, message, args, prefix) => {
-    let data = await client.money.find({
+    let data = await client.db.money.find({
         guildId: message.guild.id,
     }).sort({
         balance: -1
@@ -23,7 +23,7 @@ exports.run = async(client, message, args, prefix) => {
     data.forEach((user, index) => {
         let member = message.guild.members.cache.get(user.userId);
         if (!member) {
-            client.money.findOneAndDelete({
+            client.db.money.findOneAndDelete({
                 userId: user.userId,
                 guildId: message.guild.id,
             }, (err) => {

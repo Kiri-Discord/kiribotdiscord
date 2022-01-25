@@ -47,7 +47,6 @@
         "iso-639-1": "^2.1.9",
         "js-chess-engine": "^1.0.1",
         "lavacord": "^1.1.9",
-        "lodash.clonedeep": "^4.5.0",
         "millify": "^4.0.0",
         "moment": "^2.29.1",
         "moment-duration-format": "^2.3.2",

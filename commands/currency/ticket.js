@@ -1,21 +1,21 @@
 exports.run = async(client, message, args, prefix) => {
-    const voted = await client.vote.findOne({
+    const voted = await client.db.vote.findOne({
         userID: message.author.id
     });
     if (!voted) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `D: you haven't vote yet! visit \`${prefix}vote\` and vote for me to get a free **🎫 Effect Ticket**` }] });
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.inventory;
+        const model = client.db.inventory;
         storage = new model({
             userId: message.author.id,
             guildId: message.guild.id
         });
     };
     storage.eqTicket += 1;
-    await client.vote.findOneAndDelete({
+    await client.db.vote.findOneAndDelete({
         userID: message.author.id
     });
     await storage.save();

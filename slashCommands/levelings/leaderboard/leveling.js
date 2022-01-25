@@ -5,7 +5,7 @@ const ordinal = require('ordinal');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    let data = await client.dbleveling.find({
+    let data = await client.db.leveling.find({
         guildId: interaction.guild.id,
     }).sort({
         xp: -1
@@ -24,7 +24,7 @@ exports.run = async(client, interaction) => {
     data.forEach((user, index) => {
         let member = interaction.guild.members.cache.get(user.userId);
         if (!member) {
-            client.dbleveling.findOneAndDelete({
+            client.db.leveling.findOneAndDelete({
                 userId: user.userId,
                 guildId: interaction.guild.id,
             }, (err) => {

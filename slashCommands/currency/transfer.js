@@ -14,12 +14,12 @@ exports.run = async(client, interaction) => {
     if (amount < 0) return interaction.reply({ content: "that is an invalid amount of token! you can't neither transfer nothing or using a negative amount :pensive:", ephemeral: true });
 
     await interaction.deferReply();
-    let storage = await client.money.findOne({
+    let storage = await client.db.money.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.money
+        const model = client.db.money
         storage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id
@@ -29,7 +29,7 @@ exports.run = async(client, interaction) => {
 
     if (!balance || balance == 0) return interaction.editReply("your wallet is empty. broke. nothing is there :anguished:");
     if (amount > balance) return interaction.editReply("you don't have that enough credits to transfer!");
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         guildId: interaction.guild.id,
         userId: interaction.user.id
     }, {
@@ -42,7 +42,7 @@ exports.run = async(client, interaction) => {
         upsert: true,
         new: true,
     });
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         userId: user.id,
         guildId: interaction.guild.id
     }, {

@@ -223,7 +223,7 @@
     "name": "Elite Enemies",
     "pages": [
       {
-        "name": "Fatui Pyro Agent (Insignia and Knives)",
+        "name": "Fatui Pyro Agent (Knives and Insignia)",
         "desc": "**Fatui Pyro Agents ${Fatui Pyro Agent}** are Elite Enemies found in Liyue and Inazuma. They are members of the Fatui and drop **Hunter's Sacrificial Knife ${Hunter's Sacrificial Knife}**, **Agent's Sacrificial Knife ${Agent's Sacrificial Knife}**, **Inspector's Sacrificial Knife ${Inspector's Sacrificial Knife}**, **Recruit's Insignia ${Recruit's Insignia}**, **Sergeant's Insignia ${Sergeant's Insignia}** and **Lieutenant's Insignia ${Lieutenant's Insignia}**.",
         "img": "https://cdn.discordapp.com/attachments/925462737876828190/925462814653579284/Agents.png",
         "credits": "Soul",
@@ -233,7 +233,7 @@
         }
       },
       {
-        "name": "Fatui Cicin Mages (Mist Grass Pollen, Mist Grass and Mist Grass Wick)",
+        "name": "Fatui Cicin Mages (Mist Grass and Insignia)",
         "desc": "**Fatui Cicin Mages ${Fatui Electro Cicin Mage}${Fatui Cryo Cicin Mage}** are Elite Enemies found wandering by themselves. They are members of the Fatui and drop **Mist Grass Pollen ${Mist Grass Pollen}**, **Mist Grass ${Mist Grass}**, **Mist Grass Wick ${Mist Grass Wick}**, **Recruit's Insignia ${Recruit's Insignia}**, **Sergeant's Insignia ${Sergeant's Insignia}** and **Lieutenant's Insignia ${Lieutenant's Insignia}**.",
         "img": "https://cdn.discordapp.com/attachments/927679751987028018/927679779409363055/unknown.png",
         "credits": "Soul",
@@ -270,6 +270,29 @@
         "links": {
           "enemy": ["Rockfond Rifthound Whelp", "Thundercraven Rifthound Whelp", "Rockfond Rifthound", "Thundercraven Rifthound"],
           "material": ["Concealed Claw", "Concealed Unguis", "Concealed Talon"]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Trees",
+    "pages": [
+      {
+        "name": "Otogi Wood",
+        "desc": "**Otogi Wood** can be obtained from the Otogi Tree and can be used to create furnishings.\n\n> It has just the right amount of moisture and oil, and as such has a great many uses.",
+        "img": "https://cdn.discordapp.com/attachments/932438480376717353/932725498759512084/Otogi_Wood_Guide.png",
+        "credits": "Jnight",
+        "links": {
+          "material": ["Otogi Wood"]
+        }
+      },
+      {
+        "name": "Yumemiru Wood",
+        "desc": "**Yumemiru Wood** can be obtained from Sakura Trees and can be used to create furnishings.\n\n> Exquisite in quality and full of moisture, people say that it can lull people into dreams as sweet as the warm spring.",
+        "img": "https://cdn.discordapp.com/attachments/933728939711529001/933754674589360178/Yumemiru_Wood_Guide.png",
+        "credits": "Jnight",
+        "links": {
+          "material": ["Yumemiru Wood"]
         }
       }
     ]

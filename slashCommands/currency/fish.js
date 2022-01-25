@@ -3,12 +3,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.inventory
+        const model = client.db.inventory
         storage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id
@@ -85,7 +85,7 @@ exports.run = async(client, interaction) => {
     if (rarity === "very rare") worth = 250
     if (rarity === "legendary") worth = 500
 
-    await client.inventory.findOneAndUpdate({
+    await client.db.inventory.findOneAndUpdate({
         guildId: interaction.guild.id,
         userId: interaction.user.id
     }, {
@@ -99,7 +99,7 @@ exports.run = async(client, interaction) => {
         new: true,
     });
 
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         guildId: interaction.guild.id,
         userId: interaction.user.id
     }, {

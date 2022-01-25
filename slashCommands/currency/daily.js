@@ -5,12 +5,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 exports.run = async(client, interaction) => {
         let cooldown = 8.64e+7;
         await interaction.deferReply();
-        let cooldownStorage = await client.cooldowns.findOne({
+        let cooldownStorage = await client.db.cooldowns.findOne({
             userId: interaction.user.id,
             guildId: interaction.guild.id
         });
         if (!cooldownStorage) {
-            const model = client.cooldowns
+            const model = client.db.cooldowns
             cooldownStorage = new model({
                 userId: interaction.user.id,
                 guildId: interaction.guild.id
@@ -36,7 +36,7 @@ exports.run = async(client, interaction) => {
                 let bonusAmount;
                 let finalAmount;
                 let amount = getRandomInt(10, 30);
-                const voted = await client.vote.findOne({
+                const voted = await client.db.vote.findOne({
                     userID: interaction.user.id
                 });
                 if (!voted) {
@@ -44,13 +44,13 @@ exports.run = async(client, interaction) => {
                     finalAmount = amount;
                 } else {
                     bonus = true;
-                    await client.vote.findOneAndDelete({
+                    await client.db.vote.findOneAndDelete({
                         userID: interaction.user.id
                     });
                     bonusAmount = calcBonus(amount, voted.collectMutiply || 50)
                     finalAmount = amount + bonusAmount
                 };
-                await client.cooldowns.findOneAndUpdate({
+                await client.db.cooldowns.findOneAndUpdate({
                     guildId: interaction.guild.id,
                     userId: interaction.user.id
                 }, {
@@ -61,7 +61,7 @@ exports.run = async(client, interaction) => {
                     upsert: true,
                     new: true,
                 });
-                const storageAfter = await client.money.findOneAndUpdate({
+                const storageAfter = await client.db.money.findOneAndUpdate({
                     guildId: interaction.guild.id,
                     userId: interaction.user.id
                 }, {

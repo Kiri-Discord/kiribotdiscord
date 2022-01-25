@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 exports.run = async(client, interaction, db) => {
     await interaction.deferReply();
     db.byeChannelID = undefined;
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
         guildID: interaction.guild.id,
     }, {
         byeChannelID: null

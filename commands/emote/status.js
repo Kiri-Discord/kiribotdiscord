@@ -5,14 +5,14 @@ exports.run = async(client, message, args) => {
     if (user.id === client.user.id) return message.reply('i am just a bot :(');
     if (user.bot) return message.reply('that user is a bot :(');
     if (user.id === message.author.id) {
-        const author = await client.love.findOne({
+        const author = await client.db.love.findOne({
             userID: message.author.id,
             guildID: message.guild.id
         });
         if (!author) {
             return message.channel.send('you are single');
         } else {
-            const target = await client.love.findOne({
+            const target = await client.db.love.findOne({
                 userID: user.id,
                 guildID: message.guild.id
             });
@@ -20,7 +20,7 @@ exports.run = async(client, message, args) => {
                 if (target.marriedID) {
                     const married = message.guild.members.cache.get(target.marriedID);
                     if (!married) {
-                        await client.love.findOneAndDelete({
+                        await client.db.love.findOneAndDelete({
                             guildID: message.guild.id,
                             userID: user.id,
                         });
@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
             };
         };
     };
-    const target = await client.love.findOne({
+    const target = await client.db.love.findOne({
         userID: user.id,
         guildID: message.guild.id
     });
@@ -44,7 +44,7 @@ exports.run = async(client, message, args) => {
         if (target.marriedID) {
             const married = message.guild.members.cache.get(target.marriedID);
             if (!married) {
-                await client.love.findOneAndDelete({
+                await client.db.love.findOneAndDelete({
                     guildID: message.guild.id,
                     userID: user.id,
                 });

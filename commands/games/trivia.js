@@ -76,7 +76,7 @@ exports.run = async(client, message, args) => {
             if (shuffled[choices.indexOf(res.customId)] === correct) {
                 winner = res.user;
                 let amount = getRandomInt(20, 40);
-                const storageAfter = await client.money.findOneAndUpdate({
+                const storageAfter = await client.db.money.findOneAndUpdate({
                     guildId: message.guild.id,
                     userId: winner.id
                 }, {

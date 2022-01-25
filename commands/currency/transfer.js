@@ -9,12 +9,12 @@ exports.run = async(client, message, args) => {
     let amount = parseInt(args[1]);
     if (isNaN(amount)) return message.reply("that was not a valid number!");
     if (amount === 0 || amount < 0) return message.reply("that is an invalid amount of token! you can't neither transfer nothing or using a negative amount :pensive:");
-    let storage = await client.money.findOne({
+    let storage = await client.db.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.money
+        const model = client.db.money
         storage = new model({
             userId: message.author.id,
             guildId: message.guild.id
@@ -24,7 +24,7 @@ exports.run = async(client, message, args) => {
 
     if (!balance || balance == 0) return message.reply("your wallet is empty. broke. nothing is there :anguished:");
     if (amount > balance) return message.reply("you don't have that enough credits to transfer!");
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {
@@ -37,7 +37,7 @@ exports.run = async(client, message, args) => {
         upsert: true,
         new: true,
     });
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         userId: user.id,
         guildId: message.guild.id
     }, {

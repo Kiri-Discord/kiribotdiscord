@@ -5,7 +5,7 @@ module.exports = async(client, member) => {
     await purgeDbUser(client, member.guild.id, member.user.id);
     await client.verifytimers.deleteTimer(member.guild.id, member.user.id);
     if (member.user.bot) return;
-    const setting = await client.dbguilds.findOne({
+    const setting = await client.db.guilds.findOne({
         guildID: member.guild.id
     });
     if (!setting) return;

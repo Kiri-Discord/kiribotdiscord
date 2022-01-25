@@ -3,7 +3,7 @@ const { embedURL, deleteIfAble } = require('../util/util');
 const ms = require('ms');
 
 module.exports = async(client, message, setting) => {
-        const verifydb = await client.dbverify.findOne({
+        const verifydb = await client.db.verify.findOne({
             guildID: message.guild.id,
             userID: message.author.id,
         });

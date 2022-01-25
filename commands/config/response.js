@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
     if (!types.includes(type)) return message.reply({ embeds: [{ color: "#bee7f7", description: `\`${args[0]}\` isn't a valid response mode :pensive: all the avaliable response are \`${types.join(', ')}\`` }] })
     const db = client.guildsStorage.get(message.guild.id);
     db.responseType = args[0];
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
         guildID: message.guild.id,
     }, {
         responseType: type

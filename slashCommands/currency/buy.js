@@ -9,12 +9,12 @@ exports.run = async(client, interaction) => {
     const toBuy = interaction.options.getString('item');
     if (!items.includes(toBuy)) return interaction.reply({ content: `\`${toBuy}\` is an invalid item! check \`/shop\` for a list of avaliable item :grin:`, ephemeral: true });
     await interaction.deferReply();
-    let moneyStorage = await client.money.findOne({
+    let moneyStorage = await client.db.money.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!moneyStorage) {
-        const model = client.money
+        const model = client.db.money
         moneyStorage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id,
@@ -33,7 +33,7 @@ exports.run = async(client, interaction) => {
             .setFooter({text: `your current balance: ⏣ ${money - price}`})
 
         if (item === 'rings') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -49,7 +49,7 @@ exports.run = async(client, interaction) => {
         };
 
         if (item === 'seeds') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -65,7 +65,7 @@ exports.run = async(client, interaction) => {
         };
 
         if (item === 'worms') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -80,7 +80,7 @@ exports.run = async(client, interaction) => {
             });
         };
         if (item === 'eqTicket') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {

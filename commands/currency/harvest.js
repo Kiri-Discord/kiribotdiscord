@@ -1,12 +1,12 @@
 const { MessageEmbed } = require('discord.js')
 
 exports.run = async(client, message, args, prefix) => {
-    let garden = await client.garden.findOne({
+    let garden = await client.db.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!garden) {
-        const model = client.garden;
+        const model = client.db.garden;
         garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
@@ -30,7 +30,7 @@ exports.run = async(client, message, args, prefix) => {
 
         if (getStage !== "4") return message.reply(':x: the plant in the slot you choose is not ripe enough to be harvested yet.');
         if (args[0] === '1') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -44,7 +44,7 @@ exports.run = async(client, message, args, prefix) => {
             });
         }
         if (args[0] === '2') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -58,7 +58,7 @@ exports.run = async(client, message, args, prefix) => {
             });
         }
         if (args[0] === '3') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -103,7 +103,7 @@ exports.run = async(client, message, args, prefix) => {
         if (rarity === "very rare") worth = 500
         if (rarity === "legendary") worth = 1000
 
-        await client.money.findOneAndUpdate({
+        await client.db.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {

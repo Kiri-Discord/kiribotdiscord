@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
 exports.run = async(client, message, args, prefix) => {
-    const votes = await client.vote.find({
+    const votes = await client.db.vote.find({
         userID: message.author.id
     });
     const row = new MessageActionRow()

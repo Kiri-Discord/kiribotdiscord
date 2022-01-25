@@ -9,23 +9,30 @@ module.exports = class kiri extends Client {
         this.utils = {
             parseMember,
         };
+        this.db = {
+            vote: require("../model/vote"),
+            globalStorage: require("../model/global"),
+            gameStorage: require("../model/game"),
+            charts: require("../model/chart"),
+            embeds: require("../model/embeds"),
+            cooldowns: require("../model/cooldown"),
+            inventory: require("../model/inventory"),
+            garden: require("../model/garden"),
+            money: require("../model/currency"),
+            love: require("../model/love"),
+            guilds: require("../model/guild"),
+            leveling: require("../model/leveling"),
+            verify: require("../model/verify"),
+        }
         this.genshinData = new DataManager();
         this.deletedChannels = new WeakSet();
         this.nodes = require("../lavalinkNodes.json");
-        this.vote = require("../model/vote");
         this.isPlaying = new Map();
         this.dcTimeout = new Map();
-        this.charts = require("../model/chart");
-        this.globalStorage = require("../model/global");
-        this.gameStorage = require("../model/game");
         this.slashHelps = new Collection();
         this.queue = new Map();
-        this.dbembeds = require("../model/embeds");
         this.commands = new Map();
         this.slash = new Collection();
-        this.cooldowns = require("../model/cooldown");
-        this.inventory = require("../model/inventory");
-        this.garden = require("../model/garden");
         this.helps = new Map();
         this.customEmojis = new Map();
         this.allNameCmds = [];
@@ -34,12 +41,7 @@ module.exports = class kiri extends Client {
         this.aliases = new Map();
         this.config = require("../config.json");
         this.recent = new Set();
-        this.money = require("../model/currency");
-        this.love = require("../model/love");
-        this.dbguilds = require("../model/guild");
         this.leveling = require("../util/LevelingUtil.js");
-        this.dbleveling = require("../model/leveling");
-        this.dbverify = require("../model/verify");
         this.games = new Collection();
         this.pokemon = new PokemonStore();
         this.verifytimers = new VerifyTimer(this);

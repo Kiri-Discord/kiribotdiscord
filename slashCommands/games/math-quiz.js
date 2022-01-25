@@ -59,7 +59,7 @@ exports.run = async(client, interaction) => {
     if (!msgs.size) return interaction.followUp(`sorry! time is up! it was **${answer}** :pensive:`);
     if (msgs.first().content !== answer.toString()) return interaction.followUp(`nope, sorry, the answer is **${answer}** :pensive:`);
     let amount = getRandomInt(10, 15);
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         guildId: interaction.guild.id,
         userId: interaction.user.id
     }, {

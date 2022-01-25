@@ -2,23 +2,23 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    let garden = await client.garden.findOne({
+    let garden = await client.db.garden.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!garden) {
-        const model = client.garden;
+        const model = client.db.garden;
         garden = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id,
         });
     };
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns
+        const model = client.db.cooldowns
         cooldownStorage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id
@@ -40,7 +40,7 @@ exports.run = async(client, interaction) => {
 
     if (s1 === "1") {
         s1 = "2";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -53,7 +53,7 @@ exports.run = async(client, interaction) => {
         });
     } else if (s1 === "2") {
         s1 = "3";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -66,7 +66,7 @@ exports.run = async(client, interaction) => {
         });
     } else if (s1 === "3") {
         s1 = "4"
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -81,7 +81,7 @@ exports.run = async(client, interaction) => {
 
     if (s2 === "1") {
         s2 = "2";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -94,7 +94,7 @@ exports.run = async(client, interaction) => {
         });
     } else if (s2 === "2") {
         s2 = "3";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -107,7 +107,7 @@ exports.run = async(client, interaction) => {
         });
     } else if (s2 === "3") {
         s2 = "4";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -122,7 +122,7 @@ exports.run = async(client, interaction) => {
 
     if (s3 === "1") {
         s3 = "2";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -135,7 +135,7 @@ exports.run = async(client, interaction) => {
         });
     } else if (s3 === "2") {
         s3 = "3";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -148,7 +148,7 @@ exports.run = async(client, interaction) => {
         });
     } else if (s3 === "3") {
         s3 = "4";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -160,7 +160,7 @@ exports.run = async(client, interaction) => {
             new: true,
         });
     };
-    await client.cooldowns.findOneAndUpdate({
+    await client.db.cooldowns.findOneAndUpdate({
         guildId: interaction.guild.id,
         userId: interaction.user.id
     }, {

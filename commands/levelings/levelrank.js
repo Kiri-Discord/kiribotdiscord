@@ -10,7 +10,7 @@ exports.run = async(client, message, args, prefix) => {
     if (mention.user.id === client.user.id) return message.channel.send('that was me lmao');
     if (mention.user.bot) return message.channel.send({ embeds: [{ color: "#bee7f7", description: 'just to make this clear... bots can\'t level up :pensive:' }] })
 
-    let target = await client.dbleveling.findOne({
+    let target = await client.db.leveling.findOne({
         guildId: message.guild.id,
         userId: mention.user.id
     });
@@ -21,7 +21,7 @@ exports.run = async(client, message, args, prefix) => {
 
     let neededXP = res.lowerBound;
 
-    const result = await client.dbleveling.find({
+    const result = await client.db.leveling.find({
         guildId: message.guild.id,
     }).sort({
         xp: -1
@@ -34,7 +34,7 @@ exports.run = async(client, message, args, prefix) => {
     for (let counter = 0; counter < result.length; ++counter) {
         let member = message.guild.members.cache.get(result[counter].userId);
         if (!member) {
-            client.dbleveling.findOneAndDelete({
+            client.db.leveling.findOneAndDelete({
                 userId: result[counter].userId,
                 guildId: message.guild.id,
             }, (err) => {

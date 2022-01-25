@@ -4,23 +4,23 @@ exports.run = async(client, message, args) => {
         const amount = args[0];
         if (!amount) return message.reply("how much token do you want to contribute?");
         if (isNaN(amount)) return message.reply("that amount was not a number :frowning:");
-        let storage = await client.money.findOne({
+        let storage = await client.db.money.findOne({
             userId: message.author.id,
             guildId: message.guild.id
         });
         if (!storage) {
-            const model = client.money
+            const model = client.db.money
             storage = new model({
                 userId: message.author.id,
                 guildId: message.guild.id
             });
         };
-        let cooldownStorage = await client.cooldowns.findOne({
+        let cooldownStorage = await client.db.cooldowns.findOne({
             userId: message.author.id,
             guildId: message.guild.id
         });
         if (!cooldownStorage) {
-            const model = client.cooldowns
+            const model = client.db.cooldowns
             cooldownStorage = new model({
                 userId: message.author.id,
                 guildId: message.guild.id
@@ -37,7 +37,7 @@ exports.run = async(client, message, args) => {
         };
         const result = Math.floor(Math.random() * 10);
 
-        await client.cooldowns.findOneAndUpdate({
+        await client.db.cooldowns.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -50,7 +50,7 @@ exports.run = async(client, message, args) => {
         });
 
         if (result < 5) {
-            const storageAfter = await client.money.findOneAndUpdate({
+            const storageAfter = await client.db.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -73,7 +73,7 @@ exports.run = async(client, message, args) => {
             let bonus;
             let bonusAmount;
             let finalAmount;
-            const voted = await client.vote.findOne({
+            const voted = await client.db.vote.findOne({
                 userID: message.author.id
             });
             if (!voted) {
@@ -81,13 +81,13 @@ exports.run = async(client, message, args) => {
                 finalAmount = amount;
             } else {
                 bonus = true;
-                await client.vote.findOneAndDelete({
+                await client.db.vote.findOneAndDelete({
                     userID: message.author.id
                 });
                 bonusAmount = calcBonus(amount, voted.collectMutiply || 50);
                 finalAmount = parseInt(amount) + bonusAmount;
             };
-            const storageAfter = await client.money.findOneAndUpdate({
+            const storageAfter = await client.db.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {

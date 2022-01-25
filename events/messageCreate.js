@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
     } else {
         setting = client.guildsStorage.get(message.guild.id);
         if (!setting) {
-            const dbguilds = client.dbguilds;
+            const dbguilds = client.db.guilds;
             setting = new dbguilds({
                 guildID: message.guild.id,
             });
@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
                     )
                     .then((m) => {
                         setTimeout(() => {
-                            m.delete();
+                            if (m.deletable) m.delete();
                         }, 4000);
                     });
             } else {

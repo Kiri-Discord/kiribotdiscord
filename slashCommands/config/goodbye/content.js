@@ -9,7 +9,7 @@ exports.run = async(client, interaction, db) => {
             content: content
         };
     } else if (type === 'embed') {
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: interaction.guild.id
         });
@@ -25,7 +25,7 @@ exports.run = async(client, interaction, db) => {
         };
     };
     db.byeContent = contentObject;
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
         guildID: interaction.guild.id,
     }, {
         byeContent: contentObject

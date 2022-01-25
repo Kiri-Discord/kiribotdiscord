@@ -10,7 +10,7 @@ const { ChannelType } = require("discord-api-types/v9");
 exports.run = async (client, interaction) => {
     if (interaction.options.getSubcommand() === "new") {
         await interaction.deferReply();
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: interaction.guild.id,
         });
@@ -1075,7 +1075,7 @@ exports.run = async (client, interaction) => {
     } else if (interaction.options.getSubcommand() === "send") {
         const id = interaction.options.getString("id");
         await interaction.deferReply();
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: interaction.guild.id,
         });
@@ -1128,7 +1128,7 @@ exports.run = async (client, interaction) => {
     } else if (interaction.options.getSubcommand() === "delete") {
         const id = interaction.options.getString("id");
         await interaction.deferReply();
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: interaction.guild.id,
         });
@@ -1168,7 +1168,7 @@ exports.run = async (client, interaction) => {
         });
     } else if (interaction.options.getSubcommand() === "list") {
         await interaction.deferReply();
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: interaction.guild.id,
         });

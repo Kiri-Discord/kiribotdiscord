@@ -2,16 +2,16 @@ const welcomeNatural = require('../assets/messages/normal/welcome.json');
 const welcomeCute = require('../assets/messages/anime-ish/welcome.json');
 const leaveNatural = require('../assets/messages/normal/leave.json');
 const leaveCute = require('../assets/messages/anime-ish/leave.json');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const ordinal = require('ordinal/indicator');
-const lodashClonedeep = require('lodash.clonedeep');
 
 this.replaceEmbed = (embed, member, guild, responseType, leveling) => {
-    const replacedEmbed = lodashClonedeep(embed);
+    const replacedEmbed = new MessageEmbed(embed);
     if (replacedEmbed.author) {
         const { name, icon_url } = replacedEmbed.author;
         if (name) replacedEmbed.author.name = this.replaceText(name, member, guild, responseType, leveling);
-        if (icon_url) replacedEmbed.author.icon_url = this.replaceImage(icon_url, member, guild);
+        if (icon_url) replacedEmbed.author.iconURL = this.replaceImage(icon_url, member, guild);
     };
     if (replacedEmbed.title) replacedEmbed.title = this.replaceText(replacedEmbed.title, member, guild, responseType, leveling);
     if (replacedEmbed.description) replacedEmbed.description = this.replaceText(replacedEmbed.description, member, guild, responseType, leveling);
@@ -25,7 +25,7 @@ this.replaceEmbed = (embed, member, guild, responseType, leveling) => {
         const { text } = replacedEmbed.footer;
         const { icon_url } = replacedEmbed.footer;
         if (text) replacedEmbed.footer.text = this.replaceText(text, member, guild, responseType, leveling);
-        if (icon_url) replacedEmbed.footer.icon_url = this.replaceImage(icon_url, member, guild);
+        if (icon_url) replacedEmbed.footer.iconURL = this.replaceImage(icon_url, member, guild);
     };
     if (replacedEmbed.timestamp) replacedEmbed.timestamp = Date.now();
     return replacedEmbed;
@@ -41,7 +41,7 @@ this.replaceText = (content, member, guild, responseType, leveling) => {
             if (responseType.type === 'natural') resRandom = leaveNatural[Math.floor(Math.random() * leaveNatural.length)];
             else if (responseType.type === 'cute') resRandom = leaveCute[Math.floor(Math.random() * leaveCute.length)];
         } else if (responseType.event === 'level') {
-            resRandom = '**{user_name}**, you have reached level **{user_level}**! i will disappear from this convo in a sec..'
+            resRandom = '**{user_name}**, you have advanced to level **{user_level}**! 🌟'
         }
     };
     const replaced = input

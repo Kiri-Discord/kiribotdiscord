@@ -2,7 +2,7 @@ const varReplace = require('../../../util/variableReplace');
 const { MessageEmbed } = require('discord.js');
 exports.run = async(client, interaction, db) => {
     await interaction.deferReply({ ephemeral: true });
-    const setting = await client.dbguilds.findOne({
+    const setting = await client.db.guilds.findOne({
         guildID: interaction.guild.id
     });
     if (!setting.byeChannelID) {
@@ -13,7 +13,7 @@ exports.run = async(client, interaction, db) => {
     };
     const channel = interaction.guild.channels.cache.get(setting.byeChannelID);
     if (!channel || !channel.viewable || !channel.permissionsFor(interaction.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: interaction.guild.id,
         }, {
             byeChannelID: null

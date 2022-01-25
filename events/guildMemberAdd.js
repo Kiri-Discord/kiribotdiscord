@@ -6,7 +6,7 @@ const varReplace = require('../util/variableReplace');
 module.exports = async(client, member) => {
         if (member.user.bot) return;
 
-        const setting = await client.dbguilds.findOne({
+        const setting = await client.db.guilds.findOne({
             guildID: member.guild.id
         });
         if (!setting) return;

@@ -19,12 +19,12 @@ exports.run = async(client, message, args) => {
     if (args.some(a => isNaN(a))) return message.reply("some number you provided was not a number :frowning: you must choose an array of number that lay between 1 and 70!");
     const owostab = client.customEmojis.get('owostab');
     if (args.some(a => a < 1 || a > 70)) return message.reply(`some number you choose was lower than 1 or greater than 70 ${owostab}`);
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns;
+        const model = client.db.cooldowns;
         cooldownStorage = new model({
             userId: message.author.id,
             guildId: message.guild.id
@@ -41,7 +41,7 @@ exports.run = async(client, message, args) => {
     const prizeNumber = prizesToNumber[prize];
     const emiliacry = client.customEmojis.get('emillacry');
     const msg = prizeNumber > 0 ? 'congratulation :tada:' : `try again next time ${emiliacry}`;
-    await client.cooldowns.findOneAndUpdate({
+    await client.db.cooldowns.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {
@@ -52,7 +52,7 @@ exports.run = async(client, message, args) => {
         upsert: true,
         new: true,
     });
-    const storageAfter = await client.money.findOneAndUpdate({
+    const storageAfter = await client.db.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

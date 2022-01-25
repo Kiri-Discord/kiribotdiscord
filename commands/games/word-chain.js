@@ -85,7 +85,7 @@ exports.run = async(client, message, args) => {
         if (!winner) return message.channel.send('oh... no one won.');
         const lost = winner.id === message.author.id ? opponent : message.author;
         let amount = getRandomInt(10, 25);
-        await client.money.findOneAndUpdate({
+        await client.db.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: lost.id
         }, {
@@ -99,7 +99,7 @@ exports.run = async(client, message, args) => {
             upsert: true,
             new: true,
         });
-        const storageAfter = await client.money.findOneAndUpdate({
+        const storageAfter = await client.db.money.findOneAndUpdate({
             guildId: message.guild.id,
             userId: winner.id
         }, {

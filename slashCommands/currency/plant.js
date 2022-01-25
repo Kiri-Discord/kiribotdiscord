@@ -4,12 +4,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 exports.run = async(client, interaction) => {
     const slot = interaction.options.getString('slot');
     await interaction.deferReply();
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.inventory
+        const model = client.db.inventory
         storage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id
@@ -47,7 +47,7 @@ exports.run = async(client, interaction) => {
             plant = choices[random];
         };
         if (slot === '1') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -60,7 +60,7 @@ exports.run = async(client, interaction) => {
                 new: true,
             });
         } else if (slot === '2') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -73,7 +73,7 @@ exports.run = async(client, interaction) => {
                 new: true,
             });
         } else if (slot === '3') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -86,7 +86,7 @@ exports.run = async(client, interaction) => {
                 new: true,
             });
         };
-        await client.inventory.findOneAndUpdate({
+        await client.db.inventory.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {

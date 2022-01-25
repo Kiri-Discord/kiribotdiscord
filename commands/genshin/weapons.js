@@ -5,6 +5,7 @@ const {
     paginator,
     sendMessage,
     simplePaginator,
+    getLinkToGuide
 } = require("../../features/genshin/utils");
 const { addArg } = require("../../util/util");
 const { MessageEmbed } = require("discord.js");
@@ -132,7 +133,7 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle(`${weapon.name}: Basic info`)
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
+            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setDescription(weapon.desc + (weapon.placeholder ? "\n\n*This weapon is currently not yet available :(*" : ""))
             .addField("Basics", `${weapon.stars} :star: ${genshinData.emoji(weapon.weaponType)}`, (weapon.placeholderStats && !weapon.weaponCurve) ? true : false)
@@ -165,12 +166,17 @@ exports.run = async (client, message, args, prefix) => {
                     weapon.ascensionCosts.mapping.EnemyDropTierA1,
                     weapon.ascensionCosts.mapping.EnemyDropTierB1,
                 ].map(i => genshinData.emoji(i)).join("")}`)
+
+            const guides = genshinData.getGuides("weapon", weapon.name).map(({ guide, page }) => getLinkToGuide(guide, page)).join("\n")
+            if (guides)
+                embed.addField("Guides", guides)
+        
         return embed
     }
     function getStatsWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
+            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         const columns = []
@@ -210,7 +216,7 @@ exports.run = async (client, message, args, prefix) => {
     function getRefinementWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
+            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         embed.setTitle(`${weapon.name}: Refinements`)
@@ -223,7 +229,7 @@ exports.run = async (client, message, args, prefix) => {
     function getLoreWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
+            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Lore`)
             .setDescription(weapon.lore ?? "Unavailable")
@@ -233,11 +239,11 @@ exports.run = async (client, message, args, prefix) => {
     function getArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.icon}`)
+            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Base`)
-            .setDescription(`[Image URL](https://genshin.flatisjustice.moe/${weapon.icon})`)
-            .setImage(`https://genshin.flatisjustice.moe/` + weapon.icon)
+            .setDescription(`[Image URL](https://hutaobot.moe/${weapon.icon})`)
+            .setImage(`https://hutaobot.moe/` + weapon.icon)
         embed.thumbnail = null
         return embed
     }
@@ -245,11 +251,11 @@ exports.run = async (client, message, args, prefix) => {
     function getSecondArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${weapon.awakenIcon}`)
+            .setThumbnail(`https://hutaobot.moe/${weapon.awakenIcon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: 2nd Ascension`)
-            .setDescription(`[Image URL](${`https://genshin.flatisjustice.moe/` + weapon.awakenIcon})`)
-            .setImage(`https://genshin.flatisjustice.moe/${weapon.awakenIcon}`)
+            .setDescription(`[Image URL](${`https://hutaobot.moe/` + weapon.awakenIcon})`)
+            .setImage(`https://hutaobot.moe/${weapon.awakenIcon}`)
         embed.thumbnail = null
         return embed
     }

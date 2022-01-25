@@ -6,7 +6,7 @@ exports.run = async(client, message, args, prefix) => {
         const db = client.guildsStorage.get(message.guild.id);
         if (message.flags[0] === "off") {
             db.greetChannelID = undefined;
-            await client.dbguilds.findOneAndUpdate({
+            await client.db.guilds.findOneAndUpdate({
                 guildID: message.guild.id,
             }, {
                 greetChannelID: null
@@ -24,7 +24,7 @@ exports.run = async(client, message, args, prefix) => {
             if (!channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send greeting message to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.` }] });
             db.greetChannelID = channel.id;
 
-            const storageAfter = await client.dbguilds.findOneAndUpdate({
+            const storageAfter = await client.db.guilds.findOneAndUpdate({
                 guildID: message.guild.id,
             }, {
                 greetChannelID: channel.id
@@ -67,7 +67,7 @@ exports.run = async(client, message, args, prefix) => {
                 content: content.content
             };
         } else if (type.content.toLowerCase() === 'embed') {
-            let embedsStorage = client.dbembeds;
+            let embedsStorage = client.db.embeds;
             let storage = await embedsStorage.findOne({
                 guildID: message.guild.id
             });
@@ -90,7 +90,7 @@ exports.run = async(client, message, args, prefix) => {
             };
         };
         db.greetContent = contentObject;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             greetContent: contentObject
@@ -98,7 +98,7 @@ exports.run = async(client, message, args, prefix) => {
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ your greeting message has been set up!`, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } }] });
     };
     if (args[0].toLowerCase() === 'test') {
-        const setting = await client.dbguilds.findOne({
+        const setting = await client.db.guilds.findOne({
             guildID: message.guild.id
         });
         if (!setting.greetChannelID) {
@@ -109,7 +109,7 @@ exports.run = async(client, message, args, prefix) => {
         };
         const channel = message.guild.channels.cache.get(setting.greetChannelID);
         if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
-            await client.dbguilds.findOneAndUpdate({
+            await client.db.guilds.findOneAndUpdate({
                 guildID: message.guild.id,
             }, {
                 greetChannelID: null

@@ -2,23 +2,23 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    const voted = await client.vote.findOne({
+    const voted = await client.db.vote.findOne({
         userID: interaction.user.id
     });
     if (!voted) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `D: you haven't vote yet! visit \`/vote\` and vote for me to get a free **🎫 Effect Ticket**` }] });
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.inventory;
+        const model = client.db.inventory;
         storage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id
         });
     };
     storage.eqTicket += 1;
-    await client.vote.findOneAndDelete({
+    await client.db.vote.findOneAndDelete({
         userID: interaction.user.id
     });
     await storage.save();

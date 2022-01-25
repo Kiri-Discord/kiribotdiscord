@@ -1,12 +1,12 @@
 const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.inventory
+        const model = client.db.inventory
         storage = new model({
             userId: message.author.id,
             guildId: message.guild.id
@@ -83,7 +83,7 @@ exports.run = async(client, message, args, prefix) => {
     if (rarity === "very rare") worth = 250
     if (rarity === "legendary") worth = 500
 
-    await client.inventory.findOneAndUpdate({
+    await client.db.inventory.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {
@@ -97,7 +97,7 @@ exports.run = async(client, message, args, prefix) => {
         new: true,
     });
 
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

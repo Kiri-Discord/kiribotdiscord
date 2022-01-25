@@ -8,7 +8,7 @@ module.exports = class VerifyTimer {
     }
 
     async fetchAll() {
-        const timers = await this.client.dbverify.find({});
+        const timers = await this.client.db.verify.find({});
         if (!timers || !timers.length) return;
         for (let data of timers) await this.setTimer(data.guildID, new Date(data.time) - new Date(), data.userID, data.valID, false, data.noKick);
         return this;
@@ -19,7 +19,7 @@ module.exports = class VerifyTimer {
             try {
                 if (!noKick) {
                     let reason = 'Kiri verification timeout';
-                    const setting = await this.client.dbguilds.findOne({
+                    const setting = await this.client.db.guilds.findOne({
                         guildID: guildID
                     });
                     const guild = await this.client.guilds.cache.get(guildID);
@@ -70,14 +70,14 @@ module.exports = class VerifyTimer {
                     await member.kick(reason);
                 };
             } finally {
-                await this.client.dbverify.findOneAndDelete({
+                await this.client.db.verify.findOneAndDelete({
                     guildID: guildID,
                     userID: userID,
                 });
             }
         }, time);
         if (update) {
-            await this.client.dbverify.findOneAndUpdate({
+            await this.client.db.verify.findOneAndUpdate({
                 guildID,
                 userID,
             }, {
@@ -99,14 +99,14 @@ module.exports = class VerifyTimer {
     async deleteTimer(guildID, userID) {
         clearTimeout(this.timeouts.get(`${guildID}-${userID}`));
         this.timeouts.delete(`${guildID}-${userID}`);
-        await this.client.dbverify.findOneAndDelete({
+        await this.client.db.verify.findOneAndDelete({
             guildID: guildID,
             userID: userID,
         });
     }
 
     async exists(guildID, userID) {
-        const exist = await this.client.dbverify.findOne({
+        const exist = await this.client.db.verify.findOne({
             guildID: guildID,
             userID: userID,
         });

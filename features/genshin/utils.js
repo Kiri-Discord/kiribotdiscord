@@ -1,5 +1,13 @@
 const { ColorResolvable, Message, MessageActionRow, MessageAttachment, MessageButton, MessageComponentInteraction, MessageEmbed, Snowflake } = require('discord.js')
 const client = require('../../main.js');
+const EventType = {
+    Web: "Web",
+    InGame: "In-game",
+    Maintenance: "Maintenance",
+    Stream: "Stream",
+    Unlock: "Unlock",
+    Banner: "Banner"
+}
 module.exports = class util {
     static PAD_START = 0;
     static PAD_END = 1;
@@ -23,20 +31,42 @@ module.exports = class util {
         "None": "#545353",
     };
     static getLinkToGuide(guide, page) {
-        return `[${page.name}](${client.data.baseURL}guides/${urlify(guide.name, false)}/${urlify(page.name, true)})`
+        return `[${page.name}](https://hutaobot.moe/guides/${util.urlify(guide.name, false)}/${util.urlify(page.name, true)})`
     };
     static urlify(input, shouldRemoveBrackets) {
         if (shouldRemoveBrackets)
-            input = removeBrackets(input)
-        return input.toLowerCase().replace(/\(|\)|:/g, "").trim().replace(/ +/g, "-")
+            input = util.removeBrackets(input)
+            return input.toLowerCase().replace(/\(|\)|:/g, "").trim().replace(/ +/g, "-")
     }
-    
+    static isServerTimeStart(event) {
+        return event.start_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Unlock)
+    }
+    static getStartTime(event, serverTimezone) {
+        return event.start != undefined && util.getDate(event.start, event.timezone ?? util.isServerTimeStart(event) ? serverTimezone : undefined)
+    }
+    static isServerTimeEnd(event) {
+        return event.end_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Web)
+    }
+    static getEndTime(event, serverTimezone) {
+        return event.end != undefined && util.getDate(event.end, event.timezone ?? util.isServerTimeEnd(event) ? serverTimezone : undefined)
+    }
+    static startTimes(e) {
+        if (!e.start) return ""
+        if (!util.isServerTimeStart(e))
+            return `Global: ${relativeTimestampFromString(e.start, e.timezone)}`
+        return util.getServerTimeInfo().map(st => `${st.server}: ${util.relativeTimestampFromString(e.start, `${st.offset.split("").join("0")}:00`)}`).join("\n")
+    }
+    static endTimes(e) {
+        if (!e.end) return ""
+        if (!util.isServerTimeEnd(e))
+            return util.relativeTimestampFromString(e.end, e.timezone)
+        return util.getServerTimeInfo().map(st => `${st.server}: ${util.relativeTimestampFromString(e.end, `${st.offset.split("").join("0")}:00`)}`).join("\n")
+    }
     static getServerTimeInfo() {
         const offsets = {
+            Asia:    +8,
+            Europe:  +1,
             America: -5,
-            Europe: 1,
-            Asia: +8,
-            "TW, HK, MO": +8,
         };
         const servers = Object.keys(offsets);
         return servers.map(server => {
@@ -309,6 +339,8 @@ module.exports = class util {
         embed.setTitle(event.name)
         if (event.img) embed.setImage(event.img)
         if (event.link) embed.setURL(event.link)
+        embed.addField(event.type == EventType.Unlock ? "Unlock Time" : "Start Time", event.start ? `${event.prediction ? "(prediction) " : ""}${event.start}${event.timezone?` (GMT${event.timezone})`:""}\n${util.startTimes(event)}` : "Unknown", true)
+        if (event.end) embed.addField("End Time", `${event.end}${event.timezone?` (GMT${event.timezone})`:""}\n${util.endTimes(event)}`, true)
         embed.addField(event.type == 'Unlock' ? "Unlock Time" : "Start Time", event.start ? `${event.prediction ? "(prediction) " : ""}${event.start}${event.timezone?` (GMT${event.timezone})`:""}\n${util.relativeTimestampFromString(event.start, event.timezone)}` : "Unknown", true)
         if (event.end) embed.addField("End Time", `${event.end}${event.timezone?` (GMT${event.timezone})`:""}\n${util.relativeTimestampFromString(event.end, event.timezone)}`, true)
         if (event.type && event.type !== 'Unlock') embed.addField("Type", event.type, true)

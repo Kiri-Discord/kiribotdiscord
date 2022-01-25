@@ -9,7 +9,7 @@ exports.run = async(client, interaction, db) => {
             content: content
         };
     } else if (type === 'embed') {
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: interaction.guild.id
         });
@@ -24,7 +24,7 @@ exports.run = async(client, interaction, db) => {
             content: targetEmbed
         };
     };
-    const setting = await client.dbguilds.findOne({
+    const setting = await client.db.guilds.findOne({
         guildID: interaction.guild.id
     });
     setting.levelings.content = contentObject;

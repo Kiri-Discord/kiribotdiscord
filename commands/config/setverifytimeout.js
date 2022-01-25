@@ -3,7 +3,7 @@ exports.run = async(client, message, args, prefix) => {
     const db = client.guildsStorage.get(message.guild.id);
     if (message.flags[0] === "off") {
         db.verifyTimeout = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyTimeout: null
@@ -22,7 +22,7 @@ exports.run = async(client, message, args, prefix) => {
     if (toSecond > 21600 || toSecond < 60) return message.reply("the timer should be more than or equal to 1 minute or less than 6 hours!");
     try {
         db.verifyTimeout = convert;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyTimeout: convert

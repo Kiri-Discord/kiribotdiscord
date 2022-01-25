@@ -1,21 +1,21 @@
 exports.run = async(client, message, args, prefix) => {
-    let garden = await client.garden.findOne({
+    let garden = await client.db.garden.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!garden) {
-        const model = client.garden;
+        const model = client.db.garden;
         garden = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
     };
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns
+        const model = client.db.cooldowns
         cooldownStorage = new model({
             userId: message.author.id,
             guildId: message.guild.id
@@ -37,7 +37,7 @@ exports.run = async(client, message, args, prefix) => {
 
     if (s1 === "1") {
         s1 = "2";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -50,7 +50,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     } else if (s1 === "2") {
         s1 = "3";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -63,7 +63,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     } else if (s1 === "3") {
         s1 = "4"
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -78,7 +78,7 @@ exports.run = async(client, message, args, prefix) => {
 
     if (s2 === "1") {
         s2 = "2";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -91,7 +91,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     } else if (s2 === "2") {
         s2 = "3";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -104,7 +104,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     } else if (s2 === "3") {
         s2 = "4";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -119,7 +119,7 @@ exports.run = async(client, message, args, prefix) => {
 
     if (s3 === "1") {
         s3 = "2";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -132,7 +132,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     } else if (s3 === "2") {
         s3 = "3";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -145,7 +145,7 @@ exports.run = async(client, message, args, prefix) => {
         });
     } else if (s3 === "3") {
         s3 = "4";
-        await client.garden.findOneAndUpdate({
+        await client.db.garden.findOneAndUpdate({
             guildId: message.guild.id,
             userId: message.author.id
         }, {
@@ -157,7 +157,7 @@ exports.run = async(client, message, args, prefix) => {
             new: true,
         });
     };
-    await client.cooldowns.findOneAndUpdate({
+    await client.db.cooldowns.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

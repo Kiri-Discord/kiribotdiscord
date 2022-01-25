@@ -10,12 +10,12 @@ exports.run = async(client, interaction) => {
 
 
     await interaction.deferReply();
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns;
+        const model = client.db.cooldowns;
         cooldownStorage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id

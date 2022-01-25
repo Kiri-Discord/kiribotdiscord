@@ -4,7 +4,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    const author = await client.love.findOne({
+    const author = await client.db.love.findOne({
         userID: interaction.user.id,
         guildID: interaction.guild.id
     });
@@ -17,19 +17,19 @@ exports.run = async(client, interaction) => {
     if (member.user.id === interaction.user.id) return interaction.editReply('WHY DO YOU WANT TO MARRY YOURSELF?');
     if (member.user.id === client.user.id) return interaction.editReply('aww i apreciated that but.. i am just a bot :(');
     if (member.user.bot) return interaction.editReply('that user is a bot :pensive:');
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.inventory;
+        const model = client.db.inventory;
         storage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id,
         });
     };
     if (storage.rings < 1) return interaction.editReply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`/shop\`.`);
-    const marry = await client.love.findOne({
+    const marry = await client.db.love.findOne({
         userID: member.user.id,
         guildID: interaction.guild.id
     });
@@ -85,7 +85,7 @@ exports.run = async(client, interaction) => {
             res.editReply(`**${member.user.username}** declined your proposal :(`);
             return collector.stop();
         } else if (res.customId === 'yes') {
-            await client.love.findOneAndUpdate({
+            await client.db.love.findOneAndUpdate({
                 guildID: interaction.guild.id,
                 userID: interaction.user.id
             }, {
@@ -96,7 +96,7 @@ exports.run = async(client, interaction) => {
                 upsert: true,
                 new: true,
             });
-            await client.love.findOneAndUpdate({
+            await client.db.love.findOneAndUpdate({
                 userID: member.user.id,
                 guildID: interaction.guild.id
             }, {
@@ -107,7 +107,7 @@ exports.run = async(client, interaction) => {
                 upsert: true,
                 new: true,
             });
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {

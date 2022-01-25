@@ -16,7 +16,7 @@ exports.run = async (client, message, args, prefix) => {
             ],
         });
     if (args[0].toLowerCase() === "new") {
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: message.guild.id,
         });
@@ -159,7 +159,6 @@ exports.run = async (client, message, args, prefix) => {
                 const parseColor = (color) => {
                     try {
                         const number = resolveColor(color);
-                        console.log(number)
                         return number;
                     } catch {
                         return null;
@@ -1074,7 +1073,7 @@ exports.run = async (client, message, args, prefix) => {
                     },
                 ],
             });
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: message.guild.id,
         });
@@ -1140,7 +1139,7 @@ exports.run = async (client, message, args, prefix) => {
                     },
                 ],
             });
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: message.guild.id,
         });
@@ -1179,7 +1178,7 @@ exports.run = async (client, message, args, prefix) => {
             ],
         });
     } else if (args[0].toLowerCase() === "list") {
-        let embedsStorage = client.dbembeds;
+        let embedsStorage = client.db.embeds;
         let storage = await embedsStorage.findOne({
             guildID: message.guild.id,
         });

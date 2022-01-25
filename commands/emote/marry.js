@@ -2,7 +2,7 @@ const request = require('node-superfetch');
 const { stripIndent } = require('common-tags');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 exports.run = async(client, message, args, prefix) => {
-    const author = await client.love.findOne({
+    const author = await client.db.love.findOne({
         userID: message.author.id,
         guildID: message.guild.id
     });
@@ -17,19 +17,19 @@ exports.run = async(client, message, args, prefix) => {
     if (member.user.id === message.author.id) return message.reply('WHY DO YOU WANT TO MARRY YOURSELF?');
     if (member.user.id === client.user.id) return message.reply('aww i apreciated that but.. i am just a bot :(');
     if (member.user.bot) return message.reply('that user is a bot :pensive:');
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.inventory;
+        const model = client.db.inventory;
         storage = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
     };
     if (storage.rings < 1) return message.reply(`:x: you don't have enough 💍 **Wedding Ring** to make a proposal! buy one at \`${prefix}shop\`.`);
-    const marry = await client.love.findOne({
+    const marry = await client.db.love.findOne({
         userID: member.user.id,
         guildID: message.guild.id
     });
@@ -85,7 +85,7 @@ exports.run = async(client, message, args, prefix) => {
             res.editReply(`**${member.user.username}** declined your proposal :(`);
             return collector.stop();
         } else if (res.customId === 'yes') {
-            await client.love.findOneAndUpdate({
+            await client.db.love.findOneAndUpdate({
                 guildID: message.guild.id,
                 userID: message.author.id
             }, {
@@ -96,7 +96,7 @@ exports.run = async(client, message, args, prefix) => {
                 upsert: true,
                 new: true,
             });
-            await client.love.findOneAndUpdate({
+            await client.db.love.findOneAndUpdate({
                 userID: member.user.id,
                 guildID: message.guild.id
             }, {
@@ -107,7 +107,7 @@ exports.run = async(client, message, args, prefix) => {
                 upsert: true,
                 new: true,
             });
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {

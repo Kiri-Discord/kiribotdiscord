@@ -2,6 +2,7 @@ const { Permissions, MessageEmbed, MessageActionRow, MessageButton } = require("
 const config = require('../config.json');
 const WebSocket = require('ws');
 const { stripIndents } = require('common-tags');
+const { deleteIfAble } = require('../util/util');
 module.exports = {
     init: (client) => {
         const wsConnection = new WebSocket(config.baseWSURL, {
@@ -44,37 +45,37 @@ module.exports = {
             if (data.type === 'verifyRequest') {
                 await client.verifytimers.deleteTimer(data.guildID, data.userID);
                 const { uuid } = data;
-                const setting = await client.dbguilds.findOne({
+                const setting = await client.db.guilds.findOne({
                     guildID: data.guildID
                 });
                 if (!setting) return wsConnection.send(JSON.stringify({ code: 204, type: 'verifyResponse', message: 'NO_GUILD_SETTING_FOUND', uuid }));
-                const guild = client.guilds.cache.get(data.guildID);
+                const guild = await client.guilds.fetch(data.guildID).catch(() => null);
 
                 if (!guild) return wsConnection.send(JSON.stringify({ code: 204, type: 'verifyResponse', message: 'NO_GUILD_FOUND', uuid }));
                 if (!guild.available) return wsConnection.send(JSON.stringify({ code: 204, type: 'verifyResponse', message: 'GUILD_NOT_AVAILABLE', uuid }));
 
                 if (guild.partial) await guild.fetch();
-                const member = guild.members.cache.get(data.userID);
+                const member = await guild.members.fetch(data.userID).catch(() => null);
                 if (!member) return wsConnection.send(JSON.stringify({ code: 204, message: 'MEMBER_NOT_FOUND', type: 'verifyResponse', uuid }));
-                if (member.partial) await member.fetch();
+
                 const roleExist = member._roles.includes(setting.verifyRole);
 
                 if (roleExist) return wsConnection.send(JSON.stringify({ code: 204, message: 'ALREADY_VERIFIED', uuid, type: 'verifyResponse' }));
 
-                const verifyRole = guild.roles.cache.get(setting.verifyRole);
+                const verifyRole = await guild.roles.fetch(setting.verifyRole).catch(() => null);
                 if (!verifyRole) return wsConnection.send(JSON.stringify({ code: 204, message: 'ROLE_NOT_EXIST', uuid, type: 'verifyResponse' }));
 
                 wsConnection.send(JSON.stringify({ code: 200, message: 'SUCCESS', uuid, type: 'verifyResponse' }));
 
-                if (!guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+                if (!guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES) || !verifyRole.editable) {
                     try {
-                        return member.send(`oof, so mods from **${guild.name}** forgot to give me the role \`MANAGE_ROLES\` to gain you access to the server! can you ask them to verify you instead?\n\n**you will not be kicked after this message**`);
+                        return member.send(`oof, so mods from **${guild.name}** forgot to give me \`MANAGE_ROLES\` permission to gain you access to the server, or the verify role is above my highest role! can you ask them to verify you instead?\n\n**you will not be kicked after this message**`);
                     } catch (error) {
-                        const verifyChannel = guild.channels.cache.get(setting.verifyChannelID);
+                        const verifyChannel = await guild.channels.fetch(setting.verifyChannelID).catch(() => null);
                         if (!verifyChannel || !verifyChannel.viewable || !verifyChannel.permissionsFor(guild.me).has('SEND_MESSAGES')) return;
-                        else return verifyChannel.send(`<@!${member.user.id}>, sorry but mods from **${guild.name}** forgot to give me the role \`MANAGE_ROLES\` to gain you access to the server! can you ask them to verify you instead?\n\n**you will not be kicked after this message**`).then(m => {
+                        else return verifyChannel.send(`<@!${member.user.id}>, sorry but mods from **${guild.name}** forgot to give me the \`MANAGE_ROLES\` permission to gain you access to the server, or the verify role is above my highest role! can you ask them to verify you instead?\n\n**you will not be kicked after this message**`).then(m => {
                             setTimeout(() => {
-                                m.delete()
+                                deleteIfAble(m)
                             }, 6000);
                         });
                     };
@@ -86,7 +87,7 @@ module.exports = {
                         if (!verifyChannel || !verifyChannel.viewable || !verifyChannel.permissionsFor(guild.me).has('SEND_MESSAGES')) return;
                         else return verifyChannel.send(`<@!${member.user.id}>, you have passed my verification! Welcome to ${guild.name}!`).then(m => {
                             setTimeout(() => {
-                                m.delete()
+                                deleteIfAble(m)
                             }, 6000);
                         });
                     };
@@ -104,9 +105,9 @@ module.exports = {
         wsConnection.onerror = (err) => {
             logger.log('error', `[WEBSOCKET] Socket encountered error and is restarting in 30 seconds (${err.message})`);
             wsConnection.close();
-            setTimeout(function() {
-                module.exports.init(client);
-            }, 30000);
+            // setTimeout(function() {
+            //     module.exports.init(client);
+            // }, 30000);
         };
     }
 };

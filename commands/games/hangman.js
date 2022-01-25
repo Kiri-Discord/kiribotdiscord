@@ -90,7 +90,7 @@ class Game {
         if (this.correct === this.word.length) {
             this.end();
             let amount = this.getRandomInt(10, 15);
-            await this.client.money.findOneAndUpdate({
+            await this.client.db.money.findOneAndUpdate({
                 guildId: this.message.guild.id,
                 userId: this.challenged.id
             }, {
@@ -105,7 +105,7 @@ class Game {
                 upsert: true,
                 new: true,
             });
-            await this.client.money.findOneAndUpdate({
+            await this.client.db.money.findOneAndUpdate({
                 guildId: this.message.guild.id,
                 userId: this.message.author.id
             }, {
@@ -125,7 +125,7 @@ class Game {
         if (this.stage === 5) {
             this.end();
             let amount = this.getRandomInt(10, 15);
-            await this.client.money.findOneAndUpdate({
+            await this.client.db.money.findOneAndUpdate({
                 guildId: this.message.guild.id,
                 userId: this.message.author.id
             }, {
@@ -140,7 +140,7 @@ class Game {
                 upsert: true,
                 new: true,
             });
-            await this.client.money.findOneAndUpdate({
+            await this.client.db.money.findOneAndUpdate({
                 guildId: this.message.guild.id,
                 userId: this.challenged.id
             }, {

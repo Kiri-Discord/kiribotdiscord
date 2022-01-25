@@ -13,6 +13,8 @@ const booksData = require("../../assets/genshin/gamedata/books.json")
 
 const paimonShop = require("../../assets/genshin/gamedata/paimon_shop.json");
 
+const materialData = require('../../assets/genshin/gamedata/materials.json')
+
 const enemyData = require("../../assets/genshin/gamedata/enemies.json")
 
 const costTemplates = require("../../assets/genshin/gamedata/cost_templates.json")
@@ -56,7 +58,7 @@ module.exports = class DataManager {
         this.guides = guideData;
         this.weapons = weaponData;
         this.weaponLevels = weaponLevels;
-    
+        this.materials = materialData;
         this.abyssSchedule = abyssSchedule;
         this.abyssFloors= abyssFloors;
     
@@ -142,6 +144,13 @@ module.exports = class DataManager {
         const target = findFuzzy(targetNames, name)
         if (target)
             return this.enemies[target]
+        return undefined
+    }
+    getMaterialByName(name) {
+        const targetNames = Object.keys(this.materials)
+        const target = findFuzzy(targetNames, name)
+        if (target)
+            return this.materials[target]
         return undefined
     }
     getCostsFromTemplate(costTemplate) {

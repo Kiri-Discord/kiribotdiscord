@@ -5,7 +5,7 @@ module.exports = async client => {
         if (err) logger.log('error', err);
         logger.log('info', `Found total ${categories.length} categories.`);
         categories.forEach(category => {
-            let moduleConf = sync.require(`../commands/${category}/module.json`);
+            let moduleConf = require(`../commands/${category}/module.json`);
             if (!moduleConf) return;
             moduleConf.path = `./commands/${category}`;
             moduleConf.cmds = [];
@@ -33,7 +33,7 @@ module.exports = async client => {
         if (err) logger.log('error', err);
         logger.log('info', `Found total ${categories.length} slash (/) categories.`);
         categories.forEach(category => {
-            let moduleConf = sync.require(`../slashCommands/${category}/module.json`);
+            let moduleConf = require(`../slashCommands/${category}/module.json`);
             if (!moduleConf) return;
             moduleConf.path = `./slashCommands/${category}`;
             moduleConf.cmds = [];

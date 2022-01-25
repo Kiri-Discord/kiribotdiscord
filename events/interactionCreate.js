@@ -78,7 +78,7 @@ module.exports = async(client, interaction) => {
             if (interaction.inGuild()) {
                 let setting = client.guildsStorage.get(interaction.guild.id);
                 if (!setting) {
-                    const dbguilds = client.dbguilds;
+                    const dbguilds = client.db.guilds;
                     setting = new dbguilds({
                         guildID: interaction.guild.id
                     });

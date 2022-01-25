@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { millify } = require('millify');
 
 exports.run = async(client, message, args) => {
-    const chart = await client.charts.find().sort([
+    const chart = await client.db.charts.find().sort([
         ['timesPlayed', 'descending']
     ]);
     const sedEmoji = client.customEmojis.get('sed');

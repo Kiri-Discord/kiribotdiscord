@@ -13,12 +13,12 @@ exports.run = async(client, interaction, db) => {
     const role = interaction.options.getRole('role');
     if (interaction.user.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= role.position) return interaction.reply({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }], ephemeral: true });
 
-    if (interaction.guild.me.roles.highest.position <= role.position) return interaction.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }], ephemeral: true });
+    if (!role.editable) return interaction.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }], ephemeral: true });
     try {
         await interaction.deferReply();
         db.verifyChannelID = channel.id;
         db.verifyRole = role.id;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: interaction.guild.id,
         }, {
             verifyChannelID: channel.id,

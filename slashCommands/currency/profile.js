@@ -19,29 +19,29 @@ exports.run = async(client, interaction) => {
         ephemeral: true
     });
     await interaction.deferReply();
-    let storage = await client.money.findOne({
+    let storage = await client.db.money.findOne({
         userId: user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.money;
+        const model = client.db.money;
         storage = new model({
             userId: user.id,
             guildId: interaction.guild.id
         });
     };
-    let leveling = await client.dbleveling.findOne({
+    let leveling = await client.db.leveling.findOne({
         guildId: interaction.guild.id,
         userId: user.id
     });
     const level = leveling ? leveling.level : 0;
     const xp = leveling ? leveling.xp : 0;
-    let items = await client.inventory.findOne({
+    let items = await client.db.inventory.findOne({
         userId: user.id,
         guildId: interaction.guild.id
     });
     if (!items) {
-        const model = client.inventory
+        const model = client.db.inventory
         items = new model({
             userId: user.id,
             guildId: interaction.guild.id
@@ -58,7 +58,7 @@ exports.run = async(client, interaction) => {
         };
     };
     let marriageStatus;
-    const target = await client.love.findOne({
+    const target = await client.db.love.findOne({
         userID: user.id,
         guildID: interaction.guild.id
     });
@@ -66,7 +66,7 @@ exports.run = async(client, interaction) => {
         if (target.marriedID) {
             const married = interaction.guild.members.cache.get(target.marriedID);
             if (!married) {
-                await client.love.findOneAndDelete({
+                await client.db.love.findOneAndDelete({
                     guildID: interaction.guild.id,
                     userID: user.id,
                 });

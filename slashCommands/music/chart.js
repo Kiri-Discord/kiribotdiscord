@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    const chart = await client.charts.find().sort([
+    const chart = await client.db.charts.find().sort([
         ['timesPlayed', 'descending']
     ]);
     const sedEmoji = client.customEmojis.get('sed');

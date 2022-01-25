@@ -1,18 +1,18 @@
 exports.run = async(client, message, args, prefix) => {
     if (!args[0]) return message.channel.send(`${message.author.username}, you need to specify an item to use!`);
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `D: you don't have any item to use` }] });
     if (args[0].toLowerCase() === "ticket") {
         if (storage.eqTicket < 1) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `D: you don't have any ticket to use` }] });
-        let cooldownStorage = await client.cooldowns.findOne({
+        let cooldownStorage = await client.db.cooldowns.findOne({
             userId: message.author.id,
             guildId: message.guild.id
         });
         if (!cooldownStorage) {
-            const model = client.cooldowns
+            const model = client.db.cooldowns
             cooldownStorage = new model({
                 userId: message.author.id,
                 guildId: message.guild.id

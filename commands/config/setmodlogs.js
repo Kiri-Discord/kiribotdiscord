@@ -2,7 +2,7 @@ exports.run = async(client, message, args, prefix) => {
     const db = client.guildsStorage.get(message.guild.id);
     if (message.flags[0] === "off") {
         db.logChannelID = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             logChannelID: null
@@ -16,7 +16,7 @@ exports.run = async(client, message, args, prefix) => {
     if (!channel.viewable || !channel.permissionsFor(message.guild.me).has('MANAGE_WEBHOOKS')) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send logs to ${channel}!\nplease allow the permission \`MANAGE_WEBHOOKS\` for me before trying again.` }] });
     db.logChannelID = channel.id;
 
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             logChannelID: channel.id

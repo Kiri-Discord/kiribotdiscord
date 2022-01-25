@@ -5,23 +5,23 @@ const itemsName = Object.keys(itemsList);
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    let money = await client.money.findOne({
+    let money = await client.db.money.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!money) {
-        const model = client.money
+        const model = client.db.money
         money = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id,
         });
     };
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) {
-        const model = client.inventory
+        const model = client.db.inventory
         storage = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id

@@ -15,14 +15,14 @@ exports.run = async(client, message, args, prefix, cmd) => {
     if (args[0]) {
         if (args[0].toLowerCase() === 'delete') {
             const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
-            const data = await client.gameStorage.findOne({
+            const data = await client.db.gameStorage.findOne({
                 guildId: message.guild.id,
                 userId: message.author.id
             });
             if (data) {
                 const foundGameSave = data.storage.chess;
                 if (!foundGameSave) return message.reply(`you don\'t have any saved chess game ${sedEmoji}`);
-                await client.gameStorage.findOneAndDelete({
+                await client.db.gameStorage.findOneAndDelete({
                     guildId: message.guild.id,
                     userId: message.author.id
                 });
@@ -69,7 +69,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
         };
         let images = null;
         if (!images) await loadImages();
-        let gameStorage = client.gameStorage;
+        let gameStorage = client.db.gameStorage;
         let resumeGame = await gameStorage.findOne({
             guildId: message.guild.id,
             userId: message.author.id
@@ -98,7 +98,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     blackTime = data.blackTime === -1 ? Infinity : data.blackTime;
                     whitePlayer = data.color === 'white' ? message.author : opponent;
                     blackPlayer = data.color === 'black' ? message.author : opponent;
-                    await client.gameStorage.findOneAndDelete({
+                    await client.db.gameStorage.findOneAndDelete({
                         guildId: message.guild.id,
                         userId: message.author.id
                     });
@@ -106,7 +106,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                     client.isPlaying.delete(message.author.id);
                     client.isPlaying.delete(opponent.id);
                     client.games.delete(message.channel.id);
-                    await client.gameStorage.findOneAndDelete({
+                    await client.db.gameStorage.findOneAndDelete({
                         guildId: message.guild.id,
                         userId: message.author.id
                     });
@@ -261,7 +261,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
             .setImage(`attachment://chess.png`);
         const lost = winner.id === message.author.id ? opponent : message.author;
         if (!lost.bot) {
-            await client.money.findOneAndUpdate({
+            await client.db.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: lost.id
             }, {
@@ -278,7 +278,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
         };
         if (!winner.bot) {
             let amount = getRandomInt(5, 15);
-            const storageAfter = await client.money.findOneAndUpdate({
+            const storageAfter = await client.db.money.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: winner.id
             }, {

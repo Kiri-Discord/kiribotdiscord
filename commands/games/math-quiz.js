@@ -58,7 +58,7 @@ exports.run = async(client, message) => {
     if (!msgs.size) return message.channel.send(`sorry! time is up! it was **${answer}** :pensive:`);
     if (msgs.first().content !== answer.toString()) return message.channel.send(`nope, sorry, the answer is **${answer}** :pensive:`);
     let amount = getRandomInt(10, 15);
-    await client.money.findOneAndUpdate({
+    await client.db.money.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
     }, {

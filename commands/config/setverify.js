@@ -6,7 +6,7 @@ exports.run = async(client, message, args, prefix) => {
     if (message.flags[0] === "off") {
         db.verifyChannelID = undefined;
         db.verifyRole = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyChannelID: null,
@@ -62,11 +62,11 @@ exports.run = async(client, message, args, prefix) => {
 
     if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= role.position) return message.channel.send({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }] });
 
-    if (message.guild.me.roles.highest.position <= role.position) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
+    if (!role.editable) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
     db.verifyChannelID = channel.id;
     db.verifyRole = role.id;
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             verifyChannelID: channel.id,

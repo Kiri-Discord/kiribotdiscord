@@ -15,23 +15,23 @@ exports.run = async(client, message, args) => {
         }]
     });
     let cooldown = 8.64e+7;
-    let storage = await client.money.findOne({
+    let storage = await client.db.money.findOne({
         userId: user.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.money;
+        const model = client.db.money;
         storage = new model({
             userId: user.id,
             guildId: message.guild.id
         });
     };
-    let cooldownStorage = await client.cooldowns.findOne({
+    let cooldownStorage = await client.db.cooldowns.findOne({
         userId: user.id,
         guildId: message.guild.id
     });
     if (!cooldownStorage) {
-        const model = client.cooldowns;
+        const model = client.db.cooldowns;
         cooldownStorage = new model({
             userId: user.id,
             guildId: message.guild.id

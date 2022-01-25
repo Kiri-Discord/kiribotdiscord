@@ -2,12 +2,12 @@ const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require('common-tags');
 exports.run = async(client, message, args) => {
         let cooldown = 8.64e+7;
-        let cooldownStorage = await client.cooldowns.findOne({
+        let cooldownStorage = await client.db.cooldowns.findOne({
             userId: message.author.id,
             guildId: message.guild.id
         });
         if (!cooldownStorage) {
-            const model = client.cooldowns
+            const model = client.db.cooldowns
             cooldownStorage = new model({
                 userId: message.author.id,
                 guildId: message.guild.id
@@ -34,7 +34,7 @@ exports.run = async(client, message, args) => {
                 let finalAmount;
 
                 let amount = getRandomInt(10, 30);
-                const voted = await client.vote.findOne({
+                const voted = await client.db.vote.findOne({
                     userID: message.author.id
                 });
                 if (!voted) {
@@ -42,13 +42,13 @@ exports.run = async(client, message, args) => {
                     finalAmount = amount;
                 } else {
                     bonus = true;
-                    await client.vote.findOneAndDelete({
+                    await client.db.vote.findOneAndDelete({
                         userID: message.author.id
                     });
                     bonusAmount = calcBonus(amount, voted.collectMutiply || 50);
                     finalAmount = amount + bonusAmount
                 };
-                await client.cooldowns.findOneAndUpdate({
+                await client.db.cooldowns.findOneAndUpdate({
                     guildId: message.guild.id,
                     userId: message.author.id
                 }, {
@@ -59,7 +59,7 @@ exports.run = async(client, message, args) => {
                     upsert: true,
                     new: true,
                 });
-                const storageAfter = await client.money.findOneAndUpdate({
+                const storageAfter = await client.db.money.findOneAndUpdate({
                     guildId: message.guild.id,
                     userId: message.author.id
                 }, {

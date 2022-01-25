@@ -6,24 +6,24 @@ exports.run = async(client, interaction) => {
         const amount = interaction.options.getInteger('amount');
 
         if (amount < 0) return interaction.reply({ content: 'the amount of token that you want to bet must not be lower than 0 :pensive:', ephemeral: true })
-        let storage = await client.money.findOne({
+        let storage = await client.db.money.findOne({
             userId: interaction.user.id,
             guildId: interaction.guild.id
         });
         if (!storage) {
-            const model = client.money
+            const model = client.db.money
             storage = new model({
                 userId: interaction.user.id,
                 guildId: interaction.guild.id
             });
         };
         await interaction.deferReply();
-        let cooldownStorage = await client.cooldowns.findOne({
+        let cooldownStorage = await client.db.cooldowns.findOne({
             userId: interaction.user.id,
             guildId: interaction.guild.id
         });
         if (!cooldownStorage) {
-            const model = client.cooldowns
+            const model = client.db.cooldowns
             cooldownStorage = new model({
                 userId: interaction.user.id,
                 guildId: interaction.guild.id
@@ -40,7 +40,7 @@ exports.run = async(client, interaction) => {
         };
         const result = Math.floor(Math.random() * 10);
 
-        await client.cooldowns.findOneAndUpdate({
+        await client.db.cooldowns.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {
@@ -53,7 +53,7 @@ exports.run = async(client, interaction) => {
         });
 
         if (result < 5) {
-            const storageAfter = await client.money.findOneAndUpdate({
+            const storageAfter = await client.db.money.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -76,7 +76,7 @@ exports.run = async(client, interaction) => {
             let bonus;
             let bonusAmount;
             let finalAmount;
-            const voted = await client.vote.findOne({
+            const voted = await client.db.vote.findOne({
                 userID: interaction.user.id
             });
             if (!voted) {
@@ -84,13 +84,13 @@ exports.run = async(client, interaction) => {
                 finalAmount = amount;
             } else {
                 bonus = true;
-                await client.vote.findOneAndDelete({
+                await client.db.vote.findOneAndDelete({
                     userID: interaction.user.id
                 });
                 bonusAmount = calcBonus(amount, voted.collectMutiply || 50);
                 finalAmount = parseInt(amount) + bonusAmount;
             };
-            const storageAfter = await client.money.findOneAndUpdate({
+            const storageAfter = await client.db.money.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {

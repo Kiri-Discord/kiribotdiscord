@@ -3,19 +3,19 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 exports.run = async(client, interaction) => {
     const toUse = interaction.options.getString('item');
     await interaction.deferReply();
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!storage) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `D: you don't have any item to use` }] });
     if (toUse.toLowerCase() === "ticket") {
         if (storage.eqTicket < 1) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `D: you don't have any ticket to use` }] });
-        let cooldownStorage = await client.cooldowns.findOne({
+        let cooldownStorage = await client.db.cooldowns.findOne({
             userId: interaction.user.id,
             guildId: interaction.guild.id
         });
         if (!cooldownStorage) {
-            const model = client.cooldowns
+            const model = client.db.cooldowns
             cooldownStorage = new model({
                 userId: interaction.user.id,
                 guildId: interaction.guild.id

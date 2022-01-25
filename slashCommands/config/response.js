@@ -7,7 +7,7 @@ exports.run = async(client, interaction) => {
     const db = client.guildsStorage.get(interaction.guild.id);
     await interaction.deferReply();
     db.responseType = type;
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
         guildID: interaction.guild.id,
     }, {
         responseType: type

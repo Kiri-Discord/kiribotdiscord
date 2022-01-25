@@ -7,7 +7,7 @@ exports.run = async(client, message, args, prefix) => {
     if (queue.karaoke.isEnabled) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `autoplay is not possible when scrolling lyrics is on :pensive: you can turn it off by \`${prefix}scrolling-lyrics off\`` }] });
     queue.autoPlay = !queue.autoPlay;
     const autoEmoji = client.customEmojis.get('autoplay') ? client.customEmojis.get('autoplay').toString() : '🔁'
-    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `${autoEmoji} autoplay has been turned ${queue.autoPlay ? "on" : "off"} for the current queue! i will start enqueuing new song when the queue is empty!` }] })
+    return message.channel.send({ embeds: [{ color: "#bee7f7", description: `${autoEmoji} autoplay has been turned ${queue.autoPlay ? "on" : "off"} for the current queue! ${queue.autoPlay ? "i will start enqueuing new song when the queue is empty!" : ""}` }] })
 };
 
 exports.help = {
@@ -22,6 +22,5 @@ exports.conf = {
     aliases: ['auto-play'],
     cooldown: 3,
     guildOnly: true,
-    channelPerms: ["EMBED_LINKS"],
-    maintenance: true
+    channelPerms: ["EMBED_LINKS"]
 };

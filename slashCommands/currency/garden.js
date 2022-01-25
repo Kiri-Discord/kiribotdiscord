@@ -3,12 +3,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    let garden = await client.garden.findOne({
+    let garden = await client.db.garden.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!garden) {
-        const model = client.garden
+        const model = client.db.garden
         garden = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id,

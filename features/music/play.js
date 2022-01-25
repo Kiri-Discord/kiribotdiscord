@@ -262,14 +262,14 @@ module.exports = class Queue {
                 noReplace: noSkip
             });
             if (song.type === 'yt' || song.type === 'sc' || song.type === 'sp') {
-                const fetched = await this.client.charts.findOne({
+                const fetched = await this.client.db.charts.findOne({
                     songID: song.info.uri,
                 });
                 if (fetched) {
                     fetched.timesPlayed += 1;
                     await fetched.save();
                 } else {
-                    const songDB = new this.client.charts({
+                    const songDB = new this.client.db.charts({
                         songID: song.info.uri,
                         timesPlayed: 1,
                         songName: song.info.title,

@@ -94,7 +94,7 @@ exports.run = async(client, interaction) => {
         const winner = interaction.guild.members.cache.get(battle.winner.toString().replace(/[<>@!]/g, "")).user;
         const lost = winner.id === interaction.user.id ? opponent : interaction.user;
         if (!lost.bot) {
-            await client.money.findOneAndUpdate({
+            await client.db.money.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: lost.id
             }, {
@@ -111,7 +111,7 @@ exports.run = async(client, interaction) => {
         };
         if (!winner.bot) {
             let amount = getRandomInt(10, 25);
-            const storageAfter = await client.money.findOneAndUpdate({
+            const storageAfter = await client.db.money.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: winner.id
             }, {

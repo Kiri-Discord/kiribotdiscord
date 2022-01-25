@@ -18,7 +18,7 @@ exports.run = async(client, message, args) => {
     let rank;
     let mention = client.utils.parseMember(message, args[0]) || message.member;
 
-    let target = await client.dbleveling.findOne({
+    let target = await client.db.leveling.findOne({
         guildId: message.guild.id,
         userId: mention.user.id
     });
@@ -29,7 +29,7 @@ exports.run = async(client, message, args) => {
 
     let neededXP = res.lowerBound - target.xp
 
-    const result = await client.dbleveling.find({
+    const result = await client.db.leveling.find({
         guildId: message.guild.id,
     }).sort({
         xp: -1
@@ -41,7 +41,7 @@ exports.run = async(client, message, args) => {
     for (let counter = 0; counter < result.length; ++counter) {
         let member = message.guild.members.cache.get(result[counter].userId)
         if (!member) {
-            client.dbleveling.findOneAndDelete({
+            client.db.leveling.findOneAndDelete({
                 userId: result[counter].userId,
                 guildId: message.guild.id,
             }, (err) => {

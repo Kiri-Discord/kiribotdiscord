@@ -89,7 +89,7 @@ exports.run = async(client, interaction, args) => {
         if (!winner) return interaction.channel.send('oh... no one won.');
         const lost = winner.id === interaction.user.id ? opponent : interaction.user;
         let amount = getRandomInt(10, 25);
-        await client.money.findOneAndUpdate({
+        await client.db.money.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: lost.id
         }, {
@@ -103,7 +103,7 @@ exports.run = async(client, interaction, args) => {
             upsert: true,
             new: true,
         });
-        const storageAfter = await client.money.findOneAndUpdate({
+        const storageAfter = await client.db.money.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: winner.id
         }, {

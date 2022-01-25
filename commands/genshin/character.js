@@ -130,7 +130,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (char.icon)
-            embed.setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
+            embed.setThumbnail(`https://hutaobot.moe/${char.icon}`)
 
         if (relativePage == 0) {
             embed.setTitle(`${char.name}: Description`)
@@ -255,7 +255,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     function getStatsPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
+            .setThumbnail(`https://hutaobot.moe/${char.icon}`)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (relativePage == 0) {
@@ -316,7 +316,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${char.name}`)
         if (char.icon)
-            embed.setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
+            embed.setThumbnail(`https://hutaobot.moe/${char.icon}`)
             const videos = char.media.videos ? (`**Promotional videos**
             ${Object
                 .entries(char.media.videos)
@@ -340,7 +340,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setColor(Colors[char.meta.element] ?? "")
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
-        if (char.icon) embed.setThumbnail(`https://genshin.flatisjustice.moe/${char.icon}`)
+        if (char.icon) embed.setThumbnail(`https://hutaobot.moe/${char.icon}`)
 
         function isValueTable(talent) {
             return talent.values != undefined
@@ -426,7 +426,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
 
             if (skills.constellations && page++ == relativePage) {
                 embed.setTitle(`${char.name}: Constellations`)
-                    .setThumbnail(`https://genshin.flatisjustice.moe/${skills.constellations[0]?.icon}`)
+                    .setThumbnail(`https://hutaobot.moe/${skills.constellations[0]?.icon}`)
                 let c = 0
                 for (const constellation of skills.constellations)
                     embed.addField(`C${++c}: ${constellation.name}`, constellation.desc)

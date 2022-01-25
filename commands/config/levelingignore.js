@@ -2,7 +2,7 @@ exports.run = async(client, message, args) => {
     const db = client.guildsStorage.get(message.guild.id);
     if (message.flags[0] === "off") {
         db.ignoreLevelingsChannelID = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             ignoreLevelingsChannelID: null
@@ -13,7 +13,7 @@ exports.run = async(client, message, args) => {
     let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
     if (!channel) channel = message.channel;
     db.ignoreLevelingsChannelID = channel.id;
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             ignoreLevelingsChannelID: channel.id

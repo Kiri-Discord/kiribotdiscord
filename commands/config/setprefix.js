@@ -6,7 +6,7 @@ exports.run = async(client, message, args, prefix) => {
     const db = client.guildsStorage.get(message.guild.id);
     db.prefix = args[0];
 
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
             guildID: message.guild.id,
         }, {
             prefix: args[0]

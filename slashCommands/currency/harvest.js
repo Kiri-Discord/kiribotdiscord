@@ -4,12 +4,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 exports.run = async(client, interaction) => {
     const slot = interaction.options.getString('slot');
     await interaction.deferReply();
-    let garden = await client.garden.findOne({
+    let garden = await client.db.garden.findOne({
         userId: interaction.user.id,
         guildId: interaction.guild.id
     });
     if (!garden) {
-        const model = client.garden;
+        const model = client.db.garden;
         garden = new model({
             userId: interaction.user.id,
             guildId: interaction.guild.id,
@@ -33,7 +33,7 @@ exports.run = async(client, interaction) => {
 
         if (getStage !== "4") return interaction.editReply(':x: the plant in the slot you choose is not ripe enough to be harvested yet.');
         if (slot === '1') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -47,7 +47,7 @@ exports.run = async(client, interaction) => {
             });
         }
         if (slot === '2') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -61,7 +61,7 @@ exports.run = async(client, interaction) => {
             });
         }
         if (slot === '3') {
-            await client.garden.findOneAndUpdate({
+            await client.db.garden.findOneAndUpdate({
                 guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, {
@@ -106,7 +106,7 @@ exports.run = async(client, interaction) => {
         if (rarity === "very rare") worth = 500
         if (rarity === "legendary") worth = 1000
 
-        await client.money.findOneAndUpdate({
+        await client.db.money.findOneAndUpdate({
             guildId: interaction.guild.id,
             userId: interaction.user.id
         }, {

@@ -7,7 +7,7 @@ exports.run = async(client, interaction) => {
         let author = interaction.user;
         await interaction.deferReply();
         if (!query) {
-            const setting = await client.dbguilds.findOne({
+            const setting = await client.db.guilds.findOne({
                 guildID: interaction.guild.id
             });
             const prefix = setting ? setting.prefix : client.config.prefix;

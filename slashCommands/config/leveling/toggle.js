@@ -2,7 +2,7 @@ exports.run = async(client, interaction, db) => {
     const enable = interaction.options.getString('toggle') === 'on' ? true : false;
     await interaction.deferReply();
     db.enableLevelings = enable;
-    await client.dbguilds.findOneAndUpdate({
+    await client.db.guilds.findOneAndUpdate({
         guildID: interaction.guild.id,
     }, {
         enableLevelings: enable

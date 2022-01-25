@@ -5,14 +5,14 @@ exports.run = async(client, interaction, args) => {
     if (user.bot) return interaction.reply({ content: 'that user is a bot :pensive:', ephemeral: true });
     await interaction.deferReply();
     if (user.id === interaction.user.id) {
-        const author = await client.love.findOne({
+        const author = await client.db.love.findOne({
             userID: interaction.user.id,
             guildID: interaction.guild.id
         });
         if (!author) {
             return interaction.editReply('you are single');
         } else {
-            const target = await client.love.findOne({
+            const target = await client.db.love.findOne({
                 userID: user.id,
                 guildID: interaction.guild.id
             });
@@ -20,7 +20,7 @@ exports.run = async(client, interaction, args) => {
                 if (target.marriedID) {
                     const married = interaction.guild.members.cache.get(target.marriedID);
                     if (!married) {
-                        await client.love.findOneAndDelete({
+                        await client.db.love.findOneAndDelete({
                             guildID: interaction.guild.id,
                             userID: user.id,
                         });
@@ -36,7 +36,7 @@ exports.run = async(client, interaction, args) => {
             };
         };
     };
-    const target = await client.love.findOne({
+    const target = await client.db.love.findOne({
         userID: user.id,
         guildID: interaction.guild.id
     });
@@ -44,7 +44,7 @@ exports.run = async(client, interaction, args) => {
         if (target.marriedID) {
             const married = interaction.guild.members.cache.get(target.marriedID);
             if (!married) {
-                await client.love.findOneAndDelete({
+                await client.db.love.findOneAndDelete({
                     guildID: interaction.guild.id,
                     userID: user.id,
                 });

@@ -142,12 +142,12 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
             storage = new client.globalStorage();
             storage.lastChartReset = Date.now();
             await storage.save();
-            await client.charts.deleteMany({});
+            await client.db.charts.deleteMany({});
         } else {
             if (!storage.lastChartReset) {
                 storage.lastChartReset = Date.now();
                 await storage.save();
-                return client.charts.deleteMany({});
+                return client.db.charts.deleteMany({});
             };
             const lastReset = new Date(storage.lastChartReset);
             const today = new Date(Date.now());
@@ -156,7 +156,7 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
             } else {
                 storage.lastChartReset = Date.now();
                 await storage.save();
-                await client.charts.deleteMany({});
+                await client.db.charts.deleteMany({});
             }
         };
         logger.log('info', '[MUSIC] Deleted all charts!');

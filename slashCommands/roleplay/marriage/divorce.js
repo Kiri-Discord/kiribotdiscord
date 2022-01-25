@@ -3,7 +3,7 @@ const { stripIndent } = require('common-tags');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    const author = await client.love.findOne({
+    const author = await client.db.love.findOne({
         userID: interaction.user.id,
         guildID: interaction.guild.id
     });
@@ -11,12 +11,12 @@ exports.run = async(client, interaction) => {
         return interaction.editReply('you are not married!');
     } else {
         if (!author.marriedID) return interaction.editReply('you are not married!');
-        const marry = await client.love.findOne({
+        const marry = await client.db.love.findOne({
             userID: author.marriedID,
             guildID: interaction.guild.id
         });
         if (!marry) {
-            await client.love.findOneAndDelete({
+            await client.db.love.findOneAndDelete({
                 guildID: interaction.guild.id,
                 userID: interaction.user.id
             });
@@ -24,7 +24,7 @@ exports.run = async(client, interaction) => {
         } else {
             if (marry.marriedID) {
                 if (marry.marriedID !== interaction.user.id) {
-                    await client.love.findOneAndDelete({
+                    await client.db.love.findOneAndDelete({
                         guildID: interaction.guild.id,
                         userID: interaction.user.id
                     });
@@ -32,7 +32,7 @@ exports.run = async(client, interaction) => {
                 } else {
                     const member = interaction.guild.members.cache.get(author.marriedID);
                     if (!member) {
-                        await client.love.findOneAndDelete({
+                        await client.db.love.findOneAndDelete({
                             guildID: interaction.guild.id,
                             userID: interaction.user.id
                         });
@@ -42,7 +42,7 @@ exports.run = async(client, interaction) => {
                     }
                 }
             } else {
-                await client.love.findOneAndDelete({
+                await client.db.love.findOneAndDelete({
                     guildID: interaction.guild.id,
                     userID: interaction.user.id
                 });
@@ -98,11 +98,11 @@ async function divorce(client, interaction, member) {
             res.editReply(`**${member.user.username}** declined your request :(`);
             return collector.stop();
         } else if (res.customId === 'yes') {
-            await client.love.findOneAndDelete({
+            await client.db.love.findOneAndDelete({
                 guildID: interaction.guild.id,
                 userID: interaction.user.id
             });
-            await client.love.findOneAndDelete({
+            await client.db.love.findOneAndDelete({
                 userID: member.user.id,
                 guildID: interaction.guild.id
             });

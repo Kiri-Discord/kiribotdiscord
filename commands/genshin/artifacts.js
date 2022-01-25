@@ -1,4 +1,4 @@
-const { Colors, createTable, sendMessage, simplePaginator } = require('../../features/genshin/utils');
+const { Colors, createTable, sendMessage, simplePaginator, getLinkToGuide } = require('../../features/genshin/utils');
 const { MessageEmbed } = require("discord.js");
 
 exports.run = async (client, message, args, prefix) => {
@@ -54,7 +54,7 @@ exports.run = async (client, message, args, prefix) => {
     function getArti(set, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://genshin.flatisjustice.moe/${set.artis.find(x => x.icon)?.icon ?? "img/unknown.png"}`)
+            .setThumbnail(`https://hutaobot.moe/${set.artis.find(x => x.icon)?.icon ?? "img/unknown.png"}`)
             .setFooter({text: `page ${currentPage} of ${maxPages}`})
 
         if (relativePage == 0) {
@@ -64,6 +64,11 @@ exports.run = async (client, message, args, prefix) => {
             embed.setTitle(`${set.name}: Set info`)
                 .addField("Possible levels", set.levels.map(k => k + ":star:").join(", "))
                 .setDescription(`This set contains ${set.artis.length} artifacts`)
+
+            const guides = genshinData.getGuides("artifact", set.name).map(({ guide, page }) => getLinkToGuide(guide, page)).join("\n")
+            if (guides)
+                embed.addField("Guides", guides)
+    
 
             return embed
         }
@@ -81,7 +86,7 @@ ${createTable(
         mainStats.sort((a, b) => b.weight - a.weight).map(am => [`${(am.weight / total * 100).toFixed(1)}%`, am.name])
     )}
 \`\`\``)
-                .setThumbnail(`https://genshin.flatisjustice.moe/${arti.icon}`)
+                .setThumbnail(`https://hutaobot.moe/${arti.icon}`)
 
             return embed
         }

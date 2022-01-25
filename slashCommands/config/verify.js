@@ -11,7 +11,7 @@ exports.run = async(client, interaction) => {
             await interaction.deferReply();
             db.verifyChannelID = undefined;
             db.verifyRole = undefined;
-            await client.dbguilds.findOneAndUpdate({
+            await client.db.guilds.findOneAndUpdate({
                 guildID: interaction.guild.id,
             }, {
                 verifyChannelID: null,

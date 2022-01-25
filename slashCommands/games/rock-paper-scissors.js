@@ -95,7 +95,7 @@ class Game {
         switch (type) {
             case 'p1':
                 winMessage = `**${this.interaction.user.username}** wins!`;
-                await this.client.money.findOneAndUpdate({
+                await this.client.db.money.findOneAndUpdate({
                     guildId: this.interaction.guild.id,
                     userId: this.interaction.user.id
                 }, {
@@ -110,7 +110,7 @@ class Game {
                     upsert: true,
                     new: true,
                 });
-                await this.client.money.findOneAndUpdate({
+                await this.client.db.money.findOneAndUpdate({
                     guildId: this.interaction.guild.id,
                     userId: this.challenged.id
                 }, {
@@ -128,7 +128,7 @@ class Game {
                 break;
             case 'p2':
                 winMessage = `**${this.challenged.username}** wins!`;
-                await this.client.money.findOneAndUpdate({
+                await this.client.db.money.findOneAndUpdate({
                     guildId: this.interaction.guild.id,
                     userId: this.interaction.user.id
                 }, {
@@ -142,7 +142,7 @@ class Game {
                     upsert: true,
                     new: true,
                 });
-                await this.client.money.findOneAndUpdate({
+                await this.client.db.money.findOneAndUpdate({
                     guildId: this.interaction.guild.id,
                     userId: this.challenged.id
                 }, {

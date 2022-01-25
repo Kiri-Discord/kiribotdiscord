@@ -3,23 +3,23 @@ const itemsList = require('../../assets/items.json');
 const itemsName = Object.keys(itemsList);
 
 exports.run = async(client, message, args, prefix) => {
-    let money = await client.money.findOne({
+    let money = await client.db.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!money) {
-        const model = client.money
+        const model = client.db.money
         money = new model({
             userId: message.author.id,
             guildId: message.guild.id,
         });
     };
-    let storage = await client.inventory.findOne({
+    let storage = await client.db.inventory.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!storage) {
-        const model = client.inventory
+        const model = client.db.inventory
         storage = new model({
             userId: message.author.id,
             guildId: message.guild.id

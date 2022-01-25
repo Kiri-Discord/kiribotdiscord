@@ -18,12 +18,12 @@ exports.run = async(client, message, args, prefix) => {
     if (!toBuy) return message.reply(`what item do you want to buy? for a list of item that you can purchase, please check \`${prefix}shop\` <3`)
     if (!items.includes(toBuy)) return message.reply(`\`${toBuy}\` is an invalid item! check \`${prefix}shop\` for a list of avaliable item :grin:`);
 
-    let moneyStorage = await client.money.findOne({
+    let moneyStorage = await client.db.money.findOne({
         userId: message.author.id,
         guildId: message.guild.id
     });
     if (!moneyStorage) {
-        const model = client.money
+        const model = client.db.money
         moneyStorage = new model({
             userId: message.author.id,
             guildId: message.guild.id,
@@ -42,7 +42,7 @@ exports.run = async(client, message, args, prefix) => {
             .setFooter({text: `your current balance: ⏣ ${money - total}`})
 
         if (item === 'rings') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -58,7 +58,7 @@ exports.run = async(client, message, args, prefix) => {
         };
 
         if (item === 'seeds') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -74,7 +74,7 @@ exports.run = async(client, message, args, prefix) => {
         }
 
         if (item === 'worms') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {
@@ -89,7 +89,7 @@ exports.run = async(client, message, args, prefix) => {
             });
         };
         if (item === 'eqTicket') {
-            await client.inventory.findOneAndUpdate({
+            await client.db.inventory.findOneAndUpdate({
                 guildId: message.guild.id,
                 userId: message.author.id
             }, {

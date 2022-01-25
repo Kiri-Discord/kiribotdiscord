@@ -2,7 +2,7 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 
 exports.run = async(client, message, args) => {
-    const author = await client.love.findOne({
+    const author = await client.db.love.findOne({
         userID: message.author.id,
         guildID: message.guild.id
     });
@@ -10,12 +10,12 @@ exports.run = async(client, message, args) => {
         return message.reply('you are not married!');
     } else {
         if (!author.marriedID) return message.reply('you are not married!');
-        const marry = await client.love.findOne({
+        const marry = await client.db.love.findOne({
             userID: author.marriedID,
             guildID: message.guild.id
         });
         if (!marry) {
-            await client.love.findOneAndDelete({
+            await client.db.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
             });
@@ -23,7 +23,7 @@ exports.run = async(client, message, args) => {
         } else {
             if (marry.marriedID) {
                 if (marry.marriedID !== message.author.id) {
-                    await client.love.findOneAndDelete({
+                    await client.db.love.findOneAndDelete({
                         guildID: message.guild.id,
                         userID: message.author.id
                     });
@@ -31,7 +31,7 @@ exports.run = async(client, message, args) => {
                 } else {
                     const member = message.guild.members.cache.get(author.marriedID);
                     if (!member) {
-                        await client.love.findOneAndDelete({
+                        await client.db.love.findOneAndDelete({
                             guildID: message.guild.id,
                             userID: message.author.id
                         });
@@ -41,7 +41,7 @@ exports.run = async(client, message, args) => {
                     }
                 }
             } else {
-                await client.love.findOneAndDelete({
+                await client.db.love.findOneAndDelete({
                     guildID: message.guild.id,
                     userID: message.author.id
                 });
@@ -97,11 +97,11 @@ async function divorce(client, message, member) {
             res.editReply(`**${member.user.username}** declined your request :(`);
             return collector.stop();
         } else if (res.customId === 'yes') {
-            await client.love.findOneAndDelete({
+            await client.db.love.findOneAndDelete({
                 guildID: message.guild.id,
                 userID: message.author.id
             });
-            await client.love.findOneAndDelete({
+            await client.db.love.findOneAndDelete({
                 userID: member.user.id,
                 guildID: message.guild.id
             });

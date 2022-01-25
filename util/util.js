@@ -507,43 +507,43 @@ module.exports = class util {
 	static async purgeDbGuild(client, id) {
 		client.guildsStorage.delete(id);
 	
-		await client.dbguilds.findOneAndDelete({
+		await client.db.guilds.findOneAndDelete({
 			guildID: id
 		});
 	
-		await client.dbverify.deleteMany({
+		await client.db.verify.deleteMany({
 			guildID: id,
 		});
 			
-		await client.dbembeds.deleteMany({
+		await client.db.embeds.deleteMany({
 			guildID: id,
 		});
 		
-		await client.dbleveling.deleteMany({
+		await client.db.leveling.deleteMany({
 			guildId: id,
 		});
-		await client.cooldowns.deleteMany({
+		await client.db.cooldowns.deleteMany({
 			guildId: id
 		});
 	
-		await client.garden.deleteMany({
+		await client.db.garden.deleteMany({
 			guildId: id
 		});
 
-		await client.inventory.deleteMany({
+		await client.db.inventory.deleteMany({
 			guildId: id
 		});
 
-		await client.money.deleteMany({
+		await client.db.money.deleteMany({
 			guildId: id
 		});
 	
 	
-		await client.love.deleteMany({
+		await client.db.love.deleteMany({
 			guildID: id
 		});
 	
-		await client.gameStorage.deleteMany({
+		await client.db.gameStorage.deleteMany({
 			guildId: id
 		});
 	
@@ -578,37 +578,37 @@ module.exports = class util {
 	};
 
 	static async purgeDbUser(client, guildId, userId) {
-		await client.dbleveling.findOneAndDelete({
+		await client.db.leveling.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
 		});
 	
-		await client.dbverify.findOneAndDelete({
+		await client.db.verify.findOneAndDelete({
 			guildID: guildId,
 			userID: userId,
 		});
-		await client.cooldowns.findOneAndDelete({
+		await client.db.cooldowns.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
 		});
-		await client.garden.findOneAndDelete({
+		await client.db.garden.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
 		});
-		await client.gameStorage.findOneAndDelete({
+		await client.db.gameStorage.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
 		});
-		await client.money.findOneAndDelete({
+		await client.db.money.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
 		});
-		await client.inventory.findOneAndDelete({
+		await client.db.inventory.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,
 		});
 
-		await client.love.findOneAndDelete({
+		await client.db.love.findOneAndDelete({
 			guildID: guildId,
 		    userID: userId,
 		});

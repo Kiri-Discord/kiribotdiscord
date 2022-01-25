@@ -5,7 +5,7 @@ exports.run = async(client, interaction, db) => {
     if (off) {
         await interaction.deferReply();
         db.verifyTimeout = undefined;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: interaction.guild.id,
         }, {
             verifyTimeout: null
@@ -27,7 +27,7 @@ exports.run = async(client, interaction, db) => {
     try {
         await interaction.deferReply();
         db.verifyTimeout = convert;
-        await client.dbguilds.findOneAndUpdate({
+        await client.db.guilds.findOneAndUpdate({
             guildID: interaction.guild.id,
         }, {
             verifyTimeout: convert

@@ -8,7 +8,7 @@ exports.run = async(client, interaction, db) => {
     await interaction.deferReply();
     db.greetChannelID = channel.id;
 
-    const storageAfter = await client.dbguilds.findOneAndUpdate({
+    const storageAfter = await client.db.guilds.findOneAndUpdate({
         guildID: interaction.guild.id,
     }, {
         greetChannelID: channel.id
