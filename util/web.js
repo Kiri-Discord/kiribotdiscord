@@ -3,6 +3,7 @@ const config = require('../config.json');
 const WebSocket = require('ws');
 const { stripIndents } = require('common-tags');
 const { deleteIfAble } = require('../util/util');
+let count = 0;
 module.exports = {
     init: (client) => {
         const wsConnection = new WebSocket(config.baseWSURL, {
@@ -96,14 +97,16 @@ module.exports = {
         };
 
         wsConnection.onclose = (e) => {
-            logger.log('error', '[WEBSOCKET] Socket is closed. Reconnect will be attempted in 30 seconds.', e.reason);
+            if (count == 10) return logger.log('error', `[WEBSOCKET] WebSocket closed with code ${e.code} and reason ${e.reason} **FINAL**`);
+            count++;
+            logger.log('error', `[WEBSOCKET] Socket is closed with code ${e.code} Reconnect will be attempted in 5 seconds. Attempt: ${count}/10`, e.reason);
             setTimeout(function() {
                 module.exports.init(client);
-            }, 30000);
+            }, 5000);
         };
 
         wsConnection.onerror = (err) => {
-            logger.log('error', `[WEBSOCKET] Socket encountered error and is restarting in 30 seconds (${err.message})`);
+            logger.log('error', `[WEBSOCKET] Socket encountered error and is restarting in 5 seconds (${err.message})`);
             wsConnection.close();
             // setTimeout(function() {
             //     module.exports.init(client);
