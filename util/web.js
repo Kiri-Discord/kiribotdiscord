@@ -13,6 +13,12 @@ module.exports = {
         });
         wsConnection.onopen = () => {
             logger.log('info', '[WEBSOCKET] Connected to WebSocket!');
+            const interval = setInterval(() => {
+                wsConnection.send(JSON.stringify({
+                    type: 'keepAlive'
+                }));
+            }, 50000);
+            interval.unref();
         };
         wsConnection.onmessage = async(e) => {
             const data = JSON.parse(e.data);
