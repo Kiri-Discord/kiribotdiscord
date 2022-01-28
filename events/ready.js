@@ -8,7 +8,7 @@ module.exports = async client => {
     logger.log('info', `[DISCORD] Logged in as ${client.user.tag}!`);
     client.finished = false;
     client.user.setPresence({ activities: [{ name: 'waking up' }], status: 'dnd' });
-    logger.log('info', '[DISCORD] Fetching server...');
+    logger.log('info', '[MONGO] Fetching server...');
     const allServer = await client.db.guilds.find({});
     if (allServer.length) {
         for (const guild of allServer) {
@@ -40,8 +40,6 @@ module.exports = async client => {
         };
     };
     if (process.env.NO_WEB_SERVER !== 'true') {
-        logger.log('info', `[DISCORD] Fetching all unverified members..`);
-        await client.verifytimers.fetchAll();
         web.init(client);
     };
     if (process.env.NOLAVA !== 'true') await music.init(client);

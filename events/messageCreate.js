@@ -1,6 +1,6 @@
 const { Collection } = require("discord.js");
 const cooldowns = new Collection();
-const { deleteIfAble, reactIfAble } = require("../util/util");
+const { reactIfAble } = require("../util/util");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async (client, message) => {
@@ -32,25 +32,7 @@ module.exports = async (client, message) => {
                 .has("SEND_MESSAGES")
         )
             return;
-        const alreadyHasVerifyRole = message.member._roles.includes(
-            setting.verifyRole
-        );
-        if (message.channel.id === setting.verifyChannelID) {
-            if (alreadyHasVerifyRole) {
-                await deleteIfAble(message);
-                return message.channel
-                    .send(
-                        `you just messaged in a verification channel! to change or remove it, do \`${prefix}set-verify -off\` or see \`${prefix}help set-verify\``
-                    )
-                    .then((m) => {
-                        setTimeout(() => {
-                            if (m.deletable) m.delete();
-                        }, 4000);
-                    });
-            } else {
-                return client.emit("verify", message, setting);
-            }
-        }
+
         if (setting.enableLevelings && message.channel.isText()) {
             client.emit("experience", message, setting);
         }

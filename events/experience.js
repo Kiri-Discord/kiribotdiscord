@@ -1,4 +1,5 @@
 const varReplace = require('../util/variableReplace');
+const { deleteIfAble } = require('../util/util');
 
 module.exports = async(client, message, setting) => {
     let prefix = setting.prefix;
@@ -7,11 +8,9 @@ module.exports = async(client, message, setting) => {
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 
     const ignorechannel = setting.ignoreLevelingsChannelID;
-    const verifychannel = setting.verifyChannelID;
 
     if (prefixRegex.test(message.content)) return;
     if (ignorechannel && message.channel.id === ignorechannel) return;
-    if (verifychannel && message.channel.id === verifychannel) return;
     if (message.content.match(prefixRegex)) return;
 
     let recent = client.recent;
@@ -56,7 +55,7 @@ module.exports = async(client, message, setting) => {
         else levelMessage = await channel.send({ embeds: [varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp })] });
         if (channel.id === message.channel.id) {
             setTimeout(() => {
-                levelMessage.delete();
+                deleteIfAble(levelMessage);
             }, 5000);
         }
     };

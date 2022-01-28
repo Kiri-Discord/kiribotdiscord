@@ -510,11 +510,6 @@ module.exports = class util {
 		await client.db.guilds.findOneAndDelete({
 			guildID: id
 		});
-	
-		await client.db.verify.deleteMany({
-			guildID: id,
-		});
-			
 		await client.db.embeds.deleteMany({
 			guildID: id,
 		});
@@ -583,10 +578,6 @@ module.exports = class util {
 			userId: userId,
 		});
 	
-		await client.db.verify.findOneAndDelete({
-			guildID: guildId,
-			userID: userId,
-		});
 		await client.db.cooldowns.findOneAndDelete({
 			guildId: guildId,
 			userId: userId,

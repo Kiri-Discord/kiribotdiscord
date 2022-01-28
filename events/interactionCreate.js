@@ -90,40 +90,6 @@ module.exports = async(client, interaction) => {
             logger.log('error', error);
             return interaction.reply({ content: `sorry, i got an error while executing that command for you. please seek some support if this happen frequently ${duh}`, ephemeral: true })
         };
-    } else if (interaction.isButton()) {
-        if (interaction.customId === 'verify_unsolve_captcha') {
-            const embed = new MessageEmbed()
-            .addField('**possible problems:**', 
-            `
-            - the link might have been used before. don't share your link with anyone!
-            - you might have been banned from the server.
-            - your link has been expired. every verification link is valid for 15 minutes. type \`resend\` in the verification channel to start the verification process again!
-            - if you don't get the successful page below, there is probably something wrong with me. please call an admin to manually verify you, and report the bug to my dev!
-            - Google reCAPTCHA have detected a suspicious activity on your network, and have temporaily block you from solving the captcha :pensive:
-            `)
-            .setColor('#cbd4c2')
-            .setImage('https://i.imgur.com/clkFGcx.png');
-            return interaction.reply({ embeds: [embed], ephemeral: true });
-        } else if (interaction.customId === 'verify_didnt_recieve') {
-            const embed = new MessageEmbed()
-            .addField('**possible problems:**', 
-            `
-            - make sure to enable your DM for this server in Privacy Setting (image below) after that you can type \`resend\` here to request another link!
-            - if you have finished the method above and the message still isn't arrive yet, there is probably something wrong with me. please call an admin to manually verify you, and report the bug to my dev!
-            `)
-            .setColor('#cbd4c2')
-            .setImage('https://i.imgur.com/YsJH7ox.jpg');
-            return interaction.reply({ embeds: [embed], ephemeral: true })
-        } else if (interaction.customId === 'verify_cant_talk') {
-            const embed = new MessageEmbed()
-            .addField('**possible problems:**', 
-            `
-            - the server admins forgot to add permission for the role! in this case, call an admin.
-            - i don't have the \`MANAGE_ROLES\` permission to add the role for you, or my roles are lower than that verification role! in this case, call an admin.
-            `)
-            .setColor('#cbd4c2');
-            return interaction.reply({ embeds: [embed], ephemeral: true })
-        };
     } else if (interaction.isAutocomplete()) {
         let commandFile = client.slash.get(interaction.commandName);
         if (!commandFile || !commandFile.suggestion) return;

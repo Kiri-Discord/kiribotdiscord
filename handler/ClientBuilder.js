@@ -1,7 +1,6 @@
 const { Client, Collection } = require("discord.js");
 const PokemonStore = require("../features/pokemon/pokemonstore");
-const VerifyTimer = require("../features/redis/verify");
-const { parseMember } = sync.require("../util/mentionParsing");
+const { parseMember } = require("../util/mentionParsing");
 const DataManager = require("../features/genshin/DataManager");
 module.exports = class kiri extends Client {
     constructor(options) {
@@ -21,8 +20,7 @@ module.exports = class kiri extends Client {
             money: require("../model/currency"),
             love: require("../model/love"),
             guilds: require("../model/guild"),
-            leveling: require("../model/leveling"),
-            verify: require("../model/verify"),
+            leveling: require("../model/leveling")
         }
         this.genshinData = new DataManager();
         this.deletedChannels = new WeakSet();
@@ -44,6 +42,5 @@ module.exports = class kiri extends Client {
         this.leveling = require("../util/LevelingUtil.js");
         this.games = new Collection();
         this.pokemon = new PokemonStore();
-        this.verifytimers = new VerifyTimer(this);
     }
 };

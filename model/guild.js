@@ -13,14 +13,11 @@ const guildSchema = mongoose.Schema({
         default: config.prefix
     },
     logChannelID: String,
-    verifyChannelID: String,
-    verifyRole: String,
     ignoreLevelingsChannelID: String,
     enableLevelings: {
         type: Boolean,
         default: false
     },
-    verifyTimeout: Number,
     responseType: {
         type: String,
         default: 'natural'
