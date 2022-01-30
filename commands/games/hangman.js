@@ -43,7 +43,7 @@ class Game {
         const word = words.first();
         if (!words.size || !word) {
             this.end();
-            this.message.author.send(`this game has expired since you didn't provide any valid word :pensive:`);
+            return this.message.author.send(`this game has expired since you didn't provide any valid word :pensive:`);
         };
         const content = word.content;
         this.word = content;
@@ -61,7 +61,7 @@ class Game {
         const word = words.first()
         if (!words.size || !word) {
             this.end();
-            this.msg.edit('this game has expired lmao');
+            return this.msg.edit('this game has expired lmao');
         };
         const content = word.content;
         this.letter = content;
