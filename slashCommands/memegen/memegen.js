@@ -1,82 +1,82 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const achievementCmd = sync.require('./memegen/achievement');
+const beautifulCmd = sync.require('./memegen/beautiful');
+const bobCmd = sync.require('./memegen/bob-ross');
+const brazzersCmd = sync.require('./memegen/brazzers');
+const classicCmd = sync.require('./memegen/classic-meme');
+const contrastCmd = sync.require('./memegen/contrast');
+const deepFryCmd = sync.require('./memegen/deepfry');
+const desaturateCmd = sync.require('./memegen/desaturate');
+const distortCmd = sync.require('./memegen/distort');
+const ejectCmd = sync.require('./memegen/eject');
+const fishEyeCmd = sync.require('./memegen/fisheye');
+const greyscaleCmd = sync.require('./memegen/greyscale');
+const ifearnoman = sync.require('./memegen/i-fear-no-man');
+const invertCmd = sync.require('./memegen/invert');
+const modernCmd = sync.require('./memegen/modern-meme');
+const pixelizeCmd = sync.require('./memegen/pixelize');
+const steamCmd = sync.require('./memegen/steam-playing');
+const subtitleCmd = sync.require('./memegen/subtitle');
+const timeCmd = sync.require('./memegen/time-card');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
         case 'achievement':
-            const achievementCmd = sync.require('./memegen/achievement');
             achievementCmd.run(client, interaction);
             break;
         case 'beautiful':
-            const beautifulCmd = sync.require('./memegen/beautiful');
             beautifulCmd.run(client, interaction);
             break;
         case 'bob-ross':
-            const bobCmd = sync.require('./memegen/bob-ross');
             bobCmd.run(client, interaction);
             break;
         case 'brazzers':
-            const brazzersCmd = sync.require('./memegen/brazzers');
             brazzersCmd.run(client, interaction);
             break;
         case 'classic-meme':
-            const classicCmd = sync.require('./memegen/classic-meme');
             classicCmd.run(client, interaction);
             break;
         case 'contrast':
-            const contrastCmd = sync.require('./memegen/contrast');
             contrastCmd.run(client, interaction);
             break;
         case 'deepfry':
-            const deepFryCmd = sync.require('./memegen/deepfry');
             deepFryCmd.run(client, interaction);
             break;
         case 'desaturate':
-            const desaturateCmd = sync.require('./memegen/desaturate');
             desaturateCmd.run(client, interaction);
             break;
         case 'distort':
-            const distortCmd = sync.require('./memegen/distort');
             distortCmd.run(client, interaction);
             break;
         case 'eject':
-            const ejectCmd = sync.require('./memegen/eject');
             ejectCmd.run(client, interaction);
             break;
         case 'fisheye':
-            const fishEyeCmd = sync.require('./memegen/fisheye');
             fishEyeCmd.run(client, interaction);
             break;
         case 'greyscale':
-            const greyscaleCmd = sync.require('./memegen/greyscale');
             greyscaleCmd.run(client, interaction);
             break;
         case 'i-fear-no-man':
-            const ifearnoman = sync.require('./memegen/i-fear-no-man');
             ifearnoman.run(client, interaction);
             break;
         case 'invert':
-            const invertCmd = sync.require('./memegen/invert');
             invertCmd.run(client, interaction);
             break;
         case 'modern-meme':
-            const modernCmd = sync.require('./memegen/modern-meme');
             modernCmd.run(client, interaction);
             break;
         case 'pixelize':
-            const pixelizeCmd = sync.require('./memegen/pixelize');
             pixelizeCmd.run(client, interaction);
             break;
         case 'steam-playing':
-            const steamCmd = sync.require('./memegen/steam-playing');
             steamCmd.run(client, interaction);
             break;
         case 'subtitle':
-            const subtitleCmd = sync.require('./memegen/subtitle');
             subtitleCmd.run(client, interaction);
             break;
         case 'time-card':
-            const cmd = sync.require('./memegen/time-card');
-            cmd.run(client, interaction);
+            timeCmd.run(client, interaction);
             break;
     }
 }

@@ -36,19 +36,24 @@ module.exports = class util {
     static urlify(input, shouldRemoveBrackets) {
         if (shouldRemoveBrackets)
             input = util.removeBrackets(input)
-            return input.toLowerCase().replace(/\(|\)|:/g, "").trim().replace(/ +/g, "-")
+            return input.toLowerCase().replace(/[():"'-]/g, "").trim().replace(/ +/g, "-")
+    }
+    static joinMulti(input) {
+        if (input.length <= 1) return input[0]
+        const last = input[input.length - 1]
+        return `${input.slice(0, -1).join(", ")} and ${last}`
     }
     static isServerTimeStart(event) {
         return event.start_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Unlock)
     }
     static getStartTime(event, serverTimezone) {
-        return event.start != undefined && util.getDate(event.start, event.timezone ?? util.isServerTimeStart(event) ? serverTimezone : undefined)
+        return event.start != undefined && util.getDate(event.start, event.timezone ?? (util.isServerTimeStart(event) ? serverTimezone : undefined))
     }
     static isServerTimeEnd(event) {
         return event.end_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Web)
     }
     static getEndTime(event, serverTimezone) {
-        return event.end != undefined && util.getDate(event.end, event.timezone ?? util.isServerTimeEnd(event) ? serverTimezone : undefined)
+        return event.end != undefined && util.getDate(event.end, event.timezone ?? (util.isServerTimeEnd(event) ? serverTimezone : undefined))
     }
     static startTimes(e) {
         if (!e.start) return ""

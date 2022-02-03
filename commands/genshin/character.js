@@ -1,5 +1,5 @@
 const { addArg } = require('../../util/util');
-const { Colors, createTable, PAD_END, PAD_START, paginator, sendMessage, simplePaginator } = require('../../features/genshin/utils');
+const { Colors, createTable, PAD_END, PAD_START, paginator, sendMessage, simplePaginator, urlify } = require('../../features/genshin/utils');
 
 const { MessageEmbed } = require("discord.js");
 exports.run = async (client, message, args, prefix) => {
@@ -191,6 +191,10 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                         upgradeLines.push(`Talents: ${all.map(i => data.emoji(i)).join("")}`)
                 }
                 if (upgradeLines.length > 0) embed.addField("Upgrade material", upgradeLines.join("\n"))
+                
+            const specialties = Object.values(data.materials).filter(x => x.specialty && x.specialty.char == char.name)
+            if (specialties.length > 0)
+                embed.addField("Specialty", specialties.map(x => `[**${x.name}**](https://hutaobot.moe/materials/${urlify(x.name, false)}) can be obtained while cooking [**${x.specialty?.recipe}**](https://hutaobot.moe/materials/${urlify(x.specialty?.recipe ?? "", false)})`).join("\n"))
             }
 
 
