@@ -58,7 +58,7 @@ module.exports = class util {
     static startTimes(e) {
         if (!e.start) return ""
         if (!util.isServerTimeStart(e))
-            return `Global: ${relativeTimestampFromString(e.start, e.timezone)}`
+            return `Global: ${util.relativeTimestampFromString(e.start, e.timezone)}`
         return util.getServerTimeInfo().map(st => `${st.server}: ${util.relativeTimestampFromString(e.start, `${st.offset.split("").join("0")}:00`)}`).join("\n")
     }
     static endTimes(e) {
