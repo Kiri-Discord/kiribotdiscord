@@ -47,8 +47,8 @@ exports.run = async (client, interaction, internal, bulkAdd) => {
 
     const noPermission =
         channel.type === "GUILD_VOICE"
-            ? !channel.joinable && !channel.speakable
-            : !channel.joinable && !channel.manageable;
+            ? !channel.joinable || !channel.speakable
+            : !channel.joinable || !channel.manageable;
     if (noPermission)
         return interactionReply(interaction, {
             embeds: [

@@ -1,5 +1,5 @@
 const { addArg } = require('../../util/util');
-const { Colors, createTable, PAD_END, PAD_START, paginator, sendMessage, simplePaginator, urlify } = require('../../features/genshin/utils');
+const { Colors, createTable, PAD_END, PAD_START, paginator, sendMessage, simplePaginator, urlify, getLink } = require('../../features/genshin/utils');
 
 const { MessageEmbed } = require("discord.js");
 exports.run = async (client, message, args, prefix) => {
@@ -130,7 +130,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (char.icon)
-            embed.setThumbnail(`https://hutaobot.moe/${char.icon}`)
+            embed.setThumbnail(getLink(char.icon))
 
         if (relativePage == 0) {
             embed.setTitle(`${char.name}: Description`)
@@ -259,7 +259,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
     function getStatsPage(char, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors[char.meta.element] ?? "")
-            .setThumbnail(`https://hutaobot.moe/${char.icon}`)
+            .setThumbnail(getLink(char.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         if (relativePage == 0) {
@@ -320,7 +320,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${char.name}`)
         if (char.icon)
-            embed.setThumbnail(`https://hutaobot.moe/${char.icon}`)
+            embed.setThumbnail(getLink(char.icon))
             const videos = char.media.videos ? (`**Promotional videos**
             ${Object
                 .entries(char.media.videos)
@@ -344,7 +344,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
             .setColor(Colors[char.meta.element] ?? "")
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
-        if (char.icon) embed.setThumbnail(`https://hutaobot.moe/${char.icon}`)
+        if (char.icon) embed.setThumbnail(getLink(char.icon))
 
         function isValueTable(talent) {
             return talent.values != undefined
@@ -430,7 +430,7 @@ const possibleStars = client.genshinData.getReleasedCharacters()
 
             if (skills.constellations && page++ == relativePage) {
                 embed.setTitle(`${char.name}: Constellations`)
-                    .setThumbnail(`https://hutaobot.moe/${skills.constellations[0]?.icon}`)
+                    .setThumbnail(getLink(skills.constellations[0]?.icon))
                 let c = 0
                 for (const constellation of skills.constellations)
                     embed.addField(`C${++c}: ${constellation.name}`, constellation.desc)

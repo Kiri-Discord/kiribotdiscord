@@ -1,4 +1,4 @@
-const { Colors, createTable, sendMessage, simplePaginator, getLinkToGuide } = require('../../features/genshin/utils');
+const { Colors, createTable, sendMessage, simplePaginator, getLinkToGuide, getLink } = require('../../features/genshin/utils');
 const { MessageEmbed } = require("discord.js");
 
 exports.run = async (client, message, args, prefix) => {
@@ -54,7 +54,7 @@ exports.run = async (client, message, args, prefix) => {
     function getArti(set, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${set.artis.find(x => x.icon)?.icon ?? "img/unknown.png"}`)
+            .setThumbnail(getLink(set.artis.find(x => x.icon)?.icon ?? "img/unknown.png"))
             .setFooter({text: `page ${currentPage} of ${maxPages}`})
 
         if (relativePage == 0) {
@@ -86,7 +86,7 @@ ${createTable(
         mainStats.sort((a, b) => b.weight - a.weight).map(am => [`${(am.weight / total * 100).toFixed(1)}%`, am.name])
     )}
 \`\`\``)
-                .setThumbnail(`https://hutaobot.moe/${arti.icon}`)
+                .setThumbnail(getLink(arti.icon))
 
             return embed
         }

@@ -8,6 +8,7 @@ const {
     paginator,
     sendMessage,
     simplePaginator,
+    getLink
 } = require("../../features/genshin/utils");
 
 exports.run = async (client, message, args, prefix) => {
@@ -88,7 +89,7 @@ exports.run = async (client, message, args, prefix) => {
             embed.addField("Guides", guides)
 
         if (enemy.icon)
-            embed.setThumbnail(`https://hutaobot.moe/${enemy.icon}`)
+            embed.setThumbnail(getLink(enemy.icon))
 
         if (enemy.resistance)
             embed.addField("Resistances", `\`\`\`\n${createTable(["Pyro", "Elec", "Cryo", "Hydro", "Anemo", "Geo", "Phys", "Notes"], enemy.resistance, [PAD_START, PAD_START, PAD_START, PAD_START, PAD_START, PAD_START, PAD_START, PAD_END])}\n\`\`\``)
@@ -104,7 +105,7 @@ exports.run = async (client, message, args, prefix) => {
             .setDescription(enemy.desc ?? "Unavailable")
 
         if (enemy.icon)
-            embed.setThumbnail(`https://hutaobot.moe/${enemy.icon}`)
+            embed.setThumbnail(getLink(enemy.icon))
 
         return embed
     }

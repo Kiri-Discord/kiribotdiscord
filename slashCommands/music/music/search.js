@@ -15,7 +15,7 @@ exports.run = async(client, interaction, internal) => {
         const voicechannel = serverQueue.channel;
         return interactionReply(interaction, { embeds: [{ color: "#bee7f7", description: `i have already been playing music in your server! join ${voicechannel} to listen and search :smiley:` }], ephemeral: true });
     };
-    const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable && !channel.speakable) : (!channel.joinable && !channel.manageable);
+    const noPermission = channel.type === 'GUILD_VOICE' ? (!channel.joinable || !channel.speakable) : (!channel.joinable || !channel.manageable);
     if (noPermission) return interactionReply(interaction, { embeds: [{ color: "#bee7f7", description: "i can't join or talk in the voice channel where you are in. can you check my permission?" }], ephemeral: true });
 
     const search = interaction.options.getString('query');

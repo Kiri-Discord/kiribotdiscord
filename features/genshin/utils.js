@@ -43,6 +43,11 @@ module.exports = class util {
         const last = input[input.length - 1]
         return `${input.slice(0, -1).join(", ")} and ${last}`
     }
+    static getLink(url) {
+        if (url.match(/^https?:\/\//))
+            return url
+        return `https://hutaobot.moe/${url}`
+    }
     static isServerTimeStart(event) {
         return event.start_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Unlock)
     }
@@ -50,7 +55,7 @@ module.exports = class util {
         return event.start != undefined && util.getDate(event.start, event.timezone ?? (util.isServerTimeStart(event) ? serverTimezone : undefined))
     }
     static isServerTimeEnd(event) {
-        return event.end_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Web)
+        return event.end_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Quiz)
     }
     static getEndTime(event, serverTimezone) {
         return event.end != undefined && util.getDate(event.end, event.timezone ?? (util.isServerTimeEnd(event) ? serverTimezone : undefined))
@@ -189,11 +194,26 @@ module.exports = class util {
         return msg instanceof Message
     };
     static getUserID(source) {
-        if (util.isMessage(source))
-            return source.author.id
-        else
-            return source.user.id
+        return util.getUser(source).id;
     };
+    static getUser(source) {
+        if (util.isMessage(source))
+            return source.author
+        else
+            return source.user
+    };
+    static getCategory(source) {
+        if (!source.inGuild()) return null
+        const channel = source.channel
+        if (!channel) return null
+        if (channel.isThread()) {
+            const parent = channel.parent
+            if (parent)
+                return parent.parent
+            return null
+        }
+        return channel.parent
+    }
     static searchClean(str) {
         return str.toLowerCase().replace(/'/g, "")
     }

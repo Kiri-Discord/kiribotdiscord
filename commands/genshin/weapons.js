@@ -2,6 +2,7 @@ const {
     Colors,
     createTable,
     PAD_START,
+    getLink,
     paginator,
     sendMessage,
     simplePaginator,
@@ -133,9 +134,9 @@ exports.run = async (client, message, args, prefix) => {
         const embed = new MessageEmbed()
             .setTitle(`${weapon.name}: Basic info`)
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
+            .setThumbnail(getLink(weapon.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
-            .setDescription(weapon.desc + (weapon.placeholder ? "\n\n*This weapon is currently not yet available :(*" : ""))
+            .setDescription((weapon.desc ? weapon.desc : "") + ((weapon.placeholder || !weapon.desc) ? "\n\n*This weapon is currently not yet available.*" : ""))
             .addField("Basics", `${weapon.stars} :star: ${genshinData.emoji(weapon.weaponType)}`, (weapon.placeholderStats && !weapon.weaponCurve) ? true : false)
 
             const maxAscension = weapon.ascensions?.[weapon.ascensions.length - 1]
@@ -176,7 +177,7 @@ exports.run = async (client, message, args, prefix) => {
     function getStatsWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
+            .setThumbnail(getLink(weapon.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         const columns = []
@@ -216,7 +217,7 @@ exports.run = async (client, message, args, prefix) => {
     function getRefinementWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
+            .setThumbnail(getLink(weapon.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
 
         embed.setTitle(`${weapon.name}: Refinements`)
@@ -229,7 +230,7 @@ exports.run = async (client, message, args, prefix) => {
     function getLoreWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
+            .setThumbnail(getLink(weapon.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Lore`)
             .setDescription(weapon.lore ?? "Unavailable")
@@ -239,7 +240,7 @@ exports.run = async (client, message, args, prefix) => {
     function getArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${weapon.icon}`)
+            .setThumbnail(getLink(weapon.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: Base`)
             .setDescription(`[Image URL](https://hutaobot.moe/${weapon.icon})`)
@@ -251,7 +252,7 @@ exports.run = async (client, message, args, prefix) => {
     function getSecondArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(`https://hutaobot.moe/${weapon.awakenIcon}`)
+            .setThumbnail(getLink(weapon.icon))
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
             .setTitle(`${weapon.name}: 2nd Ascension`)
             .setDescription(`[Image URL](${`https://hutaobot.moe/` + weapon.awakenIcon})`)
