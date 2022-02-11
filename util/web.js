@@ -3,7 +3,6 @@ const config = require('../config.json');
 const WebSocket = require('ws');
 const { stripIndents } = require('common-tags');
 let count = 0;
-// let interval = null;
 module.exports = {
     init: (client) => {
         const wsConnection = new WebSocket(config.baseWSURL, {
@@ -14,11 +13,6 @@ module.exports = {
         wsConnection.onopen = () => {
             logger.log('info', '[WEBSOCKET] Connected to WebSocket!');
             count = 0;
-            // interval = setInterval(() => {
-            //     wsConnection.send(JSON.stringify({
-            //         type: 'keepAlive'
-            //     }));
-            // }, 50000);
         };
         wsConnection.onmessage = async(e) => {
             const data = JSON.parse(e.data);
@@ -52,7 +46,15 @@ module.exports = {
         };
 
         wsConnection.onclose = (e) => {
-            if (count == 10) return logger.log('error', `[WEBSOCKET] WebSocket closed with code ${e.code} and reason ${e.reason} **FINAL**`);
+            if (count == 10) {
+                const owner = client.users.cache.get(client.config.ownerID);
+                if (owner) owner.send(`Websocket lost connection!`);
+                client.config.logChannels.forEach(id => {
+                    const channel = client.channels.cache.get(id);
+                    if (channel) channel.send(`Websocket lost connection!`);
+                });
+                return logger.log('error', `[WEBSOCKET] WebSocket closed with code ${e.code} and reason ${e.reason} **FINAL**`);
+            }
             count++;
             logger.log('error', `[WEBSOCKET] Socket is closed with code ${e.code} Reconnect will be attempted in 5 seconds. Attempt: ${count}/10`, e.reason);
             setTimeout(function() {
