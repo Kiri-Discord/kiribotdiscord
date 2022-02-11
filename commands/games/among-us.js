@@ -45,7 +45,7 @@ exports.run = async(client, message, args, prefix) => {
                     if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is **${word}**.`);
                     else newPlayer.user.send('you are not the imposter. be careful what you say!')
                 } catch {
-                    await client.games.delete(message.channel.id);
+                    client.games.delete(message.channel.id);
                     return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
                 };
             }

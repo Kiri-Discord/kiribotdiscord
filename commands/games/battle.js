@@ -6,27 +6,28 @@ exports.run = async(client, message, args) => {
     const member = client.utils.parseMember(message, args[0]) || message.guild.me;
     const opponent = member.user;
     if (opponent.id === message.author.id) return message.reply('you can\'t play against yourself :(');
-    const current = client.games.get(message.channel.id);
+    const gameId = message.channel.id;
+    const current = client.games.get(gameId);
     if (current) return message.reply(current.prompt);
     if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
-    client.games.set(message.channel.id, { data: new Battle(message.author, opponent), prompt: `you should wait until **${message.author.username}** and **${opponent.username}** finish fighting :)` });
+    client.games.set(gameId, { data: new Battle(message.author, opponent), prompt: `you should wait until **${message.author.username}** and **${opponent.username}** finish fighting :)` });
     try {
         client.isPlaying.set(message.author.id, true);
         if (!opponent.bot) {
             if (client.isPlaying.get(opponent.id)) {
                 client.isPlaying.delete(message.author.id);
-                client.games.delete(message.channel.id);
+                client.games.delete(gameId);
                 return message.reply('that user is already in a game. try again in a minute.');
             };
             const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
             if (!verification) {
                 client.isPlaying.delete(message.author.id);
-                client.games.delete(message.channel.id);
+                client.games.delete(gameId);
                 return message.reply('looks like they declined :pensive:');
             };
             client.isPlaying.set(opponent.id, true);
         };
-        const battle = client.games.get(message.channel.id).data;
+        const battle = client.games.get(gameId).data;
         while (!battle.winner) {
             const choice = await battle.attacker.chooseAction(message.channel);
             if (choice === 'attack') {
@@ -84,7 +85,7 @@ exports.run = async(client, message, args) => {
         };
         client.isPlaying.delete(message.author.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(message.channel.id);
+        client.games.delete(gameId);
         if (battle.winner === 'time') return message.channel.send('i ended the game since there was no activity :pensive:');
         const winner = message.guild.members.cache.get(battle.winner.toString().replace(/[<>@!]/g, "")).user;
         const lost = winner.id === message.author.id ? opponent : message.author;
@@ -128,7 +129,7 @@ exports.run = async(client, message, args) => {
     } catch (err) {
         client.isPlaying.delete(message.author.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(message.channel.id);
+        client.games.delete(gameId);
         throw err;
     };
 };
