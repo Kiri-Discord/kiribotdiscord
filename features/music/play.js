@@ -139,17 +139,19 @@ module.exports = class Queue {
             const tried = [];
             tried.push(targetNode.host);
             while (!this.me.voice.channelId) {
-
+                if (tried.length === this.client.lavacordManager.nodes.size) {
+                    this.stop('destroyOnly')
+                    return 'TRIED_TO_JOIN_WITH_NODES';
+                };
                 const tryCount = tried.length;
                 if (!this.client.deletedChannels.has(this.textChannel)) await this.textChannel.send({ embeds: [{ color: "RED", description: `:x: failed to join your voice channel! i'm attempting to reconnect with other nodes.. (${tryCount + 1}/${this.client.lavacordManager.nodes.size})` }] });
                 await this.client.lavacordManager.leave(this.guildId);
                 await delay(1500);
                 const nextNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host) && x.id !== 'yt')[0] : this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0];
-                if (tried.length === this.client.lavacordManager.nodes.size || !nextNode) {
+                if (!nextNode) {
                     this.stop('destroyOnly')
                     return 'TRIED_TO_JOIN_WITH_NODES';
-                };
-
+                }
                 this.player = await this.client.lavacordManager.join({
                     guild: this.guildId,
                     channel: this.channel.id,

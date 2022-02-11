@@ -1,4 +1,4 @@
-const { Colors, findFuzzyBestCandidates, getLinkToGuide, paginator, joinMulti, sendMessage, simplePaginator, urlify } = require('../../features/genshin/utils');
+const { Colors, getLink, getLinkToGuide, paginator, joinMulti, sendMessage, simplePaginator, urlify } = require('../../features/genshin/utils');
 const { MessageEmbed } = require('discord.js');
 exports.run = async(client, message, args, prefix) => {
     const data = client.genshinData;
@@ -152,7 +152,7 @@ exports.run = async(client, message, args, prefix) => {
             embed.addField("Used by", usedByDesc.join("\n"))
 
         if (material.icon)
-            embed.setThumbnail(`https://hutaobot.moe/${material.icon}`)
+            embed.setThumbnail(getLink(material.icon))
 
         return embed
     }
@@ -164,7 +164,7 @@ exports.run = async(client, message, args, prefix) => {
             .setDescription(material.longDesc ?? "Unavailable")
 
         if (material.icon)
-            embed.setThumbnail(`https://hutaobot.moe/${material.icon}`)
+            embed.setThumbnail(getLink(material.icon))
 
         return embed
     }
