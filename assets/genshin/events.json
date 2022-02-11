@@ -19,7 +19,7 @@
     },
     {
         "name": "\"A Thousand Questions With Paimon\" Quiz Event",
-        "type": "Web",
+        "type": "Quiz",
         "link": "https://www.hoyolab.com/article/283665",
         "img": "https://upload-os-bbs.hoyolab.com/upload/2021/04/02/1015537/7d8d1ce3d75fd164173f9a5fad1fce11_1945247609127083405.png",
         "start": "2021-04-06 13:00:00",
@@ -331,7 +331,7 @@
     },
     {
         "name": "\"A Thousand Questions With Paimon\" Quiz Event",
-        "type": "Web",
+        "type": "Quiz",
         "link": "https://www.hoyolab.com/article/483165",
         "img": "https://upload-os-bbs.hoyolab.com/upload/2021/06/25/1015537/7737ee0cf2b2a0988f6f4758aeaf23fa_1459343022654549496.png",
         "start": "2021-06-25 13:00:00",
@@ -465,7 +465,7 @@
     },
     {
         "name": "\"A Thousand Questions With Paimon\" Quiz Event",
-        "type": "Web",
+        "type": "Quiz",
         "link": "https://www.hoyolab.com/article/766048",
         "img": "https://upload-os-bbs.hoyolab.com/upload/2021/08/27/1015537/3cf6ef0726d942d61d2825f88fd16820_953882758451226433.jpg",
         "start": "2021-08-27 13:00:00",
@@ -730,7 +730,7 @@
     },
     {
         "name": "\"A Thousand Questions With Paimon\" Quiz Event",
-        "type": "Web",
+        "type": "Quiz",
         "link": "https://www.hoyolab.com/article/1419212",
         "img": "https://upload-os-bbs.hoyolab.com/upload/2021/11/16/1015537/870f1a8b2a817620fc1d5f05fa46178f_5388840515738343619.jpg",
         "start": "2021-11-19 13:00:00",
@@ -1012,17 +1012,117 @@
         "reminder": "end"
     },
     {
-        "name": "Next Special Program",
+        "name": "\"The Great Banquet of the Adepti\" Web Event",
+        "type": "Web",
+        "link": "https://www.hoyolab.com/article/2059922",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2022/01/28/1015537/52d0873ea60a7ea14bcef9f04bd7dec0_1070042148431447100.jpg",
+        "start": "2022-01-28 11:30:00",
+        "end": "2022-02-06 23:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Festive Celebration of Flowing Hues\" Web Event",
+        "type": "Web",
+        "link": "https://www.hoyolab.com/article/2073932",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2022/01/29/1015537/5ae2532adc7e428e46a4f38beaf3812a_5160510445878100250.jpg",
+        "start": "2022-01-29 11:00:00",
+        "end": "2022-02-07 23:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "2.5 Special Program",
         "type": "Stream",
-        "prediction": true,
+        "link": "https://www.hoyolab.com/article/2898231",
+        "img": "https://upload-os-bbs.hoyolab.com/upload/2022/01/28/1015537/2d2592fde355a1875351e414eb34a850_1481175151980916071.jpg",
         "start": "2022-02-04 07:00:00",
         "timezone": "-05:00"
     },
     {
-        "name": "Next Maintenance",
+        "name": "2.5 Maintenance",
         "type": "Maintenance",
         "prediction": true,
         "start": "2022-02-16 06:00:00",
         "end": "2022-02-16 11:00:00"
+    },
+    {
+        "name": "Event Wish \"Everbloom Violet\"",
+        "type": "Banner",
+        "img": "https://i.imgur.com/BGEEu87.png",
+        "prediction": true,
+        "start": "2022-02-16 11:00:00",
+        "start_server": false,
+        "end": "2022-03-08 17:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wish \"Epitome Invocation\"",
+        "type": "Banner",
+        "img": "https://i.imgur.com/4H7PSP9.png",
+        "prediction": true,
+        "start": "2022-02-16 11:00:00",
+        "start_server": false,
+        "end": "2022-03-08 17:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wish \"Reign of Serenity\" & \"Drifting Luminescence\"",
+        "type": "Banner",
+        "img": "https://i.imgur.com/BGEEu87.png",
+        "prediction": true,
+        "start": "2022-03-08 18:00:00",
+        "end": "2022-03-29 14:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "Event Wish \"Epitome Invocation\"",
+        "type": "Banner",
+        "prediction": true,
+        "start": "2022-03-08 18:00:00",
+        "end": "2022-03-29 14:59:00",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Hyakunin Ikki\" Event",
+        "type": "In-game",
+        "img": "https://i.imgur.com/zpGl9Dm.png",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Of Drink A-Dreaming\" Event",
+        "type": "In-game",
+        "img": "https://i.imgur.com/pBCjPuE.png",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Divine Ingenuity\" Event",
+        "type": "In-game",
+        "img": "https://i.imgur.com/Am5nycj.png",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Three Realms Gateway Offering\" Event",
+        "type": "In-game",
+        "img": "https://i.imgur.com/bf5G7bJ.png",
+        "reminder": "end"
+    },
+    {
+        "name": "\"Overflowing Mastery\" Event",
+        "type": "In-game",
+        "img": "https://upload-os-bbs.mihoyo.com/upload/2021/05/25/1015537/8a304c186f5a725d6ca5fad6c953ef83_3536921475780913159.jpg",
+        "reminder": "daily"
+    },
+    {
+        "name": "2.6 Special Program",
+        "type": "Stream",
+        "prediction": true,
+        "start": "2022-03-18 07:00:00",
+        "timezone": "-05:00"
+    },
+    {
+        "name": "2.6 Maintenance",
+        "type": "Maintenance",
+        "prediction": true,
+        "start": "2022-03-30 06:00:00",
+        "end": "2022-03-30 11:00:00"
     }
 ]

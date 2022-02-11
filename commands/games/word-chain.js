@@ -82,6 +82,8 @@ exports.run = async(client, message, args) => {
             userTurn = !userTurn;
         };
         client.games.delete(message.channel.id);
+        client.isPlaying.delete(message.author.id);
+        client.isPlaying.delete(opponent.id);
         if (!winner) return message.channel.send('oh... no one won.');
         const lost = winner.id === message.author.id ? opponent : message.author;
         let amount = getRandomInt(10, 25);
@@ -116,6 +118,8 @@ exports.run = async(client, message, args) => {
         });
         return message.channel.send(`the game is over! the winner is ${winner}!\n⏣ __**${amount}**__ token was placed in your wallet as a reward!\ncurrent balance: \`${storageAfter.balance}\``);
     } catch (err) {
+        client.isPlaying.delete(message.author.id);
+        client.isPlaying.delete(opponent.id);
         client.games.delete(message.channel.id);
         logger.log('error', err);
     };

@@ -9,12 +9,11 @@ registerFont(path.join(__dirname, '..', '..', '..', 'assets', 'fonts', 'Noto-Emo
 
 exports.run = async(client, interaction, args) => {
     const game = interaction.options.getString('game');
-    const member = interaction.options.getMember('user');
-    const user = member.user;
+    const user = interaction.options.getUser('user') || interaction.user;
     const avatarURL = user.displayAvatarURL({ format: 'png', size: 64 });
     try {
         await interaction.deferReply();
-        const base = await loadImage(path.join(__dirname, '..', '..', 'assets', 'images', 'steam-now-playing.png'));
+        const base = await loadImage(path.join(__dirname, '..', '..', '..', 'assets', 'images', 'steam-now-playing.png'));
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
         const canvas = createCanvas(base.width, base.height);
@@ -27,6 +26,7 @@ exports.run = async(client, interaction, args) => {
         ctx.fillText(shortenText(ctx, game, 200), 80, 70);
         return interaction.editReply({ files: [{ attachment: canvas.toBuffer(), name: 'steam-now-playing.png' }] });
     } catch (err) {
+        console.log(err);
         return interaction.editReply(`sorry :( i got an error. try again later!`);
     };
 };

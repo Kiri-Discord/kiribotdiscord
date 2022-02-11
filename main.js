@@ -137,9 +137,9 @@ if (config.topggkey && process.env.NO_TOPGG !== 'true') {
     await mongo.init();
 
     schedule.scheduleJob('0 0 1 * *', async() => {
-        let storage = await client.globalStorage.findOne();
+        let storage = await client.db.globalStorage.findOne();
         if (!storage) {
-            storage = new client.globalStorage();
+            storage = new client.db.globalStorage();
             storage.lastChartReset = Date.now();
             await storage.save();
             await client.db.charts.deleteMany({});

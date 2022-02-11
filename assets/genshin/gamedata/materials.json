@@ -76,7 +76,8 @@
     "icon": "img/food/Apple.png",
     "sources": [
       "Found in the wild"
-    ]
+    ],
+    "effect": "Restores 300 HP"
   },
   "Sunsettia": {
     "name": "Sunsettia",
@@ -86,7 +87,8 @@
     "icon": "img/food/Sunsettia.png",
     "sources": [
       "Found in the wild"
-    ]
+    ],
+    "effect": "Restores 300 HP"
   },
   "Mushroom": {
     "name": "Mushroom",
@@ -528,6 +530,240 @@
       "Recommendation: Found on Tsurumi Island"
     ]
   },
+  "Fir Wood": {
+    "name": "Fir Wood",
+    "desc": "Wood from the tree known as \"Faber's Fir.\" Widely used for its fine quality and attractive grain.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Fir_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Starfell Valley",
+      "Recommendation: Cut from Galesong Hill"
+    ]
+  },
+  "Yumemiru Wood": {
+    "name": "Yumemiru Wood",
+    "desc": "Timber obtained from Sakura Trees. Exquisite in quality and full of moisture, people say that it can lull people into dreams as sweet as the warm spring.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Yumemiru_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Narukami Island"
+    ]
+  },
+  "Maple Wood": {
+    "name": "Maple Wood",
+    "desc": "Timber from the Amur Maple. Excellent quality wood with a fine color and texture.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Maple_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Narukami Island"
+    ]
+  },
+  "Aralia Wood": {
+    "name": "Aralia Wood",
+    "desc": "Wood from the Inazuman Cedar. It is soft, has straight veins, and gives off a light fragrance.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Aralia_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Narukami Island"
+    ]
+  },
+  "Otogi Wood": {
+    "name": "Otogi Wood",
+    "desc": "Wood from the Otogi Tree. It has just the right amount of moisture and oil, and as such has a great many uses.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Otogi_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Yashiori Island"
+    ]
+  },
+  "Fragrant Cedar Wood": {
+    "name": "Fragrant Cedar Wood",
+    "desc": "Wood from the Cedar tree. Also known as the \"Fragrant Cedar\" for the aromatic oils it contains.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Fragrant_Cedar_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Starfell Valley"
+    ]
+  },
+  "Bamboo Segment": {
+    "name": "Bamboo Segment",
+    "desc": "Segments of bamboo that are light and far stronger than their humble appearance might suggest. It lets off a light fragrance.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Bamboo_Segment.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Bishui Plain"
+    ]
+  },
+  "Sandbearer Wood": {
+    "name": "Sandbearer Wood",
+    "desc": "Timber from the Sandbearer Tree. Said to be an exceptionally hardy plant resistant to wind and rain with a long lifespan.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Sandbearer_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Minlin",
+      "Recommendation: Cut from Lisha"
+    ]
+  },
+  "Pine Wood": {
+    "name": "Pine Wood",
+    "desc": "Timber obtained from pines. Its color and grain are nothing to write home about, but its unpretentious nature is elegant in its own right. The wood is very sturdy as well. In able hands, its products should be able to resist moth and rot alike.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Pine_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Dragonspine"
+    ]
+  },
+  "Cuihua Wood": {
+    "name": "Cuihua Wood",
+    "desc": "Timber obtained from Cuihua Trees. With its lovely color and unique make, it will surely be able to take on myriad uses upon undergoing suitable workmanship.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Cuihua_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Starfell Valley",
+      "Recommendation: Cut from Bishui Plain"
+    ]
+  },
+  "Birch Wood": {
+    "name": "Birch Wood",
+    "desc": "Timber obtained from birches. It is easy to work with and produces smooth cuts. Furniture made using such wood is both beautiful and durable.\nCan be used to create furnishings.",
+    "stars": 1,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Birch_Wood.png",
+    "sources": [
+      "Found in the wild",
+      "Recommendation: Cut from Windwail Highland"
+    ]
+  },
+  "Northlander Sword Billet": {
+    "name": "Northlander Sword Billet",
+    "desc": "Weapon forging material. Can be used to forge 4-star swords. \nPhilosophers believe marble has the potential to be sculpted into a beautiful statue. Likewise, these billets have the potential to become something greater.",
+    "stars": 4,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Northlander_Sword_Billet.png",
+    "sources": [
+      "Dropped by bosses"
+    ]
+  },
+  "Northlander Bow Billet": {
+    "name": "Northlander Bow Billet",
+    "desc": "Weapon forging material. Can be used to forge 4-star bows. \nPhilosophers believe marble has the potential to be sculpted into a beautiful statue. Likewise, these billets have the potential to become something greater.",
+    "stars": 4,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Northlander_Bow_Billet.png",
+    "sources": [
+      "Dropped by bosses"
+    ]
+  },
+  "Northlander Claymore Billet": {
+    "name": "Northlander Claymore Billet",
+    "desc": "Weapon forging material. Can be used to forge 4-star claymores. \nPhilosophers believe marble has the potential to be sculpted into a beautiful statue. Likewise, these billets have the potential to become something greater.",
+    "stars": 4,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Northlander_Claymore_Billet.png",
+    "sources": [
+      "Dropped by bosses"
+    ]
+  },
+  "Northlander Catalyst Billet": {
+    "name": "Northlander Catalyst Billet",
+    "desc": "Weapon forging material. Can be used to forge 4-star catalysts. \nPhilosophers believe marble has the potential to be sculpted into a beautiful statue. Likewise, these billets have the potential to become something greater.",
+    "stars": 4,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Northlander_Catalyst_Billet.png",
+    "sources": [
+      "Dropped by bosses"
+    ]
+  },
+  "Northlander Polearm Billet": {
+    "name": "Northlander Polearm Billet",
+    "desc": "Weapon forging material. Can be used to forge 4-star polearms. \nPhilosophers believe marble has the potential to be sculpted into a beautiful statue. Likewise, these billets have the potential to become something greater.",
+    "stars": 4,
+    "type": "Material",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Northlander_Polearm_Billet.png",
+    "sources": [
+      "Dropped by bosses"
+    ]
+  },
+  "Fruit Paste Bait": {
+    "name": "Fruit Paste Bait",
+    "desc": "A very commonly-seen bait made from mashing, fermenting, and kneading Sunsettias and Wheat together. It atomizes very quickly upon hitting the water and exerts an incredible attraction on small fish. Due to the ease of its making, cheap price, and its excellent efficacy, it has also been jokingly called the \"Fisher's Trusty Treasure.\"\n\nSuitable for catching Medakas, Dawncatchers, and Crystalfish.",
+    "stars": 2,
+    "type": "Bait",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Fruit_Paste_Bait.png",
+    "sources": [
+      "Crafted"
+    ]
+  },
+  "Redrot Bait": {
+    "name": "Redrot Bait",
+    "desc": "Fish bait made from mixing Dendrobium and mashed meat. The unique rank sweetness of this bait spreads very quickly in the water, attracting fierce aquatic predators. Use with caution, however! Put too much of this bait down and you might hook in nastier customers than you bargained for!\n\nSuitable for catching Sticklebacks, Bettas, Venomspine Fish, Akai Maou, and Snowstriders.",
+    "stars": 2,
+    "type": "Bait",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Redrot_Bait.png",
+    "sources": [
+      "Crafted"
+    ]
+  },
+  "False Worm Bait": {
+    "name": "False Worm Bait",
+    "desc": "This imitation worm bait is made mostly out of condensate, and will twist its body according to the underwater currents, resulting in its fatal attraction to overly-curious fish. Professionals will even add some fruit to it to increase its fragrance and make it utterly irresistable.\n\nSuitable for catching Shirakodai and Angelfish.",
+    "stars": 2,
+    "type": "Bait",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/False_Worm_Bait.png",
+    "sources": [
+      "Crafted"
+    ]
+  },
+  "Fake Fly Bait": {
+    "name": "Fake Fly Bait",
+    "desc": "Mimetic fly bait made from vibrantly-colored materials. It has no scent, and is specialized to attract large fish with sharp vision. It is often well-suited to more advanced angling techniques. The fishing associations of various regions regard the skilled use of such bait as one of the conditions for its members' advancement in rank.\n\nSuitable for catching Koi, Pufferfish, and Rays.",
+    "stars": 2,
+    "type": "Bait",
+    "category": "Teyvat's Resources",
+    "icon": "img/material/Fake_Fly_Bait.png",
+    "sources": [
+      "Crafted"
+    ]
+  },
   "Mist Flower Corolla": {
     "name": "Mist Flower Corolla",
     "desc": "A flower bud encased in solid ice. Even after being picked, the flower continues to emit cold.",
@@ -657,7 +893,12 @@
     "icon": "img/food/Outriders_Champion_Steak!.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Amber",
+      "recipe": "Steak"
+    },
+    "effect": "Revives a character and restores 10% of Max HP, then restores an additional 150 HP."
   },
   "Fruity Skewers": {
     "name": "Fruity Skewers",
@@ -668,7 +909,12 @@
     "icon": "img/food/Fruity_Skewers.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Kaeya",
+      "recipe": "Chicken-Mushroom Skewer"
+    },
+    "effect": "Restores 16% of Max HP and an additional 1,350 HP to the selected character."
   },
   "Mysterious Bolognese": {
     "name": "Mysterious Bolognese",
@@ -679,7 +925,12 @@
     "icon": "img/food/Mysterious_Bolognese.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Lisa",
+      "recipe": "Flaming Red Bolognese"
+    },
+    "effect": "Restores 26% of Max HP to the selected character and regenerates 570 HP every 5s for 30s."
   },
   "Spicy Stew": {
     "name": "Spicy Stew",
@@ -690,7 +941,12 @@
     "icon": "img/food/Spicy_Stew.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Barbara",
+      "recipe": "Cream Stew"
+    },
+    "effect": "Decreases all party members' sprinting Stamina consumption by 25% for 1500s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Invigorating Pizza": {
     "name": "Invigorating Pizza",
@@ -701,7 +957,12 @@
     "icon": "img/food/Invigorating_Pizza.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Jean",
+      "recipe": "Mushroom Pizza"
+    },
+    "effect": "Restores 34% of Max HP to the selected character and regenerates 980 HP every 5s for 30s."
   },
   "Puppy-Paw Hash Brown": {
     "name": "Puppy-Paw Hash Brown",
@@ -712,7 +973,12 @@
     "icon": "img/food/PuppyPaw_Hash_Brown.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Razor",
+      "recipe": "Mondstadt Hash Brown"
+    },
+    "effect": "Restores 40% of Max HP and an additional 2,350 HP to the selected character."
   },
   "\"Once Upon a Time in Mondstadt\"": {
     "name": "\"Once Upon a Time in Mondstadt\"",
@@ -723,7 +989,12 @@
     "icon": "img/food/Once_Upon_a_Time_in_Mondstadt.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Diluc",
+      "recipe": "\"Pile 'Em Up\""
+    },
+    "effect": "Increases all party members' CRIT Rate by 20% and CRIT DMG by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)"
   },
   "Lighter-Than-Air Pancake": {
     "name": "Lighter-Than-Air Pancake",
@@ -734,7 +1005,12 @@
     "icon": "img/food/LighterThanAir_Pancake.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Noelle",
+      "recipe": "Tea Break Pancake"
+    },
+    "effect": "Revives a character and restores 15% of Max HP, then restores an additional 550 HP."
   },
   "A Buoyant Breeze": {
     "name": "A Buoyant Breeze",
@@ -745,7 +1021,12 @@
     "icon": "img/food/A_Buoyant_Breeze.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Venti",
+      "recipe": "Barbatos Ratatouille"
+    },
+    "effect": "Decreases all party members' gliding and sprinting Stamina consumption by 25% for 1800s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Fish-Flavored Toast": {
     "name": "Fish-Flavored Toast",
@@ -756,7 +1037,12 @@
     "icon": "img/food/FishFlavored_Toast.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Klee",
+      "recipe": "Fisherman's Toast"
+    },
+    "effect": "Increases all party members' DEF by 151 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Teyvat Charred Egg": {
     "name": "Teyvat Charred Egg",
@@ -767,7 +1053,12 @@
     "icon": "img/food/Teyvat_Charred_Egg.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Bennett",
+      "recipe": "Teyvat Fried Egg"
+    },
+    "effect": "Revives a character and restores 10% of Max HP, then restores an additional 150 HP."
   },
   "Wanmin Restaurant's Boiled Fish": {
     "name": "Wanmin Restaurant's Boiled Fish",
@@ -778,7 +1069,12 @@
     "icon": "img/food/Wanmin_Restaurants_Boiled_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Xiangling",
+      "recipe": "Black-Back Perch Stew"
+    },
+    "effect": "Restores 34% of Max HP to the selected character and regenerates 980 HP every 5s for 30s."
   },
   "All-Delicacy Parcels": {
     "name": "All-Delicacy Parcels",
@@ -789,7 +1085,12 @@
     "icon": "img/food/AllDelicacy_Parcels.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Xingqiu",
+      "recipe": "Crystal Shrimp"
+    },
+    "effect": "Restores 26% of Max HP to the selected character and regenerates 570 HP every 5s for 30s."
   },
   "Cold Noodles with Mountain Delicacies": {
     "name": "Cold Noodles with Mountain Delicacies",
@@ -800,7 +1101,12 @@
     "icon": "img/food/Cold_Noodles_with_Mountain_Delicacies.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Chongyun",
+      "recipe": "Noodles with Mountain Delicacies"
+    },
+    "effect": "Restores 80 Stamina"
   },
   "Qiankun Mora Meat": {
     "name": "Qiankun Mora Meat",
@@ -811,7 +1117,12 @@
     "icon": "img/food/Qiankun_Mora_Meat.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Ningguang",
+      "recipe": "Mora Meat"
+    },
+    "effect": "Revives a character and restores 10% of Max HP, then restores an additional 150 HP."
   },
   "Definitely Not Bar Food!": {
     "name": "Definitely Not Bar Food!",
@@ -822,7 +1133,12 @@
     "icon": "img/food/Definitely_Not_Bar_Food!.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Diona",
+      "recipe": "Mondstadt Grilled Fish"
+    },
+    "effect": "Revives a character and restores 10% of Max HP, then restores an additional 150 HP."
   },
   "Der Weisheit Letzter Schluss (Life)": {
     "name": "Der Weisheit Letzter Schluss (Life)",
@@ -833,7 +1149,12 @@
     "icon": "img/food/Der_Weisheit_Letzter_Schluss_(Life).png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Mona",
+      "recipe": "Satisfying Salad"
+    },
+    "effect": "Increases all party members' CRIT Rate by 16% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Die Heilige Sinfonie": {
     "name": "Die Heilige Sinfonie",
@@ -844,7 +1165,12 @@
     "icon": "img/food/Die_Heilige_Sinfonie.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Fischl",
+      "recipe": "Cold Cut Platter"
+    },
+    "effect": "Increases all party members' Physical DMG by 55% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "No Tomorrow": {
     "name": "No Tomorrow",
@@ -855,7 +1181,12 @@
     "icon": "img/food/No_Tomorrow.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Qiqi",
+      "recipe": "Come and Get It"
+    },
+    "effect": "Increases all party members' CRIT Rate by 20% and CRIT DMG by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)"
   },
   "Flash-Fried Filet": {
     "name": "Flash-Fried Filet",
@@ -866,7 +1197,12 @@
     "icon": "img/food/FlashFried_Filet.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Beidou",
+      "recipe": "Stir-Fried Filet"
+    },
+    "effect": "Revives a character and restores 10% of Max HP, then restores an additional 150 HP."
   },
   "Survival Grilled Fish": {
     "name": "Survival Grilled Fish",
@@ -877,7 +1213,12 @@
     "icon": "img/food/Survival_Grilled_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Keqing",
+      "recipe": "Grilled Tiger Fish"
+    },
+    "effect": "Restores 16% of Max HP and an additional 1,350 HP to the selected character."
   },
   "Nutritious Meal (V.593)": {
     "name": "Nutritious Meal (V.593)",
@@ -888,7 +1229,12 @@
     "icon": "img/food/Nutritious_Meal_(V.593).png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Sucrose",
+      "recipe": "Crab, Ham & Veggie Bake"
+    },
+    "effect": "Revives the selected character and restores 20% of Max HP, then restores an additional 1500 HP."
   },
   "Slow-Cooked Bamboo Shoot Soup": {
     "name": "Slow-Cooked Bamboo Shoot Soup",
@@ -899,7 +1245,12 @@
     "icon": "img/food/SlowCooked_Bamboo_Shoot_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Zhongli",
+      "recipe": "Bamboo Shoot Soup"
+    },
+    "effect": "Restores 34% of Max HP to the selected character and regenerates 980 HP every 5s for 30s."
   },
   "Rockin' Riffin' Chicken!": {
     "name": "Rockin' Riffin' Chicken!",
@@ -910,7 +1261,12 @@
     "icon": "img/food/Rockin_Riffin_Chicken!.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Xinyan",
+      "recipe": "Jueyun Chili Chicken"
+    },
+    "effect": "Increases all party members' CRIT Rate by 16% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "A Prize Catch": {
     "name": "A Prize Catch",
@@ -921,7 +1277,12 @@
     "icon": "img/food/A_Prize_Catch.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Tartaglia",
+      "recipe": "Calla Lily Seafood Soup"
+    },
+    "effect": "Increases all party members' DEF by 282 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Prosperous Peace": {
     "name": "Prosperous Peace",
@@ -932,7 +1293,12 @@
     "icon": "img/food/Prosperous_Peace.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Ganyu",
+      "recipe": "Universal Peace"
+    },
+    "effect": "Restores 40% of Max HP and an additional 2,350 HP to the selected character."
   },
   "Woodland Dream": {
     "name": "Woodland Dream",
@@ -943,7 +1309,12 @@
     "icon": "img/food/Woodland_Dream.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Albedo",
+      "recipe": "Sunshine Sprat"
+    },
+    "effect": "Increases all party members' Shield Strength by 35% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "\"Sweet Dream\"": {
     "name": "\"Sweet Dream\"",
@@ -954,7 +1325,12 @@
     "icon": "img/food/Sweet_Dream.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Xiao",
+      "recipe": "Almond Tofu"
+    },
+    "effect": "Increases all party members' ATK by 114 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Ghostly March": {
     "name": "Ghostly March",
@@ -965,7 +1341,12 @@
     "icon": "img/food/Ghostly_March.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Hu Tao",
+      "recipe": "Vegetarian Abalone"
+    },
+    "effect": "Revives a character and restores 15% of Max HP, then restores an additional 550 HP."
   },
   "Dinner of Judgment": {
     "name": "Dinner of Judgment",
@@ -976,7 +1357,12 @@
     "icon": "img/food/Dinner_of_Judgment.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Rosaria",
+      "recipe": "Sweet Madame"
+    },
+    "effect": "Restores 30% of Max HP and an additional 1,750 HP to the selected character."
   },
   "\"My Way\"": {
     "name": "\"My Way\"",
@@ -987,7 +1373,12 @@
     "icon": "img/food/My_Way.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Yanfei",
+      "recipe": "Crab Roe Tofu"
+    },
+    "effect": "Revives a character and restores 15% of Max HP, then restores an additional 550 HP."
   },
   "Stormcrest Pie": {
     "name": "Stormcrest Pie",
@@ -998,7 +1389,12 @@
     "icon": "img/food/Stormcrest_Pie.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Eula",
+      "recipe": "Moon Pie"
+    },
+    "effect": "Increases all party members' Shield Strength by 40% and DEF by 282 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "\"Snow on the Hearth\"": {
     "name": "\"Snow on the Hearth\"",
@@ -1009,7 +1405,12 @@
     "icon": "img/food/Snow_on_the_Hearth.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Kamisato Ayaka",
+      "recipe": "Sakura Mochi"
+    },
+    "effect": "Revives the selected character and restores 20% of Max HP, then restores an additional 1500 HP."
   },
   "All-Weather Beauty": {
     "name": "All-Weather Beauty",
@@ -1020,7 +1421,12 @@
     "icon": "img/food/AllWeather_Beauty.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Kaedehara Kazuha",
+      "recipe": "Dry-Braised Salted Fish"
+    },
+    "effect": "Restores 16% of Max HP and an additional 1,350 HP to the selected character."
   },
   "Summer Festival Fish": {
     "name": "Summer Festival Fish",
@@ -1031,7 +1437,12 @@
     "icon": "img/food/Summer_Festival_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Yoimiya",
+      "recipe": "Tricolor Dango"
+    },
+    "effect": "Restores 40% of Max HP and an additional 2,350 HP to the selected character."
   },
   "Dizziness-Be-Gone no Jutsu Version 2.0": {
     "name": "Dizziness-Be-Gone no Jutsu Version 2.0",
@@ -1042,7 +1453,12 @@
     "icon": "img/food/DizzinessBeGone_no_Jutsu_Version_2.0.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Sayu",
+      "recipe": "Onigiri"
+    },
+    "effect": "Restores 26% of Max HP to the selected character and regenerates 570 HP every 5s for 30s."
   },
   "Satiety Gel": {
     "name": "Satiety Gel",
@@ -1053,7 +1469,12 @@
     "icon": "img/food/Satiety_Gel.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Aloy",
+      "recipe": "Mint Jelly"
+    },
+    "effect": "Restores 16% of Max HP and an additional 1,350 HP to the selected character."
   },
   "A Stunning Stratagem": {
     "name": "A Stunning Stratagem",
@@ -1064,7 +1485,12 @@
     "icon": "img/food/A_Stunning_Stratagem.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Sangonomiya Kokomi",
+      "recipe": "Bird Egg Sushi"
+    },
+    "effect": "Restores 16% of Max HP and an additional 1,350 HP to the selected character."
   },
   "Faith Eternal": {
     "name": "Faith Eternal",
@@ -1075,7 +1501,12 @@
     "icon": "img/food/Faith_Eternal.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Kujou Sara",
+      "recipe": "Egg Roll"
+    },
+    "effect": "Revives a character and restores 10% of Max HP, then restores an additional 150 HP."
   },
   "\"Warmth\"": {
     "name": "\"Warmth\"",
@@ -1086,7 +1517,12 @@
     "icon": "img/food/Warmth.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Thoma",
+      "recipe": "Miso Soup"
+    },
+    "effect": "Restores 14% of Max HP to the selected character and regenerates 350 HP every 5s for 30s."
   },
   "Way of the Strong": {
     "name": "Way of the Strong",
@@ -1097,7 +1533,12 @@
     "icon": "img/food/Way_of_the_Strong.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Arataki Itto",
+      "recipe": "Mixed Yakisoba"
+    },
+    "effect": "Revives a character and restores 15% of Max HP, then restores an additional 550 HP."
   },
   "Victorious Legend": {
     "name": "Victorious Legend",
@@ -1108,7 +1549,12 @@
     "icon": "img/food/Victorious_Legend.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Gorou",
+      "recipe": "Tonkotsu Ramen"
+    },
+    "effect": "Restores 40% of Max HP and an additional 2,350 HP to the selected character."
   },
   "Heartstring Noodles": {
     "name": "Heartstring Noodles",
@@ -1119,7 +1565,12 @@
     "icon": "img/food/Heartstring_Noodles.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Shenhe",
+      "recipe": "Dragon Beard Noodles"
+    },
+    "effect": "Increases all party members' ATK by 274 for 300s. In Co-op Mode, this effect only applies to your own character(s)."
   },
   "Cloud-Shrouded Jade": {
     "name": "Cloud-Shrouded Jade",
@@ -1130,7 +1581,12 @@
     "icon": "img/food/CloudShrouded_Jade.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "specialty": {
+      "char": "Yun Jin",
+      "recipe": "Lotus Seed and Bird Egg Soup"
+    },
+    "effect": "Decreases all party members' sprinting Stamina consumption by 25% for 1500s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Fisherman's Toast": {
     "name": "Fisherman's Toast",
@@ -1141,7 +1597,30 @@
     "icon": "img/food/Fishermans_Toast.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Tomato"
+      },
+      {
+        "count": 1,
+        "name": "Onion"
+      },
+      {
+        "count": 1,
+        "name": "Milk"
+      }
+    ],
+    "effect": {
+      "Suspicious Fisherman's Toast": "Increases all party members' DEF by 88 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Fisherman's Toast": "Increases all party members' DEF by 107 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Fisherman's Toast": "Increases all party members' DEF by 126 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Teyvat Fried Egg": {
     "name": "Teyvat Fried Egg",
@@ -1152,7 +1631,18 @@
     "icon": "img/food/Teyvat_Fried_Egg.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      }
+    ],
+    "effect": {
+      "Suspicious Teyvat Fried Egg": "Revives a character and restores 50 HP.",
+      "Teyvat Fried Egg": "Revives a character and restores 100 HP.",
+      "Delicious Teyvat Fried Egg": "Revives a character and restores 150 HP."
+    }
   },
   "Steak": {
     "name": "Steak",
@@ -1163,7 +1653,18 @@
     "icon": "img/food/Steak.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      }
+    ],
+    "effect": {
+      "Suspicious Steak": "Revives a character and restores 50 HP.",
+      "Steak": "Revives a character and restores 100 HP.",
+      "Delicious Steak": "Revives a character and restores 150 HP."
+    }
   },
   "Chicken-Mushroom Skewer": {
     "name": "Chicken-Mushroom Skewer",
@@ -1174,7 +1675,22 @@
     "icon": "img/food/ChickenMushroom_Skewer.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Mushroom"
+      },
+      {
+        "count": 1,
+        "name": "Fowl"
+      }
+    ],
+    "effect": {
+      "Suspicious Chicken-Mushroom Skewer": "Restores 8% of Max HP and an additional 800 HP to the selected character.",
+      "Chicken-Mushroom Skewer": "Restores 9% of Max HP and an additional 1,000 HP to the selected character.",
+      "Delicious Chicken-Mushroom Skewer": "Restores 10% of Max HP and an additional 1,200 HP to the selected character."
+    }
   },
   "Flaming Red Bolognese": {
     "name": "Flaming Red Bolognese",
@@ -1185,7 +1701,26 @@
     "icon": "img/food/Flaming_Red_Bolognese.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 1,
+        "name": "Tomato"
+      }
+    ],
+    "effect": {
+      "Suspicious Flaming Red Bolognese": "Restores 18% of Max HP to the selected character and regenerates 300 HP every 5s for 30s.",
+      "Flaming Red Bolognese": "Restores 20% of Max HP to the selected character and regenerates 390 HP every 5s for 30s.",
+      "Delicious Flaming Red Bolognese": "Restores 22% of Max HP to the selected character and regenerates 470 HP every 5s for 30s."
+    }
   },
   "Radish Veggie Soup": {
     "name": "Radish Veggie Soup",
@@ -1196,7 +1731,22 @@
     "icon": "img/food/Radish_Veggie_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Radish"
+      },
+      {
+        "count": 1,
+        "name": "Mint"
+      }
+    ],
+    "effect": {
+      "Suspicious Radish Veggie Soup": "Restores 8% of Max HP to the selected character and regenerates 210 HP every 5s for 30s.",
+      "Radish Veggie Soup": "Restores 9% of Max HP to the selected character and regenerates 260 HP every 5s for 30s.",
+      "Delicious Radish Veggie Soup": "Restores 10% of Max HP to the selected character and regenerates 300 HP every 5s for 30s."
+    }
   },
   "Tea Break Pancake": {
     "name": "Tea Break Pancake",
@@ -1207,7 +1757,26 @@
     "icon": "img/food/Tea_Break_Pancake.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Berry"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      }
+    ],
+    "effect": {
+      "Suspicious Tea Break Pancake": "Revives a character and restores 250 HP.",
+      "Tea Break Pancake": "Revives a character and restores 400 HP.",
+      "Delicious Tea Break Pancake": "Revives a character and restores 550 HP."
+    }
   },
   "Fried Radish Balls": {
     "name": "Fried Radish Balls",
@@ -1218,7 +1787,26 @@
     "icon": "img/food/Fried_Radish_Balls.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Radish"
+      },
+      {
+        "count": 1,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Fried Radish Balls": "Increases all party members' ATK by 66 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Fried Radish Balls": "Increases all party members' ATK by 81 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Fried Radish Balls": "Increases all party members' ATK by 95 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Satisfying Salad": {
     "name": "Satisfying Salad",
@@ -1229,7 +1817,30 @@
     "icon": "img/food/Satisfying_Salad.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Cabbage"
+      },
+      {
+        "count": 2,
+        "name": "Apple"
+      },
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 1,
+        "name": "Potato"
+      }
+    ],
+    "effect": {
+      "Suspicious Satisfying Salad": "Increases all party members' CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Satisfying Salad": "Increases all party members' CRIT Rate by 9% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Satisfying Salad": "Increases all party members' CRIT Rate by 12% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Sweet Madame": {
     "name": "Sweet Madame",
@@ -1240,7 +1851,22 @@
     "icon": "img/food/Sweet_Madame.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Fowl"
+      },
+      {
+        "count": 2,
+        "name": "Sweet Flower"
+      }
+    ],
+    "effect": {
+      "Suspicious Sweet Madame": "Restores 20% of Max HP and an additional 900 HP to the selected character.",
+      "Sweet Madame": "Restores 22% of Max HP and an additional 1,200 HP to the selected character.",
+      "Delicious Sweet Madame": "Restores 24% of Max HP and an additional 1,500 HP to the selected character."
+    }
   },
   "Northern Smoked Chicken": {
     "name": "Northern Smoked Chicken",
@@ -1251,7 +1877,26 @@
     "icon": "img/food/Northern_Smoked_Chicken.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Smoked Fowl"
+      },
+      {
+        "count": 1,
+        "name": "Onion"
+      },
+      {
+        "count": 1,
+        "name": "Cabbage"
+      }
+    ],
+    "effect": {
+      "Suspicious Northern Smoked Chicken": "Restores 40 Stamina",
+      "Northern Smoked Chicken": "Restores 50 Stamina",
+      "Delicious Northern Smoked Chicken": "Restores 60 Stamina"
+    }
   },
   "Cream Stew": {
     "name": "Cream Stew",
@@ -1262,7 +1907,26 @@
     "icon": "img/food/Cream_Stew.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Cream"
+      },
+      {
+        "count": 1,
+        "name": "Snapdragon"
+      }
+    ],
+    "effect": {
+      "Suspicious Cream Stew": "Decreases all party members' sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Cream Stew": "Decreases all party members' sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Cream Stew": "Decreases all party members' sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Mushroom Pizza": {
     "name": "Mushroom Pizza",
@@ -1273,7 +1937,30 @@
     "icon": "img/food/Mushroom_Pizza.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Mushroom"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Cabbage"
+      },
+      {
+        "count": 1,
+        "name": "Cheese"
+      }
+    ],
+    "effect": {
+      "Suspicious Mushroom Pizza": "Restores 26% of Max HP to the selected character and regenerates 450 HP every 5s for 30s.",
+      "Mushroom Pizza": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s.",
+      "Delicious Mushroom Pizza": "Restores 30% of Max HP to the selected character and regenerates 790 HP every 5s for 30s."
+    }
   },
   "Mondstadt Hash Brown": {
     "name": "Mondstadt Hash Brown",
@@ -1284,7 +1971,26 @@
     "icon": "img/food/Mondstadt_Hash_Brown.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Pinecone"
+      },
+      {
+        "count": 1,
+        "name": "Potato"
+      },
+      {
+        "count": 1,
+        "name": "Jam"
+      }
+    ],
+    "effect": {
+      "Suspicious Mondstadt Hash Brown": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Mondstadt Hash Brown": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Mondstadt Hash Brown": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Calla Lily Seafood Soup": {
     "name": "Calla Lily Seafood Soup",
@@ -1295,7 +2001,26 @@
     "icon": "img/food/Calla_Lily_Seafood_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Crab"
+      },
+      {
+        "count": 1,
+        "name": "Calla Lily"
+      },
+      {
+        "count": 2,
+        "name": "Mint"
+      }
+    ],
+    "effect": {
+      "Suspicious Calla Lily Seafood Soup": "Increases all party members' DEF by 165 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Calla Lily Seafood Soup": "Increases all party members' DEF by 200 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Calla Lily Seafood Soup": "Increases all party members' DEF by 235 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Sautéed Matsutake": {
     "name": "Sautéed Matsutake",
@@ -1306,7 +2031,30 @@
     "icon": "img/food/Sautéed_Matsutake.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Matsutake"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Pinecone"
+      },
+      {
+        "count": 2,
+        "name": "Butter"
+      }
+    ],
+    "effect": {
+      "Suspicious Sautéed Matsutake": "Increases all party members' ATK by 160 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Sautéed Matsutake": "Increases all party members' ATK by 194 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Sautéed Matsutake": "Increases all party members' ATK by 228 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "\"Pile 'Em Up\"": {
     "name": "\"Pile 'Em Up\"",
@@ -1317,7 +2065,30 @@
     "icon": "img/food/Pile_Em_Up.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 3,
+        "name": "Potato"
+      },
+      {
+        "count": 1,
+        "name": "Small Lamp Grass"
+      },
+      {
+        "count": 1,
+        "name": "Cheese"
+      }
+    ],
+    "effect": {
+      "Suspicious \"Pile 'Em Up\"": "Increases all party members' CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "\"Pile 'Em Up\"": "Increases all party members' CRIT Rate by 15% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious \"Pile 'Em Up\"": "Increases all party members' CRIT Rate by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Cold Cut Platter": {
     "name": "Cold Cut Platter",
@@ -1328,7 +2099,30 @@
     "icon": "img/food/Cold_Cut_Platter.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Ham"
+      },
+      {
+        "count": 1,
+        "name": "Bacon"
+      },
+      {
+        "count": 1,
+        "name": "Sausage"
+      },
+      {
+        "count": 1,
+        "name": "Mint"
+      }
+    ],
+    "effect": {
+      "Suspicious Cold Cut Platter": "Increases all party members' Physical DMG by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Cold Cut Platter": "Increases all party members' Physical DMG by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Cold Cut Platter": "Increases all party members' Physical DMG by 40% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Sticky Honey Roast": {
     "name": "Sticky Honey Roast",
@@ -1339,7 +2133,26 @@
     "icon": "img/food/Sticky_Honey_Roast.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Carrot"
+      },
+      {
+        "count": 2,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Sticky Honey Roast": "Decreases all party members' climbing and sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Sticky Honey Roast": "Decreases all party members' climbing and sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Sticky Honey Roast": "Decreases all party members' climbing and sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Crab, Ham & Veggie Bake": {
     "name": "Crab, Ham & Veggie Bake",
@@ -1350,7 +2163,30 @@
     "icon": "img/food/Crab_Ham_&_Veggie_Bake.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Crab Roe"
+      },
+      {
+        "count": 1,
+        "name": "Ham"
+      },
+      {
+        "count": 1,
+        "name": "Cream"
+      },
+      {
+        "count": 1,
+        "name": "Cabbage"
+      }
+    ],
+    "effect": {
+      "Suspicious Crab, Ham & Veggie Bake": "Revives a character and restores 900 HP.",
+      "Crab, Ham & Veggie Bake": "Revives a character and restores 1200 HP.",
+      "Delicious Crab, Ham & Veggie Bake": "Revives a character and restores 1500 HP."
+    }
   },
   "Jade Parcels": {
     "name": "Jade Parcels",
@@ -1361,7 +2197,30 @@
     "icon": "img/food/Jade_Parcels.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Lotus Head"
+      },
+      {
+        "count": 2,
+        "name": "Jueyun Chili"
+      },
+      {
+        "count": 2,
+        "name": "Cabbage"
+      },
+      {
+        "count": 1,
+        "name": "Ham"
+      }
+    ],
+    "effect": {
+      "Suspicious Jade Parcels": "Increases all party members' ATK by 224 and CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Jade Parcels": "Increases all party members' ATK by 272 and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Jade Parcels": "Increases all party members' ATK by 320 and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Zhongyuan Chop Suey": {
     "name": "Zhongyuan Chop Suey",
@@ -1373,7 +2232,30 @@
     "icon": "img/food/Zhongyuan_Chop_Suey.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 3,
+        "name": "Fish"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Salt"
+      }
+    ],
+    "effect": {
+      "Suspicious Zhongyuan Chop Suey": "Decreases all party members' climbing and sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Zhongyuan Chop Suey": "Decreases all party members' climbing and sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Zhongyuan Chop Suey": "Decreases all party members' climbing and sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Black-Back Perch Stew": {
     "name": "Black-Back Perch Stew",
@@ -1384,7 +2266,30 @@
     "icon": "img/food/BlackBack_Perch_Stew.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Fish"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      },
+      {
+        "count": 1,
+        "name": "Salt"
+      },
+      {
+        "count": 1,
+        "name": "Violetgrass"
+      }
+    ],
+    "effect": {
+      "Suspicious Black-Back Perch Stew": "Restores 26% of Max HP to the selected character and regenerates 450 HP every 5s for 30s.",
+      "Black-Back Perch Stew": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s.",
+      "Delicious Black-Back Perch Stew": "Restores 30% of Max HP to the selected character and regenerates 790 HP every 5s for 30s."
+    }
   },
   "Squirrel Fish": {
     "name": "Squirrel Fish",
@@ -1395,7 +2300,30 @@
     "icon": "img/food/Squirrel_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Tomato"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Squirrel Fish": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Squirrel Fish": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Squirrel Fish": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Almond Tofu": {
     "name": "Almond Tofu",
@@ -1406,7 +2334,26 @@
     "icon": "img/food/Almond_Tofu.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Milk"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      },
+      {
+        "count": 1,
+        "name": "Almond"
+      }
+    ],
+    "effect": {
+      "Suspicious Almond Tofu": "Increases all party members' ATK by 66 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Almond Tofu": "Increases all party members' ATK by 81 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Almond Tofu": "Increases all party members' ATK by 95 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Jueyun Chili Chicken": {
     "name": "Jueyun Chili Chicken",
@@ -1417,7 +2364,26 @@
     "icon": "img/food/Jueyun_Chili_Chicken.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Fowl"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      },
+      {
+        "count": 1,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Jueyun Chili Chicken": "Increases all party members' CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Jueyun Chili Chicken": "Increases all party members' CRIT Rate by 9% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Jueyun Chili Chicken": "Increases all party members' CRIT Rate by 12% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Jewelry Soup": {
     "name": "Jewelry Soup",
@@ -1428,7 +2394,26 @@
     "icon": "img/food/Jewelry_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Snapdragon"
+      },
+      {
+        "count": 2,
+        "name": "Tofu"
+      },
+      {
+        "count": 1,
+        "name": "Lotus Head"
+      }
+    ],
+    "effect": {
+      "Suspicious Jewelry Soup": "Increases all party members' DEF by 88 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Jewelry Soup": "Increases all party members' DEF by 107 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Jewelry Soup": "Increases all party members' DEF by 126 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Matsutake Meat Rolls": {
     "name": "Matsutake Meat Rolls",
@@ -1439,7 +2424,22 @@
     "icon": "img/food/Matsutake_Meat_Rolls.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Matsutake"
+      },
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      }
+    ],
+    "effect": {
+      "Suspicious Matsutake Meat Rolls": "Restores 20% of Max HP and an additional 900 HP to the selected character.",
+      "Matsutake Meat Rolls": "Restores 22% of Max HP and an additional 1,200 HP to the selected character.",
+      "Delicious Matsutake Meat Rolls": "Restores 24% of Max HP and an additional 1,500 HP to the selected character."
+    }
   },
   "Mora Meat": {
     "name": "Mora Meat",
@@ -1450,7 +2450,22 @@
     "icon": "img/food/Mora_Meat.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 1,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Mora Meat": "Revives a character and restores 50 HP.",
+      "Mora Meat": "Revives a character and restores 100 HP.",
+      "Delicious Mora Meat": "Revives a character and restores 150 HP."
+    }
   },
   "Mondstadt Grilled Fish": {
     "name": "Mondstadt Grilled Fish",
@@ -1461,7 +2476,22 @@
     "icon": "img/food/Mondstadt_Grilled_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Fish"
+      },
+      {
+        "count": 1,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Mondstadt Grilled Fish": "Revives a character and restores 50 HP.",
+      "Mondstadt Grilled Fish": "Revives a character and restores 100 HP.",
+      "Delicious Mondstadt Grilled Fish": "Revives a character and restores 150 HP."
+    }
   },
   "Stir-Fried Filet": {
     "name": "Stir-Fried Filet",
@@ -1472,7 +2502,22 @@
     "icon": "img/food/StirFried_Filet.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      }
+    ],
+    "effect": {
+      "Suspicious Stir-Fried Filet": "Revives a character and restores 50 HP.",
+      "Stir-Fried Filet": "Revives a character and restores 100 HP.",
+      "Delicious Stir-Fried Filet": "Revives a character and restores 150 HP."
+    }
   },
   "Golden Crab": {
     "name": "Golden Crab",
@@ -1483,7 +2528,30 @@
     "icon": "img/food/Golden_Crab.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 5,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 5,
+        "name": "Flour"
+      },
+      {
+        "count": 4,
+        "name": "Crab"
+      },
+      {
+        "count": 2,
+        "name": "Salt"
+      }
+    ],
+    "effect": {
+      "Suspicious Golden Crab": "Increases all party members' DEF by 215 and healing effects by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Golden Crab": "Increases all party members' DEF by 261 and healing effects by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Golden Crab": "Increases all party members' DEF by 308 and healing effects by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Crystal Shrimp": {
     "name": "Crystal Shrimp",
@@ -1494,7 +2562,26 @@
     "icon": "img/food/Crystal_Shrimp.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Rice"
+      },
+      {
+        "count": 3,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 2,
+        "name": "Carrot"
+      }
+    ],
+    "effect": {
+      "Suspicious Crystal Shrimp": "Restores 18% of Max HP to the selected character and regenerates 300 HP every 5s for 30s.",
+      "Crystal Shrimp": "Restores 20% of Max HP to the selected character and regenerates 390 HP every 5s for 30s.",
+      "Delicious Crystal Shrimp": "Restores 22% of Max HP to the selected character and regenerates 470 HP every 5s for 30s."
+    }
   },
   "Grilled Tiger Fish": {
     "name": "Grilled Tiger Fish",
@@ -1506,7 +2593,22 @@
     "icon": "img/food/Grilled_Tiger_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Fish"
+      },
+      {
+        "count": 1,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Grilled Tiger Fish": "Restores 8% of Max HP and an additional 800 HP to the selected character.",
+      "Grilled Tiger Fish": "Restores 9% of Max HP and an additional 1,000 HP to the selected character.",
+      "Delicious Grilled Tiger Fish": "Restores 10% of Max HP and an additional 1,200 HP to the selected character."
+    }
   },
   "Barbatos Ratatouille": {
     "name": "Barbatos Ratatouille",
@@ -1517,7 +2619,26 @@
     "icon": "img/food/Barbatos_Ratatouille.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Carrot"
+      },
+      {
+        "count": 4,
+        "name": "Potato"
+      },
+      {
+        "count": 4,
+        "name": "Onion"
+      }
+    ],
+    "effect": {
+      "Suspicious Barbatos Ratatouille": "Decreases all party members' gliding and sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Barbatos Ratatouille": "Decreases all party members' gliding and sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Barbatos Ratatouille": "Decreases all party members' gliding and sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Lotus Seed and Bird Egg Soup": {
     "name": "Lotus Seed and Bird Egg Soup",
@@ -1528,7 +2649,26 @@
     "icon": "img/food/Lotus_Seed_and_Bird_Egg_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Lotus Head"
+      },
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Lotus Seed and Bird Egg Soup": "Decreases all party members' sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Lotus Seed and Bird Egg Soup": "Decreases all party members' sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Lotus Seed and Bird Egg Soup": "Decreases all party members' sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Adeptus' Temptation": {
     "name": "Adeptus' Temptation",
@@ -1539,7 +2679,30 @@
     "icon": "img/food/Adeptus_Temptation.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Ham"
+      },
+      {
+        "count": 3,
+        "name": "Crab"
+      },
+      {
+        "count": 3,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 3,
+        "name": "Matsutake"
+      }
+    ],
+    "effect": {
+      "Suspicious Adeptus' Temptation": "Increases all party members' ATK by 260 and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Adeptus' Temptation": "Increases all party members' ATK by 316 and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Adeptus' Temptation": "Increases all party members' ATK by 372 and CRIT Rate by 12% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Golden Shrimp Balls": {
     "name": "Golden Shrimp Balls",
@@ -1550,7 +2713,26 @@
     "icon": "img/food/Golden_Shrimp_Balls.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 5,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 4,
+        "name": "Potato"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Golden Shrimp Balls": "Revives a character and restores 900 HP.",
+      "Golden Shrimp Balls": "Revives a character and restores 1200 HP.",
+      "Delicious Golden Shrimp Balls": "Revives a character and restores 1500 HP."
+    }
   },
   "Qingce Stir Fry": {
     "name": "Qingce Stir Fry",
@@ -1561,7 +2743,30 @@
     "icon": "img/food/Qingce_Stir_Fry.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Mushroom"
+      },
+      {
+        "count": 2,
+        "name": "Lotus Head"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      },
+      {
+        "count": 1,
+        "name": "Cabbage"
+      }
+    ],
+    "effect": {
+      "Suspicious Qingce Stir Fry": "Increases all party members' ATK by 160 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Qingce Stir Fry": "Increases all party members' ATK by 194 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Qingce Stir Fry": "Increases all party members' ATK by 228 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Come and Get It": {
     "name": "Come and Get It",
@@ -1572,7 +2777,30 @@
     "icon": "img/food/Come_and_Get_It.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 3,
+        "name": "Fish"
+      },
+      {
+        "count": 3,
+        "name": "Rice"
+      },
+      {
+        "count": 1,
+        "name": "Tofu"
+      }
+    ],
+    "effect": {
+      "Suspicious Come and Get It": "Increases all party members' CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Come and Get It": "Increases all party members' CRIT Rate by 15% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Come and Get It": "Increases all party members' CRIT Rate by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Apple Cider": {
     "name": "Apple Cider",
@@ -1583,7 +2811,8 @@
     "icon": "img/food/Apple_Cider.png",
     "sources": [
       "Sold at shops"
-    ]
+    ],
+    "effect": "Restores 26% of Max HP to the selected character and regenerates 570 HP every 5s for 30s."
   },
   "Noodles with Mountain Delicacies": {
     "name": "Noodles with Mountain Delicacies",
@@ -1594,7 +2823,26 @@
     "icon": "img/food/Noodles_with_Mountain_Delicacies.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Mushroom"
+      },
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Noodles with Mountain Delicacies": "Restores 40 Stamina",
+      "Noodles with Mountain Delicacies": "Restores 50 Stamina",
+      "Delicious Noodles with Mountain Delicacies": "Restores 60 Stamina"
+    }
   },
   "Bamboo Shoot Soup": {
     "name": "Bamboo Shoot Soup",
@@ -1605,7 +2853,26 @@
     "icon": "img/food/Bamboo_Shoot_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Ham"
+      },
+      {
+        "count": 1,
+        "name": "Bamboo Shoot"
+      }
+    ],
+    "effect": {
+      "Suspicious Bamboo Shoot Soup": "Restores 26% of Max HP to the selected character and regenerates 450 HP every 5s for 30s.",
+      "Bamboo Shoot Soup": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s.",
+      "Delicious Bamboo Shoot Soup": "Restores 30% of Max HP to the selected character and regenerates 790 HP every 5s for 30s."
+    }
   },
   "Triple-Layered Consommé": {
     "name": "Triple-Layered Consommé",
@@ -1616,7 +2883,30 @@
     "icon": "img/food/TripleLayered_Consommé.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Ham"
+      },
+      {
+        "count": 2,
+        "name": "Fowl"
+      },
+      {
+        "count": 1,
+        "name": "Bamboo Shoot"
+      },
+      {
+        "count": 1,
+        "name": "Mushroom"
+      }
+    ],
+    "effect": {
+      "Suspicious Triple-Layered Consommé": "Increases all party members' Shield Strength by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Triple-Layered Consommé": "Increases all party members' Shield Strength by 25% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Triple-Layered Consommé": "Increases all party members' Shield Strength by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Tianshu Meat": {
     "name": "Tianshu Meat",
@@ -1627,7 +2917,30 @@
     "icon": "img/food/Tianshu_Meat.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Sugar"
+      },
+      {
+        "count": 1,
+        "name": "Qingxin"
+      },
+      {
+        "count": 1,
+        "name": "Matsutake"
+      }
+    ],
+    "effect": {
+      "Suspicious Tianshu Meat": "Increases all party members' Physical DMG by 25% and CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Tianshu Meat": "Increases all party members' Physical DMG by 35% and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Tianshu Meat": "Increases all party members' Physical DMG by 45% and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Lotus Flower Crisp": {
     "name": "Lotus Flower Crisp",
@@ -1638,7 +2951,30 @@
     "icon": "img/food/Lotus_Flower_Crisp.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Almond"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Butter"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Lotus Flower Crisp": "Increases all party members' DEF by 165 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Lotus Flower Crisp": "Increases all party members' DEF by 200 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Lotus Flower Crisp": "Increases all party members' DEF by 235 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Moon Pie": {
     "name": "Moon Pie",
@@ -1649,7 +2985,30 @@
     "icon": "img/food/Moon_Pie.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 4,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 3,
+        "name": "Butter"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Moon Pie": "Increases all party members' Shield Strength by 25% and DEF by 165 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Moon Pie": "Increases all party members' Shield Strength by 30% and DEF by 200 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Moon Pie": "Increases all party members' Shield Strength by 35% and DEF by 235 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Adventurer's Breakfast Sandwich": {
     "name": "Adventurer's Breakfast Sandwich",
@@ -1660,7 +3019,26 @@
     "icon": "img/food/Adventurers_Breakfast_Sandwich.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 1,
+        "name": "Ham"
+      }
+    ],
+    "effect": {
+      "Suspicious Adventurer's Breakfast Sandwich": "Increases all party members' ATK by 160 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Adventurer's Breakfast Sandwich": "Increases all party members' ATK by 194 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Adventurer's Breakfast Sandwich": "Increases all party members' ATK by 228 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Northern Apple Stew": {
     "name": "Northern Apple Stew",
@@ -1671,7 +3049,30 @@
     "icon": "img/food/Northern_Apple_Stew.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 3,
+        "name": "Apple"
+      },
+      {
+        "count": 1,
+        "name": "Butter"
+      },
+      {
+        "count": 1,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Northern Apple Stew": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Northern Apple Stew": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Northern Apple Stew": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Universal Peace": {
     "name": "Universal Peace",
@@ -1682,7 +3083,30 @@
     "icon": "img/food/Universal_Peace.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Rice"
+      },
+      {
+        "count": 2,
+        "name": "Lotus Head"
+      },
+      {
+        "count": 2,
+        "name": "Carrot"
+      },
+      {
+        "count": 2,
+        "name": "Berry"
+      }
+    ],
+    "effect": {
+      "Suspicious Universal Peace": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Universal Peace": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Universal Peace": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Goulash": {
     "name": "Goulash",
@@ -1693,7 +3117,26 @@
     "icon": "img/food/Goulash.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Chilled Meat"
+      },
+      {
+        "count": 2,
+        "name": "Carrot"
+      },
+      {
+        "count": 1,
+        "name": "Tomato"
+      }
+    ],
+    "effect": {
+      "Suspicious Goulash": "Slightly decreases the rate of Sheer Cold accumulation for all party members for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Goulash": "Somewhat decreases the rate of Sheer Cold accumulation for all party members for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Goulash": "Decreases the rate of Sheer Cold accumulation for all party members for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Sunshine Sprat": {
     "name": "Sunshine Sprat",
@@ -1704,7 +3147,30 @@
     "icon": "img/food/Sunshine_Sprat.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Butter"
+      },
+      {
+        "count": 3,
+        "name": "Fish"
+      },
+      {
+        "count": 1,
+        "name": "Salt"
+      },
+      {
+        "count": 1,
+        "name": "Small Lamp Grass"
+      }
+    ],
+    "effect": {
+      "Suspicious Sunshine Sprat": "Increases all party members' Shield Strength by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Sunshine Sprat": "Increases all party members' Shield Strength by 25% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Sunshine Sprat": "Increases all party members' Shield Strength by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Jueyun Guoba": {
     "name": "Jueyun Guoba",
@@ -1715,7 +3181,30 @@
     "icon": "img/food/Jueyun_Guoba.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Horsetail"
+      },
+      {
+        "count": 2,
+        "name": "Rice"
+      },
+      {
+        "count": 1,
+        "name": "Ham"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      }
+    ],
+    "effect": {
+      "Suspicious Jueyun Guoba": "Increases all party members' Physical DMG by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Jueyun Guoba": "Increases all party members' Physical DMG by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Jueyun Guoba": "Increases all party members' Physical DMG by 40% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Fullmoon Egg": {
     "name": "Fullmoon Egg",
@@ -1726,7 +3215,30 @@
     "icon": "img/food/Fullmoon_Egg.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 2,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 1,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Fullmoon Egg": "Revives a character and restores 900 HP.",
+      "Fullmoon Egg": "Revives a character and restores 1,200 HP.",
+      "Delicious Fullmoon Egg": "Revives a character and restores 1500 HP."
+    }
   },
   "Vegetarian Abalone": {
     "name": "Vegetarian Abalone",
@@ -1737,7 +3249,22 @@
     "icon": "img/food/Vegetarian_Abalone.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Matsutake"
+      },
+      {
+        "count": 2,
+        "name": "Snapdragon"
+      }
+    ],
+    "effect": {
+      "Suspicious Vegetarian Abalone": "Revives a character and restores 250 HP.",
+      "Vegetarian Abalone": "Revives a character and restores 400 HP.",
+      "Delicious Vegetarian Abalone": "Revives a character and restores 550 HP."
+    }
   },
   "Stone Harbor Delicacies": {
     "name": "Stone Harbor Delicacies",
@@ -1748,7 +3275,26 @@
     "icon": "img/food/Stone_Harbor_Delicacies.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Potato"
+      },
+      {
+        "count": 1,
+        "name": "Violetgrass"
+      },
+      {
+        "count": 1,
+        "name": "Matsutake"
+      }
+    ],
+    "effect": {
+      "Suspicious Stone Harbor Delicacies": "Increases all party members' CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Stone Harbor Delicacies": "Increases all party members' CRIT Rate by 9% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Stone Harbor Delicacies": "Increases all party members' CRIT Rate by 12% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Crispy Potato Shrimp Platter": {
     "name": "Crispy Potato Shrimp Platter",
@@ -1759,7 +3305,30 @@
     "icon": "img/food/Crispy_Potato_Shrimp_Platter.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Mint"
+      },
+      {
+        "count": 4,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 3,
+        "name": "Potato"
+      },
+      {
+        "count": 2,
+        "name": "Berry"
+      }
+    ],
+    "effect": {
+      "Suspicious Crispy Potato Shrimp Platter": "Restores 26% of Max HP to the selected character and regenerates 450 HP every 5s for 30s.",
+      "Crispy Potato Shrimp Platter": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s.",
+      "Delicious Crispy Potato Shrimp Platter": "Restores 30% of Max HP to the selected character and regenerates 790 HP every 5s for 30s."
+    }
   },
   "Mint Jelly": {
     "name": "Mint Jelly",
@@ -1770,7 +3339,22 @@
     "icon": "img/food/Mint_Jelly.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Mint"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Mint Jelly": "Restores 8% of Max HP and an additional 800 HP to the selected character.",
+      "Mint Jelly": "Restores 9% of Max HP and an additional 1,000 HP to the selected character.",
+      "Delicious Mint Jelly": "Restores 10% of Max HP and an additional 1,200 HP to the selected character."
+    }
   },
   "Mint Salad": {
     "name": "Mint Salad",
@@ -1781,7 +3365,22 @@
     "icon": "img/food/Mint_Salad.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Mint"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      }
+    ],
+    "effect": {
+      "Suspicious Mint Salad": "Increases all party members' ATK by 66 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Mint Salad": "Increases all party members' ATK by 81 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Mint Salad": "Increases all party members' ATK by 95 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Minty Meat Rolls": {
     "name": "Minty Meat Rolls",
@@ -1792,7 +3391,26 @@
     "icon": "img/food/Minty_Meat_Rolls.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Mint"
+      },
+      {
+        "count": 3,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 1,
+        "name": "Jueyun Chili"
+      }
+    ],
+    "effect": {
+      "Suspicious Minty Meat Rolls": "Decreases all party members' gliding and sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Minty Meat Rolls": "Decreases all party members' gliding and sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Minty Meat Rolls": "Decreases all party members' gliding and sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Crab Roe Tofu": {
     "name": "Crab Roe Tofu",
@@ -1803,7 +3421,22 @@
     "icon": "img/food/Crab_Roe_Tofu.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Crab Roe"
+      },
+      {
+        "count": 1,
+        "name": "Tofu"
+      }
+    ],
+    "effect": {
+      "Suspicious Crab Roe Tofu": "Revives a character and restores 250 HP.",
+      "Crab Roe Tofu": "Revives a character and restores 400 HP.",
+      "Delicious Crab Roe Tofu": "Revives a character and restores 550 HP."
+    }
   },
   "Cured Pork Dry Hotpot": {
     "name": "Cured Pork Dry Hotpot",
@@ -1814,7 +3447,30 @@
     "icon": "img/food/Cured_Pork_Dry_Hotpot.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Ham"
+      },
+      {
+        "count": 2,
+        "name": "Matsutake"
+      },
+      {
+        "count": 1,
+        "name": "Snapdragon"
+      },
+      {
+        "count": 1,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Cured Pork Dry Hotpot": "Increases all party members' CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Cured Pork Dry Hotpot": "Increases all party members' CRIT Rate by 15% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Cured Pork Dry Hotpot": "Increases all party members' CRIT Rate by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Stir-Fried Fish Noodles": {
     "name": "Stir-Fried Fish Noodles",
@@ -1825,7 +3481,26 @@
     "icon": "img/food/StirFried_Fish_Noodles.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Rice"
+      },
+      {
+        "count": 2,
+        "name": "Snapdragon"
+      }
+    ],
+    "effect": {
+      "Suspicious Stir-Fried Fish Noodles": "Restores 18% of Max HP to the selected character and regenerates 300 HP every 5s for 30s.",
+      "Stir-Fried Fish Noodles": "Restores 20% of Max HP to the selected character and regenerates 390 HP every 5s for 30s.",
+      "Delicious Stir-Fried Fish Noodles": "Restores 22% of Max HP to the selected character and regenerates 470 HP every 5s for 30s."
+    }
   },
   "Chicken Tofu Pudding": {
     "name": "Chicken Tofu Pudding",
@@ -1836,7 +3511,30 @@
     "icon": "img/food/Chicken_Tofu_Pudding.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fowl"
+      },
+      {
+        "count": 2,
+        "name": "Ham"
+      },
+      {
+        "count": 2,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 1,
+        "name": "Snapdragon"
+      }
+    ],
+    "effect": {
+      "Suspicious Chicken Tofu Pudding": "Increases all party members' ATK by 224 and CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Chicken Tofu Pudding": "Increases all party members' ATK by 272 and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Chicken Tofu Pudding": "Increases all party members' ATK by 320 and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Stir-Fried Shrimp": {
     "name": "Stir-Fried Shrimp",
@@ -1847,7 +3545,26 @@
     "icon": "img/food/StirFried_Shrimp.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 3,
+        "name": "Snapdragon"
+      }
+    ],
+    "effect": {
+      "Suspicious Stir-Fried Shrimp": "Increases all party members' Shield Strength by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Stir-Fried Shrimp": "Increases all party members' Shield Strength by 25% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Stir-Fried Shrimp": "Increases all party members' Shield Strength by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Rice Buns": {
     "name": "Rice Buns",
@@ -1858,7 +3575,22 @@
     "icon": "img/food/Rice_Buns.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Rice"
+      },
+      {
+        "count": 1,
+        "name": "Horsetail"
+      }
+    ],
+    "effect": {
+      "Suspicious Rice Buns": "Restores 8% of Max HP and an additional 800 HP to the selected character.",
+      "Rice Buns": "Restores 9% of Max HP and an additional 1,000 HP to the selected character.",
+      "Delicious Rice Buns": "Restores 10% of Max HP and an additional 1,200 HP to the selected character."
+    }
   },
   "Tuna Sushi": {
     "name": "Tuna Sushi",
@@ -1869,7 +3601,22 @@
     "icon": "img/food/Tuna_Sushi.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Fish"
+      },
+      {
+        "count": 3,
+        "name": "Rice"
+      }
+    ],
+    "effect": {
+      "Suspicious Tuna Sushi": "Restores 20% of Max HP and an additional 900 HP to the selected character.",
+      "Tuna Sushi": "Restores 22% of Max HP and an additional 1,200 HP to the selected character.",
+      "Delicious Tuna Sushi": "Restores 24% of Max HP and an additional 1,500 HP to the selected character."
+    }
   },
   "Tricolor Dango": {
     "name": "Tricolor Dango",
@@ -1880,7 +3627,30 @@
     "icon": "img/food/Tricolor_Dango.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Milk"
+      },
+      {
+        "count": 2,
+        "name": "Snapdragon"
+      },
+      {
+        "count": 2,
+        "name": "Sakura Bloom"
+      },
+      {
+        "count": 1,
+        "name": "Rice"
+      }
+    ],
+    "effect": {
+      "Suspicious Tricolor Dango": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Tricolor Dango": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Tricolor Dango": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Onigiri": {
     "name": "Onigiri",
@@ -1891,7 +3661,26 @@
     "icon": "img/food/Onigiri.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Seagrass"
+      },
+      {
+        "count": 1,
+        "name": "Rice"
+      }
+    ],
+    "effect": {
+      "Suspicious Onigiri": "Restores 18% of Max HP to the selected character and regenerates 300 HP every 5s for 30s.",
+      "Onigiri": "Restores 20% of Max HP to the selected character and regenerates 390 HP every 5s for 30s.",
+      "Delicious Onigiri": "Restores 22% of Max HP to the selected character and regenerates 470 HP every 5s for 30s."
+    }
   },
   "Sashimi Platter": {
     "name": "Sashimi Platter",
@@ -1902,7 +3691,30 @@
     "icon": "img/food/Sashimi_Platter.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fish"
+      },
+      {
+        "count": 4,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 4,
+        "name": "Crab"
+      },
+      {
+        "count": 2,
+        "name": "Radish"
+      }
+    ],
+    "effect": {
+      "Suspicious Sashimi Platter": "Increases all party members' ATK by 224 and CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Sashimi Platter": "Increases all party members' ATK by 272 and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Sashimi Platter": "Increases all party members' ATK by 320 and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Tonkotsu Ramen": {
     "name": "Tonkotsu Ramen",
@@ -1913,7 +3725,30 @@
     "icon": "img/food/Tonkotsu_Ramen.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Bamboo Shoot"
+      },
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      }
+    ],
+    "effect": {
+      "Suspicious Tonkotsu Ramen": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Tonkotsu Ramen": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Tonkotsu Ramen": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Egg Roll": {
     "name": "Egg Roll",
@@ -1924,7 +3759,22 @@
     "icon": "img/food/Egg_Roll.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Egg Roll": "Revives a character and restores 50 HP.",
+      "Egg Roll": "Revives a character and restores 100 HP.",
+      "Delicious Egg Roll": "Revives a character and restores 150 HP."
+    }
   },
   "Dry-Braised Salted Fish": {
     "name": "Dry-Braised Salted Fish",
@@ -1935,7 +3785,22 @@
     "icon": "img/food/DryBraised_Salted_Fish.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Fish"
+      },
+      {
+        "count": 1,
+        "name": "Salt"
+      }
+    ],
+    "effect": {
+      "Suspicious Dry-Braised Salted Fish": "Restores 8% of Max HP and an additional 800 HP to the selected character.",
+      "Dry-Braised Salted Fish": "Restores 9% of Max HP and an additional 1,000 HP to the selected character.",
+      "Delicious Dry-Braised Salted Fish": "Restores 10% of Max HP and an additional 1,200 HP to the selected character."
+    }
   },
   "Butter Crab": {
     "name": "Butter Crab",
@@ -1946,7 +3811,30 @@
     "icon": "img/food/Butter_Crab.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Butter"
+      },
+      {
+        "count": 4,
+        "name": "Crab"
+      },
+      {
+        "count": 2,
+        "name": "Seagrass"
+      },
+      {
+        "count": 1,
+        "name": "Matsutake"
+      }
+    ],
+    "effect": {
+      "Suspicious Butter Crab": "Increases all party members' DEF by 215 and healing effects by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Butter Crab": "Increases all party members' DEF by 261 and healing effects by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Butter Crab": "Increases all party members' DEF by 308 and healing effects by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Tri-Flavored Skewer": {
     "name": "Tri-Flavored Skewer",
@@ -1957,7 +3845,30 @@
     "icon": "img/food/TriFlavored_Skewer.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 1,
+        "name": "Snapdragon"
+      }
+    ],
+    "effect": {
+      "Suspicious Tri-Flavored Skewer": "Increases all party members' ATK by 160 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Tri-Flavored Skewer": "Increases all party members' ATK by 194 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Tri-Flavored Skewer": "Increases all party members' ATK by 228 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Miso Soup": {
     "name": "Miso Soup",
@@ -1968,7 +3879,22 @@
     "icon": "img/food/Miso_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Tofu"
+      },
+      {
+        "count": 1,
+        "name": "Seagrass"
+      }
+    ],
+    "effect": {
+      "Suspicious Miso Soup": "Restores 8% of Max HP to the selected character and regenerates 210 HP every 5s for 30s.",
+      "Miso Soup": "Restores 9% of Max HP to the selected character and regenerates 260 HP every 5s for 30s.",
+      "Delicious Miso Soup": "Restores 10% of Max HP to the selected character and regenerates 300 HP every 5s for 30s."
+    }
   },
   "Imported Poultry": {
     "name": "Imported Poultry",
@@ -1979,7 +3905,30 @@
     "icon": "img/food/Imported_Poultry.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fowl"
+      },
+      {
+        "count": 3,
+        "name": "Lavender Melon"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Bird Egg"
+      }
+    ],
+    "effect": {
+      "Suspicious Imported Poultry": "Increases all party members' CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Imported Poultry": "Increases all party members' CRIT Rate by 15% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Imported Poultry": "Increases all party members' CRIT Rate by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Sakura Mochi": {
     "name": "Sakura Mochi",
@@ -1990,7 +3939,26 @@
     "icon": "img/food/Sakura_Mochi.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Rice"
+      },
+      {
+        "count": 2,
+        "name": "Sugar"
+      },
+      {
+        "count": 1,
+        "name": "Sakura Bloom"
+      }
+    ],
+    "effect": {
+      "Suspicious Sakura Mochi": "Revives a character and restores 900 HP.",
+      "Sakura Mochi": "Revives a character and restores 1,200 HP.",
+      "Delicious Sakura Mochi": "Revives a character and restores 1,500 HP."
+    }
   },
   "Konda Cuisine": {
     "name": "Konda Cuisine",
@@ -2001,7 +3969,30 @@
     "icon": "img/food/Konda_Cuisine.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Fowl"
+      },
+      {
+        "count": 2,
+        "name": "Snapdragon"
+      },
+      {
+        "count": 2,
+        "name": "Lavender Melon"
+      },
+      {
+        "count": 1,
+        "name": "Mushroom"
+      }
+    ],
+    "effect": {
+      "Suspicious Konda Cuisine": "Revives a character and restores 900 HP.",
+      "Konda Cuisine": "Revives a character and restores 1,200 HP.",
+      "Delicious Konda Cuisine": "Revives a character and restores 1,500 HP."
+    }
   },
   "Rice Cake Soup": {
     "name": "Rice Cake Soup",
@@ -2012,7 +4003,30 @@
     "icon": "img/food/Rice_Cake_Soup.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Sausage"
+      },
+      {
+        "count": 1,
+        "name": "Tofu"
+      },
+      {
+        "count": 1,
+        "name": "Fish"
+      },
+      {
+        "count": 1,
+        "name": "Lavender Melon"
+      }
+    ],
+    "effect": {
+      "Suspicious Rice Cake Soup": "Increases all party members' DEF by 165 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Rice Cake Soup": "Increases all party members' DEF by 200 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Rice Cake Soup": "Increases all party members' DEF by 235 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Mixed Yakisoba": {
     "name": "Mixed Yakisoba",
@@ -2023,7 +4037,26 @@
     "icon": "img/food/Mixed_Yakisoba.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Cabbage"
+      },
+      {
+        "count": 1,
+        "name": "Raw Meat"
+      }
+    ],
+    "effect": {
+      "Suspicious Mixed Yakisoba": "Revives a character and restores 250 HP.",
+      "Mixed Yakisoba": "Revives a character and restores 400 HP.",
+      "Delicious Mixed Yakisoba": "Revives a character and restores 550 HP."
+    }
   },
   "Crab Roe Kourayaki": {
     "name": "Crab Roe Kourayaki",
@@ -2034,7 +4067,22 @@
     "icon": "img/food/Crab_Roe_Kourayaki.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Crab"
+      },
+      {
+        "count": 1,
+        "name": "Crab Roe"
+      }
+    ],
+    "effect": {
+      "Suspicious Crab Roe Kourayaki": "Increases all party members' ATK by 66 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Crab Roe Kourayaki": "Increases all party members' ATK by 81 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Crab Roe Kourayaki": "Increases all party members' ATK by 95 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Sakura Tempura": {
     "name": "Sakura Tempura",
@@ -2045,7 +4093,30 @@
     "icon": "img/food/Sakura_Tempura.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 2,
+        "name": "Lavender Melon"
+      },
+      {
+        "count": 2,
+        "name": "Sakura Bloom"
+      },
+      {
+        "count": 1,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Sakura Tempura": "Increases all party members' Shield Strength by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Sakura Tempura": "Increases all party members' Shield Strength by 25% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Sakura Tempura": "Increases all party members' Shield Strength by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Invigorating Kitty Meal": {
     "name": "Invigorating Kitty Meal",
@@ -2056,7 +4127,30 @@
     "icon": "img/food/Invigorating_Kitty_Meal.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Seagrass"
+      },
+      {
+        "count": 1,
+        "name": "Rice"
+      }
+    ],
+    "effect": {
+      "Suspicious Invigorating Kitty Meal": "Restores 26% of Max HP to the selected character and regenerates 450 HP every 5s for 30s.",
+      "Invigorating Kitty Meal": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s.",
+      "Delicious Invigorating Kitty Meal": "Restores 30% of Max HP to the selected character and regenerates 790 HP every 5s for 30s."
+    }
   },
   "Sweet Shrimp Sushi": {
     "name": "Sweet Shrimp Sushi",
@@ -2067,7 +4161,22 @@
     "icon": "img/food/Sweet_Shrimp_Sushi.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 1,
+        "name": "Rice"
+      }
+    ],
+    "effect": {
+      "Suspicious Sweet Shrimp Sushi": "Revives a character and restores 50 HP.",
+      "Sweet Shrimp Sushi": "Revives a character and restores 100 HP.",
+      "Delicious Sweet Shrimp Sushi": "Revives a character and restores 150 HP."
+    }
   },
   "Bird Egg Sushi": {
     "name": "Bird Egg Sushi",
@@ -2078,7 +4187,22 @@
     "icon": "img/food/Bird_Egg_Sushi.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 1,
+        "name": "Rice"
+      }
+    ],
+    "effect": {
+      "Suspicious Bird Egg Sushi": "Restores 8% of Max HP and an additional 800 HP to the selected character.",
+      "Bird Egg Sushi": "Restores 9% of Max HP and an additional 1,000 HP to the selected character.",
+      "Delicious Bird Egg Sushi": "Restores 10% of Max HP and an additional 1,200 HP to the selected character."
+    }
   },
   "Omelette Rice": {
     "name": "Omelette Rice",
@@ -2089,7 +4213,30 @@
     "icon": "img/food/Omelette_Rice.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 3,
+        "name": "Rice"
+      },
+      {
+        "count": 2,
+        "name": "Tomato"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Omelette Rice": "Decreases all party members' climbing and sprinting Stamina consumption by 15% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Omelette Rice": "Decreases all party members' climbing and sprinting Stamina consumption by 20% for 900s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Omelette Rice": "Decreases all party members' climbing and sprinting Stamina consumption by 25% for 900s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Taiyaki": {
     "name": "Taiyaki",
@@ -2100,7 +4247,30 @@
     "icon": "img/food/Taiyaki.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Sunsettia"
+      },
+      {
+        "count": 3,
+        "name": "Milk"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Taiyaki": "Restores 26% of Max HP to the selected character and regenerates 450 HP every 5s for 30s.",
+      "Taiyaki": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s.",
+      "Delicious Taiyaki": "Restores 30% of Max HP to the selected character and regenerates 790 HP every 5s for 30s."
+    }
   },
   "More-and-More": {
     "name": "More-and-More",
@@ -2111,7 +4281,30 @@
     "icon": "img/food/MoreandMore.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Bacon"
+      },
+      {
+        "count": 1,
+        "name": "Lavender Melon"
+      },
+      {
+        "count": 1,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious More-and-More": "Increases all party members' Physical DMG by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "More-and-More": "Increases all party members' Physical DMG by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious More-and-More": "Increases all party members' Physical DMG by 40% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Grilled Unagi Fillet": {
     "name": "Grilled Unagi Fillet",
@@ -2122,7 +4315,22 @@
     "icon": "img/food/Grilled_Unagi_Fillet.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Unagi Meat"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Grilled Unagi Fillet": "Restores 20% of Max HP and an additional 900 HP to the selected character.",
+      "Grilled Unagi Fillet": "Restores 22% of Max HP and an additional 1,200 HP to the selected character.",
+      "Delicious Grilled Unagi Fillet": "Restores 24% of Max HP and an additional 1,500 HP to the selected character."
+    }
   },
   "Radish and Fish Stew": {
     "name": "Radish and Fish Stew",
@@ -2133,7 +4341,26 @@
     "icon": "img/food/Radish_and_Fish_Stew.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Fish"
+      },
+      {
+        "count": 2,
+        "name": "Radish"
+      },
+      {
+        "count": 1,
+        "name": "Salt"
+      }
+    ],
+    "effect": {
+      "Suspicious Radish and Fish Stew": "Increases all party members' CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Radish and Fish Stew": "Increases all party members' CRIT Rate by 9% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Radish and Fish Stew": "Increases all party members' CRIT Rate by 12% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Wakatakeni": {
     "name": "Wakatakeni",
@@ -2144,7 +4371,22 @@
     "icon": "img/food/Wakatakeni.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Bamboo Shoot"
+      },
+      {
+        "count": 2,
+        "name": "Seagrass"
+      }
+    ],
+    "effect": {
+      "Suspicious Wakatakeni": "Increases all party members' DEF by 88 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Wakatakeni": "Increases all party members' DEF by 107 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Wakatakeni": "Increases all party members' DEF by 126 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Berry Mizu Manjuu": {
     "name": "Berry Mizu Manjuu",
@@ -2155,7 +4397,26 @@
     "icon": "img/food/Berry_Mizu_Manjuu.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Rice"
+      },
+      {
+        "count": 2,
+        "name": "Berry"
+      },
+      {
+        "count": 1,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Berry Mizu Manjuu": "Restores 18% of Max HP to the selected character and regenerates 300 HP every 5s for 30s.",
+      "Berry Mizu Manjuu": "Restores 20% of Max HP to the selected character and regenerates 390 HP every 5s for 30s.",
+      "Delicious Berry Mizu Manjuu": "Restores 22% of Max HP to the selected character and regenerates 470 HP every 5s for 30s."
+    }
   },
   "Soba Noodles": {
     "name": "Soba Noodles",
@@ -2166,7 +4427,22 @@
     "icon": "img/food/Soba_Noodles.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 1,
+        "name": "Flour"
+      },
+      {
+        "count": 1,
+        "name": "Seagrass"
+      }
+    ],
+    "effect": {
+      "Suspicious Soba Noodles": "Restores 8% of Max HP to the selected character and regenerates 210 HP every 5s for 30s.",
+      "Soba Noodles": "Restores 9% of Max HP to the selected character and regenerates 260 HP every 5s for 30s.",
+      "Delicious Soba Noodles": "Restores 10% of Max HP to the selected character and regenerates 300 HP every 5s for 30s."
+    }
   },
   "Unagi Chazuke": {
     "name": "Unagi Chazuke",
@@ -2177,7 +4453,30 @@
     "icon": "img/food/Unagi_Chazuke.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Unagi Meat"
+      },
+      {
+        "count": 3,
+        "name": "Rice"
+      },
+      {
+        "count": 3,
+        "name": "Seagrass"
+      },
+      {
+        "count": 1,
+        "name": "Salt"
+      }
+    ],
+    "effect": {
+      "Suspicious Unagi Chazuke": "Increases all party members' Healing Bonus by 15% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Unagi Chazuke": "Increases all party members' Healing Bonus by 17% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Unagi Chazuke": "Increases all party members' Healing Bonus by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Five Pickled Treasures": {
     "name": "Five Pickled Treasures",
@@ -2188,7 +4487,30 @@
     "icon": "img/food/Five_Pickled_Treasures.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 2,
+        "name": "Radish"
+      },
+      {
+        "count": 2,
+        "name": "Carrot"
+      },
+      {
+        "count": 2,
+        "name": "Lavender Melon"
+      },
+      {
+        "count": 2,
+        "name": "Seagrass"
+      }
+    ],
+    "effect": {
+      "Suspicious Five Pickled Treasures": "Restores 70 Stamina.",
+      "Five Pickled Treasures": "Restores 85 Stamina.",
+      "Delicious Five Pickled Treasures": "Restores 100 Stamina."
+    }
   },
   "Sakura Shrimp Crackers": {
     "name": "Sakura Shrimp Crackers",
@@ -2199,7 +4521,26 @@
     "icon": "img/food/Sakura_Shrimp_Crackers.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Shrimp Meat"
+      },
+      {
+        "count": 3,
+        "name": "Potato"
+      },
+      {
+        "count": 2,
+        "name": "Sakura Bloom"
+      }
+    ],
+    "effect": {
+      "Suspicious Sakura Shrimp Crackers": "Increases all party members' Max HP by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Sakura Shrimp Crackers": "Increases all party members' Max HP by 22% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Sakura Shrimp Crackers": "Increases all party members' Max HP by 25% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Bountiful Year": {
     "name": "Bountiful Year",
@@ -2210,7 +4551,30 @@
     "icon": "img/food/Bountiful_Year.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fish"
+      },
+      {
+        "count": 4,
+        "name": "Carrot"
+      },
+      {
+        "count": 2,
+        "name": "Onion"
+      },
+      {
+        "count": 1,
+        "name": "Violetgrass"
+      }
+    ],
+    "effect": {
+      "Suspicious Bountiful Year": "Increases all party members' ATK by 224 and CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Bountiful Year": "Increases all party members' ATK by 272 and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Bountiful Year": "Increases all party members' ATK by 320 and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Dragon Beard Noodles": {
     "name": "Dragon Beard Noodles",
@@ -2221,7 +4585,30 @@
     "icon": "img/food/Dragon_Beard_Noodles.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Fowl"
+      },
+      {
+        "count": 2,
+        "name": "Mushroom"
+      },
+      {
+        "count": 1,
+        "name": "Ham"
+      }
+    ],
+    "effect": {
+      "Suspicious Dragon Beard Noodles": "Increases all party members' ATK by 160 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Dragon Beard Noodles": "Increases all party members' ATK by 194 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Dragon Beard Noodles": "Increases all party members' ATK by 228 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Rice Pudding": {
     "name": "Rice Pudding",
@@ -2232,7 +4619,30 @@
     "icon": "img/food/Rice_Pudding.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 3,
+        "name": "Bird Egg"
+      },
+      {
+        "count": 2,
+        "name": "Rice"
+      },
+      {
+        "count": 2,
+        "name": "Milk"
+      },
+      {
+        "count": 2,
+        "name": "Sugar"
+      }
+    ],
+    "effect": {
+      "Suspicious Rice Pudding": "Restores 70 Stamina.",
+      "Rice Pudding": "Restores 85 Stamina.",
+      "Delicious Rice Pudding": "Restores 100 Stamina."
+    }
   },
   "Braised Meat": {
     "name": "Braised Meat",
@@ -2243,7 +4653,30 @@
     "icon": "img/food/Braised_Meat.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 2,
+        "name": "Carrot"
+      },
+      {
+        "count": 2,
+        "name": "Potato"
+      },
+      {
+        "count": 1,
+        "name": "Onion"
+      }
+    ],
+    "effect": {
+      "Suspicious Braised Meat": "Increases all party members' Physical DMG by 20% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Braised Meat": "Increases all party members' Physical DMG by 30% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Braised Meat": "Increases all party members' Physical DMG by 40% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Oncidium Tofu": {
     "name": "Oncidium Tofu",
@@ -2254,7 +4687,30 @@
     "icon": "img/food/Oncidium_Tofu.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Tofu"
+      },
+      {
+        "count": 2,
+        "name": "Bamboo Shoot"
+      },
+      {
+        "count": 1,
+        "name": "Ham"
+      },
+      {
+        "count": 1,
+        "name": "Fowl"
+      }
+    ],
+    "effect": {
+      "Suspicious Oncidium Tofu": "Restores 70 Stamina.",
+      "Oncidium Tofu": "Restores 85 Stamina.",
+      "Delicious Oncidium Tofu": "Restores 100 Stamina."
+    }
   },
   "Chili-Mince Cornbread Buns": {
     "name": "Chili-Mince Cornbread Buns",
@@ -2265,7 +4721,30 @@
     "icon": "img/food/ChiliMince_Cornbread_Buns.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Raw Meat"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Cabbage"
+      },
+      {
+        "count": 2,
+        "name": "Jueyun Chili"
+      }
+    ],
+    "effect": {
+      "Suspicious Chili-Mince Cornbread Buns": "Increases all party members' Shield Strength by 25% and DEF by 165 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Chili-Mince Cornbread Buns": "Increases all party members' Shield Strength by 30% and DEF by 200 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Chili-Mince Cornbread Buns": "Increases all party members' Shield Strength by 35% and DEF by 235 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Golden Fried Chicken": {
     "name": "Golden Fried Chicken",
@@ -2276,7 +4755,30 @@
     "icon": "img/food/Golden_Fried_Chicken.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fowl"
+      },
+      {
+        "count": 4,
+        "name": "Butter"
+      },
+      {
+        "count": 3,
+        "name": "Pepper"
+      },
+      {
+        "count": 3,
+        "name": "Flour"
+      }
+    ],
+    "effect": {
+      "Suspicious Golden Fried Chicken": "Increases all party members' ATK by 224 and CRIT Rate by 6% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Golden Fried Chicken": "Increases all party members' ATK by 272 and CRIT Rate by 8% for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Golden Fried Chicken": "Increases all party members' ATK by 320 and CRIT Rate by 10% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Golden Chicken Burger": {
     "name": "Golden Chicken Burger",
@@ -2287,7 +4789,30 @@
     "icon": "img/food/Golden_Chicken_Burger.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 4,
+        "name": "Fowl"
+      },
+      {
+        "count": 2,
+        "name": "Flour"
+      },
+      {
+        "count": 2,
+        "name": "Cabbage"
+      },
+      {
+        "count": 2,
+        "name": "Butter"
+      }
+    ],
+    "effect": {
+      "Suspicious Golden Chicken Burger": "Restores 30% of Max HP and an additional 600 HP to the selected character.",
+      "Golden Chicken Burger": "Restores 32% of Max HP and an additional 1,250 HP to the selected character.",
+      "Delicious Golden Chicken Burger": "Restores 34% of Max HP and an additional 1,900 HP to the selected character."
+    }
   },
   "Fragrant Mashed Potatoes": {
     "name": "Fragrant Mashed Potatoes",
@@ -2298,7 +4823,26 @@
     "icon": "img/food/Fragrant_Mashed_Potatoes.png",
     "sources": [
       "Obtained by cooking"
-    ]
+    ],
+    "recipe": [
+      {
+        "count": 6,
+        "name": "Potato"
+      },
+      {
+        "count": 4,
+        "name": "Cream"
+      },
+      {
+        "count": 3,
+        "name": "Pepper"
+      }
+    ],
+    "effect": {
+      "Suspicious Fragrant Mashed Potatoes": "Increases all party members' ATK by 160 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Fragrant Mashed Potatoes": "Increases all party members' ATK by 194 for 300s. In Co-Op Mode, this effect only applies to your own character(s).",
+      "Delicious Fragrant Mashed Potatoes": "Increases all party members' ATK by 228 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
+    }
   },
   "Holy Water": {
     "name": "Holy Water",
@@ -2321,7 +4865,8 @@
     "icon": "img/food/Pops_Teas.png",
     "sources": [
       "Sold at shops"
-    ]
+    ],
+    "effect": "Restores 14% of Max HP to the selected character and regenerates 350 HP every 5s for 30s."
   },
   "Wolfhook Juice": {
     "name": "Wolfhook Juice",
@@ -2332,7 +4877,8 @@
     "icon": "img/food/Wolfhook_Juice.png",
     "sources": [
       "Sold at shops"
-    ]
+    ],
+    "effect": "Increases all party members' ATK by 114 for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Berry & Mint Burst": {
     "name": "Berry & Mint Burst",
@@ -2343,7 +4889,8 @@
     "icon": "img/food/Berry_&_Mint_Burst.png",
     "sources": [
       "Sold at shops"
-    ]
+    ],
+    "effect": "Increases all party members' CRIT Rate by 16% for 300s. In Co-Op Mode, this effect only applies to your own character(s)."
   },
   "Special Mushroom Pizza": {
     "name": "Special Mushroom Pizza",
@@ -2354,7 +4901,8 @@
     "icon": "img/food/Special_Mushroom_Pizza.png",
     "sources": [
       "Sold at shops"
-    ]
+    ],
+    "effect": "Restores 28% of Max HP to the selected character and regenerates 620 HP every 5s for 30s."
   },
   "Dango Milk": {
     "name": "Dango Milk",
@@ -2365,7 +4913,8 @@
     "icon": "img/food/Dango_Milk.png",
     "sources": [
       "Sold at shops"
-    ]
+    ],
+    "effect": "Restores 26% of Max HP to the selected character and regenerates 570 HP every 5s for 30s."
   },
   "Wheat": {
     "name": "Wheat",
@@ -2676,7 +5225,8 @@
     "icon": "img/material/Heatshield_Potion.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Pyro RES by 25% for 300s."
   },
   "Desiccant Potion": {
     "name": "Desiccant Potion",
@@ -2687,7 +5237,8 @@
     "icon": "img/material/Desiccant_Potion.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Hydro RES by 25% for 300s."
   },
   "Frostshield Potion": {
     "name": "Frostshield Potion",
@@ -2698,7 +5249,8 @@
     "icon": "img/material/Frostshield_Potion.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Cryo RES by 25% for 300s."
   },
   "Windbarrier Potion": {
     "name": "Windbarrier Potion",
@@ -2709,7 +5261,8 @@
     "icon": "img/material/Windbarrier_Potion.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Anemo RES by 25% for 300s."
   },
   "Insulation Potion": {
     "name": "Insulation Potion",
@@ -2720,7 +5273,8 @@
     "icon": "img/material/Insulation_Potion.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Electro RES by 25% for 300s."
   },
   "Dustproof Potion": {
     "name": "Dustproof Potion",
@@ -2731,7 +5285,8 @@
     "icon": "img/material/Dustproof_Potion.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Geo RES by 25% for 300s."
   },
   "Flaming Essential Oil": {
     "name": "Flaming Essential Oil",
@@ -2742,7 +5297,8 @@
     "icon": "img/material/Flaming_Essential_Oil.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Pyro DMG by 25% for 300s."
   },
   "Streaming Essential Oil": {
     "name": "Streaming Essential Oil",
@@ -2753,7 +5309,8 @@
     "icon": "img/material/Streaming_Essential_Oil.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Hydro DMG by 25% for 300s."
   },
   "Frosting Essential Oil": {
     "name": "Frosting Essential Oil",
@@ -2764,7 +5321,8 @@
     "icon": "img/material/Frosting_Essential_Oil.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Cryo DMG by 25% for 300s."
   },
   "Gushing Essential Oil": {
     "name": "Gushing Essential Oil",
@@ -2775,7 +5333,8 @@
     "icon": "img/material/Gushing_Essential_Oil.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Anemo DMG by 25% for 300s."
   },
   "Shocking Essential Oil": {
     "name": "Shocking Essential Oil",
@@ -2786,7 +5345,8 @@
     "icon": "img/material/Shocking_Essential_Oil.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Electro DMG by 25% for 300s."
   },
   "Unmoving Essential Oil": {
     "name": "Unmoving Essential Oil",
@@ -2797,7 +5357,8 @@
     "icon": "img/material/Unmoving_Essential_Oil.png",
     "sources": [
       "Crafted"
-    ]
+    ],
+    "effect": "Increases all party members' Geo DMG by 25% for 300s."
   },
   "Dvalin's Plume": {
     "name": "Dvalin's Plume",
@@ -3489,7 +6050,8 @@
     "category": "Trophies",
     "icon": "img/material/Tile_of_Decarabians_Tower.png",
     "sources": [
-      "Purchase from the Souvenir Shop in Mondstadt"
+      "Purchase from the Souvenir Shop in Mondstadt",
+      "Domain of Forgery: City of Reflections (Monday/Thursday/Sunday)"
     ]
   },
   "Debris of Decarabian's City": {
@@ -3500,7 +6062,8 @@
     "category": "Trophies",
     "icon": "img/material/Debris_of_Decarabians_City.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: City of Reflections (Monday/Thursday/Sunday)"
     ]
   },
   "Fragment of Decarabian's Epic": {
@@ -3511,7 +6074,8 @@
     "category": "Trophies",
     "icon": "img/material/Fragment_of_Decarabians_Epic.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: City of Reflections (Monday/Thursday/Sunday)"
     ]
   },
   "Scattered Piece of Decarabian's Dream": {
@@ -3522,7 +6086,8 @@
     "category": "Trophies",
     "icon": "img/material/Scattered_Piece_of_Decarabians_Dream.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: City of Reflections (Monday/Thursday/Sunday)"
     ]
   },
   "Boreal Wolf's Milk Tooth": {
@@ -3533,7 +6098,8 @@
     "category": "Trophies",
     "icon": "img/material/Boreal_Wolfs_Milk_Tooth.png",
     "sources": [
-      "Purchase from the Souvenir Shop in Mondstadt"
+      "Purchase from the Souvenir Shop in Mondstadt",
+      "Domain of Forgery: Submerged Valley (Tuesday/Friday/Sunday)"
     ]
   },
   "Boreal Wolf's Cracked Tooth": {
@@ -3544,7 +6110,8 @@
     "category": "Trophies",
     "icon": "img/material/Boreal_Wolfs_Cracked_Tooth.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Submerged Valley (Tuesday/Friday/Sunday)"
     ]
   },
   "Boreal Wolf's Broken Fang": {
@@ -3555,7 +6122,8 @@
     "category": "Trophies",
     "icon": "img/material/Boreal_Wolfs_Broken_Fang.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Submerged Valley (Tuesday/Friday/Sunday)"
     ]
   },
   "Boreal Wolf's Nostalgia": {
@@ -3566,7 +6134,8 @@
     "category": "Trophies",
     "icon": "img/material/Boreal_Wolfs_Nostalgia.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Submerged Valley (Tuesday/Friday/Sunday)"
     ]
   },
   "Fetters of the Dandelion Gladiator": {
@@ -3577,7 +6146,8 @@
     "category": "Trophies",
     "icon": "img/material/Fetters_of_the_Dandelion_Gladiator.png",
     "sources": [
-      "Purchase from the Souvenir Shop in Mondstadt"
+      "Purchase from the Souvenir Shop in Mondstadt",
+      "Domain of Forgery: Ruins of Thirsting Capital (Wednesday/Saturday/Sunday)"
     ]
   },
   "Chains of the Dandelion Gladiator": {
@@ -3588,7 +6158,8 @@
     "category": "Trophies",
     "icon": "img/material/Chains_of_the_Dandelion_Gladiator.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Ruins of Thirsting Capital (Wednesday/Saturday/Sunday)"
     ]
   },
   "Shackles of the Dandelion Gladiator": {
@@ -3599,7 +6170,8 @@
     "category": "Trophies",
     "icon": "img/material/Shackles_of_the_Dandelion_Gladiator.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Ruins of Thirsting Capital (Wednesday/Saturday/Sunday)"
     ]
   },
   "Dream of the Dandelion Gladiator": {
@@ -3610,7 +6182,8 @@
     "category": "Trophies",
     "icon": "img/material/Dream_of_the_Dandelion_Gladiator.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Ruins of Thirsting Capital (Wednesday/Saturday/Sunday)"
     ]
   },
   "Luminous Sands from Guyun": {
@@ -3621,7 +6194,8 @@
     "category": "Trophies",
     "icon": "img/material/Luminous_Sands_from_Guyun.png",
     "sources": [
-      "Purchase from the Souvenir Shop in Liyue"
+      "Purchase from the Souvenir Shop in Liyue",
+      "Domain of Forgery: Thundercloud Altar (Monday/Thursday/Sunday)"
     ]
   },
   "Lustrous Stone from Guyun": {
@@ -3632,7 +6206,8 @@
     "category": "Trophies",
     "icon": "img/material/Lustrous_Stone_from_Guyun.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Thundercloud Altar (Monday/Thursday/Sunday)"
     ]
   },
   "Relic from Guyun": {
@@ -3643,7 +6218,8 @@
     "category": "Trophies",
     "icon": "img/material/Relic_from_Guyun.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Thundercloud Altar (Monday/Thursday/Sunday)"
     ]
   },
   "Divine Body from Guyun": {
@@ -3654,7 +6230,8 @@
     "category": "Trophies",
     "icon": "img/material/Divine_Body_from_Guyun.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Thundercloud Altar (Monday/Thursday/Sunday)"
     ]
   },
   "Mist Veiled Lead Elixir": {
@@ -3665,7 +6242,8 @@
     "category": "Trophies",
     "icon": "img/material/Mist_Veiled_Lead_Elixir.png",
     "sources": [
-      "Purchase from the Souvenir Shop in Liyue"
+      "Purchase from the Souvenir Shop in Liyue",
+      "Domain of Forgery: Thundering Ruins (Tuesday/Friday/Sunday)"
     ]
   },
   "Mist Veiled Mercury Elixir": {
@@ -3676,7 +6254,8 @@
     "category": "Trophies",
     "icon": "img/material/Mist_Veiled_Mercury_Elixir.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Thundering Ruins (Tuesday/Friday/Sunday)"
     ]
   },
   "Mist Veiled Gold Elixir": {
@@ -3687,7 +6266,8 @@
     "category": "Trophies",
     "icon": "img/material/Mist_Veiled_Gold_Elixir.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Thundering Ruins (Tuesday/Friday/Sunday)"
     ]
   },
   "Mist Veiled Primo Elixir": {
@@ -3698,7 +6278,8 @@
     "category": "Trophies",
     "icon": "img/material/Mist_Veiled_Primo_Elixir.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Thundering Ruins (Tuesday/Friday/Sunday)"
     ]
   },
   "Grain of Aerosiderite": {
@@ -3709,7 +6290,8 @@
     "category": "Trophies",
     "icon": "img/material/Grain_of_Aerosiderite.png",
     "sources": [
-      "Purchase from the Souvenir Shop in Liyue"
+      "Purchase from the Souvenir Shop in Liyue",
+      "Domain of Forgery: Trial Grounds of Thunder (Wednesday/Saturday/Sunday)"
     ]
   },
   "Piece of Aerosiderite": {
@@ -3720,7 +6302,8 @@
     "category": "Trophies",
     "icon": "img/material/Piece_of_Aerosiderite.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Trial Grounds of Thunder (Wednesday/Saturday/Sunday)"
     ]
   },
   "Bit of Aerosiderite": {
@@ -3731,7 +6314,8 @@
     "category": "Trophies",
     "icon": "img/material/Bit_of_Aerosiderite.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Trial Grounds of Thunder (Wednesday/Saturday/Sunday)"
     ]
   },
   "Chunk of Aerosiderite": {
@@ -3742,7 +6326,8 @@
     "category": "Trophies",
     "icon": "img/material/Chunk_of_Aerosiderite.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Trial Grounds of Thunder (Wednesday/Saturday/Sunday)"
     ]
   },
   "Coral Branch of a Distant Sea": {
@@ -3751,7 +6336,10 @@
     "stars": 2,
     "type": "Weapon Ascension Material",
     "category": "Trophies",
-    "icon": "img/material/Coral_Branch_of_a_Distant_Sea.png"
+    "icon": "img/material/Coral_Branch_of_a_Distant_Sea.png",
+    "sources": [
+      "Domain of Forgery: Sunken Sands (Monday/Thursday/Sunday)"
+    ]
   },
   "Jeweled Branch of a Distant Sea": {
     "name": "Jeweled Branch of a Distant Sea",
@@ -3761,7 +6349,8 @@
     "category": "Trophies",
     "icon": "img/material/Jeweled_Branch_of_a_Distant_Sea.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Sunken Sands (Monday/Thursday/Sunday)"
     ]
   },
   "Jade Branch of a Distant Sea": {
@@ -3772,7 +6361,8 @@
     "category": "Trophies",
     "icon": "img/material/Jade_Branch_of_a_Distant_Sea.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Sunken Sands (Monday/Thursday/Sunday)"
     ]
   },
   "Golden Branch of a Distant Sea": {
@@ -3783,7 +6373,8 @@
     "category": "Trophies",
     "icon": "img/material/Golden_Branch_of_a_Distant_Sea.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Sunken Sands (Monday/Thursday/Sunday)"
     ]
   },
   "Narukami's Wisdom": {
@@ -3792,7 +6383,10 @@
     "stars": 2,
     "type": "Weapon Ascension Material",
     "category": "Trophies",
-    "icon": "img/material/Narukamis_Wisdom.png"
+    "icon": "img/material/Narukamis_Wisdom.png",
+    "sources": [
+      "Domain of Forgery: Altar of Sands (Tuesday/Friday/Sunday)"
+    ]
   },
   "Narukami's Joy": {
     "name": "Narukami's Joy",
@@ -3802,7 +6396,8 @@
     "category": "Trophies",
     "icon": "img/material/Narukamis_Joy.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Altar of Sands (Tuesday/Friday/Sunday)"
     ]
   },
   "Narukami's Affection": {
@@ -3813,7 +6408,8 @@
     "category": "Trophies",
     "icon": "img/material/Narukamis_Affection.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Altar of Sands (Tuesday/Friday/Sunday)"
     ]
   },
   "Narukami's Valor": {
@@ -3824,7 +6420,8 @@
     "category": "Trophies",
     "icon": "img/material/Narukamis_Valor.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Altar of Sands (Tuesday/Friday/Sunday)"
     ]
   },
   "Mask of the Wicked Lieutenant": {
@@ -3833,7 +6430,10 @@
     "stars": 2,
     "type": "Weapon Ascension Material",
     "category": "Trophies",
-    "icon": "img/material/Mask_of_the_Wicked_Lieutenant.png"
+    "icon": "img/material/Mask_of_the_Wicked_Lieutenant.png",
+    "sources": [
+      "Domain of Forgery: Sand Burial (Wednesday/Saturday/Sunday)"
+    ]
   },
   "Mask of the Tiger's Bite": {
     "name": "Mask of the Tiger's Bite",
@@ -3843,7 +6443,8 @@
     "category": "Trophies",
     "icon": "img/material/Mask_of_the_Tigers_Bite.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Sand Burial (Wednesday/Saturday/Sunday)"
     ]
   },
   "Mask of the One-Horned": {
@@ -3854,7 +6455,8 @@
     "category": "Trophies",
     "icon": "img/material/Mask_of_the_OneHorned.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Sand Burial (Wednesday/Saturday/Sunday)"
     ]
   },
   "Mask of the Kijin": {
@@ -3865,7 +6467,8 @@
     "category": "Trophies",
     "icon": "img/material/Mask_of_the_Kijin.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Forgery: Sand Burial (Wednesday/Saturday/Sunday)"
     ]
   },
   "Damaged Mask": {
@@ -4546,7 +7149,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Freedom.png"
+    "icon": "img/material/Teachings_of_Freedom.png",
+    "sources": [
+      "Domain of Mastery: Frosted Altar (Monday/Thursday/Sunday)"
+    ]
   },
   "Guide to Freedom": {
     "name": "Guide to Freedom",
@@ -4556,7 +7162,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Freedom.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Frosted Altar (Monday/Thursday/Sunday)"
     ]
   },
   "Philosophies of Freedom": {
@@ -4567,7 +7174,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Freedom.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Frosted Altar (Monday/Thursday/Sunday)"
     ]
   },
   "Teachings of Resistance": {
@@ -4576,7 +7184,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Resistance.png"
+    "icon": "img/material/Teachings_of_Resistance.png",
+    "sources": [
+      "Domain of Mastery: Frozen Abyss (Tuesday/Friday/Sunday)"
+    ]
   },
   "Guide to Resistance": {
     "name": "Guide to Resistance",
@@ -4586,7 +7197,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Resistance.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Frozen Abyss (Tuesday/Friday/Sunday)"
     ]
   },
   "Philosophies of Resistance": {
@@ -4597,7 +7209,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Resistance.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Frozen Abyss (Tuesday/Friday/Sunday)"
     ]
   },
   "Teachings of Ballad": {
@@ -4606,7 +7219,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Ballad.png"
+    "icon": "img/material/Teachings_of_Ballad.png",
+    "sources": [
+      "Domain of Mastery: Realm of Slumber (Wednesday/Saturday/Sunday)"
+    ]
   },
   "Guide to Ballad": {
     "name": "Guide to Ballad",
@@ -4616,7 +7232,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Ballad.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Realm of Slumber (Wednesday/Saturday/Sunday)"
     ]
   },
   "Philosophies of Ballad": {
@@ -4627,7 +7244,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Ballad.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Realm of Slumber (Wednesday/Saturday/Sunday)"
     ]
   },
   "Teachings of Prosperity": {
@@ -4636,7 +7254,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Prosperity.png"
+    "icon": "img/material/Teachings_of_Prosperity.png",
+    "sources": [
+      "Domain of Mastery: Altar of Flames (Monday/Thursday/Sunday)"
+    ]
   },
   "Guide to Prosperity": {
     "name": "Guide to Prosperity",
@@ -4646,7 +7267,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Prosperity.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Altar of Flames (Monday/Thursday/Sunday)"
     ]
   },
   "Philosophies of Prosperity": {
@@ -4657,7 +7279,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Prosperity.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Altar of Flames (Monday/Thursday/Sunday)"
     ]
   },
   "Teachings of Diligence": {
@@ -4666,7 +7289,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Diligence.png"
+    "icon": "img/material/Teachings_of_Diligence.png",
+    "sources": [
+      "Domain of Mastery: Heart of the Flames (Tuesday/Friday/Sunday)"
+    ]
   },
   "Guide to Diligence": {
     "name": "Guide to Diligence",
@@ -4676,7 +7302,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Diligence.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Heart of the Flames (Tuesday/Friday/Sunday)"
     ]
   },
   "Philosophies of Diligence": {
@@ -4687,7 +7314,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Diligence.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Heart of the Flames (Tuesday/Friday/Sunday)"
     ]
   },
   "Teachings of Gold": {
@@ -4696,7 +7324,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Gold.png"
+    "icon": "img/material/Teachings_of_Gold.png",
+    "sources": [
+      "Domain of Mastery: Circle of Embers (Wednesday/Saturday/Sunday)"
+    ]
   },
   "Guide to Gold": {
     "name": "Guide to Gold",
@@ -4706,7 +7337,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Gold.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Circle of Embers (Wednesday/Saturday/Sunday)"
     ]
   },
   "Philosophies of Gold": {
@@ -4717,7 +7349,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Gold.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Circle of Embers (Wednesday/Saturday/Sunday)"
     ]
   },
   "Teachings of Transience": {
@@ -4726,7 +7359,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Transience.png"
+    "icon": "img/material/Teachings_of_Transience.png",
+    "sources": [
+      "Domain of Mastery: Reign of Violet (Monday/Thursday/Sunday)"
+    ]
   },
   "Guide to Transience": {
     "name": "Guide to Transience",
@@ -4736,7 +7372,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Transience.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Reign of Violet (Monday/Thursday/Sunday)"
     ]
   },
   "Philosophies of Transience": {
@@ -4747,7 +7384,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Transience.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Reign of Violet (Monday/Thursday/Sunday)"
     ]
   },
   "Teachings of Elegance": {
@@ -4756,7 +7394,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Elegance.png"
+    "icon": "img/material/Teachings_of_Elegance.png",
+    "sources": [
+      "Domain of Mastery: Thundering Valley (Tuesday/Friday/Sunday)"
+    ]
   },
   "Guide to Elegance": {
     "name": "Guide to Elegance",
@@ -4766,7 +7407,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Elegance.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Thundering Valley (Tuesday/Friday/Sunday)"
     ]
   },
   "Philosophies of Elegance": {
@@ -4777,7 +7419,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Elegance.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Thundering Valley (Tuesday/Friday/Sunday)"
     ]
   },
   "Teachings of Light": {
@@ -4786,7 +7429,10 @@
     "stars": 2,
     "type": "Talent Level-Up Material",
     "category": "Trophies",
-    "icon": "img/material/Teachings_of_Light.png"
+    "icon": "img/material/Teachings_of_Light.png",
+    "sources": [
+      "Domain of Mastery: Vine-Infested Ruins (Wednesday/Saturday/Sunday)"
+    ]
   },
   "Guide to Light": {
     "name": "Guide to Light",
@@ -4796,7 +7442,8 @@
     "category": "Trophies",
     "icon": "img/material/Guide_to_Light.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Vine-Infested Ruins (Wednesday/Saturday/Sunday)"
     ]
   },
   "Philosophies of Light": {
@@ -4807,7 +7454,8 @@
     "category": "Trophies",
     "icon": "img/material/Philosophies_of_Light.png",
     "sources": [
-      "Crafted"
+      "Crafted",
+      "Domain of Mastery: Vine-Infested Ruins (Wednesday/Saturday/Sunday)"
     ]
   },
   "Crown of Insight": {
@@ -5119,5 +7767,13 @@
     "type": "Gadget",
     "category": "Utility Items",
     "icon": "img/material/Shiki_Koshou.png"
+  },
+  "Launch Tube": {
+    "name": "Launch Tube",
+    "desc": "A special device created by the artisan Pengyi. It comes with functions that allow for the creation and automated launch of fireworks. In the hands of someone creative, it will surely see great use in the creation of unique and radiant fireworks shows.",
+    "stars": 4,
+    "type": "Gadget",
+    "category": "Utility Items",
+    "icon": "img/material/Launch_Tube.png"
   }
 }

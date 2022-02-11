@@ -9,7 +9,6 @@ const artifactsMainLevels = require("../../assets/genshin/gamedata/artifact_main
 const characterData = require("../../assets/genshin/gamedata/characters.json")
 const characterCurves = require("../../assets/genshin/gamedata/character_curves.json")
 const characterLevels = require("../../assets/genshin/gamedata/character_levels.json")
-const booksData = require("../../assets/genshin/gamedata/books.json")
 
 const paimonShop = require("../../assets/genshin/gamedata/paimon_shop.json");
 
@@ -41,7 +40,6 @@ const defaultStore = {};
 module.exports = class DataManager {
     constructor() {
         this.store = defaultStore
-        this.books = booksData
         this.max_resin = 160
         this.minutes_per_resin = 8;
         this.costTemplates = costTemplates;
@@ -163,6 +161,13 @@ module.exports = class DataManager {
             }))
         }))
     }
+    isInCosts(template, name) {
+        const costs = Array.isArray(template) ? template : this.getCostsFromTemplate(template)
+        for (const c of costs)
+            if (c.items.some(i => i.name == name))
+                return true
+        return false
+    }
     getArtifactByName(name) {
         const targetNames = Object.keys(this.artifacts)
         const target = findFuzzy(targetNames, name)
@@ -276,7 +281,9 @@ module.exports = class DataManager {
                 name: "Mora",
                 count: cost.mora
             }, ...items]
-
+        return this.getItemCosts(items)
+    }
+    getItemCosts(items) {
         return items.map(i => `**${i.count}**x *${this.emoji(i.name, true)}*`).join("\n")
     }
 }

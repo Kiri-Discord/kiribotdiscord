@@ -36,24 +36,34 @@ module.exports = class util {
     static urlify(input, shouldRemoveBrackets) {
         if (shouldRemoveBrackets)
             input = util.removeBrackets(input)
-            return input.toLowerCase().replace(/\(|\)|:/g, "").trim().replace(/ +/g, "-")
+            return input.toLowerCase().replace(/[():"'-]/g, "").trim().replace(/ +/g, "-")
+    }
+    static joinMulti(input) {
+        if (input.length <= 1) return input[0]
+        const last = input[input.length - 1]
+        return `${input.slice(0, -1).join(", ")} and ${last}`
+    }
+    static getLink(url) {
+        if (url.match(/^https?:\/\//))
+            return url
+        return `https://hutaobot.moe/${url}`
     }
     static isServerTimeStart(event) {
         return event.start_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Unlock)
     }
     static getStartTime(event, serverTimezone) {
-        return event.start != undefined && util.getDate(event.start, event.timezone ?? util.isServerTimeStart(event) ? serverTimezone : undefined)
+        return event.start != undefined && util.getDate(event.start, event.timezone ?? (util.isServerTimeStart(event) ? serverTimezone : undefined))
     }
     static isServerTimeEnd(event) {
-        return event.end_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Web)
+        return event.end_server ?? (event.type == EventType.Banner || event.type == EventType.InGame || event.type == EventType.Quiz)
     }
     static getEndTime(event, serverTimezone) {
-        return event.end != undefined && util.getDate(event.end, event.timezone ?? util.isServerTimeEnd(event) ? serverTimezone : undefined)
+        return event.end != undefined && util.getDate(event.end, event.timezone ?? (util.isServerTimeEnd(event) ? serverTimezone : undefined))
     }
     static startTimes(e) {
         if (!e.start) return ""
         if (!util.isServerTimeStart(e))
-            return `Global: ${relativeTimestampFromString(e.start, e.timezone)}`
+            return `Global: ${util.relativeTimestampFromString(e.start, e.timezone)}`
         return util.getServerTimeInfo().map(st => `${st.server}: ${util.relativeTimestampFromString(e.start, `${st.offset.split("").join("0")}:00`)}`).join("\n")
     }
     static endTimes(e) {
@@ -184,11 +194,26 @@ module.exports = class util {
         return msg instanceof Message
     };
     static getUserID(source) {
-        if (util.isMessage(source))
-            return source.author.id
-        else
-            return source.user.id
+        return util.getUser(source).id;
     };
+    static getUser(source) {
+        if (util.isMessage(source))
+            return source.author
+        else
+            return source.user
+    };
+    static getCategory(source) {
+        if (!source.inGuild()) return null
+        const channel = source.channel
+        if (!channel) return null
+        if (channel.isThread()) {
+            const parent = channel.parent
+            if (parent)
+                return parent.parent
+            return null
+        }
+        return channel.parent
+    }
     static searchClean(str) {
         return str.toLowerCase().replace(/'/g, "")
     }

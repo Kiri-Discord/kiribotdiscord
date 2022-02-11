@@ -148,7 +148,10 @@ module.exports = class Queue {
                 await this.client.lavacordManager.leave(this.guildId);
                 await delay(1500);
                 const nextNode = this.songs.some(song => song.info.sourceName === 'soundcloud') ? this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host) && x.id !== 'yt')[0] : this.client.lavacordManager.idealNodes.filter(x => !tried.includes(x.host))[0];
-
+                if (!nextNode) {
+                    this.stop('destroyOnly')
+                    return 'TRIED_TO_JOIN_WITH_NODES';
+                }
                 this.player = await this.client.lavacordManager.join({
                     guild: this.guildId,
                     channel: this.channel.id,
