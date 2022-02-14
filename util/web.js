@@ -56,7 +56,7 @@ module.exports = {
                 return logger.log('error', `[WEBSOCKET] WebSocket closed with code ${e.code} and reason ${e.reason} **FINAL**`);
             }
             count++;
-            logger.log('error', `[WEBSOCKET] Socket is closed with code ${e.code} Reconnect will be attempted in 5 seconds. Attempt: ${count}/10`, e.reason);
+            logger.log('error', `[WEBSOCKET] Socket is closed with code ${e.code} and reason ${e.reason} Reconnect will be attempted in 5 seconds. Attempt: ${count}/10`, e.reason);
             setTimeout(function() {
                 module.exports.init(client);
             }, 5000);

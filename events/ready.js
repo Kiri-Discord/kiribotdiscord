@@ -40,7 +40,7 @@ module.exports = async client => {
         };
     };
     if (process.env.NO_WEB_SERVER !== 'true') {
-        web.init(client);
+        client.web.init(client);
     };
     if (process.env.NOLAVA !== 'true') await music.init(client);
     client.finished = true;

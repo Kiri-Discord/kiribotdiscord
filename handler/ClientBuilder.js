@@ -2,9 +2,11 @@ const { Client, Collection } = require("discord.js");
 const PokemonStore = require("../features/pokemon/pokemonstore");
 const { parseMember } = require("../util/mentionParsing");
 const DataManager = require("../features/genshin/DataManager");
+const web = require('../util/web.js');
 module.exports = class kiri extends Client {
     constructor(options) {
         super(options);
+        this.web = web;
         this.utils = {
             parseMember,
         };
