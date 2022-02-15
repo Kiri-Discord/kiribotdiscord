@@ -32,7 +32,8 @@ exports.run = async(client, message, args, prefix, cmd) => {
             }
         };
     };
-    const current = client.games.get(message.channel.id);
+    const channelId = message.channel.id;
+    const current = client.games.get(channelId);
     if (current) return message.reply(current.prompt);
     const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply("you should tag someone to play with! tag me to play with me if no one is arround :pensive:");
@@ -51,18 +52,18 @@ exports.run = async(client, message, args, prefix, cmd) => {
     };
     if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
     client.isPlaying.set(message.author.id, true);
-    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** and **${opponent.username}** finish their chess game!` });
+    client.games.set(channelId, { prompt: `please wait until **${message.author.username}** and **${opponent.username}** finish their chess game!` });
     try {
         if (!opponent.bot) {
             if (client.isPlaying.get(opponent.id)) {
                 client.isPlaying.delete(message.author.id);
-                client.games.delete(message.channel.id);
+                client.games.delete(channelId);
                 return message.reply('that user is already in a game. try again in a minute.');
             };
             const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
             if (!verification) {
                 client.isPlaying.delete(message.author.id);
-                client.games.delete(message.channel.id);
+                client.games.delete(channelId);
                 return message.channel.send(`looks like they declined..`);
             };
             client.isPlaying.set(opponent.id, true);
@@ -105,7 +106,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 } catch {
                     client.isPlaying.delete(message.author.id);
                     client.isPlaying.delete(opponent.id);
-                    client.games.delete(message.channel.id);
+                    client.games.delete(channelId);
                     await client.db.gameStorage.findOneAndDelete({
                         guildId: message.guild.id,
                         userId: message.author.id
@@ -175,7 +176,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                 });
                 if (!turn.size) {
                     const timeTaken = new Date() - now;
-                    client.games.delete(message.channel.id);
+                    client.games.delete(channelId);
                     client.isPlaying.delete(message.author.id);
                     client.isPlaying.delete(opponent.id);
                     if (userTime - timeTaken <= 0) {
@@ -231,7 +232,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
         };
         client.isPlaying.delete(message.author.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         if (saved) {
             return message.channel.send(stripIndents `
             game was saved! use \`${prefix}${cmd} @${opponent.tag} ${time}\` to resume anytime!
@@ -476,7 +477,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
     } catch (err) {
         client.isPlaying.delete(message.author.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         throw err;
     };
 };

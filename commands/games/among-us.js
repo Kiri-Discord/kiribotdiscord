@@ -5,14 +5,15 @@ const { MessageEmbed, Collection } = require('discord.js');
 
 exports.run = async(client, message, args, prefix) => {
         let playersCount = args[0];
-        if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``)
-        const current = client.games.get(message.channel.id);
+        if (!playersCount || isNaN(playersCount) || playersCount < 3 || playersCount > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 3 and 20 by using \`${prefix}amongus <number of player>\``);
+        const channelId = message.channel.id;
+        const current = client.games.get(channelId);
         if (current) return message.reply(current.prompt);
-        client.games.set(message.channel.id, { prompt: `please wait until the ongoing Among Us game is finished :(` });
+        client.games.set(channelId, { prompt: `please wait until the ongoing Among Us game is finished :(` });
         try {
             const awaitedPlayers = await awaitPlayers(message.author.id, message, playersCount, 3);
             if (!awaitedPlayers.length) {
-                client.games.delete(message.channel.id);
+                client.games.delete(channelId);
                 return message.channel.send('game could not be started...');
             };
             awaitedPlayers.push(message.author.id);
@@ -45,7 +46,7 @@ exports.run = async(client, message, args, prefix) => {
                     if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is **${word}**.`);
                     else newPlayer.user.send('you are not the imposter. be careful what you say!')
                 } catch {
-                    client.games.delete(message.channel.id);
+                    client.games.delete(channelId);
                     return message.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
                 };
             }
@@ -144,7 +145,7 @@ exports.run = async(client, message, args, prefix) => {
                 break;
             };
         };
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         if (!lastTurnTimeout) return message.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
     } catch (error) {
         return;

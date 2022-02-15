@@ -5,9 +5,10 @@ const questions = require('../../assets/google-feud');
 
 exports.run = async(client, message, args) => {
     const question = args.join(" ") || questions[Math.floor(Math.random() * questions.length)];
-    const current = client.games.get(message.channel.id);
+    const channelId = message.channel.id;
+    const current = client.games.get(channelId);
     if (current) return message.reply(current.prompt);
-    client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
+    client.games.set(channelId, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
     try {
         const suggestions = await fetchSuggestions(question);
         if (!suggestions) return message.channel.send('i could not find any results from the server. can you try again later? :pensive:');
@@ -34,7 +35,7 @@ exports.run = async(client, message, args) => {
                 --tries;
             }
         }
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         if (!display.includes('???')) {
             return message.channel.send(`you win! nice job, master of Google!\n**Final Score: $${formatNumber(score)}**`);
         }
@@ -44,7 +45,7 @@ exports.run = async(client, message, args) => {
             content: `better luck next time! **your score: $${formatNumber(score)}**`,
         });
     } catch (err) {
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         return message.reply(`oh no, an error occurred :( try again later!`);
     };
 };
