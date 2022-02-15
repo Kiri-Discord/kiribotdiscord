@@ -169,7 +169,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
     } else {
         return client.commands
             .get("search")
-            .run(client, message, args, prefix, cmd, queueConstruct.karaoke);
+            .run(client, message, args, prefix, cmd, queueConstruct.karaoke, true);
     };
 
     if (serverQueue) {

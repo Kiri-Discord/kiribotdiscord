@@ -4,7 +4,7 @@ const { fetchInfo, canModifyQueue } = require('../../util/musicutil');
 const moment = require('moment');
 require('moment-duration-format');
 
-exports.run = async(client, message, args, prefix, cmd, internal) => {
+exports.run = async(client, message, args, prefix, cmd, internal, fromPlay) => {
     if (!args.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you must to provide me a song to search for with \`${prefix}search <title>\`` }] });
     const { channel } = message.member.voice;
     if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }] });
@@ -94,7 +94,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 return true;
             };
         };
-        let inactive = true;
         try {
             const response = await msg.awaitMessageComponent({
                 componentType: 'SELECT_MENU',
@@ -102,7 +101,6 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 time: 15000,
                 max: 1
             });
-            inactive = false;
             response.deferUpdate();
             if (msg.deletable) await msg.delete();
             if (response.values.length > 1) {
@@ -117,7 +115,7 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                     .run(client, message, args, prefix, cmd, internal, song);
             };
         } catch {
-            if (inactive) {
+            if (fromPlay) {
                 row.components.forEach(component => component.setDisabled(true));
                 msg.edit({
                     embeds: [{
@@ -130,7 +128,16 @@ exports.run = async(client, message, args, prefix, cmd, internal) => {
                 client.commands
                     .get("play")
                     .run(client, message, args, prefix, cmd, internal, song);
-            };
+            } else {
+                row.components.forEach(component => component.setDisabled(true));
+                msg.edit({
+                    embeds: [{
+                        color: '#bee7f7',
+                        description: `this command is now inactive!`
+                    }],
+                    components: [row]
+                });
+            }
         };
     } catch (error) {
         console.error(error);

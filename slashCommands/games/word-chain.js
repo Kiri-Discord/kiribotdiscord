@@ -143,7 +143,7 @@ async function verifyWord(word) {
             .get(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}`)
             .query({ key: webster_key });
         if (!body.length) return false;
-        return true;
+        else return true;
     } catch (err) {
         if (err.status === 404) return false;
         return null;

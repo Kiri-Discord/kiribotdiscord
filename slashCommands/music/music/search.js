@@ -6,7 +6,7 @@ require('moment-duration-format');
 const playCmd = require('./play');
 const playlistCmd = require('./playlist');
 
-exports.run = async(client, interaction, internal) => {
+exports.run = async(client, interaction, internal, fromPlay) => {
     const { channel } = interaction.member.voice;
     if (!channel) return interactionReply(interaction, { embeds: [{ color: "#bee7f7", description: `⚠️ you are not in a voice channel!` }], ephemeral: true });
 
@@ -95,7 +95,6 @@ exports.run = async(client, interaction, internal) => {
                 return true;
             };
         };
-        let inactive = true;
         try {
             const response = await msg.awaitMessageComponent({
                 componentType: 'SELECT_MENU',
@@ -103,7 +102,6 @@ exports.run = async(client, interaction, internal) => {
                 time: 30000,
                 max: 1
             });
-            inactive = false;
             response.deferUpdate();
             if (response.values.length > 1) {
                 const bulk = response.values.map(song => lavalinkRes[song]);
@@ -113,7 +111,7 @@ exports.run = async(client, interaction, internal) => {
                 return playCmd.run(client, interaction, internal, song);
             };
         } catch {
-            if (inactive) {
+            if (fromPlay) {
                 row.components.forEach(component => component.setDisabled(true));
                 interaction.editReply({
                     embeds: [{
@@ -124,7 +122,16 @@ exports.run = async(client, interaction, internal) => {
                 });
                 const song = lavalinkRes[0];
                 return playCmd.run(client, interaction, internal, song);
-            };
+            } else {
+                row.components.forEach(component => component.setDisabled(true));
+                interaction.editReply({
+                    embeds: [{
+                        color: '#bee7f7',
+                        description: `this command is now inactive!`
+                    }],
+                    components: [row]
+                });
+            }
         };
     } catch (error) {
         console.error(error);
