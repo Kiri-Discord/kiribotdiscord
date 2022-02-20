@@ -7,10 +7,11 @@ const falseOptions = ['false', 'lie', 'no', 'a lie', 'f', 'fals', 'fal', 'fa', '
 
 exports.run = async(client, message, args, prefix) => {
         let players = args[0] || 1;
-        if (!players || isNaN(players) || players < 1 || players > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 1 and 20 by using \`${prefix}lie-detector <number of player>\``)
-        const current = client.games.get(message.channel.id);
+        if (!players || isNaN(players) || players < 1 || players > 20) return message.channel.send(`how many players are you expecting to have? pick a number between 1 and 20 by using \`${prefix}lie-detector <number of player>\``);
+        const channelId = message.channel.id
+        const current = client.games.get(channelId);
         if (current) return message.reply(current.prompt);
-        client.games.set(message.channel.id, { prompt: `please wait until players in this channel has finished their game :(` });
+        client.games.set(channelId, { prompt: `please wait until players in this channel has finished their game :(` });
         try {
             const pts = new Collection();
             if (players > 1) {
@@ -94,7 +95,7 @@ exports.run = async(client, message, args, prefix) => {
 			if (lastTurnTimeout) lastTurnTimeout = false;
 			if (questions.length) await delay(5000);
 		}
-		client.games.delete(message.channel.id);
+		client.games.delete(channelId);
 		const winner = pts.sort((a, b) => b.points - a.points).first().user;
 		if (!lastTurnTimeout) return message.channel.send(stripIndents`
 			congrats, ${winner}!
@@ -102,7 +103,7 @@ exports.run = async(client, message, args, prefix) => {
 			${makeLeaderboard(pts).slice(0, 10).join('\n')}
 		`);
 	} catch (err) {
-		client.games.delete(message.channel.id);
+		client.games.delete(channelId);
 		throw err;
 	}
 }

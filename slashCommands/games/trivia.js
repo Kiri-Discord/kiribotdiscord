@@ -6,13 +6,14 @@ const difficulties = ['easy', 'medium', 'hard'];
 const choices = ['A', 'B', 'C', 'D'];
 
 exports.run = async(client, interaction, args) => {
-    const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+    const current = client.games.get(channelId);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
     const sadEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     const duhEmoji = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':(';
     let difficulty = interaction.options.getString('difficulty') || difficulties[Math.floor(Math.random() * difficulties.length)];
 
-    client.games.set(interaction.channel.id, { prompt: `please wait until **${interaction.user.username}** is finished with their game first ${duhEmoji}` });
+    client.games.set(channelId, { prompt: `please wait until **${interaction.user.username}** is finished with their game first ${duhEmoji}` });
     try {
         await interaction.deferReply();
         const { body } = await request
@@ -97,7 +98,7 @@ exports.run = async(client, interaction, args) => {
             };
         });
         collector.on('end', (collected) => {
-            client.games.delete(interaction.channel.id);
+            client.games.delete(channelId);
             if (collected.size && shuffled[choices.indexOf(collected.first().customId)] !== correct) row.components.find(component => component.customId === collected.first().customId).style = 'DANGER';
             row.components.forEach(component => {
                 if (shuffled[choices.indexOf(component.customId)] === correct) component.style = 'SUCCESS';
@@ -106,7 +107,7 @@ exports.run = async(client, interaction, args) => {
             return msg.edit({ components: [row] });
         });
     } catch {
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
     };
 };
 

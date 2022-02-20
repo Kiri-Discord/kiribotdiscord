@@ -5,7 +5,8 @@ const difficulties = ['easy', 'medium', 'hard'];
 const choices = ['A', 'B', 'C', 'D'];
 
 exports.run = async(client, message, args) => {
-    const current = client.games.get(message.channel.id);
+    const channelId = message.channel.id;
+    const current = client.games.get(channelId);
     if (current) return message.channel.send(current.prompt);
     const sadEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     const duhEmoji = client.customEmojis.get('duh') ? client.customEmojis.get('duh') : ':(';
@@ -19,7 +20,7 @@ exports.run = async(client, message, args) => {
     } else {
         difficulty = difficulties[Math.floor(Math.random() * difficulties.length)]
     };
-    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** is finished with their game first ${duhEmoji}` });
+    client.games.set(channelId, { prompt: `please wait until **${message.author.username}** is finished with their game first ${duhEmoji}` });
     try {
         const { body } = await request
         .get('https://opentdb.com/api.php')
@@ -103,7 +104,7 @@ exports.run = async(client, message, args) => {
             };
         });
         collector.on('end', (collected) => {
-            client.games.delete(message.channel.id);
+            client.games.delete(channelId);
             if (collected.size && shuffled[choices.indexOf(collected.first().customId)] !== correct) row.components.find(component => component.customId === collected.first().customId).style = 'DANGER';
             // row.components.find(component => shuffled[choices.indexOf(component.customId)] === correct).style = 'SUCCESS';
             row.components.forEach(component => {
@@ -113,7 +114,7 @@ exports.run = async(client, message, args) => {
             return msg.edit({ components: [row] });
         });
     } catch {
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
     };
 };
 

@@ -6,9 +6,10 @@ const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
-        const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+        const current = client.games.get(channelId);
         if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-        client.games.set(interaction.channel.id, { prompt: `you should wait until **${interaction.user.username}** is finished first :(` });
+        client.games.set(channelId, { prompt: `you should wait until **${interaction.user.username}** is finished first :(` });
         try {
             const points = {
                 g: 0,
@@ -55,7 +56,7 @@ exports.run = async(client, interaction) => {
                 time: 120000
             });
             if (!choice.size) {
-                client.games.delete(interaction.channel.id);
+                client.games.delete(channelId);
                 return interaction.channel.send('oh no, you ran out of time! too bad :pensive:');
             };
             const answer = answers[choices.indexOf(choice.first().content.toUpperCase())];
@@ -63,7 +64,7 @@ exports.run = async(client, interaction) => {
             ++turn;
         }
         const houseResult = Object.keys(points).filter(h => points[h] > 0).sort((a, b) => points[b] - points[a]);
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         const totalPoints = houseResult.reduce((a, b) => a + points[b], 0);
         const embed = new MessageEmbed()
         .setTitle(`you are a member of... ${houses[houseResult[0]]}!`)
@@ -73,7 +74,7 @@ exports.run = async(client, interaction) => {
         `)
         return interaction.channel.send({embeds: [embed]})
     } catch (err) {
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         throw err;
     };
 };

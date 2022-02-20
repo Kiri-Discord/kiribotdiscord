@@ -5,9 +5,10 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
-        const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+        const current = client.games.get(channelId);
         if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-        client.games.set(interaction.channel.id, { prompt: `please wait until **${interaction.user.username}** is finished first :(` });
+        client.games.set(channelId, { prompt: `please wait until **${interaction.user.username}** is finished first :(` });
         try {
             await interaction.deferReply();
             const data = await fetchScenario();
@@ -53,14 +54,14 @@ exports.run = async(client, interaction) => {
             await postResponse(data.id, option1);
             const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
             const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-            client.games.delete(interaction.channel.id);
+            client.games.delete(channelId);
             return res.editReply(stripIndents`
                 **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
             `);
         })
         collector.on('end', (collected) => {
-            client.games.delete(interaction.channel.id);
+            client.games.delete(channelId);
             row.components.forEach(component => component.setDisabled(true));
             msg.edit({ components: [row] });
             if (!collected.size) return interaction.channel.send(stripIndents`
@@ -69,7 +70,7 @@ exports.run = async(client, interaction) => {
             `);
         });
     } catch (err) {
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         return interaction.followUp(`sorry! i got an error. try again later :pensive:`);
     };
 };

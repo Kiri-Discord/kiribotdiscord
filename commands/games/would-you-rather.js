@@ -4,9 +4,10 @@ const { formatNumber } = require('../../util/util');
 const { MessageActionRow, MessageButton } = require('discord.js');
 
 exports.run = async(client, message, args) => {
-        const current = client.games.get(message.channel.id);
+    const channelId = message.channel.id;
+        const current = client.games.get(channelId);
         if (current) return message.reply(current.prompt);
-        client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** is finished first :(` });
+        client.games.set(channelId, { prompt: `please wait until **${message.author.username}** is finished first :(` });
         try {
             const data = await fetchScenario();
             const row = new MessageActionRow()
@@ -50,14 +51,14 @@ exports.run = async(client, message, args) => {
             await postResponse(data.id, option1);
             const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
             const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-            client.games.delete(message.channel.id);
+            client.games.delete(channelId);
             return res.editReply(stripIndents`
                 **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
             `);
         })
         collector.on('end', (collected) => {
-            client.games.delete(message.channel.id);
+            client.games.delete(channelId);
             row.components.forEach(component => component.setDisabled(true));
             msg.edit({ components: [row] });
             if (!collected.size) return message.reply(stripIndents`
@@ -66,7 +67,7 @@ exports.run = async(client, message, args) => {
             `);
         });
     } catch (err) {
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         return message.reply(`sorry! i got an error. try again later :pensive:`);
     };
 };

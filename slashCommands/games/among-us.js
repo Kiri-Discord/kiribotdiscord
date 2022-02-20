@@ -10,14 +10,15 @@ exports.run = async(client, interaction) => {
             content: `how many players are you expecting to have? pick a number between 3 and 20 by using \`/among-us <number of player>\``,
             ephemeral: true
         });
-        const current = client.games.get(interaction.channel.id);
+        const channelId = interaction.channel.id;
+        const current = client.games.get(channelId);
         if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-        client.games.set(interaction.channel.id, { prompt: `please wait until the ongoing Among Us game is finished :(` });
+        client.games.set(channelId, { prompt: `please wait until the ongoing Among Us game is finished :(` });
         try {
             const message = await interaction.reply({ content: 'beginning the Among Us game...', fetchReply: true });
             const awaitedPlayers = await awaitPlayers(interaction.user.id, message, playersCount, 3);
             if (!awaitedPlayers.length) {
-                client.games.delete(interaction.channel.id);
+                client.games.delete(channelId);
                 return interaction.channel.send('game could not be started...');
             };
             awaitedPlayers.push(interaction.user.id);
@@ -50,7 +51,7 @@ exports.run = async(client, interaction) => {
                     if (imposter === player) newPlayer.user.send(`you are the **imposter**. the kill word is **${word}**.`);
                     else newPlayer.user.send('you are not the imposter. be careful what you say!')
                 } catch {
-                    await client.games.delete(interaction.channel.id);
+                    await client.games.delete(channelId);
                     return interaction.channel.send('i failled while sending the DM :( enable everyone\'s DM then start the game again!');
                 };
             }
@@ -149,7 +150,7 @@ exports.run = async(client, interaction) => {
                 break;
             };
         };
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         if (!lastTurnTimeout) return interaction.channel.send(`congrats, ${list(winners)}! the kill word was **${word}**.`);
     } catch (error) {
         return;

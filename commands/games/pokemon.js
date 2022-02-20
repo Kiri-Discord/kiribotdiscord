@@ -7,9 +7,10 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Pokemon Solid.
 const pokemonCount = 893;
 
 exports.run = async(client, message) => {
-    const current = client.games.get(message.channel.id);
+    const channelId = message.channel.id;
+    const current = client.games.get(channelId);
     if (current) return message.reply(current.prompt);
-    client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished with their game first :(` });
+    client.games.set(channelId, { prompt: `you should wait until **${message.author.username}** is finished with their game first :(` });
     const pokemon = Math.floor(Math.random() * (pokemonCount + 1))
     try {
         message.channel.sendTyping();
@@ -30,7 +31,7 @@ exports.run = async(client, message) => {
             time: 15000
         });
         const answerimage = await createImage(data, false);
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         const embed1 = new MessageEmbed()
             .setColor('#7DBBEB')
             .setTitle(`time is up! it's ${data.name}!`)
@@ -54,7 +55,7 @@ exports.run = async(client, message) => {
             files: [new MessageAttachment(answerimage.attachment, answerimage.name)]
         })
     } catch (err) {
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         return logger.log('error', err);
     };
 };

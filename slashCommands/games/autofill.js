@@ -6,9 +6,10 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     const question = interaction.options.getString('question') || questions[Math.floor(Math.random() * questions.length)];
-    const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+    const current = client.games.get(channelId);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-    client.games.set(interaction.channel.id, { prompt: `you should wait until **${interaction.user.username}** is finished first :(` });
+    client.games.set(channelId, { prompt: `you should wait until **${interaction.user.username}** is finished first :(` });
     try {
         interaction.reply({ content: 'beginning the Autofill game...', ephemeral: true });
         const suggestions = await fetchSuggestions(question);
@@ -36,7 +37,7 @@ exports.run = async(client, interaction) => {
                 --tries;
             }
         }
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         if (!display.includes('???')) {
             return interaction.channel.send(`you win! nice job, master of Google!\n**Final Score: $${formatNumber(score)}**`);
         }
@@ -46,7 +47,7 @@ exports.run = async(client, interaction) => {
             content: `better luck next time! **your score: $${formatNumber(score)}**`,
         });
     } catch (err) {
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         return interaction.reply(`oh no, an error occurred :( try again later!`);
     };
 };

@@ -6,7 +6,8 @@ const startWords = require('../../assets/word-list.json');
 const { webster_key } = require('../../config.json');
 
 exports.run = async(client, message, args) => {
-    const current = client.games.get(message.channel.id);
+    const channelId = message.channel.id;
+    const current = client.games.get(channelId);
     if (current) return message.reply(current.prompt);
     if (client.isPlaying.get(message.author.id)) return message.reply('you are already in a game. please finish that first.');
     const member = client.utils.parseMember(message, args[0])
@@ -18,12 +19,12 @@ exports.run = async(client, message, args) => {
     if (opponent.id === client.user.id) return message.reply('i really want to but i\'m busy :pensive:');
     if (opponent.bot) return message.reply('since bots are too smart, i can\'t allow that :(');
     if (isNaN(time) || time > 15 || time < 3) return message.reply('the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(');
-    client.games.set(message.channel.id, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finish playing their game :pensive:` });
+    client.games.set(channelId, { prompt: `please wait until **${message.author.username}** **${opponent.username}** finish playing their game :pensive:` });
 
     try {
         const verification = await buttonVerify(message.channel, opponent, `${opponent}, do you accept this challenge?`);
         if (!verification) {
-            client.games.delete(message.channel.id);
+            client.games.delete(channelId);
             return message.channel.send('looks like they declined...');
         };
         client.isPlaying.set(message.author.id, true);
@@ -81,7 +82,7 @@ exports.run = async(client, message, args) => {
             lastWord = choice;
             userTurn = !userTurn;
         };
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         client.isPlaying.delete(message.author.id);
         client.isPlaying.delete(opponent.id);
         if (!winner) return message.channel.send('oh... no one won.');
@@ -120,7 +121,7 @@ exports.run = async(client, message, args) => {
     } catch (err) {
         client.isPlaying.delete(message.author.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         logger.log('error', err);
     };
 };

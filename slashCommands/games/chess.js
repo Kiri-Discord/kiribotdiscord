@@ -33,7 +33,8 @@ exports.run = async(client, interaction, args) => {
             return interaction.editReply(`you don\'t have any saved chess game ${sedEmoji}`);
         };
     };
-    const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+    const current = client.games.get(channelId);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
     const member = interaction.options.getMember('opponent');
 
@@ -55,20 +56,20 @@ exports.run = async(client, interaction, args) => {
     };
     if (client.isPlaying.get(interaction.user.id)) return interaction.reply({ content: 'you are already in a game. please finish that first.', ephemeral: true });
     client.isPlaying.set(interaction.user.id, true);
-    client.games.set(interaction.channel.id, { prompt: `please wait until **${interaction.user.username}** and **${opponent.username}** finish their chess game!` });
+    client.games.set(channelId, { prompt: `please wait until **${interaction.user.username}** and **${opponent.username}** finish their chess game!` });
 
     try {
         if (!opponent.bot) {
             if (client.isPlaying.get(opponent.id)) {
                 client.isPlaying.delete(interaction.user.id);
-                client.games.delete(interaction.channel.id);
+                client.games.delete(channelId);
                 return interaction.reply({ content: 'that user is already in a game. try again in a minute.', ephemeral: true });
             };
             await interaction.deferReply();
             const verification = await buttonVerify(interaction.channel, opponent, `${opponent}, do you accept this challenge?`);
             if (!verification) {
                 client.isPlaying.delete(interaction.user.id);
-                client.games.delete(interaction.channel.id);
+                client.games.delete(channelId);
                 return interaction.editReply({ content: `looks like they declined..` });
             } else {
                 interaction.editReply({ content: 'beginning the Chess game...' });
@@ -115,7 +116,7 @@ exports.run = async(client, interaction, args) => {
                 } catch {
                     client.isPlaying.delete(interaction.user.id);
                     client.isPlaying.delete(opponent.id);
-                    client.games.delete(interaction.channel.id);
+                    client.games.delete(channelId);
                     await client.db.gameStorage.findOneAndDelete({
                         guildId: interaction.guild.id,
                         userId: interaction.user.id
@@ -185,7 +186,7 @@ exports.run = async(client, interaction, args) => {
                 });
                 if (!turn.size) {
                     const timeTaken = new Date() - now;
-                    client.games.delete(interaction.channel.id);
+                    client.games.delete(channelId);
                     client.isPlaying.delete(interaction.user.id);
                     client.isPlaying.delete(opponent.id);
                     if (userTime - timeTaken <= 0) {
@@ -241,7 +242,7 @@ exports.run = async(client, interaction, args) => {
         };
         client.isPlaying.delete(interaction.user.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         if (saved) {
             return interaction.channel.send(stripIndents `
             game was saved! use \`/${interaction.commandName} @${opponent.tag} ${time}\` to resume anytime!
@@ -484,7 +485,7 @@ exports.run = async(client, interaction, args) => {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         };
     } catch (err) {
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         client.isPlaying.delete(interaction.user.id);
         client.isPlaying.delete(opponent.id);
         throw err;

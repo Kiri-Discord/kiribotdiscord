@@ -8,9 +8,10 @@ registerFont(path.join(__dirname, '..', '..', 'assets', 'fonts', 'Pokemon Solid.
 const pokemonCount = 893;
 
 exports.run = async(client, interaction) => {
-    const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+    const current = client.games.get(channelId);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-    client.games.set(interaction.channel.id, { prompt: `you should wait until **${interaction.user.username}** is finished with their game first :(` });
+    client.games.set(channelId, { prompt: `you should wait until **${interaction.user.username}** is finished with their game first :(` });
     const pokemon = Math.floor(Math.random() * (pokemonCount + 1))
     try {
         await interaction.deferReply();
@@ -31,7 +32,7 @@ exports.run = async(client, interaction) => {
             time: 15000
         });
         const answerimage = await createImage(data, false);
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         const embed1 = new MessageEmbed()
             .setColor('#7DBBEB')
             .setTitle(`time is up! it's ${data.name}!`)
@@ -55,7 +56,7 @@ exports.run = async(client, interaction) => {
             files: [new MessageAttachment(answerimage.attachment, answerimage.name)]
         })
     } catch (err) {
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         return logger.log('error', err);
     };
 };

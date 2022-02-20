@@ -16,6 +16,7 @@ class Game {
         this.correct = 0;
         this.letters = 0;
         this.stage = 0;
+        this.channelId = interaction.channel.id;
         this.client = client;
     };
     getRandomInt(min, max) {
@@ -161,7 +162,7 @@ class Game {
     };
 
     end() {
-        this.client.games.delete(this.interaction.channel.id);
+        this.client.games.delete(this.channelId);
         this.client.isPlaying.delete(this.interaction.user.id);
         this.client.isPlaying.delete(this.challenged.id);
         this.game = null;

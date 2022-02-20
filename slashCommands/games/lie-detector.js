@@ -11,10 +11,11 @@ exports.run = async(client, interaction) => {
         if (isNaN(players) || players < 1 || players > 20) return interaction.reply({
             content: `how many players are you expecting to have? pick a number between 1 and 20 by using \`/lie-detector <number of player>\``,
             ephemeral: true
-        })
-        const current = client.games.get(interaction.channel.id);
+        });
+        const channelId = interaction.channel.id;
+        const current = client.games.get(channelId);
         if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
-        client.games.set(interaction.channel.id, { prompt: `please wait until players in this channel has finished their game :(` });
+        client.games.set(channelId, { prompt: `please wait until players in this channel has finished their game :(` });
         try {
             const pts = new Collection();
             if (players > 1) {
@@ -99,7 +100,7 @@ exports.run = async(client, interaction) => {
 			if (lastTurnTimeout) lastTurnTimeout = false;
 			if (questions.length) await delay(5000);
 		}
-		client.games.delete(interaction.channel.id);
+		client.games.delete(channelId);
 		const winner = pts.sort((a, b) => b.points - a.points).first().user;
 		if (!lastTurnTimeout) return interaction.channel.send(stripIndents`
 			congrats, ${winner}!
@@ -107,7 +108,7 @@ exports.run = async(client, interaction) => {
 			${makeLeaderboard(pts).slice(0, 10).join('\n')}
 		`);
 	} catch (err) {
-		client.games.delete(interaction.channel.id);
+		client.games.delete(channelId);
 		throw err;
 	}
 }

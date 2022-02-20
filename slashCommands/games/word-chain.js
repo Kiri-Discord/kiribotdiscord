@@ -7,7 +7,8 @@ const { webster_key } = require('../../config.json');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction, args) => {
-    const current = client.games.get(interaction.channel.id);
+    const channelId = interaction.channel.id;
+    const current = client.games.get(channelId);
     if (current) return interaction.reply({ content: current.prompt, ephemeral: true });
 
     if (client.isPlaying.get(interaction.user.id)) return interaction.reply({ content: 'you are already in a game. please finish that first.', ephemeral: true });
@@ -21,13 +22,13 @@ exports.run = async(client, interaction, args) => {
     if (opponent.id === client.user.id) return interaction.reply({ content: 'i really want to but i\'m busy :pensive:', ephemeral: true });
     if (opponent.bot) return interaction.reply({ content: 'since bots are too smart, i can\'t allow that :(', ephemeral: true });
     if (isNaN(time) || time > 15 || time < 3) return interaction.reply({ content: 'the waiting time should be a number in second, and it can\'t be longer than 15 seconds or shorter than 3 seconds :(', ephemeral: true });
-    client.games.set(interaction.channel.id, { prompt: `please wait until **${interaction.user.username}** **${opponent.username}** finish playing their game :pensive:` });
+    client.games.set(channelId, { prompt: `please wait until **${interaction.user.username}** **${opponent.username}** finish playing their game :pensive:` });
 
     try {
         await interaction.deferReply();
         const verification = await buttonVerify(interaction.channel, opponent, `${opponent}, do you accept this challenge?`);
         if (!verification) {
-            client.games.delete(interaction.channel.id);
+            client.games.delete(channelId);
             return interaction.editReply('looks like they declined...');
         };
         client.isPlaying.set(interaction.user.id, true);
@@ -85,7 +86,7 @@ exports.run = async(client, interaction, args) => {
             lastWord = choice;
             userTurn = !userTurn;
         };
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         client.isPlaying.delete(interaction.user.id);
         client.isPlaying.delete(opponent.id);
         if (!winner) return interaction.channel.send('oh... no one won.');
@@ -124,7 +125,7 @@ exports.run = async(client, interaction, args) => {
     } catch (err) {
         client.isPlaying.delete(interaction.user.id);
         client.isPlaying.delete(opponent.id);
-        client.games.delete(interaction.channel.id);
+        client.games.delete(channelId);
         logger.log('error', err);
     };
 };

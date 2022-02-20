@@ -6,6 +6,7 @@ class Game {
         this.vowels = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'U'];
         this.consenants = ['B', 'B', 'C', 'C', 'C', 'D', 'D', 'D', 'D', 'D', 'D', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'J', 'K', 'L', 'L', 'L', 'L', 'L', 'M', 'M', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'P', 'P', 'P', 'P', 'Q', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'V', 'W', 'X', 'Y', 'Z'];
         this.interaction = interaction;
+        this.channelId = interaction.channel.id;
         this.client = client;
         this.letters = '';
         this.text = '**countdown anagrams:** you must choose nine letters by pressing either the vowel or constenant button. i recomend at least 3 vowels. you will then have 30 seconds to find the largest word you can.\n**your letters:**';
@@ -27,7 +28,7 @@ class Game {
         });
         if (!collected.size) {
             this.msg.edit('this game has timed out lmao');
-            return this.client.games.delete(this.interaction.channel.id);
+            return this.client.games.delete(this.channelId);
         }
         const reaction = collected.first().emoji.name;
         if (reaction === '🇻') this.letters += this.vowels[Math.round(Math.random() * this.vowels.length | 0)];
@@ -50,7 +51,7 @@ class Game {
                 });
                 if (!responses.size) {
                     this.msg.edit('this game has timed out lmao');
-                    return this.client.games.delete(this.interaction.channel.id);
+                    return this.client.games.delete(this.channelId);
                 };
                 const response = responses.first().content;
                 await fetch(`http://www.anagramica.com/all/:${this.letters}`)
@@ -69,7 +70,7 @@ class Game {
                     else if (i === 3) this.top += `${this.solved.all[i]} and `;
                     else this.top += this.solved.all[i];
                 };
-                this.client.games.delete(this.interaction.channel.id);
+                this.client.games.delete(this.channelId);
                 this.msg.edit(`${this.text} ${this.letters}. your choice of ${this.winMessage} the top five solutions are ${this.top}. for a full list of solutions go to https://word.tips/words-for/${this.letters}/?dictionary=wwf`);
             }, 30000);
         } else {

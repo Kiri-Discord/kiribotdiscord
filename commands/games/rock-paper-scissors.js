@@ -1,7 +1,6 @@
 const { buttonVerify } = require('../../util/util');
 const rep = ['r', 'p', 's'];
 
-
 class Game {
     constructor(message, challenged, client) {
         this.message = message;

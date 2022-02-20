@@ -5,9 +5,10 @@ const choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
 const { MessageEmbed } = require('discord.js');
 
 exports.run = async(client, message, args) => {
-        const current = client.games.get(message.channel.id);
+        const channelId = message.channel.id;
+        const current = client.games.get(channelId);
         if (current) return message.reply(current.prompt);
-        client.games.set(message.channel.id, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
+        client.games.set(channelId, { prompt: `you should wait until **${message.author.username}** is finished first :(` });
         let displayMessage = null;
         try {
             const points = {
@@ -55,7 +56,7 @@ exports.run = async(client, message, args) => {
                 time: 120000
             });
             if (!choice.size) {
-                client.games.delete(message.channel.id);
+                client.games.delete(channelId);
                 return message.channel.send('oh no, you ran out of time! too bad :pensive:');
             };
             const answer = answers[choices.indexOf(choice.first().content.toUpperCase())];
@@ -63,7 +64,7 @@ exports.run = async(client, message, args) => {
             ++turn;
         }
         const houseResult = Object.keys(points).filter(h => points[h] > 0).sort((a, b) => points[b] - points[a]);
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         const totalPoints = houseResult.reduce((a, b) => a + points[b], 0);
         const embed = new MessageEmbed()
         .setTitle(`you are a member of... ${houses[houseResult[0]]}!`)
@@ -73,7 +74,7 @@ exports.run = async(client, message, args) => {
         `)
         return message.channel.send({embeds: [embed]})
     } catch (err) {
-        client.games.delete(message.channel.id);
+        client.games.delete(channelId);
         throw err;
     };
 };
