@@ -70,10 +70,10 @@ exports.run = async(client, message, args, prefix) => {
             .setTitle(`${material.name}'s basic info`)
             .setColor(Colors.AQUA)
             .setFooter({text: `page ${currentPage} / ${maxPages}`})
-            .setDescription(material.desc)
+            .setDescription(material.desc ?? "Upcoming material.")
 
         if (material.category || material.type)
-            embed.addField("Category", `**${material.category}**: ${material.type}`, true)
+            embed.addField("Category", `**${material.category ?? "Unknown"}**: ${material.type ?? "Unknown"}`, true)
 
         if (material.stars)
             embed.addField("Rarity", `${material.stars}★`, true)

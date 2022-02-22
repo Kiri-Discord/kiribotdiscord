@@ -107,8 +107,9 @@ module.exports = class DataManager {
         if (!type)
             return type ?? "Unknown"
 
-        const found = this.emojis[type]
-        if (!found) return type
+        const found = this.emojis[type];
+        if (!found) return type;
+        if (!found && includeName == false) return "";
         if (includeName) return `${found} ${type}`
         return found
     }
