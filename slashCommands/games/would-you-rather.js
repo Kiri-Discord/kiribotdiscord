@@ -49,12 +49,12 @@ exports.run = async(client, interaction) => {
             max: 1
         });
         collector.on('collect', async(res) => {
+            client.games.delete(channelId);
             await res.deferReply();
             const option1 = res.customId === '1';
             await postResponse(data.id, option1);
             const totalVotes = Number.parseInt(data.option1_total, 10) + Number.parseInt(data.option2_total, 10);
             const numToUse = option1 ? Number.parseInt(data.option1_total, 10) : Number.parseInt(data.option2_total, 10);
-            client.games.delete(channelId);
             return res.editReply(stripIndents`
                 **${Math.round((numToUse / totalVotes) * 100)}%** of people agree with that!
                 1.\`${formatNumber(data.option1_total)}\` - 2.\`${formatNumber(data.option2_total)}\`
