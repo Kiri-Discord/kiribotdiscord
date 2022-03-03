@@ -522,7 +522,7 @@ module.exports = class util {
 			guildId: id
 		});
 		await client.db.levelingRewards.deleteMany({
-            guildId: message.guild.id,
+            guildId: id,
         });
 
 		await client.db.inventory.deleteMany({
