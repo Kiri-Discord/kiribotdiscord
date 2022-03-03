@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const sendHook = require("../../features/webhook.js");
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, prefix) => {
     if (!args.length)
         return message.channel.send({
             embeds: [

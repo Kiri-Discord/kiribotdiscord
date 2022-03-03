@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
-exports.run = async(client, message, args) => {
+exports.run = async(client, message, args, prefix) => {
     if (!args.length) return message.channel.send({ embeds: [{ color: "#abb7b2", description: `you should follow the correct usage! use \`${prefix}help ban\` to learn more :wink:` }] });
     const member = client.utils.parseMember(message, args[0])
 
