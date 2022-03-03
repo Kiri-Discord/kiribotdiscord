@@ -23,15 +23,15 @@ exports.run = async(client, message, args) => {
 }
 
 exports.help = {
-    name: "levelingignore",
+    name: "leveling-ignore",
     description: "ignore levelings from a message channel",
-    usage: ["levelingignore \`[#channel]\`", "levelingignore \`[channel id]\`"],
-    example: ["levelingignore \`#spam\`", "levelingignore \`84487884448848\`"]
+    usage: ["leveling-ignore \`[#channel]\`", "leveling-ignore \`[channel id]\`"],
+    example: ["leveling-ignore \`#spam\`", "leveling-ignore \`84487884448848\`"]
 };
 
 exports.conf = {
-    aliases: ["ignorelevel", "iglevel"],
-    cooldown: 5,
+    aliases: ["ignorelevel", "iglevel", "levelingignore"],
+    cooldown: 4,
     guildOnly: true,
     userPerms: ["MANAGE_GUILD"],
     channelPerms: ["EMBED_LINKS"]

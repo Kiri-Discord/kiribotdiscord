@@ -21,8 +21,8 @@ const airingGraphQL = stripIndents `
 `;
 
 exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const anime = await getList();
         if (!anime) return interaction.editReply('no anime is airing today...');
         const mapped = anime.sort((a, b) => a.airingAt - b.airingAt).map(ani => {

@@ -33,8 +33,8 @@ exports.run = async(client, interaction) => {
             return interaction.reply({ content: 'i found no recent photo in this channel :pensive:', ephemeral: true });
         };
     };
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request
             .get('https://api.qrserver.com/v1/read-qr-code/')
             .query({ fileurl: image });

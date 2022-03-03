@@ -283,7 +283,6 @@ module.exports = class util {
 						--currentPage;
 						await res.editReply({
 							content: `page ${currentPage + 1} of ${array.length}`,
-							// components: [row],
 							embeds: [array[currentPage]]
 						});
 					};
@@ -293,7 +292,6 @@ module.exports = class util {
 						currentPage++;
 						await res.editReply({
 							content: `page ${currentPage + 1} of ${array.length}`,
-							// components: [row],
 							embeds: [array[currentPage]]
 						})
 					};
@@ -325,7 +323,6 @@ module.exports = class util {
 						currentPage = parseInt(number) - 1;
 						await res.editReply({
 							content: `page ${number} of ${array.length}`,
-							// components: [row],
 							embeds: [array[currentPage]]
 						});
 				    };
@@ -524,6 +521,9 @@ module.exports = class util {
 		await client.db.garden.deleteMany({
 			guildId: id
 		});
+		await client.db.levelingRewards.deleteMany({
+            guildId: message.guild.id,
+        });
 
 		await client.db.inventory.deleteMany({
 			guildId: id

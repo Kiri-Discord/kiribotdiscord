@@ -1,5 +1,6 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
 const request = require('node-superfetch');
+const ordinal = require('ordinal');
 const path = require('path');
 const { firstUpperCase } = require('../../util/util');
 const { wrapText } = require('../../util/canvas');
@@ -86,7 +87,7 @@ exports.run = async(client, message, args) => {
     try {
         const name = `${mention.user.tag}`
         const species = "species"
-        const effect = `Originated from ${message.guild.name}. Might hurt you while ranked ${rank} in this guild.`
+        const effect = `Originated from ${message.guild.name}. Might hurt you while ranked ${ordinal(rank)} in this guild.`
         const level = target.level;
         const atk = `${target.xp}`
         const def = `${neededXP}`

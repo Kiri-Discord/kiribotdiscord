@@ -6,6 +6,8 @@ exports.run = async(client, interaction) => {
         const amount = interaction.options.getInteger('amount');
 
         if (amount < 0) return interaction.reply({ content: 'the amount of token that you want to bet must not be lower than 0 :pensive:', ephemeral: true })
+        await interaction.deferReply();
+        
         let storage = await client.db.money.findOne({
             userId: interaction.user.id,
             guildId: interaction.guild.id
@@ -17,7 +19,6 @@ exports.run = async(client, interaction) => {
                 guildId: interaction.guild.id
             });
         };
-        await interaction.deferReply();
         let cooldownStorage = await client.db.cooldowns.findOne({
             userId: interaction.user.id,
             guildId: interaction.guild.id

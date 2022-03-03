@@ -6,7 +6,7 @@ exports.run = async(client, message, args) => {
         const icon = message.guild.iconURL({ size: 4096, dynamic: true });
         let notAnimated = []
         let animated = []
-        await message.guild.emojis.cache.forEach(async emoji => {
+        message.guild.emojis.cache.forEach(emoji => {
             if (emoji.animated) animated.push(emoji.toString())
             else notAnimated.push(emoji.toString())
         })
@@ -26,7 +26,9 @@ exports.run = async(client, message, args) => {
             .setColor(message.guild.me.displayHexColor)
             .setThumbnail(icon)
             .setAuthor({name: `${message.guild.name}'s emoji(s)`, iconURL: client.user.displayAvatarURL()});
+
         if (rest.length) {
+            await message.channel.send({ embeds: [embed] })
             const lastContent = rest.pop();
             if (rest.length) {
                 for (const text of rest) {

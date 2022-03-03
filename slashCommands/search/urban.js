@@ -5,9 +5,9 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 exports.run = async(client, interaction) => {
     let result;
     let query = interaction.options.getString('word');
-
+    await interaction.deferReply();
+    
     try {
-        await interaction.deferReply();
         result = await urban(query);
     } catch (error) {
         return interaction.editReply(`i can't find definition for the word phrase of **${query}** :pensive:`);

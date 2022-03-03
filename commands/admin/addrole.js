@@ -2,23 +2,24 @@ const { MessageEmbed } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args, prefix) => {
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#abb7b2", description: `you should follow the correct usage! use \`${prefix}help addrole\` to learn more :wink:` }] });
     const guildDB = client.guildsStorage.get(message.guild.id);
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const member = client.utils.parseMember(message, args[0]);
     const roleName = args.slice(1).join(' ');
 
-    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}addrole <@user> <@role>\`` }] });
+    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage! use \`${prefix}help addrole\` to learn more :pensive:` }] });
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
-    if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `no valid role was provided :pensive: i can only accept role mention, role name and role ID` }] })
+    if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `no valid role was provided! i can only accept role mention, role name and role ID :pensive:` }] })
 
     if (role.name === "@everyone") return message.channel.send({ embeds: [{ color: "RED", description: `\`@everyone\` is not a valid role!` }] });
     if (role.name === "@here") return message.channel.send({ embeds: [{ color: "RED", description: `\`@here\` is not a valid role!` }] });
 
     if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= role.position) return message.channel.send({ embeds: [{ color: "RED", description: `that role is higher or equal your highest role!` }] });
 
-    if (!role.editable) return message.reply({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
+    if (!role.editable) return message.channel.send({ embeds: [{ color: "RED", description: `that role is higher or equal my highest role!` }] });
 
     if (!member.manageable) return message.reply({ embeds: [{ color: "RED", description: `i can't add role to that user! they may either be an admin, or their roles are way higher than me.` }] });
 

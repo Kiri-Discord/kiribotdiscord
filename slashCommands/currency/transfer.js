@@ -9,9 +9,7 @@ exports.run = async(client, interaction) => {
     if (user.id === interaction.user.id) return interaction.reply({ content: "why do you want to transfer to yourself?", ephemeral: true });
 
     const amount = interaction.options.getInteger('amount');
-    if (isNaN(amount)) return interaction.reply("that was not a valid number!");
-    if (amount === 0) return interaction.reply("why did you transfer nothing?");
-    if (amount < 0) return interaction.reply({ content: "that is an invalid amount of token! you can't neither transfer nothing or using a negative amount :pensive:", ephemeral: true });
+
 
     await interaction.deferReply();
     let storage = await client.db.money.findOne({

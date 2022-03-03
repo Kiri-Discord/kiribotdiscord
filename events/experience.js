@@ -28,7 +28,7 @@ module.exports = async(client, message, setting) => {
     }, {
         upsert: true,
         new: true,
-    })
+    });
 
 
     if (client.leveling.getLevel(userprof.xp) > userprof.level) {
@@ -45,22 +45,44 @@ module.exports = async(client, message, setting) => {
             upsert: true,
             new: true,
         })
-        userprof.level = client.leveling.getLevel(userprof.xp);
+        const level = client.leveling.getLevel(userprof.xp);
         let channel;
         let levelMessage;
         if (!setting.levelings.destination) channel = message.channel;
         else channel = message.guild.channels.cache.get(setting.levelings.destination);
         if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return;
-        if (setting.levelings.content.type === 'plain') levelMessage = await channel.send(varReplace.replaceText(setting.levelings.content.content, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp }));
-        else levelMessage = await channel.send({ embeds: [varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: userprof.level, xp: userprof.xp })] });
+        if (setting.levelings.content.type === 'plain') levelMessage = await channel.send(varReplace.replaceText(setting.levelings.content.content, message.member, message.guild, { event: 'level', type: setting.responseType }, { level, xp: userprof.xp }));
+        else levelMessage = await channel.send({ embeds: [varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level, xp: userprof.xp })] });
         if (channel.id === message.channel.id) {
             setTimeout(() => {
                 deleteIfAble(levelMessage);
             }, 5000);
+        };
+        const existingLevelReward = await client.db.levelingRewards.find({ 
+            guildId: message.guild.id, 
+            level: {
+                $lte: level
+            }
+        }).sort([
+            ["level", "descending"]
+        ]);
+        if (existingLevelReward.length) {
+            const reward = existingLevelReward[0];
+            if (message.member._roles.includes(reward.roleId)) return;
+            const role = message.guild.roles.cache.get(reward.roleId);
+            if (!role) {
+                await client.db.levelingRewards.deleteMany({
+                    roleId: reward.roleId,
+                    guildId: message.guild.id
+                });
+            } else {
+                if (!role.editable || !message.member.manageable) return;
+                await message.member.roles.add(role);
+            }
         }
     };
 
-    let randomTimer = getRandomInt(65000, 80000);
+    let randomTimer = getRandomInt(65000, 80000); 
     recent.add(message.author.id);
     setTimeout(() => {
         recent.delete(message.author.id)

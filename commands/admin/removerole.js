@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args, prefix) => {
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#abb7b2", description: `you should follow the correct usage! use \`${prefix}help removerole\` to learn more :wink:` }] });
     const guildDB = client.guildsStorage.get(message.guild.id);
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
 
@@ -9,11 +10,11 @@ exports.run = async(client, message, args, prefix) => {
 
     const roleName = args.slice(1).join(' ');
 
-    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage :pensive: it's \`${prefix}removerole <@user> <@role>\`` }] });
+    if (!member || !roleName) return message.channel.send({ embeds: [{ color: "RED", description: `sorry that was an incorrect usage! use \`${prefix}help removerole\` to learn more :pensive:` }] });
 
     const role = message.guild.roles.cache.find(r => (r.name === roleName.toString()) || (r.id === roleName.toString().replace(/[^\w\s]/gi, '')));
 
-    if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `no valid role was provided :pensive: i can only accept role mention, role name and role ID` }] })
+    if (!role) return message.channel.send({ embeds: [{ color: "RED", description: `no valid role was provided! i can only accept role mention, role name and role ID :pensive:` }] })
 
     if (role.name === "@everyone") return message.channel.send({ embeds: [{ color: "RED", description: `\`@everyone\` is not a valid role!` }] });
     if (role.name === "@here") return message.channel.send({ embeds: [{ color: "RED", description: `\`@here\` is not a valid role!` }] });
@@ -62,7 +63,7 @@ exports.help = {
     name: "removerole",
     description: "confiscate a certain role from a certain member.",
     usage: ["removerole `<@user> <@role>`", "removerole `<@user> <role ID>`", "removerole `<user ID> <role ID>`", "removerole `<user ID> <@role>`", "removerole `<@user> <role name>`", "removerole `<user ID> <role name>"],
-    example: ["removerole `@bach @pvp`", "removerole `@kuru 584484488877`", "removerole `5575557852 Member`"]
+    example: ["removerole `@Leo @Active`", "removerole `@Kuru 584484488877`", "removerole `5575557852 Member`", "removerole `788798778978978 5575557852`"]
 };
 
 exports.conf = {

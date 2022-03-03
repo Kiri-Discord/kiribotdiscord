@@ -5,9 +5,9 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     let query = interaction.options.getString('country') || 'all';
+    await interaction.deferReply();
     let country = encodeURIComponent(query)
     try {
-        await interaction.deferReply();
         const data = await fetchStats(country);
         const embed = new MessageEmbed()
             .setDescription(`You can use \`/covid <country>\` to get the information in a country, or just leave it blank to get global stats.`)

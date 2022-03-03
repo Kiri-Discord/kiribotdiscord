@@ -39,8 +39,8 @@ exports.run = async(client, interaction) => {
             image = interaction.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         };
     };
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request.get(image);
         const base = await loadImage(body);
         const canvas = createCanvas(base.width, base.height);

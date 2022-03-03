@@ -36,8 +36,8 @@ exports.run = async(client, interaction) => {
             return interaction.reply({ content: 'i found no recent photo in this channel :pensive:', ephemeral: true });
         };
     };
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const face = await detect(image);
         if (!face) {
             return interaction.editReply("wait a sec...there isn't any face in this image :frowning:");

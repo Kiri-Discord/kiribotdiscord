@@ -154,14 +154,36 @@ exports.run = async(client, interaction) => {
             .addField('\`⛳\` Flags', userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None')
             .addField(`\`👤\` Roles [${roles.length}]`, roles.length ? trimArray(roles, 6).join(', ') + dots : 'None')
         return interaction.reply({ embeds: [embed] });
+    } else if (interaction.options.getSubcommand() === 'role') {
+        const role = interaction.options.getRole('role')
+    
+        if (role.name === "@everyone") return interaction.reply({ embeds: [{ color: "RED", description: `\`@everyone\` is not a valid role!` }], ephemeral: true });
+        if (role.name === "@here") return interaction.reply({ embeds: [{ color: "RED", description: `\`@here\` is not a valid role!` }], ephemeral: true });
+    
+        const serialized = role.permissions.serialize();
+        const perms = Object.keys(permissions).filter(perm => serialized[perm]);
+        const embed = new MessageEmbed()
+            .setThumbnail(role.iconURL({ size: 512 }))
+            .setColor(role.hexColor)
+            .setAuthor({ name: `"${role.name}" role information:`, iconURL: client.user.displayAvatarURL() })
+            .setDescription(role.toString())
+            .addField('\`📖\` Name', role.name, true)
+            .addField('\`🆔\` ID', role.id, true)
+            .addField('\`🎨\` Color hex', role.hexColor.toUpperCase(), true)
+            .addField('\`📆\` Creation date', `<t:${Math.floor(role.createdTimestamp / 1000)}:R>`, true)
+            .addField('\`🧑‍🤝‍🧑\` Seperated in member list?', role.hoist ? 'Yes' : 'No', true)
+            .addField('**@** Mentionable?', role.mentionable ? 'Yes' : 'No', true)
+            .addField('\`🔒\` Key permission', perms.map(perm => permissions[perm]).join(', ') || 'None')
+            .setTimestamp();
+        return interaction.reply({ embeds: [embed] });
     }
 };
 
 exports.help = {
     name: "info",
-    description: "fetch the server or a specific user's information",
-    usage: ["info server", "info user `<@member>`"],
-    example: ["info server", "info user `@User`"]
+    description: "fetch the server, a specific user's information or a role's information",
+    usage: ["info server", "info user `<@Member>`", "info role `<@Role>`"],
+    example: ["info server", "info user `@Wumpus`", "info role `@Admin`"],
 };
 
 exports.conf = {
@@ -172,11 +194,20 @@ exports.conf = {
         .setDescription(exports.help.description)
         .addSubcommand(subcommand =>
             subcommand
+                .setName('role')
+                .setDescription("fetch a role's detailed information on the guild")
+                .addRoleOption(option => option
+                    .setName('role')
+                    .setRequired(true)
+                    .setDescription('which role that you want to get information about? :)')
+                ))
+        .addSubcommand(subcommand =>
+            subcommand
                 .setName('user')
                 .setDescription('get info about an user in your server')
                 .addUserOption(option => option
                     .setName('target')
-                    .setDescription('what user which you want to get information about? :)')))
+                    .setDescription('which user that you want to get information about? :)')))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('server')

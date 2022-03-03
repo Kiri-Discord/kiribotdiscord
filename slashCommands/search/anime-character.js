@@ -46,8 +46,8 @@ const types = {
 
 exports.run = async(client, interaction) => {
         let query = interaction.options.getString('name');
+        await interaction.deferReply();
         try {
-            await interaction.deferReply();
             const id = await search(query);
             if (!id) return interaction.editReply('i couldn\'t find any result for that character :(');
             const character = await fetchCharacter(id);

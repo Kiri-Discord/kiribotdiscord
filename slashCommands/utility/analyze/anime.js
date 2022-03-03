@@ -79,9 +79,8 @@ exports.run = async(client, interaction) => {
                 return interaction.reply({ content: 'i found no recent photo in this channel :pensive:', ephemeral: true });
             };
         };
-
+        await interaction.deferReply();
         try {
-            await interaction.deferReply();
             const status = await fetchRateLimit();
             if (!status.ok && status.status) {
                 return interaction.editReply(`oh no, i'm out of requests to the server for this month! (1000) consider donating in \`/donate\` if you want to help me in increasing my limit :pensive:`);

@@ -3,8 +3,8 @@ const request = require('node-superfetch');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request.get('https://nekos.best/api/v1/nekos');
         const embed = new MessageEmbed()
             .setColor("#7DBBEB")

@@ -57,8 +57,8 @@ const statuses = {
 exports.run = async(client, interaction) => {
     const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     let query = interaction.options.getString('name');
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const id = await search(query);
         if (!id) {
             return interaction.editReply(`i couldn\'t find any results with **${query}** ${sedEmoji}`);

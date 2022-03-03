@@ -12,6 +12,7 @@ exports.run = async(client, interaction, db) => {
     };
     let channel = interaction.options.getChannel('channel');
     if (channel.type !== 'GUILD_TEXT') return interaction.reply({ embeds: [{ color: "#bee7f7", description: `you can only ignore messages from a text channel dear :pensive:` }], ephemeral: true });
+    await interaction.deferReply();
     try {
         db.ignoreLevelingsChannelID = channel.id;
         await client.db.guilds.findOneAndUpdate({

@@ -9,7 +9,7 @@ exports.run = async(client, interaction) => {
         const icon = interaction.guild.iconURL({ size: 4096, dynamic: true });
         let notAnimated = []
         let animated = []
-        await interaction.guild.emojis.cache.forEach(async emoji => {
+        interaction.guild.emojis.cache.each(emoji => {
             if (emoji.animated) animated.push(emoji.toString())
             else notAnimated.push(emoji.toString())
         })
@@ -30,17 +30,18 @@ exports.run = async(client, interaction) => {
             .setThumbnail(icon)
             .setAuthor({name: `${interaction.guild.name}'s emoji(s)`, iconURL: client.user.displayAvatarURL()});
         if (rest.length) {
+            await interaction.editReply({ embeds: [embed] })
             const lastContent = rest.pop();
             if (rest.length) {
                 for (const text of rest) {
                     const embed1 = new MessageEmbed()
-                        .setColor(message.guild.me.displayHexColor)
+                        .setColor(interaction.guild.me.displayHexColor)
                         .setDescription(text)
                     await interaction.channel.send({ embeds: [embed1] })
                 };
             };
             const embed3 = new MessageEmbed()
-                .setColor(message.guild.me.displayHexColor)
+                .setColor(interaction.guild.me.displayHexColor)
                 .setDescription(lastContent)
                 .setTimestamp()
             return interaction.channel.send({ embeds: [embed3] });

@@ -3,9 +3,9 @@ const request = require("node-superfetch");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     try {
         const query = interaction.options.getString('query');
-        await interaction.deferReply();
         const { body } = await request
             .get('https://www.googleapis.com/youtube/v3/search')
             .query({

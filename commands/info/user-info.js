@@ -99,9 +99,9 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "user-info",
-    description: "fetch an user's information on the guild. if no user is given, your own information will be displayed.",
-    usage: ["user-info `[@user]`"],
-    example: ["user-info `@Bell`"]
+    description: "fetch an user's detailed information on the guild. if no user is given, your own information will be displayed.",
+    usage: ["user-info `[@User]`", "user-info `[User ID]`"],
+    example: ["user-info `@Bell`", "user-info `123456789012345678`"],
 };
 
 exports.conf = {

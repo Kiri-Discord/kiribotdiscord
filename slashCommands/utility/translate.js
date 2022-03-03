@@ -7,8 +7,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 exports.run = async(client, interaction) => {
     const query = interaction.options.getString('text');
     if (query.length > 1900) return interaction.reply({ content: "sorry, your text can't be longer than 1900 character :pensive:", ephemeral: true });
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const res = await translate(query, { to: 'en', from: 'auto' });
         const embed = new MessageEmbed()
             .setColor('#4A91E2')

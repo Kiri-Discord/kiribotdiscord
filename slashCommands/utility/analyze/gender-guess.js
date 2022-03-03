@@ -2,8 +2,8 @@ const request = require('node-superfetch');
 
 exports.run = async(client, interaction) => {
     let name = interaction.options.getString('name');
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request
             .get(`https://api.genderize.io/`)
             .query({ name });

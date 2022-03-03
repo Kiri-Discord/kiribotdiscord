@@ -33,8 +33,8 @@ exports.run = async(client, interaction) => {
         };
     };
     var level = 50;
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);

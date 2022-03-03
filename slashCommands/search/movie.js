@@ -6,8 +6,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     const query = interaction.options.getString('name');
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const search = await request
             .get('http://api.themoviedb.org/3/search/movie')
             .query({

@@ -7,8 +7,8 @@ exports.run = async(client, interaction) => {
     const options = text.trim().split(",").filter(x => x !== '').map(x => x.trim());
     if (options.length < 2) return interaction.reply({ content: `you should provide more than a choice and seperate it with a comma (eg. 1, 2, 3)`, ephemeral: true });
     if (options.length > 31) return interaction.reply({ content: 'you can only provide less than 30 choices in a poll!', ephemeral: true });
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request
             .post('https://www.strawpoll.me/api/v2/polls')
             .set({ 'Content-Type': 'application/json' })

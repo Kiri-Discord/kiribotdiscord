@@ -12,8 +12,6 @@ exports.run = async(client, interaction) => {
     const member = interaction.options.getMember('target');
     const user = member.user;
 
-    // if (user.bot && user.id !== client.user.id) return interaction.reply({ content: 'why are you ejecting that bot :confused:', ephemeral: true });
-
     const choices = [1, 2];
     const choice = choices[Math.floor(Math.random() * choices.length)];
     let random = Math.floor(Math.random() * 10);

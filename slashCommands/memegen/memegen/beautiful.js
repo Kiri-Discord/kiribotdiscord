@@ -33,8 +33,8 @@ exports.run = async(client, interaction) => {
             image = interaction.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         };
     };
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const base = await loadImage(path.join(__dirname, '..', '..', '..', 'assets', 'images', 'beautiful.png'));
         const { body } = await request.get(image);
         const avatar = await loadImage(body);

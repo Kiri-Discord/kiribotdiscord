@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
-
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#abb7b2", description: `you should follow the correct usage! use \`${prefix}help setnickname\` to learn more :wink:` }] });
     const guildDB = client.guildsStorage.get(message.guild.id)
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
@@ -49,8 +49,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "setnickname",
     description: "set an user's nickname.",
-    usage: ["setnickname `<@user> <nick>`"],
-    example: ["setnickname `@bell#9999 hoisted`"]
+    usage: ["setnickname `<@user> <nickname>`"],
+    example: ["setnickname `@Bell#9999 Admin`"]
 }
 
 exports.conf = {

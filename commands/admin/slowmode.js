@@ -3,6 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const sendHook = require('../../features/webhook.js');
 
 exports.run = async(client, message, args) => {
+    if (!args.length) return message.channel.send({ embeds: [{ color: "#abb7b2", description: `you should follow the correct usage! use \`${prefix}help slowmode\` to learn more :wink:` }] });
     const guildDB = client.guildsStorage.get(message.guild.id);
 
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);

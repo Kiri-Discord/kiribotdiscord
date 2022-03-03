@@ -4,11 +4,11 @@ const { embedURL } = require('../../util/util');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     const month = interaction.options.getString('month') || '';
     const day = interaction.options.getInteger('day') || '';
     const date = month && day ? `/${month}/${day}` : '';
     try {
-        await interaction.deferReply();
         const { text } = await request.get(`http://history.muffinlabs.com/date${date}`);
         const body = JSON.parse(text);
         const events = body.data.Events;

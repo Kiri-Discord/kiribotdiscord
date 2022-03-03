@@ -1,4 +1,5 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
+const ordinal = require('ordinal');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const request = require('node-superfetch');
 const path = require('path');
@@ -19,12 +20,14 @@ exports.run = async(client, interaction, args) => {
     let rank;
     let mention = interaction.options.getMember('user') || interaction.member;
 
+    await interaction.deferReply();
+
     let target = await client.db.leveling.findOne({
         guildId: interaction.guild.id,
         userId: mention.user.id
     });
 
-    if (!target) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ you or that user doesn't have any leveling data yet! stay around a little longer :D` }], ephemeral: true });
+    if (!target) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ you or that user doesn't have any leveling data yet! stay around a little longer :D` }] });
 
     const res = client.leveling.getLevelBounds(target.level + 1)
 
@@ -37,7 +40,7 @@ exports.run = async(client, interaction, args) => {
     })
 
     if (!result) {
-        return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :slight_smile:` }], ephemeral: true })
+        return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet! stay around a little longer :slight_smile:` }] })
     };
     for (let counter = 0; counter < result.length; ++counter) {
         let member = interaction.guild.members.cache.get(result[counter].userId)
@@ -75,7 +78,6 @@ exports.run = async(client, interaction, args) => {
         "water",
         "wind",
     ];
-    await interaction.deferReply();
     const randommonsterType = Math.floor(Math.random() * (list1.length - 1) + 1);
 
     const randomattribute = Math.floor(Math.random() * (list2.length - 1) + 1);
@@ -87,7 +89,7 @@ exports.run = async(client, interaction, args) => {
     try {
         const name = `${mention.user.tag}`
         const species = "species"
-        const effect = `Originated from ${interaction.guild.name}. Might hurt you while ranked ${rank} in this guild.`
+        const effect = `Originated from ${interaction.guild.name}. Might hurt you while ranked ${ordinal(rank)} in this guild.`
         const level = target.level;
         const atk = `${target.xp}`
         const def = `${neededXP}`

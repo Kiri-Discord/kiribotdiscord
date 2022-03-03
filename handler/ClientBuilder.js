@@ -11,6 +11,7 @@ module.exports = class kiri extends Client {
             parseMember,
         };
         this.db = {
+            levelingRewards: require("../model/levelingRewards"),
             vote: require("../model/vote"),
             globalStorage: require("../model/global"),
             gameStorage: require("../model/game"),

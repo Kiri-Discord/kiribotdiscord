@@ -62,8 +62,8 @@ const statuses = {
 
 exports.run = async(client, interaction) => {
         let query = interaction.options.getString('name');
+        await interaction.deferReply();
         try {
-            await interaction.deferReply();
             const id = await search(query);
             if (!id) return interaction.editReply(`i could not find any results with **${query}** :(\n*pro tip: if you don\'t know the anime\'s name, you can always use* \`/analyze anime\` *with a screenshot sent before it to get the anime's name!*`);
             const anime = await fetchAnime(id);

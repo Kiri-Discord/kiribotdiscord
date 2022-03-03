@@ -5,8 +5,8 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 exports.run = async(client, interaction) => {
     const query = interaction.options.getString('tag') || '';
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { text } = await request
             .get('https://safebooru.org/index.php')
             .query({

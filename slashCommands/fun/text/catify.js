@@ -2,10 +2,10 @@ const neko = require('nekos.life');
 const { sfw } = new neko();
 
 exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     try {
         let query = interaction.options.getString('text');
         let author = interaction.user;
-        await interaction.deferReply();
         if (!query) {
             const setting = await client.db.guilds.findOne({
                 guildID: interaction.guild.id

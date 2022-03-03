@@ -11,26 +11,27 @@ exports.run = async(client, interaction) => {
     if (mention.user.id === client.user.id) return interaction.reply({ content: 'that is me lmao', ephemeral: true });
     if (mention.user.bot) return interaction.reply({ embeds: [{ color: "#bee7f7", description: 'just to make this clear... bots can\'t level up :pensive:' }], ephemeral: true });
 
+    await interaction.deferReply();
+
     let target = await client.db.leveling.findOne({
         guildId: interaction.guild.id,
         userId: mention.user.id
     });
 
-    if (!target) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ you or that user doesn't have any leveling data yet!` }], ephemeral: true });
+    if (!target) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ you or that user doesn't have any leveling data yet!` }] });
 
     const res = client.leveling.getLevelBounds(target.level + 1);
 
     let neededXP = res.lowerBound;
-
     const result = await client.db.leveling.find({
         guildId: interaction.guild.id,
     }).sort({
         xp: -1
     });
 
-    if (!result) return interaction.reply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet!\nto turn on the leveling system, do \`/leveling toggle on\`!` }], ephemeral: true });
+    if (!result) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `❌ this guild doesn't have any leveling data yet!\nto turn on the leveling system, do \`/leveling toggle on\`!` }] });
 
-    await interaction.deferReply();
+    
     let rank;
     for (let counter = 0; counter < result.length; ++counter) {
         let member = interaction.guild.members.cache.get(result[counter].userId);

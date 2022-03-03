@@ -5,9 +5,9 @@ const { shorten } = require('../../util/util');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
+    await interaction.deferReply();
     try {
         const query = interaction.options.getString('meme');
-        await interaction.deferReply();
         const res = await search(query);
         if (!res) {
             return interaction.editReply('no results was found for that meme :pensive:');

@@ -212,7 +212,7 @@ exports.run = async(client, interaction) => {
             let command = client.slash.get(query);
             const dead = client.customEmojis.get('dead') ? client.customEmojis.get('dead').toString() : ':thinking:';
             if (command.conf.adult && !interaction.channel.nsfw) {
-                return interaction.reply({ embeds: [{ color: "RED", description: `uh.. ${message.author.username}, wasn't that supposed to be sent in a NSFW channel dear ${dead}` }], ephemeral: true });
+                return interaction.reply({ embeds: [{ color: "RED", description: `uh.. ${interaction.user.username}, wasn't that supposed to be sent in a NSFW channel dear ${dead}` }], ephemeral: true });
             };
             let name = command.help.name;
             let desc = command.help.longDescription || command.help.description;
