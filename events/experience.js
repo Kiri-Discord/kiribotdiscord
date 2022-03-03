@@ -76,8 +76,8 @@ module.exports = async(client, message, setting) => {
                     guildId: message.guild.id
                 });
             } else {
-                if (!role.editable || !message.member.manageable) return;
-                await message.member.roles.add(role);
+                if (!role.editable) return;
+                message.member.roles.add(role).catch(() => {});
             }
         }
     };
