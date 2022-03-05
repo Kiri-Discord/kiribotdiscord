@@ -1,14 +1,14 @@
 const { stripIndents } = require('common-tags');
-const prizes = ['⏣ 0', '⏣ 2', '⏣ 4', '⏣ 10', '⏣ 500', '⏣ 1,000,000', '⏣ 5,000,000'];
+const prizes = [0, 2, 4, 10, 500, 1000000, 5000000];
 const ms = require('ms');
 const prizesToNumber = {
-    '⏣ 0': 0,
-    '⏣ 2': 2,
-    '⏣ 4': 4,
-    '⏣ 10': 10,
-    '⏣ 500': 500,
-    '⏣ 1,000,000': 1000000,
-    '⏣ 5,000,000': 5000000
+    0: '⏣ 0',
+    2: '⏣ 2',
+    4: '⏣ 4',
+    10: '⏣ 10',
+    500: '⏣ 500',
+    1000000: '⏣ 1,000,000',
+    5000000: '⏣ 5,000,000'
 };
 const { MessageEmbed } = require('discord.js');
 
@@ -36,11 +36,11 @@ exports.run = async(client, message, args) => {
         return message.reply(`that was fast! you need to wait **${ms(remaining, { long: true })}** before you can attempt to win a lottery again!`);
     };
     const lotto = Array.from({ length: 6 }, () => Math.floor(Math.random() * 70) + 1);
-    const similarities = lotto.filter((num, i) => parseInt(args[i]) === num).length;
+    const similarities = lotto.filter((num) => args.map(a => parseInt(a)).includes(num)).length;
     const prize = prizes[similarities];
-    const prizeNumber = prizesToNumber[prize];
+    const prizeString = prizesToNumber[prize];
     const emiliacry = client.customEmojis.get('emillacry');
-    const msg = prizeNumber > 0 ? 'congratulation :tada:' : `try again next time ${emiliacry}`;
+    const msg = prize > 0 ? 'congratulation :tada:' : `try again next time ${emiliacry}`;
     await client.db.cooldowns.findOneAndUpdate({
         guildId: message.guild.id,
         userId: message.author.id
@@ -59,7 +59,7 @@ exports.run = async(client, message, args) => {
         guildId: message.guild.id,
         userId: message.author.id,
         $inc: {
-            balance: prizeNumber,
+            balance: prize,
         },
     }, {
         upsert: true,
@@ -69,7 +69,7 @@ exports.run = async(client, message, args) => {
         .setColor('#bee7f7')
         .setDescription(stripIndents `
         **${lotto.join(', ')}**
-        you matched **${similarities}** numbers, which gives you **${prize}**! ${msg}
+        you matched **${similarities}** numbers, which gives you **${prizeString}**! ${msg}
         `)
         .setFooter({text: `you have ⏣ ${storageAfter.balance} in your wallet.`})
     return message.reply({ embeds: [embed] });
