@@ -45,9 +45,9 @@ module.exports = {
             };
         };
 
-        wsConnection.onclose = (e) => {
+        wsConnection.onclose = async (e) => {
             if (count == 10) {
-                const owner = client.users.cache.get(client.config.ownerID);
+                const owner = await client.users.fetch(client.config.ownerID).catch(() => null);
                 if (owner) owner.send(`Websocket lost connection!`);
                 client.config.logChannels.forEach(id => {
                     const channel = client.channels.cache.get(id);

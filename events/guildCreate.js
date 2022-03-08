@@ -57,7 +57,7 @@ module.exports = async(client, guild) => {
         if (channel) channel.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     });
     logger.log('info', `New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
-    const owner = client.users.cache.get(client.config.ownerID);
+    const owner = await client.users.fetch(client.config.ownerID).catch(() => null);
     if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     if (channelbutcansendEmbed.size) {
         channelbutcansendEmbed.first().send({ embeds: [embed], components: [row] }).catch(() => null);

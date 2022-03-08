@@ -30,20 +30,20 @@ module.exports = class kiri extends Client {
         this.nodes = require("../lavalinkNodes.json");
         this.isPlaying = new Map();
         this.dcTimeout = new Map();
-        this.slashHelps = new Collection();
+        this.slashHelps = new Map();
         this.queue = new Map();
         this.commands = new Map();
-        this.slash = new Collection();
+        this.slash = new Map();
         this.helps = new Map();
         this.customEmojis = new Map();
         this.allNameCmds = [];
         this.allSlashCmds = [];
-        this.guildsStorage = new Collection();
+        this.guildsStorage = new Map();
         this.aliases = new Map();
         this.config = require("../config.json");
         this.recent = new Set();
         this.leveling = require("../util/LevelingUtil.js");
-        this.games = new Collection();
+        this.games = new Map();
         this.pokemon = new PokemonStore();
     }
 };

@@ -1,4 +1,3 @@
-const web = require('../util/web.js');
 const { purgeDbGuild } = require('../util/util');
 const music = require('../util/music');
 const schedule = require('node-schedule');
@@ -21,7 +20,7 @@ module.exports = async client => {
                     const channel = client.channels.cache.get(id);
                     if (channel) channel.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
                 });
-                const owner = client.users.cache.get(client.config.ownerID);
+                const owner = await client.users.fetch(client.config.ownerID).catch(() => null);
                 if (owner) owner.send(`Kicked from an undefined server (id: ${guild.guildID}).`);
                 logger.log('info', `Kicked from an undefined server (id: ${guild.guildID}).`);
             };
