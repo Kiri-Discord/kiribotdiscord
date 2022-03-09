@@ -6,7 +6,7 @@ const { findBestMatch } = require("string-similarity");
 exports.run = async(client, interaction) => {
     const option = interaction.options.getString('name');
     if (!option) {
-        let module = [...client.slashHelps.filter(x => !x.hide).values()];
+        let module = [...client.slashHelps.values()];
         if (!client.config.owners.includes(interaction.user.id)) module = module.filter(x => !x.hide);
         const replyEmoji = client.customEmojis.get('arrow');
         const duh = client.customEmojis.get('duh');
