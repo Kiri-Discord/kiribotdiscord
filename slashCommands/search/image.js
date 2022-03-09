@@ -8,23 +8,31 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 exports.run = async(client, interaction) => {
     let query = interaction.options.getString('query');
     await interaction.deferReply();
-    const searchResults = await DDG.searchImages(query, {
-        safeSearch: interaction.channel.nsfw ? DDG.SafeSearchType.OFF : DDG.SafeSearchType.MODERATE
-    });
-    if (searchResults.noResults) return interaction.editReply({
-        embeds: [{
-            description: `i can't find any result ;-;`,
-        }]
-    });
-    const result = searchResults.results[0];
-
-    const embed = new MessageEmbed()
-        .setTitle(cleanAnilistHTML(result.title))
-        .setURL(result.url)
-        .setColor(interaction.guild.me.displayHexColor)
-        .setImage(result.image)
-        .setFooter({text: 'DuckDuckGo', iconURL: 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png'})
-    return interaction.editReply({ embeds: [embed] });
+    try {
+        const searchResults = await DDG.searchImages(query, {
+            safeSearch: interaction.channel.nsfw ? DDG.SafeSearchType.OFF : DDG.SafeSearchType.MODERATE
+        });
+        if (searchResults.noResults) return interaction.editReply({
+            embeds: [{
+                description: `i can't find any result ;-;`,
+            }]
+        });
+        const result = searchResults.results[0];
+    
+        const embed = new MessageEmbed()
+            .setTitle(cleanAnilistHTML(result.title))
+            .setURL(result.url)
+            .setColor(interaction.guild.me.displayHexColor)
+            .setImage(result.image)
+            .setFooter({text: 'DuckDuckGo', iconURL: 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png'})
+        return interaction.editReply({ embeds: [embed] });
+    } catch {
+        return interaction.editReply({
+            embeds: [{
+                description: `i can't find any result ;-;`,
+            }]
+        });
+    }
 };
 
 

@@ -7,7 +7,7 @@ exports.run = async(client, message, args) => {
     let googleKey = client.config.gg_key;
     let csx = client.config.csx_key;
     let query = args.join(" ");
-    if (!query) return message.reply("pls enter something so i can search 👀");
+    if (!query) return message.reply("please enter something so i can search 👀");
     let safesearch;
     if (message.channel.nsfw) {
         safesearch = "off"
@@ -16,29 +16,32 @@ exports.run = async(client, message, args) => {
     }
     const href = await search(googleKey, csx, query, safesearch);
     if (!href) {
-        message.reply({
-            embeds: [{
-                description: `i can't find any result ;-; falling back to Duck Duck Go...`,
-            }]
-        });
-        const searchResults = await DDG.search(query, {
-            safeSearch: message.channel.nsfw ? DDG.SafeSearchType.OFF : DDG.SafeSearchType.MODERATE
-        });
-        if (searchResults.noResults) return message.channel.send({
-            embeds: [{
-                description: `i can't find any result there either :pensive:`,
-            }]
-        });
-        const result = searchResults.results[0];
-
-        const embed = new MessageEmbed()
-            .setTitle(cleanAnilistHTML(result.title))
-            .setDescription(cleanAnilistHTML(result.description))
-            .setURL(result.url)
-            .setColor(message.guild.me.displayHexColor)
-            .setFooter({text: result.hostname, iconURL: result.icon})
-            .setAuthor({name: 'DuckDuckGo', iconURL: 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png', url: 'https://duckduckgo.com/'})
-        return message.channel.send({ embeds: [embed] });
+        try {
+            const searchResults = await DDG.search(query, {
+                safeSearch: message.channel.nsfw ? DDG.SafeSearchType.OFF : DDG.SafeSearchType.MODERATE
+            });
+            if (searchResults.noResults) return message.channel.send({
+                embeds: [{
+                    description: `i can't find any result :pensive:`,
+                }]
+            });
+            const result = searchResults.results[0];
+    
+            const embed = new MessageEmbed()
+                .setTitle(cleanAnilistHTML(result.title))
+                .setDescription(cleanAnilistHTML(result.description))
+                .setURL(result.url)
+                .setColor(message.guild.me.displayHexColor)
+                .setFooter({text: result.hostname, iconURL: result.icon})
+                .setAuthor({name: 'DuckDuckGo', iconURL: 'http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png', url: 'https://duckduckgo.com/'})
+            return message.channel.send({ embeds: [embed] });
+        } catch {
+            return message.channel.send({
+                embeds: [{
+                    description: `i can't find any result :pensive:`,
+                }]
+            });
+        }
     };
 
     const embed = new MessageEmbed()

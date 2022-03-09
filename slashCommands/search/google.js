@@ -17,40 +17,43 @@ exports.run = async (client, interaction) => {
     await interaction.deferReply();
     const href = await search(googleKey, csx, query, safesearch);
     if (!href) {
-        interaction.editReply({
-            embeds: [
-                {
-                    description: `i can't find any result ;-; falling back to Duck Duck Go...`,
-                },
-            ],
-        });
-        const searchResults = await DDG.search(query, {
-            safeSearch: interaction.channel.nsfw
-                ? DDG.SafeSearchType.OFF
-                : DDG.SafeSearchType.MODERATE,
-        });
-        if (searchResults.noResults)
+        try {
+            const searchResults = await DDG.search(query, {
+                safeSearch: interaction.channel.nsfw
+                    ? DDG.SafeSearchType.OFF
+                    : DDG.SafeSearchType.MODERATE,
+            });
+            if (searchResults.noResults)
+                return interaction.editReply({
+                    embeds: [
+                        {
+                            description: `i can't find any result :pensive:`,
+                        },
+                    ],
+                });
+            const result = searchResults.results[0];
+    
+            const embed = new MessageEmbed()
+                .setTitle(cleanAnilistHTML(result.title))
+                .setDescription(cleanAnilistHTML(result.description))
+                .setURL(result.url)
+                .setColor(interaction.guild.me.displayHexColor)
+                .setFooter({text: result.hostname, iconURL: result.icon})
+                .setAuthor({
+                    name: "DuckDuckGo",
+                    iconURL: "http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png",
+                    url: "https://duckduckgo.com/"
+                });
+            return interaction.editReply({ embeds: [embed] });
+        } catch {
             return interaction.editReply({
                 embeds: [
                     {
-                        description: `i can't find any result there either :pensive:`,
+                        description: `i can't find any result :pensive:`,
                     },
                 ],
             });
-        const result = searchResults.results[0];
-
-        const embed = new MessageEmbed()
-            .setTitle(cleanAnilistHTML(result.title))
-            .setDescription(cleanAnilistHTML(result.description))
-            .setURL(result.url)
-            .setColor(interaction.guild.me.displayHexColor)
-            .setFooter({text: result.hostname, iconURL: result.icon})
-            .setAuthor({
-                name: "DuckDuckGo",
-                iconURL: "http://assets.stickpng.com/images/5847f32fcef1014c0b5e4877.png",
-                url: "https://duckduckgo.com/"
-            });
-        return interaction.editReply({ embeds: [embed] });
+        }
     }
     const embed = new MessageEmbed()
         .setTitle(href.title)
