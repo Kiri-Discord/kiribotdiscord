@@ -119,7 +119,7 @@ const client = new kiri({
         messages: {
             interval: 300,
             filter: Sweepers.filterByLifetime({
-                lifetime: 1800,
+                lifetime: 900,
                 getComparisonTimestamp: (e) =>
                     e.editedTimestamp ?? e.createdTimestamp,
             }),
