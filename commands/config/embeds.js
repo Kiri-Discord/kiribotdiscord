@@ -947,7 +947,6 @@ exports.run = async (client, message, args, prefix) => {
                     continue;
                 }
                 await deleteIfAble(res);
-                // if (targetEmbed.description === empty) targetEmbed.description = null;
                 targetEmbed.footer = {
                     text,
                 };
@@ -1108,7 +1107,7 @@ exports.run = async (client, message, args, prefix) => {
             });
         if (
             !channel.viewable ||
-            !channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS")
+            !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])
         )
             return message.reply({
                 embeds: [

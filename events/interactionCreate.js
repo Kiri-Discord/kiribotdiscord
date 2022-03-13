@@ -83,7 +83,7 @@ module.exports = async(client, interaction) => {
                         guildID: interaction.guild.id
                     });
                     client.guildsStorage.set(interaction.guild.id, setting);
-                    await setting.save();
+                    setting.save();
                 };
             }
         } catch (error) {

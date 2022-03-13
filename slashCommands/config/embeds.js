@@ -1100,7 +1100,7 @@ exports.run = async (client, interaction) => {
 
         if (
             !channel.viewable ||
-            !channel.permissionsFor(interaction.guild.me).has("MANAGE_WEBHOOKS")
+            !channel.permissionsFor(interaction.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])
         )
             return interaction.editReply({
                 embeds: [

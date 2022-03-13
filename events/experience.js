@@ -38,9 +38,7 @@ module.exports = async(client, message, setting) => {
         }, {
             guildId: message.guild.id,
             userId: message.author.id,
-            $inc: {
-                level: 1,
-            },
+            level: client.leveling.getLevel(userprof.xp),
         }, {
             upsert: true,
             new: true,

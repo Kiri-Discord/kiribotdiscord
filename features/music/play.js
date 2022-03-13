@@ -3,7 +3,7 @@ const { STAY_TIME } = require("../../util/musicutil");
 const Guild = require('../../model/music');
 const ScrollingLyrics = require("./karaoke");
 const { fetchInfo, fetchRelated } = require('../../util/musicutil');
-const { embedURL, delay, deleteIfAble } = require('../../util/util');
+const { embedURL, delay } = require('../../util/util');
 const spotifyToYT = require("spotify-to-yt");
 const pEvent = require('p-event');
 const eq = require('../../assets/equalizer');
@@ -315,8 +315,10 @@ module.exports = class Queue {
             };
             if (!this.client.deletedChannels.has(this.textChannel)) {
                 let sent;
-                if (this.nowPlaying.loadingMessage && this.nowPlaying.loadingMessage.editable) {
-                    sent = await this.nowPlaying.loadingMessage.edit({ embeds: [embed] });
+                if (this.nowPlaying.loadingMessage) {
+                    if (this.nowPlaying.loadingMessage.editable) {
+                        sent = await this.nowPlaying.loadingMessage.edit({ embeds: [embed] });
+                    };
                     this.nowPlaying.loadingMessage = undefined;
                     const { id } = sent; 
                     this.playingMessage = id;
@@ -327,7 +329,7 @@ module.exports = class Queue {
                 };
             };
         } catch (error) {
-            console.error(error);
+            logger.error(error);
         };
     };
     async end(data) {
