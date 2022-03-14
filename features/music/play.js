@@ -315,10 +315,8 @@ module.exports = class Queue {
             };
             if (!this.client.deletedChannels.has(this.textChannel)) {
                 let sent;
-                if (this.nowPlaying.loadingMessage) {
-                    if (this.nowPlaying.loadingMessage.editable) {
-                        sent = await this.nowPlaying.loadingMessage.edit({ embeds: [embed] });
-                    };
+                if (this.nowPlaying.loadingMessage && this.nowPlaying.loadingMessage.editable) {
+                    sent = await this.nowPlaying.loadingMessage.edit({ embeds: [embed] });
                     this.nowPlaying.loadingMessage = undefined;
                     const { id } = sent; 
                     this.playingMessage = id;
