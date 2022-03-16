@@ -55,7 +55,7 @@ exports.help = {
     name: "greyscale",
     description: "is that blue? no, black.",
     usage: ["greyscale `[image attachment]`", "greyscale `[URL]`"],
-    example: ["greyscale `image attachment`", "greyscale `https://example.com/girl.jpg`", "greyscale"]
+    example: ["greyscale `image attachment`", "greyscale `https://example.com/example.jpg`", "greyscale"]
 };
 
 exports.conf = {

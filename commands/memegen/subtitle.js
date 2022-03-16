@@ -73,7 +73,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "modern.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -81,7 +81,7 @@ exports.help = {
     name: "subtitle",
     description: "add subtitle to your image",
     usage: ["subtitle `[URL]`", "subtitle `[image attachment]`"],
-    example: ["subtitle `image attachment`", "subtitle `https://example.com/girl.jpg`", "subtitle"]
+    example: ["subtitle `image attachment`", "subtitle `https://example.com/example.jpg`", "subtitle"]
 };
 
 exports.conf = {

@@ -52,7 +52,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "ross.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -60,7 +60,7 @@ exports.help = {
     name: "bob-ross",
     description: "turn your photo or avatar into one of Bob Ross's masterpieces",
     usage: ["bob-ross `[URL]`", "bob-ross `[image attachment]`"],
-    example: ["bob-ross `image attachment`", "bob-ross `https://example.com/girl.jpg`", "bob-ross"]
+    example: ["bob-ross `image attachment`", "bob-ross `https://example.com/example.jpg`", "bob-ross"]
 };
 
 exports.conf = {

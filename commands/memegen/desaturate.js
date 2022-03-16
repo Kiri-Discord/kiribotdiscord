@@ -47,7 +47,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "desaturate.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -55,7 +55,7 @@ exports.help = {
     name: "desaturate",
     description: "desaturate your image",
     usage: ["desaturate `[URL]`", "desaturate `[image attachment]`"],
-    example: ["desaturate `image attachment`", "desaturate `https://example.com/girl.jpg`", "desaturate"]
+    example: ["desaturate `image attachment`", "desaturate `https://example.com/example.jpg`", "desaturate"]
 };
 
 exports.conf = {

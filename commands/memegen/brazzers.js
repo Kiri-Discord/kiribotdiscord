@@ -51,7 +51,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "brazzers.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -59,7 +59,7 @@ exports.help = {
     name: "brazzers",
     description: "you get the idea :eyes:",
     usage: ["brazzers `[URL]`", "brazzers `[image attachment]`"],
-    example: ["brazzers `image attachment`", "brazzers `https://example.com/girl.jpg`", "brazzers"]
+    example: ["brazzers `image attachment`", "brazzers `https://example.com/example.jpg`", "brazzers"]
 };
 
 exports.conf = {

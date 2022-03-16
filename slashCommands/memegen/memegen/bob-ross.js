@@ -52,6 +52,6 @@ exports.run = async(client, interaction) => {
         };;
         return interaction.editReply({ files: [{ attachment, name: "ross.png" }] });
     } catch (error) {
-        return interaction.editReply(`sorry i got an error :pensive: try again later!`);
+        return interaction.editReply(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };

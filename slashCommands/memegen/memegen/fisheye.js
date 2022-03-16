@@ -47,7 +47,7 @@ exports.run = async(client, interaction) => {
         };
         return interaction.editReply({ files: [{ attachment, name: "fish-eye.png" }] });
     } catch (error) {
-        return interaction.editReply(`sorry :( i got an error. try again later! can you check the image files?`);
+        return interaction.editReply(`sorry :( i got an error. you can try again later or recheck the image file.`);
     }
 }
 

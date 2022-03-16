@@ -54,7 +54,7 @@ exports.run = async(client, message, args, prefix) => {
             return instance.send();
         }
     } catch (error) {
-        return message.reply({ embeds: [{ color: "RED", description: "ouch, i bumped by an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me." }] });
+        return message.channel.send({ embeds: [{ color: "RED", description: "ouch, i caught an error :( can you check the role ID or my perms? that user also might have a higher role than me or the role that you are trying to give that user is higher than me." }] });
     }
 
 };

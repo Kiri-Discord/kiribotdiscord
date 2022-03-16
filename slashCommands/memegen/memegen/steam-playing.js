@@ -11,8 +11,8 @@ exports.run = async(client, interaction, args) => {
     const game = interaction.options.getString('game');
     const user = interaction.options.getUser('user') || interaction.user;
     const avatarURL = user.displayAvatarURL({ format: 'png', size: 64 });
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const base = await loadImage(path.join(__dirname, '..', '..', '..', 'assets', 'images', 'steam-now-playing.png'));
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
@@ -26,7 +26,7 @@ exports.run = async(client, interaction, args) => {
         ctx.fillText(shortenText(ctx, game, 200), 80, 70);
         return interaction.editReply({ files: [{ attachment: canvas.toBuffer(), name: 'steam-now-playing.png' }] });
     } catch (err) {
-        console.log(err);
-        return interaction.editReply(`sorry :( i got an error. try again later!`);
+        logger.error(err);
+        return interaction.editReply(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };

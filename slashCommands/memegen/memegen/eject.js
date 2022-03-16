@@ -17,8 +17,8 @@ exports.run = async(client, interaction) => {
     let random = Math.floor(Math.random() * 10);
     if (user.id === client.user.id) random = 6;
     const avatarURL = random < 5 ? user.displayAvatarURL({ format: 'png', size: 512 }) : interaction.user.displayAvatarURL({ format: 'png', size: 512 });
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request.get(avatarURL);
         const avatar = await loadImage(body);
         const imposter = choice === 1;
@@ -73,6 +73,6 @@ exports.run = async(client, interaction) => {
             return interaction.channel.send(`${interaction.user.username}, suprised? ${smug}${!imposter ? '\n||i was the imposter||' : ''}`)
         }, 5000);
     } catch (err) {
-        return interaction.editReply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
+        return interaction.editReply(`bruh, an error occurred when i was trying to eject them :pensive: you can try again later!`);
     };
 };

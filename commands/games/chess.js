@@ -111,7 +111,7 @@ exports.run = async(client, message, args, prefix, cmd) => {
                         guildId: message.guild.id,
                         userId: message.author.id
                     });
-                    return message.reply(`there was an error while reading your saved game... can you try again later? ${sedEmoji}`);
+                    return message.channel.send(`there was an error while reading your saved game... can you try again later? ${sedEmoji}`);
                 }
             } else {
                 game = new jsChess.Game(fen || undefined);

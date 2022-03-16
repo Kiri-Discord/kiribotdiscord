@@ -47,7 +47,7 @@ exports.run = async(client, message, args) => {
         };
         return message.channel.send({ files: [{ attachment, name: "fish-eye.png" }] });
     } catch (error) {;
-        return message.reply(`sorry :( i got an error. try again later! can you check the image files?`);
+        return message.channel.send(`sorry :( i got an error. you can try again later or recheck the image file.`);
     }
 }
 
@@ -82,7 +82,7 @@ exports.help = {
     name: "fisheye",
     description: "turn your image into *fisheyes*?",
     usage: ["fisheye `[image attachment]`", "fisheye `[URL]`"],
-    example: ["fisheye `image attachment`", "fisheye `https://example.com/girl.jpg`", "fisheye"]
+    example: ["fisheye `image attachment`", "fisheye `https://example.com/example.jpg`", "fisheye"]
 };
 
 exports.conf = {

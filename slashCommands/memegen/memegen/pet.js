@@ -1,8 +1,6 @@
-const { createCanvas, loadImage } = require('canvas');
-const request = require('node-superfetch');
-const { contrast } = require('../../../util/canvas');
 const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
+const pet = require('pet-pet-gif');
 
 exports.run = async(client, interaction) => {
     const url = interaction.options.getString('url');
@@ -35,32 +33,11 @@ exports.run = async(client, interaction) => {
     };
     await interaction.deferReply();
     try {
-        const { body } = await request.get(image);
-        const data = await loadImage(body);
-        const canvas = createCanvas(data.width, data.height);
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(data, 0, 0);
-        contrast(ctx, 0, 0, data.width, data.height);
-        const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {;
-            return interaction.editReply("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };;
-        return interaction.editReply({ files: [{ attachment, name: "contrast.png" }] });
+        const attachment = await pet(image, {
+            resolution: 1024
+        });
+        return interaction.editReply({ files: [{ attachment, name: "pet.gif" }] });
     } catch (error) {
-        return interaction.editReply(`sorry, i caught an error :pensive: you can try again later!`)
+        return interaction.editReply(`sorry i got an error :pensive: try again later!`)
     };
-};
-
-exports.help = {
-    name: "contrast",
-    description: "get more contrast to your image :thinking:",
-    usage: ["contrast `[URL]`", "contrast `[image attachment]`"],
-    example: ["contrast `image attachment`", "contrast `https://example.com/example.jpg`", "contrast"]
-};
-
-exports.conf = {
-    aliases: [],
-    cooldown: 5,
-    guildOnly: true,
-    channelPerms: ["ATTACH_FILES"]
 };

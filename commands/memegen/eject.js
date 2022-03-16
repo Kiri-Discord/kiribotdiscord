@@ -74,7 +74,7 @@ exports.run = async(client, message, args) => {
             return message.channel.send(`${message.author.username}, suprised? ${smug}${!imposter ? '\n||i was the imposter||' : ''}`)
         }, 5000);
     } catch (err) {
-        return message.reply(`bruh, an error occurred when i was trying to eject them :pensive: try again later!`);
+        return message.reply(`sorry, an error occurred while i was trying to eject them :pensive: you can try again later!`);
     };
 };
 

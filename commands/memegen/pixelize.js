@@ -54,7 +54,7 @@ exports.help = {
     name: "pixelize",
     description: "pixelize your image",
     usage: ["pixelize `[image attachment]`", "pixelize `[URL]`"],
-    example: ["pixelize `image attachment`", "pixelize `https://example.com/girl.jpg`", "pixelize"]
+    example: ["pixelize `image attachment`", "pixelize `https://example.com/example.jpg`", "pixelize"]
 };
 
 exports.conf = {

@@ -175,7 +175,7 @@ exports.help = {
     name: "what-anime",
     description: "detect the anime from just a screenshot or a GIF :)",
     usage: ["what-anime `<image attachment>`", "what-anime `<URL>`"],
-    example: ["what-anime `image attachment`", "what-anime `https://example.com/girl.jpg`"]
+    example: ["what-anime `image attachment`", "what-anime `https://example.com/example.jpg`"]
 }
 
 exports.conf = {

@@ -84,7 +84,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "classic.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -92,7 +92,7 @@ exports.help = {
     name: "classic-meme",
     description: "generate a classic meme with text and photo of your liking",
     usage: ["classic-meme `[URL]`", "classic-meme `[image attachment]`"],
-    example: ["classic-meme `image attachment`", "classic-meme `https://example.com/girl.jpg`", "classic-meme"]
+    example: ["classic-meme `image attachment`", "classic-meme `https://example.com/example.jpg`", "classic-meme"]
 };
 
 exports.conf = {

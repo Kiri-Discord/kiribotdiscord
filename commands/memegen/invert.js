@@ -55,7 +55,7 @@ exports.help = {
     name: "invert",
     description: "so actually black just turned white and white turned black and black turned white and...",
     usage: ["invert `[image attachment]`", "invert `[URL]`"],
-    example: ["invert `image attachment`", "invert `https://example.com/girl.jpg`", "invert"]
+    example: ["invert `image attachment`", "invert `https://example.com/example.jpg`", "invert"]
 };
 
 exports.conf = {

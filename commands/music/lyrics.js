@@ -36,7 +36,7 @@ exports.run = async(client, message, args) => {
                 .query({
                     song: `${queue.nowPlaying.info.title} ${queue.nowPlaying.info.author}`
                 });
-            if (body.notFound) return message.reply(`i found no lyrics for the current playing song :pensive:`);
+            if (body.notFound) return message.channel.send(`i found no lyrics for the current playing song :pensive:`);
             if (!body.googleFetch) {
                 embed.setTitle(`Lyrics for ${body.title} by ${body.author}`);
                 embed.setThumbnail(body.thumbnail);

@@ -18,6 +18,7 @@ const pixelizeCmd = sync.require('./memegen/pixelize');
 const steamCmd = sync.require('./memegen/steam-playing');
 const subtitleCmd = sync.require('./memegen/subtitle');
 const timeCmd = sync.require('./memegen/time-card');
+const petCmd = sync.require('./memegen/pet');
 
 exports.run = async(client, interaction) => {
     switch (interaction.options.getSubcommand()) {
@@ -78,6 +79,9 @@ exports.run = async(client, interaction) => {
         case 'time-card':
             timeCmd.run(client, interaction);
             break;
+        case 'pet':
+            petCmd.run(client, interaction);
+            break;
     }
 }
 exports.help = {
@@ -117,6 +121,15 @@ exports.conf = {
             )
         )
         .addSubcommand(sub => sub
+            .setName('pet')
+            .setDescription("pet an image that was sent or your avatar!")
+            .addStringOption(option => option
+                .setName('url')
+                .setDescription('the optional image URL that you want to use for this meme')
+                .setRequired(false)
+            )
+        )
+        .addSubcommand(sub => sub
             .setName('brazzers')
             .setDescription("you get the idea 👀")
             .addStringOption(option => option
@@ -146,7 +159,7 @@ exports.conf = {
         )
         .addSubcommand(sub => sub
             .setName('contrast')
-            .setDescription("get more contrast to your image ")
+            .setDescription("get more contrast to your image")
             .addStringOption(option => option
                 .setName('url')
                 .setDescription('the optional image URL that you want to use for this meme')

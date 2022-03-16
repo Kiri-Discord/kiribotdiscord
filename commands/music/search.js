@@ -141,7 +141,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, fromPlay) => {
         };
     } catch (error) {
         console.error(error);
-        return message.reply('there was an error while processing your search! can you try again later? :pensive:').catch(err => logger.log('error', err));
+        return message.channel.send('there was an error while processing your search! can you try again later? :pensive:');
     };
 };
 

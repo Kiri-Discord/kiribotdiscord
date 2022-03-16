@@ -47,8 +47,8 @@ exports.run = async(client, message, args) => {
         ctx.drawImage(base, 0, 0);
         const attachment = canvas.toBuffer();
         return message.channel.send({ files: [{ attachment, name: "beautiful.png" }] });
-    } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+    } catch (error) {
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -56,7 +56,7 @@ exports.help = {
     name: "beautiful",
     description: "generate a beautiful meme",
     usage: ["beautiful `[URL]`", "beautiful `[image attachment]`"],
-    example: ["brazzers `image attachment`", "brazzers `https://example.com/girl.jpg`", "brazzers"]
+    example: ["brazzers `image attachment`", "brazzers `https://example.com/example.jpg`", "brazzers"]
 };
 
 exports.conf = {

@@ -45,7 +45,7 @@ exports.run = async(client, message, args, prefix) => {
             return instance.send();
         }
     } catch (error) {
-        return message.reply({ embeds: [{ color: 'RED', description: "ouch, i bumped by an error! can you recheck my perms? :pensive:" }] });
+        return message.channel.send({ embeds: [{ color: 'RED', description: "ouch, i caught an error! can you recheck my perms? :pensive:" }] });
     };
 }
 

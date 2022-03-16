@@ -1,8 +1,6 @@
-const { createCanvas, loadImage } = require('canvas');
-const request = require('node-superfetch');
-const { contrast } = require('../../util/canvas');
 const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
+const pet = require('pet-pet-gif');
 
 exports.run = async(client, message, args) => {
     let image;
@@ -35,31 +33,25 @@ exports.run = async(client, message, args) => {
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
         message.channel.sendTyping();
-        const { body } = await request.get(image);
-        const data = await loadImage(body);
-        const canvas = createCanvas(data.width, data.height);
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(data, 0, 0);
-        contrast(ctx, 0, 0, data.width, data.height);
-        const attachment = canvas.toBuffer();
-        if (Buffer.byteLength(attachment) > 8e+6) {;
-            return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
-        };;
-        return message.channel.send({ files: [{ attachment, name: "contrast.png" }] });
-    } catch (error) {;
+        const attachment = await pet(image, {
+            resolution: 1024
+        });
+        return message.channel.send({ files: [{ attachment, name: "pet.gif" }] });
+    } catch (error) {
         return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
+
 exports.help = {
-    name: "contrast",
-    description: "get more contrast to your image :thinking:",
-    usage: ["contrast `[URL]`", "contrast `[image attachment]`"],
-    example: ["contrast `image attachment`", "contrast `https://example.com/example.jpg`", "contrast"]
+    name: "pet",
+    description: "pet an image that was sent or your avatar!",
+    usage: ["pet `[image attachment]`", "pet `[URL]`"],
+    example: ["pet `image attachment`", "pet `https://example.com/example.jpg`", "pet"]
 };
 
 exports.conf = {
-    aliases: [],
+    aliases: ['pet-the', 'petthe'],
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["ATTACH_FILES"]

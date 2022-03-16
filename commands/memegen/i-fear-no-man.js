@@ -50,7 +50,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "ifearnoman.png" }] });
     } catch (error) {
-        return message.reply(`sorry i got an error :pensive: try again later!`);
+        return message.channel.send(`sorry :( i got an error. you can try again later or recheck the image file.`);
     };
 };
 
@@ -58,7 +58,7 @@ exports.help = {
     name: "i-fear-no-man",
     description: "i fear no man, but that thing...",
     usage: ["i-fear-no-man `[URL]`", "i-fear-no-man `[image attachment]`"],
-    example: ["i-fear-no-man `image attachment`", "i-fear-no-man `https://example.com/girl.jpg`", "i-fear-no-man"]
+    example: ["i-fear-no-man `image attachment`", "i-fear-no-man `https://example.com/example.jpg`", "i-fear-no-man"]
 };
 
 exports.conf = {

@@ -68,7 +68,7 @@ exports.run = async(client, message, args, prefix) => {
         };;
         return message.channel.send({ files: [{ attachment, name: 'greyscale.png' }] });
     } catch (err) {;
-        return message.reply(`sorry :( i got an error. try again later! can you check the image files?`);
+        return message.reply(`sorry, i got an error :( you can try again later or recheck the image file.`);
     }
 };
 
@@ -76,7 +76,7 @@ exports.help = {
     name: "distort",
     description: "distort an image?",
     usage: ["distort `[URL] <amount>`", "distort `[image attachment] <amount>`"],
-    example: ["distort `image attachment 2`", "distort `https://example.com/girl.jpg 2`", "distort"]
+    example: ["distort `image attachment 2`", "distort `https://example.com/example.jpg 2`", "distort"]
 };
 
 exports.conf = {

@@ -33,8 +33,8 @@ exports.run = async(client, interaction) => {
             image = interaction.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         };
     };
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
@@ -47,6 +47,6 @@ exports.run = async(client, interaction) => {
         };;
         return interaction.editReply({ files: [{ attachment, name: "desaturate.png" }] });
     } catch (error) {;
-        return interaction.editReply(`sorry i got an error :pensive: try again later!`)
+        return interaction.editReply(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };

@@ -71,7 +71,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "modern.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry :( i got an error. you can try again later!`);
     };
 };
 
@@ -79,7 +79,7 @@ exports.help = {
     name: "modern-meme",
     description: "generate a modern meme with text and photo of your liking",
     usage: ["modern-meme `[URL]`", "modern-meme `[image attachment]`"],
-    example: ["modern-meme `image attachment`", "modern-meme `https://example.com/girl.jpg`", "modern-meme"]
+    example: ["modern-meme `image attachment`", "modern-meme `https://example.com/example.jpg`", "modern-meme"]
 };
 
 exports.conf = {

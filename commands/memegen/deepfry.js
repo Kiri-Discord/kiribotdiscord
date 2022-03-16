@@ -47,7 +47,7 @@ exports.run = async(client, message, args) => {
         };;
         return message.channel.send({ files: [{ attachment, name: "deep-fried.png" }] });
     } catch (error) {;
-        return message.reply(`sorry i got an error :pensive: try again later!`)
+        return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -82,7 +82,7 @@ exports.help = {
     name: "deepfry",
     description: "fry your photo on Discord!",
     usage: ["deepfry `[URL]`", "deepfry `[image attachment]`"],
-    example: ["deepfry `image attachment`", "deepfry `https://example.com/girl.jpg`", "deepfry"]
+    example: ["deepfry `image attachment`", "deepfry `https://example.com/example.jpg`", "deepfry"]
 };
 
 exports.conf = {

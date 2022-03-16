@@ -33,8 +33,8 @@ exports.run = async(client, interaction, args) => {
             image = interaction.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         };
     };
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const base = await loadImage(path.join(__dirname, '..', '..', '..', 'assets', 'images', 'brazzers.png'));
         const { body } = await request.get(image);
         const data = await loadImage(body);
@@ -51,7 +51,7 @@ exports.run = async(client, interaction, args) => {
         };
         return interaction.editReply({ files: [{ attachment, name: "brazzers.png" }] });
     } catch (error) {
-        return interaction.editReply(`sorry i got an error :pensive: try again later!`)
+        return interaction.editReply(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
 
@@ -59,7 +59,7 @@ exports.help = {
     name: "brazzers",
     description: "you get the idea :eyes:",
     usage: ["brazzers `[URL]`", "brazzers `[image attachment]`"],
-    example: ["brazzers `image attachment`", "brazzers `https://example.com/girl.jpg`", "brazzers"]
+    example: ["brazzers `image attachment`", "brazzers `https://example.com/example.jpg`", "brazzers"]
 };
 
 exports.conf = {
