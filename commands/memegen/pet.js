@@ -38,6 +38,7 @@ exports.run = async(client, message, args) => {
         });
         return message.channel.send({ files: [{ attachment, name: "pet.gif" }] });
     } catch (error) {
+        console.log(error)
         return message.channel.send(`sorry, i caught an error :pensive: you can try again later!`)
     };
 };
