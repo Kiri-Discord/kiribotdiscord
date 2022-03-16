@@ -13,7 +13,7 @@ exports.run = async(client, interaction) => {
             });
             image = url;
         } else {
-            return interaction.reply({ content: "that isn't a correct URL!", ephemeral: true });
+            return interaction.reply({ content: "that is not a valid URL :pensive:", ephemeral: true });
         }
     } else {
         try {

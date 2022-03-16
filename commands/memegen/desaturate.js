@@ -11,7 +11,7 @@ exports.run = async(client, message, args) => {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
         } else {
-            return message.reply("that isn't a correct URL!");
+            return message.reply("that is not a valid URL :pensive:");
         }
     } else {
         if (attachments.length === 0) {
