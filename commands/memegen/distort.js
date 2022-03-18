@@ -12,6 +12,10 @@ exports.run = async(client, message, args, prefix) => {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
             distort_level = args[1];
+        } else if (client.utils.parseMember(message, args[0])) {
+            const member = client.utils.parseMember(message, args[0])
+            image = member.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+            distort_level = args[1];
         } else {
             if (attachments.length === 0) {
                 try {
@@ -54,8 +58,8 @@ exports.run = async(client, message, args, prefix) => {
     };
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")
     try {
+        if (!distort_level) distort_level = 3;
         message.channel.sendTyping();
-        if (isNaN(distort_level)) return message.reply(`the distort amount must to be a valid number! upload your sauce then \`${prefix}distort <distortion amount in number like 3>\``);
         const { body } = await request.get(image);
         const data = await loadImage(body);
         const canvas = createCanvas(data.width, data.height);
@@ -75,8 +79,8 @@ exports.run = async(client, message, args, prefix) => {
 exports.help = {
     name: "distort",
     description: "distort an image?",
-    usage: ["distort `[URL] <amount>`", "distort `[image attachment] <amount>`"],
-    example: ["distort `image attachment 2`", "distort `https://example.com/example.jpg 2`", "distort"]
+    usage: ["distort `[image URL] [amount]`", "distort `[@user] [amount]`", "distort `[amount]`"],
+    example: ["distort `@Whumpus 2`", "distort `https://example.com/example.jpg 2`", "distort 2"]
 };
 
 exports.conf = {

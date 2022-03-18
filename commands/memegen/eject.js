@@ -12,7 +12,6 @@ exports.run = async(client, message, args) => {
     const member = client.utils.parseMember(message, args[0])
     if (!member) return message.reply('who do you want to eject lol');
     const user = member.user;
-    // if (user.bot && user.id !== client.user.id) return message.reply('why are you ejecting that bot :confused:');
     message.channel.sendTyping();
     const choices = [1, 2];
     const choice = choices[Math.floor(Math.random() * choices.length)];
@@ -80,8 +79,8 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "eject",
-    description: "eject someone off the ship",
-    usage: ["eject `<@mention>`"],
+    description: "eject someone off the ship (Among Us)",
+    usage: ["eject `<@user>`"],
     example: ["eject `@coconut`"]
 };
 

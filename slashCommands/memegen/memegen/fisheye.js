@@ -5,8 +5,12 @@ const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
 exports.run = async(client, interaction) => {
     const url = interaction.options.getString('url');
+    const user = interaction.options.getUser('avatar');
     let image;
-    if (url) {
+    
+    if (user) {
+        image = user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+    } else if (url) {
         if (validUrl.isWebUri(url)) {
             if (!fileTypeRe.test(url)) return interaction.reply({
                 content: "uh i think that URL you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:",
@@ -32,7 +36,6 @@ exports.run = async(client, interaction) => {
             image = interaction.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         };
     };
-    var level = 50;
     await interaction.deferReply();
     try {
         const { body } = await request.get(image);
@@ -40,7 +43,7 @@ exports.run = async(client, interaction) => {
         const canvas = createCanvas(data.width, data.height);
         const ctx = canvas.getContext("2d");
         await ctx.drawImage(data, 0, 0);
-        await fishEye(ctx, level, 0, 0, data.width, data.height);
+        await fishEye(ctx, 50, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer();;
         if (Buffer.byteLength(attachment) > 8e+6) {;
             return interaction.editReply("the file is over 8MB for me to upload! yknow i don't have nitro");

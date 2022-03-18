@@ -105,6 +105,11 @@ exports.conf = {
         .addSubcommand(sub => sub
             .setName('beautiful')
             .setDescription("generate a beautiful meme")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
                 .setDescription('the image URL that you want to use for this meme')
@@ -114,27 +119,42 @@ exports.conf = {
         .addSubcommand(sub => sub
             .setName('bob-ross')
             .setDescription("turn your photo or avatar into one of Bob Ross's masterpieces")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('pet')
             .setDescription("pet an image that was sent or your avatar!")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('brazzers')
             .setDescription("you get the idea 👀")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
@@ -151,36 +171,56 @@ exports.conf = {
                 .setDescription("what should the bottem text of the meme be?")
                 .setRequired(true)
             )
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('contrast')
             .setDescription("get more contrast to your image")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('deepfry')
             .setDescription("fry your photo on Discord!")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('desaturate')
             .setDescription("desaturate your image")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
@@ -190,11 +230,16 @@ exports.conf = {
             .addIntegerOption(option => option
                 .setName('distort-level')
                 .setDescription('how much distortion would you like to add for the meme?')
-                .setRequired(true)
+                .setRequired(false)
+            )
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
             )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
@@ -210,27 +255,42 @@ exports.conf = {
         .addSubcommand(sub => sub
             .setName('fisheye')
             .setDescription("transform your image into fisheyes?")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('greyscale')
             .setDescription("is that blue? no, black.")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('i-fear-no-man')
             .setDescription("i fear no man, but that thing...")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
@@ -239,7 +299,12 @@ exports.conf = {
             .setDescription("so actually black just turned white and white turned black and black turned white and...")
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
+                .setRequired(false)
+            )
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
                 .setRequired(false)
             )
         )
@@ -251,18 +316,28 @@ exports.conf = {
                 .setDescription("what should top text of the meme be?")
                 .setRequired(true)
             )
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
         .addSubcommand(sub => sub
             .setName('pixelize')
             .setDescription("pixelize your image")
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
             .addStringOption(option => option
                 .setName('url')
-                .setDescription('the optional image URL that you want to use for this meme')
+                .setDescription('the optional image URL that you want to use')
                 .setRequired(false)
             )
         )
@@ -287,6 +362,16 @@ exports.conf = {
                 .setName('text')
                 .setDescription('what should the subtitle be?')
                 .setRequired(true)
+            )
+            .addUserOption(option => option
+                .setName('avatar')
+                .setDescription("the user's avatar that you want to use (confilct with url option)")
+                .setRequired(false)
+            )
+            .addStringOption(option => option
+                .setName('url')
+                .setDescription('the optional image URL that you want to use')
+                .setRequired(false)
             )
         )
         .addSubcommand(sub => sub

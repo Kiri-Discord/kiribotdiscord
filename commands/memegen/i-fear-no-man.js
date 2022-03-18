@@ -11,8 +11,11 @@ exports.run = async(client, message, args) => {
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
+        } else if (client.utils.parseMember(message, args[0])) {
+            const member = client.utils.parseMember(message, args[0]);
+            image = member.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         } else {
-            return message.reply("that is not a valid URL :pensive:");
+            return message.reply("that is not a valid image URL, user mention or user ID to generate the meme :pensive: you can also leave it blank to generate a meme from the most recent image that was sent in the channel!");
         }
     } else {
         if (attachments.length === 0) {
@@ -57,8 +60,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "i-fear-no-man",
     description: "i fear no man, but that thing...",
-    usage: ["i-fear-no-man `[URL]`", "i-fear-no-man `[image attachment]`"],
-    example: ["i-fear-no-man `image attachment`", "i-fear-no-man `https://example.com/example.jpg`", "i-fear-no-man"]
+    usage: ["i-fear-no-man `[image URL]`", "i-fear-no-man `[@user]`"],
+    example: ["i-fear-no-man `@Whumpus`", "i-fear-no-man `https://example.com/example.jpg`", "i-fear-no-man"]
 };
 
 exports.conf = {

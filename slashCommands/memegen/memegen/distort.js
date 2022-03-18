@@ -5,10 +5,14 @@ const validUrl = require('valid-url');
 const fileTypeRe = /\.(jpe?g|png|gif|jfif|bmp)(\?.+)?$/i;
 
 exports.run = async(client, interaction) => {
-    const distort_level = interaction.options.getInteger('distort-level');
+    const distort_level = interaction.options.getInteger('distort-level') || 3;
     const url = interaction.options.getString('url');
+    const user = interaction.options.getUser('avatar');
     let image;
-    if (url) {
+    
+    if (user) {
+        image = user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+    } else if (url) {
         if (validUrl.isWebUri(url)) {
             if (!fileTypeRe.test(url)) return interaction.reply({
                 content: "uh i think that URL you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:",

@@ -9,8 +9,11 @@ exports.run = async(client, message, args) => {
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
+        } else if (client.utils.parseMember(message, args[0])) {
+            const member = client.utils.parseMember(message, args[0]);
+            image = member.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         } else {
-            return message.reply("that is not a valid URL :pensive:");
+            return message.reply("that is not a valid image URL, user mention or user ID to generate the meme :pensive: you can also leave it blank to generate a meme from the most recent image that was sent in the channel!");
         }
     } else {
         if (attachments.length === 0) {
@@ -32,7 +35,6 @@ exports.run = async(client, message, args) => {
         else image = attachments[0].url;
     };
     if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:")
-    var level = 50;
     try {
         message.channel.sendTyping();
         const { body } = await request.get(image);
@@ -40,7 +42,7 @@ exports.run = async(client, message, args) => {
         const canvas = createCanvas(data.width, data.height);
         const ctx = canvas.getContext("2d");
         await ctx.drawImage(data, 0, 0);
-        await fishEye(ctx, level, 0, 0, data.width, data.height);
+        await fishEye(ctx, 50, 0, 0, data.width, data.height);
         const attachment = canvas.toBuffer();;
         if (Buffer.byteLength(attachment) > 8e+6) {;
             return message.channel.send("the file is over 8MB for me to upload! yknow i don't have nitro");
@@ -81,8 +83,8 @@ async function fishEye(ctx, level, x, y, width, height) {
 exports.help = {
     name: "fisheye",
     description: "turn your image into *fisheyes*?",
-    usage: ["fisheye `[image attachment]`", "fisheye `[URL]`"],
-    example: ["fisheye `image attachment`", "fisheye `https://example.com/example.jpg`", "fisheye"]
+    usage: ["fisheye `[image URL]`", "fisheye `[@user]`"],
+    example: ["fisheye `@Whumpus`", "fisheye `https://example.com/example.jpg`", "fisheye"]
 };
 
 exports.conf = {

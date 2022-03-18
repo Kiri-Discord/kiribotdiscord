@@ -21,8 +21,11 @@ exports.run = async(client, message, args) => {
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
+        } else if (client.utils.parseMember(message, args[0])) {
+            const member = client.utils.parseMember(message, args[0]);
+            image = member.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         } else {
-            return message.reply("that is not a valid URL :pensive:");
+            return message.reply("that is not a valid image URL, user mention or user ID to generate the meme :pensive: you can also leave it blank to generate a meme from the most recent image that was sent in the channel!");
         }
     } else {
         if (attachments.length === 0) {
@@ -43,7 +46,6 @@ exports.run = async(client, message, args) => {
         } else if (attachments.length > 1) return message.reply("i only can process one image at one time!");
         else image = attachments[0].url;
     };
-    if (!fileTypeRe.test(image)) return message.reply("uh i think that thing you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:");
     try {
         message.channel.sendTyping();
         const { body } = await request.get(image);
@@ -91,8 +93,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "classic-meme",
     description: "generate a classic meme with text and photo of your liking",
-    usage: ["classic-meme `[URL]`", "classic-meme `[image attachment]`"],
-    example: ["classic-meme `image attachment`", "classic-meme `https://example.com/example.jpg`", "classic-meme"]
+    usage: ["classic-meme `[image URL]`", "classic-meme `[@user]`"],
+    example: ["classic-meme `@Whumpus`", "classic-meme `https://example.com/example.jpg`", "classic-meme"]
 };
 
 exports.conf = {

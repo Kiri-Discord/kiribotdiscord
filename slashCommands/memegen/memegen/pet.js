@@ -4,8 +4,12 @@ const pet = require('pet-pet-gif');
 
 exports.run = async(client, interaction) => {
     const url = interaction.options.getString('url');
+    const user = interaction.options.getUser('avatar');
     let image;
-    if (url) {
+    
+    if (user) {
+        image = user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
+    } else if (url) {
         if (validUrl.isWebUri(url)) {
             if (!fileTypeRe.test(url)) return interaction.reply({
                 content: "uh i think that URL you sent me wasn't an image :thinking: i can only read PNG, JPG, BMP, or GIF format images :pensive:",

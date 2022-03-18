@@ -10,8 +10,11 @@ exports.run = async(client, message, args) => {
     if (args[0]) {
         if (validUrl.isWebUri(args[0])) {
             image = args[0];
+        } else if (client.utils.parseMember(message, args[0])) {
+            const member = client.utils.parseMember(message, args[0]);
+            image = member.user.displayAvatarURL({ size: 4096, dynamic: false, format: 'png' });
         } else {
-            return message.reply("that is not a valid URL :pensive:");
+            return message.reply("that is not a valid image URL, user mention or user ID to generate the meme :pensive: you can also leave it blank to generate a meme from the most recent image that was sent in the channel!");
         }
     } else {
         if (attachments.length === 0) {
@@ -55,8 +58,8 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "beautiful",
     description: "generate a beautiful meme",
-    usage: ["beautiful `[URL]`", "beautiful `[image attachment]`"],
-    example: ["brazzers `image attachment`", "brazzers `https://example.com/example.jpg`", "brazzers"]
+    usage: ["beautiful `[image URL]`", "beautiful `[@user]`"],
+    example: ["beautiful `@Wumpus`", "beautiful `https://example.com/example.jpg`", "beautiful"]
 };
 
 exports.conf = {
