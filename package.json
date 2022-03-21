@@ -68,7 +68,7 @@
         "soundcloud-downloader": "^1.0.0",
         "spotify-card": "github:ryzenix/spotify-card",
         "spotify-to-yt": "^1.0.5",
-        "spotify-url-info": "^2.2.3",
+        "spotify-url-info": "^3.0.0",
         "stackblur-canvas": "^2.5.0",
         "string-progressbar": "^1.0.4",
         "string-similarity": "^4.0.4",
