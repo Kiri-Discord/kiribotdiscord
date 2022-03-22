@@ -14,6 +14,15 @@ exports.run = async(client, interaction) => {
     });
     await interaction.deferReply();
     const messages = await channel.messages.fetch({ after: 1, limit: 1 });
+    if (!messages.size) {
+        const sed = client.customEmojis.get("sed")
+        ? client.customEmojis.get("sed")
+        : ":pensive:";
+        return interaction.editReply({
+            content: `no older message was found in this channel... ${sed}`,
+            ephemeral: true
+        });
+    }
     const msg = messages.first();
     const embed = new MessageEmbed()
         .setColor(msg.member ? msg.member.displayHexColor : 0x00AE86)
