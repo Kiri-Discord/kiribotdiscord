@@ -238,6 +238,12 @@ exports.run = async (client, message, args, prefix) => {
     }
 
     function getArtWeaponPage(weapon, relativePage, currentPage, maxPages) {
+        if (!weapon.awakenIcon)
+        return new MessageEmbed()
+            .setColor(Colors.RED)
+            .setTitle(`${weapon.name}: 2nd Ascension`)
+            .setFooter({ text: `page ${currentPage} / ${maxPages}` })
+            .setDescription("Unable to load")
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
             .setThumbnail(getLink(weapon.icon))

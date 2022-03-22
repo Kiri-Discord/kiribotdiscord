@@ -23,7 +23,7 @@
       {
         "name": "Cecilia route",
         "desc": "**Cecilias ${Cecilia}** can be found in the wilderness of Starsnatch Cliff and are being sold by [**Flora**](https://cdn.discordapp.com/attachments/922011009428910160/922151480461525046/Flora.png) (up to 5 per 3 days).\n\n> A beautiful flower with a name that suits its appearance. It only grows where harsh winds blow, and is just as intangible as the true heart of an unbound soul.",
-        "img": "https://cdn.discordapp.com/attachments/922011009428910160/922011816727556136/unknown.png",
+        "img": "https://cdn.discordapp.com/attachments/922011009428910160/953730420577562694/unknown.png",
         "credits": "Maple",
         "links": {
           "material": ["Cecilia"]
@@ -197,6 +197,7 @@
         "name": "Sango Pearl route",
         "desc": "**Sango Pearls ${Sango Pearl}** can be found in the wilderness of Watatsumi Island.\n\n> A precious pearl that grows in the coral of Watatsumi. Gives off a cool sheen like that of a moonlight.",
         "img": "https://cdn.discordapp.com/attachments/921188291842277476/950198796795658331/unknown.png",
+        "url": "https://youtu.be/FYzudicm1gs",
         "credits": "Soul",
         "links": {
           "material": ["Sango Pearl"]

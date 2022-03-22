@@ -18,14 +18,13 @@ exports.run = async (client, message, args, prefix) => {
     if (arti == undefined)
         return sendMessage(message, `i couldn't find that character, sorry ${sed}`)
 
-    await simplePaginator(message, (relativePage, currentPage, maxPages) => getArti(arti, relativePage, currentPage, maxPages), 1 + arti.artis.length)
+    await simplePaginator(message, (relativePage, currentPage, maxPages) => getArti(arti, relativePage, currentPage, maxPages), 1 + (arti.artis?.length ?? 0))
     return undefined
 
     function getArtiSetsPages() {
         const artis = Object.entries(genshinData.artifacts)
-            .sort(([an, a],  [bn, b]) => Math.max(...b.levels) - Math.max(...a.levels) || Math.min(...a.levels) - Math.min(...b.levels) || an.localeCompare(bn))
-            .map(([name, info]) => `**${name}**: ${Math.min(...info.levels)} :star: ~ ${Math.max(...info.levels)} :star:`)
-
+            .sort(([an, a],  [bn, b]) => !b.levels ? -1 : !a.levels ? 1 : Math.max(...b.levels) - Math.max(...a.levels) || Math.min(...a.levels) - Math.min(...b.levels) || an.localeCompare(bn))
+            .map(([name, info]) => `**${name}**${info.levels ? `: ${Math.min(...info.levels)}★ ~ ${Math.max(...info.levels)}★` : " (Not yet released)"}`)
         const pages = [];
         let paging = "", c = 0
         for (const arti of artis) {
@@ -54,16 +53,20 @@ exports.run = async (client, message, args, prefix) => {
     function getArti(set, relativePage, currentPage, maxPages) {
         const embed = new MessageEmbed()
             .setColor(Colors.AQUA)
-            .setThumbnail(getLink(set.artis.find(x => x.icon)?.icon ?? "img/unknown.png"))
+            .setThumbnail(getLink(set.artis?.find(x => x.icon)?.icon ?? "img/unknown.png"))
             .setFooter({text: `page ${currentPage} of ${maxPages}`})
 
         if (relativePage == 0) {
-            for (const bonus of set.bonuses)
+            for (const bonus of set.bonuses ?? [])
                 embed.addField(`${bonus.count}-Set Bonus`, bonus.desc)
 
             embed.setTitle(`${set.name}: Set info`)
-                .addField("Possible levels", set.levels.map(k => k + ":star:").join(", "))
-                .setDescription(`This set contains ${set.artis.length} artifacts`)
+            if (set.levels)
+                embed.addField("Possible levels", set.levels.map(k => k + "★").join(", "))
+            if (set.artis)
+                embed.setDescription(`This set contains ${set.artis.length} artifacts`)
+            if (set.note)
+                embed.setDescription(set.note)
 
             const guides = genshinData.getGuides("artifact", set.name).map(({ guide, page }) => getLinkToGuide(guide, page)).join("\n")
             if (guides)
@@ -73,7 +76,7 @@ exports.run = async (client, message, args, prefix) => {
             return embed
         }
 
-        if (relativePage <= set.artis.length) {
+        if (set.artis && relativePage <= set.artis.length) {
             const arti = set.artis[relativePage - 1]
             const mainStats = genshinData.artifactMainStats[arti.type]
             const total = mainStats.map(m => m.weight).reduce((a, b) => a+b, 0)

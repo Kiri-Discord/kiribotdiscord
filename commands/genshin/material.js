@@ -37,7 +37,7 @@ exports.run = async(client, message, args, prefix) => {
 
     function getMaterialsPages() {
         const materials = Object.entries(data.materials)
-            .map(([name, material]) => `**${material.category}**: ${material.stars?`${material.stars}★ `:""}${data.emoji(name, true)}`)
+        .map(([name, material]) => `**${material.category ?? "Unknown"}**: ${material.stars?`${material.stars}★ `:""}${data.emoji(name, true)}`)
 
         const pages = []
         let paging = "", c = 0
