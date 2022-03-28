@@ -32,8 +32,6 @@ module.exports = class Passthrough {
         this.allSlashCmds = [];
         this.guildsStorage = new Map();
         this.aliases = new Map();
-        this.config = require("../config.json");
-        this.leveling = require("../util/LevelingUtil.js");
         this.games = new Map();
         this.pokemon = new PokemonStore();
     }
