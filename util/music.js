@@ -4,19 +4,15 @@ module.exports = {
     init: async(client) => {
         client.lavacordManager = new Manager(client, nodes, {
             user: client.user.id,
-            shards: client.options.shardCount || 1
+            shards: client.cluster.info.TOTAL_SHARDS || 1
         });
-
         try {
             const success = await client.lavacordManager.connect();
             logger.log('info', `[LAVALINK] Connected to ${success.filter(ws => ws != null).length} lavalink node(s) out of ${nodes.length} total node(s).`);
-
         } catch (err) {
             logger.log('error', `Error connecting to lavalink.`, err);
-            process.exit(1);
         };
         client.lavacordManager.on('disconnect', async(event, node) => {
-
             if (!client.queue.size) return logger.log('info', `[LAVALINK] Node ${node.id} disconnected.`);
             const queues = [...client.queue.values()].filter(queue => queue.player.node.id === node.id);
             if (!queues.length) return logger.log('info', `[LAVALINK] Node ${node.id} disconnected.`);

@@ -1,4 +1,5 @@
-const logger = require('./structure/Logger');
+require("dotenv").config();
+global.logger = require('./structure/Logger');
 
 process.on("unhandledRejection", (error) => {
     logger.error(error);
@@ -8,6 +9,15 @@ const kiri = require("./structure/Client.js");
 const { Intents, Sweepers } = require("discord.js");
 const Cluster = require('discord-hybrid-sharding');
 const config = require("./config.json");
+
+if (config.sentryDSNURL && process.env.NO_SENTRY !== "true") {
+    const sentry = require("@sentry/node");
+    sentry.init({
+        dsn: config.sentryDSNURL,
+        tracesSampleRate: 0.8,
+    });
+    logger.log("info", "[SENTRY] Initialized!");
+}
 
 const intents = new Intents();
 
@@ -22,7 +32,6 @@ intents.add(
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
     Intents.FLAGS.DIRECT_MESSAGES
 );
-
 const client = new kiri({
     shards: Cluster.data.SHARD_LIST,
     shardCount: Cluster.data.TOTAL_SHARDS,
@@ -48,6 +57,9 @@ const client = new kiri({
     },
 });
 
+client.on("warn", (warn) => logger.warn(warn));
+client.on("error", (err) => logger.error(err));
+
 const Heatsync = require("heatsync");
 const sync = new Heatsync();
 sync.events.on("error", logger.error);
@@ -55,9 +67,9 @@ sync.events.on("any", (file) => logger.info(`${file} was changed`));
 
 global.sync = sync;
 
-
-client.on("warn", (warn) => logger.warn(warn));
-client.on("error", (err) => logger.error(err));
-
-client.cluster = new Cluster.Client(client);
-client.login(config.token);
+(async () => {
+    client.cluster = new Cluster.Client(client);
+    require("./handler/Event.js")(client);
+    await require("./handler/module.js")(client);
+    client.login(config.token);
+})();

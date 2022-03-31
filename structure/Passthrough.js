@@ -20,19 +20,8 @@ module.exports = class Passthrough {
             leveling: require("../model/leveling")
         }
         this.genshinData = new DataManager();
-        this.isPlaying = new Map();
-        this.dcTimeout = new Map();
-        this.slashHelps = new Map();
-        this.queue = new Map();
-        this.commands = new Map();
-        this.slash = new Map();
-        this.helps = new Map();
-        this.customEmojis = new Map();
-        this.allNameCmds = [];
-        this.allSlashCmds = [];
         this.guildsStorage = new Map();
-        this.aliases = new Map();
-        this.games = new Map();
         this.pokemon = new PokemonStore();
+        this.customEmojis = new Map();
     }
 };

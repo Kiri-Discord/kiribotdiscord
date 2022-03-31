@@ -10,5 +10,18 @@ module.exports = class kiri extends Client {
         this.recent = new Set();
         this.config = require("../config.json");
         this.leveling = require("../util/LevelingUtil.js");
-    }
+        this.isPlaying = new Map();
+        this.dcTimeout = new Map();
+        this.slashHelps = new Map();
+        this.queue = new Map();
+        this.commands = new Map();
+        this.slash = new Map();
+        this.helps = new Map();
+        this.customEmojis = new Map();
+        this.allNameCmds = [];
+        this.allSlashCmds = [];
+        this.aliases = new Map();
+        this.games = new Map();
+        this.finished = false;
+    };
 };

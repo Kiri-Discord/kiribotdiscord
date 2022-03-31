@@ -4,7 +4,7 @@ const kissSchema = require('../../model/kiss');
 
 exports.run = async(client, message, args) => {
     const member = client.utils.parseMember(message, args[0])
-    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed').toString() : ':pensive:';
+    const sedEmoji = client.customEmojis.get('sed') ? client.customEmojis.get('sed') : ':pensive:';
     if (!member) {
         return message.reply(`you can't just kiss at the air ${sedEmoji} please mention somebody pls`)
     };

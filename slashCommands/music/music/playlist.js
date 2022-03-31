@@ -216,7 +216,7 @@ exports.run = async (client, interaction, internal, bulkAdd) => {
     } else if (url.match(spotifyRegex)) {
         const fields = url.match(spotifyRegex);
         const logo = client.customEmojis.get("spotify")
-            ? client.customEmojis.get("spotify").toString()
+            ? client.customEmojis.get("spotify")
             : "⚠️";
         if (fields[1] === "episode" || fields[1] === "show") {
             return interaction.editReply({

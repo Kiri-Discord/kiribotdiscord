@@ -30,8 +30,8 @@ exports.run = async (client, interaction) => {
         let name = null;
         let setupMessage = null;
         let displayMessage = null;
-        const empty = client.customEmojis.get("empty").toString();
-        const duh = client.customEmojis.get("duh").toString();
+        const empty = client.customEmojis.get("empty");
+        const duh = client.customEmojis.get("duh");
         const targetEmbed = {
             description: empty,
         };

@@ -120,7 +120,7 @@ exports.run = async(client, message, args, prefix, cmd, internal, bulkAdd) => {
         };
     } else if (url.match(spotifyRegex)) {
         const matchs = url.match(spotifyRegex);
-        const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify').toString() : '⚠️';
+        const logo = client.customEmojis.get('spotify') ? client.customEmojis.get('spotify'): '⚠️';
         if (matchs[1] === 'episode' || matchs[1] === 'show') {
             return message.channel.send({ embeds: [{ color: "#bee7f7", description: `${logo} sorry, i don't support podcast link from Spotify :pensive:` }] });
         };
