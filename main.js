@@ -22,14 +22,21 @@ if (config.sentryDSNURL && process.env.NO_SENTRY !== "true") {
         tracesSampleRate: 0.8,
     });
     logger.log("info", "[SENTRY] Initialized on manager");
-}
-const mongo = require("./util/mongo");
-const Passthrough = require("./structure/Passthrough");
+};
 
+const mongo = require("./util/mongo");
+const request = require('node-superfetch');
+
+const Passthrough = require("./structure/Passthrough");
 const passthrough = new Passthrough();
 
+global.passthrough = passthrough;
+
+const cachedEmojis = new Map();
+
+global.cachedEmojis = cachedEmojis;
+
 const schedule = require("node-schedule");
-const guild = require("./model/guild");
 
 (async () => {
     await mongo.init();
@@ -60,13 +67,36 @@ const guild = require("./model/guild");
         logger.log("info", "[MUSIC] Deleted all charts!");
     });
 
+    if (config.emojiServerIDs) {
+        for (const id of config.emojiServerIDs) {
+            try {
+                const { body } = await request
+                    .get(`https://discord.com/api/v9/guilds/${id}/emojis`)
+                    .set({ Authorization: `Bot ${config.token}` });
+                if (!body.length) continue;
+                else {
+                    body.forEach(emoji => cachedEmojis.set(emoji.id, {
+                        id: emoji.id,
+                        name: emoji.name,
+                        animated: emoji.animated
+                    }));
+                };
+                logger.info(`[DISCORD] Loaded ${body.length} emojis from server ${id}`);
+            } catch (err) {
+                logger.info(`[DISCORD] Could not fetch emoji from server ${id} (error: ${err}).`);
+            }
+        }
+    }
+
+
     const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
-        totalShards: 2, // or 'auto'
+        totalShards: 2,
         shardsPerClusters: 1,
         mode: "process",
         token: config.token,
     });
     require("./handler/Event.js")(manager, true);
+    
     await manager.spawn({ timeout: -1 });
 
     logger.info("[MANAGER] Removing left server from database...");
@@ -85,62 +115,9 @@ const guild = require("./model/guild");
     const guildIDs = res.filter((r) => r);
     if (guildIDs.length) {
         const uniqueIds = [...new Set(guildIDs.reduce((a, b) => a.concat(b), []))];
-        const leftGuilds = await passthrough.db.guilds.find({
-            id: { $nin: [uniqueIds] },
-        });
-        console.log(leftGuilds);
-    }
-
-    // if (config.emojiServerIDs) {
-    //     for (const id of config.emojiServerIDs) {
-    //         try {
-    //             const res = await manager.broadcastEval(
-    //                 async (c, context) => {
-    //                     const guild = c.guilds.cache.get(context.guildId);
-    //                     if (!guild) return;
-    //                     const emojis = await guild.emojis.fetch();
-    //                     if (!emojis || !emojis.size) return;
-    //                     return emojis.map((e) => {
-    //                         return {
-    //                             name: e.name,
-    //                             id: e.id,
-    //                             animated: e.animated,
-    //                         };
-    //                     });
-    //                 },
-    //                 { context: { guildId: id } }
-    //             );
-    //             const emojis = res.filter((e) => Boolean(e));
-
-    //             if (emojis.length) {
-    //                 const reducedArray = emojis.reduce(
-    //                     (a, b) => a.concat(b),
-    //                     []
-    //                 );
-    //                 for (const emoji of reducedArray) {
-    //                     await manager.broadcastEval(
-    //                         async (c, context) => {
-    //                             if (c.customEmojis.has(context.name)) return;
-    //                             const CachedEmoji = require(`${context.dir}/structure/CachedEmoji.js`);
-    //                             const resolvedEmoji = new CachedEmoji({
-    //                                 id: context.id,
-    //                                 name: context.name,
-    //                                 animated: context.animated,
-    //                             });
-    //                             c.customEmojis.set(context.name, resolvedEmoji);
-    //                             return resolvedEmoji.toString();
-    //                         },
-    //                         { context: { dir: process.cwd(), ...emoji } }
-    //                     );
-    //                 }
-    //             }
-    //         } catch (err) {
-    //             logger.log(
-    //                 "info",
-    //                 `[DISCORD] Could not fetch emoji from server ${id} (error: ${err}).`
-    //             );
-    //         }
-    //     }
-    // }
-    manager.broadcastEval(c => c.emit('allClusterReady'));
+        await passthrough.dbFuncs.purgeNonExistingGuilds(uniqueIds);
+    };
 })();
+
+// exports.passthrough = passthrough;
+// exports.cachedEmojis = cachedEmojis;

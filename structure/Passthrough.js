@@ -1,5 +1,6 @@
 const PokemonStore = require("../features/pokemon/pokemonstore");
 const DataManager = require("../features/genshin/DataManager");
+const dbFuncs = require("../util/dbFunc");
 const web = require('../util/web.js');
 module.exports = class Passthrough {
     constructor() {
@@ -23,5 +24,6 @@ module.exports = class Passthrough {
         this.guildsStorage = new Map();
         this.pokemon = new PokemonStore();
         this.customEmojis = new Map();
+        this.dbFuncs = new dbFuncs();
     }
 };

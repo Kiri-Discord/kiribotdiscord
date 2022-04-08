@@ -71,5 +71,18 @@ global.sync = sync;
     client.cluster = new Cluster.Client(client);
     require("./handler/Event.js")(client);
     await require("./handler/module.js")(client);
+
+    if (config.emojiServerIDs) {
+        const emojis = await client.cluster.evalOnManager('[...cachedEmojis.values()]');
+        if (emojis.length) {
+            for (const emoji of emojis) {
+                const CachedEmoji = require("./structure/CachedEmoji");
+                const cachedEmoji = new CachedEmoji(emoji);
+                client.customEmojis.set(emoji.name, cachedEmoji);
+                console.log(cachedEmoji.toString())
+            }
+        }
+    }
+
     client.login(config.token);
 })();
