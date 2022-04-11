@@ -43,7 +43,7 @@
         "heatsync": "^2.2.1",
         "html-entities": "^2.3.2",
         "humanize-duration": "^3.27.0",
-        "ini": "^2.0.0",
+        "ini": "^3.0.0",
         "iso-639-1": "^2.1.9",
         "js-chess-engine": "^1.0.1",
         "lavacord": "^1.1.9",
