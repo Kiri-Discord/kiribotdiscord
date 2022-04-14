@@ -65,5 +65,5 @@ module.exports = {
             logger.log('error', `[WEBSOCKET] Socket encountered error and is restarting in 5 seconds (${err.message})`);
             wsConnection.close();
         };
-    };
+    }
 };
