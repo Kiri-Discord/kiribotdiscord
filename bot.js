@@ -10,6 +10,12 @@ const { Intents, Sweepers } = require("discord.js");
 const Cluster = require('discord-hybrid-sharding');
 const config = require("./config.json");
 
+const Heatsync = require("heatsync");
+const sync = new Heatsync();
+sync.events.on("error", logger.error);
+sync.events.on("any", (file) => logger.info(`${file} was changed`));
+
+
 if (config.sentryDSNURL && process.env.NO_SENTRY !== "true") {
     const sentry = require("@sentry/node");
     sentry.init({
@@ -59,30 +65,24 @@ const client = new kiri({
 
 client.on("warn", (warn) => logger.warn(warn));
 client.on("error", (err) => logger.error(err));
-
-const Heatsync = require("heatsync");
-const sync = new Heatsync();
-sync.events.on("error", logger.error);
-sync.events.on("any", (file) => logger.info(`${file} was changed`));
+client.cluster = new Cluster.Client(client);
+require("./handler/Event.js")(client);
 
 global.sync = sync;
 
 (async () => {
-    client.cluster = new Cluster.Client(client);
-    require("./handler/Event.js")(client);
-    await require("./handler/module.js")(client);
+    // await require("./handler/module.js")(client);
 
-    if (config.emojiServerIDs) {
-        const emojis = await client.cluster.evalOnManager('[...cachedEmojis.values()]');
-        if (emojis.length) {
-            for (const emoji of emojis) {
-                const CachedEmoji = require("./structure/CachedEmoji");
-                const cachedEmoji = new CachedEmoji(emoji);
-                client.customEmojis.set(emoji.name, cachedEmoji);
-                console.log(cachedEmoji.toString())
-            }
-        }
-    }
+    // if (config.emojiServerIDs) {
+    //     const emojis = await client.cluster.evalOnManager((c) => [...c.cachedEmojis.values()]);
+    //     if (emojis.length) {
+    //         for (const emoji of emojis) {
+    //             const CachedEmoji = require("./structure/CachedEmoji");
+    //             const cachedEmoji = new CachedEmoji(emoji);
+    //             client.customEmojis.set(emoji.name, cachedEmoji);
+    //         }
+    //     }
+    // };
 
     client.login(config.token);
 })();

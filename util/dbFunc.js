@@ -9,11 +9,26 @@ const musicSchema = require('../model/music');
 module.exports = class dbFunc {
     constructor(passthrough) {
 		Object.defineProperty(this, 'passthrough', { value: passthrough });
-	}
+	};
+    async existingGuild(id) {
+        if (!id) throw new Error('Guild ID is required to check existing data.', __dirname);
+        const guild = await this.passthrough.db.guilds.findOne({
+            guildID: id
+        });
+        return guild;
+    }
+    async createGuild(id, save) {
+        if (!id) throw new Error('Guild ID is required create new data', __dirname);
+        const newGuild = new this.passthrough.db.guilds({
+            guildID: id
+        });
+        if (save) await newGuild.save();
+        return newGuild;
+    }
     async purgeNonExistingGuilds(idsArray) {
-        if (!idsArray) return;
+        if (!idsArray) throw new Error('An full array of guild ids is required.', __dirname);
         try {
-            await this.passthrough.db.guilds.findOneAndDelete({
+            const { deletedCount } = await this.passthrough.db.guilds.deleteMany({
                 guildID: { $nin: idsArray }
             });
             await this.passthrough.db.embeds.deleteMany({
@@ -28,7 +43,7 @@ module.exports = class dbFunc {
             });
         
             await this.passthrough.db.garden.deleteMany({
-                guildId: id
+                guildId: { $nin: idsArray }
             });
             await this.passthrough.db.levelingRewards.deleteMany({
                 guildId: { $nin: idsArray }
@@ -77,9 +92,9 @@ module.exports = class dbFunc {
             await patSchema.deleteMany({
                 guildId: { $nin: idsArray }
             });
-            return true;
-        } catch {
-            return null;
+            return deletedCount;
+        } catch (err) {
+            throw new Error('An error occurred when trying to purge left guilds from the database: '+ err, __dirname);
         }
     };
 };

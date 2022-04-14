@@ -1,5 +1,7 @@
 const { Client } = require("discord.js");
 const mentionParsing = require("../util/mentionParsing");
+const dbFuncClient = require("../util/dbFuncClient");
+
 module.exports = class kiri extends Client {
     constructor(options) {
         super(options);
@@ -22,6 +24,6 @@ module.exports = class kiri extends Client {
         this.allSlashCmds = [];
         this.aliases = new Map();
         this.games = new Map();
-        this.finished = false;
+        this.dbFuncs = new dbFuncClient(this);
     };
 };

@@ -1,10 +1,10 @@
 const PokemonStore = require("../features/pokemon/pokemonstore");
 const DataManager = require("../features/genshin/DataManager");
 const dbFuncs = require("../util/dbFunc");
-const web = require('../util/web.js');
+const websocket = require('../util/websocket.js');
 module.exports = class Passthrough {
     constructor() {
-        this.web = web;
+        this.websocket = websocket;
         this.db = {
             levelingRewards: require("../model/levelingRewards"),
             vote: require("../model/vote"),
@@ -21,9 +21,10 @@ module.exports = class Passthrough {
             leveling: require("../model/leveling")
         }
         this.genshinData = new DataManager();
+        this.active = true;
         this.guildsStorage = new Map();
         this.pokemon = new PokemonStore();
         this.customEmojis = new Map();
-        this.dbFuncs = new dbFuncs();
+        this.dbFuncs = new dbFuncs(this);
     }
 };
