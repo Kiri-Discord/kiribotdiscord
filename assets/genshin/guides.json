@@ -80,6 +80,15 @@
     "name": "Local Specialties (Liyue)",
     "pages": [
       {
+        "name": "Cor Lapis route",
+        "desc": "**Cor Lapis ${Cor Lapis}** can be found in the wilderness of Liyue and are being sold by **Changshun** (up to 5 per 3 days).\n\n> A precious crystal of condensed pure Geo element that usually grows along with other minerals. It's also commonly called \"Cor Petrae.\"",
+        "img": "https://cdn.discordapp.com/attachments/957351134757019758/959933412435718204/unknown.png",
+        "credits": "Maple",
+        "links": {
+          "material": ["Cor Lapis"]
+        }
+      },
+      {
         "name": "Jueyun Chili route",
         "desc": "**Jueyun Chilis ${Jueyun Chili}** can be found in the wilderness of Liyue and are being sold by [**Chef Mao**](https://cdn.discordapp.com/attachments/925096309763997747/925125045855076392/Chef_Mao.png) (up to 5 per 3 days).\n\n> A spicy plant native to Liyue. Merely smelling it makes one hot and thirsty.",
         "img": "https://cdn.discordapp.com/attachments/925096309763997747/925096336947286026/unknown.png",
@@ -151,6 +160,7 @@
         "name": "Sakura Bloom route",
         "desc": "**Sakura Blooms ${Sakura Bloom}** can be found in the wilderness of Inazuma.\n\n> Blossoms from the Sacred Sakura at the Grand Narukami Shrine, filled with a fondness for Inazuma.",
         "img": "https://cdn.discordapp.com/attachments/923173940338245673/923320425998610492/Sakura_Bloom.png",
+        "url": "https://youtu.be/V_zl_rckNvc",
         "credits": "Soul",
         "links": {
           "material": ["Sakura Bloom"]
@@ -350,6 +360,16 @@
           "enemy": ["Hydro Specter", "Anemo Specter", "Geo Specter", "Electro Specter", "Cryo Specter"],
           "material": ["Spectral Husk", "Spectral Heart", "Spectral Nucleus"]
         }
+      },
+      {
+        "name": "Floating Fungus route (Fungal Spores, Luminescent Pollen and Crystalline Cyst Dust): Enkanomiya",
+        "desc": "**Floating Fungi ${Floating Hydro Fungus}** are Common Enemies found in The Chasm. They are Mystical Beasts and drop **Fungal Spores ${Fungal Spores}**, **Luminescent Pollen ${Luminescent Pollen}** and **Crystalline Cyst Dust ${Crystalline Cyst Dust}**.",
+        "img": "https://cdn.discordapp.com/attachments/959819940427358278/959876421491232778/FloatingFungus.png",
+        "credits": "Soul",
+        "links": {
+          "enemy": ["Floating Hydro Fungus"],
+          "material": ["Fungal Spores", "Luminescent Pollen", "Crystalline Cyst Dust"]
+        }
       }
     ]
   },
@@ -465,6 +485,74 @@
           "enemy": ["Rockfond Rifthound Whelp", "Thundercraven Rifthound Whelp", "Rockfond Rifthound", "Thundercraven Rifthound"],
           "material": ["Concealed Claw", "Concealed Unguis", "Concealed Talon"]
         }
+      },
+      {
+        "name": "Black Serpent Knight route (Gloomy, Dark and Deathly Statuette)",
+        "desc": "**Black Serpent Knights ${Shadowy Husk: Standard Bearer}${Shadowy Husk: Line Breaker}${Shadowy Husk: Defender}${Black Serpent Knight: Windcutter}** are Elite Enemies found in The Chasm. They belong to the Abyss and drop **Gloomy Statuette ${Gloomy Statuette}**, **Dark Statuette ${Dark Statuette}** and **Deathly Statuette ${Deathly Statuette}**.",
+        "img": "https://cdn.discordapp.com/attachments/959275124312383539/959275172236505159/FakeSerpents.png",
+        "credits": "Soul",
+        "links": {
+          "enemy": ["Shadowy Husk: Standard Bearer", "Shadowy Husk: Line Breaker", "Shadowy Husk: Defender", "Black Serpent Knight: Windcutter"],
+          "material": ["Gloomy Statuette", "Dark Statuette", "Deathly Statuette"]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Miscellaneous",
+    "pages": [
+      {
+        "name": "Radiant Spincrystals",
+        "desc": "**Radiant Spincrystals** are used to unlock soundtracks in the Serenitea Pot. This guide includes the ones obtained from **Teyvat**, the other ones can be obtained from **Chubby**.",
+        "img": "https://cdn.discordapp.com/attachments/959592219982065664/962004982033440848/Genshin_-_Raidant_Spincrystal.jpg",
+        "credits": "Jnight"
+      }
+    ]
+  },
+  {
+    "name": "The Chasm",
+    "pages": [
+      {
+        "name": "Locked Gate with Lumenspar in Underground Mines",
+        "desc": "Lumenspar behind a locked gate that requires the use of map fragments.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966720148465672252/LBLG.jpg",
+        "credits": "Soul"
+      },
+      {
+        "name": "Locked Gate near Tiangong Gorge",
+        "desc": "Unlocked from the bottom of the underground north of the main mining area.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966720342510948392/LGTG.png",
+        "credits": "Soul"
+      },
+      {
+        "name": "\"Paleontological Investigation\" - Fossil Locations",
+        "desc": "Fossil locations for Khedive's \"Paleontological Investigation\" quest. Take pictures at the highlighted locations.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966719739835588648/PIITC.jpg",
+        "credits": "Soul"
+      },
+      {
+        "name": "\"The Millenial Mountains\" - Item Locations",
+        "desc": "Locations of the different items for the \"The Millenial Mountains\" quest.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966720080467591278/CTMM.jpg",
+        "credits": "Soul"
+      },
+      {
+        "name": "\"The Nine-Word Rumor\" - Text Locations",
+        "desc": "Locations of the secret messages for the \"The Nine-Word Rumor\" achievement. Unequip your Lumenstone so you can observere them.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966719851513118811/T9WR.jpg",
+        "credits": "Soul"
+      },
+      {
+        "name": "\"If Not Us, Then Who?\" - Fatui Action Log Locations",
+        "desc": "Fatui Action Log locations for the \"If Not Us, Then Who?\" achievement.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966720294066720828/INUTW.jpg",
+        "credits": "Soul"
+      },
+      {
+        "name": "\"The Chasm Mining Records\" - text fragment locations",
+        "desc": "Locations of the text fragments related to mining for the \"The Chasm Mining Records\" achievement.",
+        "img": "https://cdn.discordapp.com/attachments/964148007815741460/966720405253525535/TCMR.png",
+        "credits": "Soul"
       }
     ]
   },

@@ -181,10 +181,10 @@ const possibleStars = client.genshinData.getReleasedCharacters()
                         .filter((x, i, a) => x && a.indexOf(x) == i)
                         .map(x => `Guide to ${x}`)
                     const mats = talents
-                        .map(s => s?.costs?.mapping.BossMat)
+                        .map(s => s?.costs?.mapping?.BossMat)
                         .filter((x, i, a) => x && a.indexOf(x) == i)
                     const drops = talents
-                        .map(s => s?.costs?.mapping.EnemyDropTier3)
+                        .map(s => s?.costs?.mapping?.EnemyDropTier3)
                         .filter((x, i, a) => x && a.indexOf(x) == i)
                     const all = [...books, ...mats, ...drops]
                     if (all.length > 0)
@@ -535,7 +535,7 @@ exports.help = {
 };
 
 exports.conf = {
-    aliases: ['characters'],
+    aliases: ['characters', 'char'],
     cooldown: 5,
     guildOnly: true,
     channelPerms: ["EMBED_LINKS"],

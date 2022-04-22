@@ -128,6 +128,8 @@ module.exports = class util {
                     d += 1
                 if (caps(t).includes(search[0]?.toUpperCase()))
                     d += 1.5
+                if (searchClean(t).startsWith(cleaned))
+                    d += 1
                 if (caps(t) == caps(search))
                     d += 0.5
     
@@ -443,6 +445,9 @@ module.exports = class util {
         if (filteredCandidates.length != 0) candidates = filteredCandidates
     
         filteredCandidates = candidates.filter(t => util.caps(t).includes(search[0].toUpperCase()))
+        if (filteredCandidates.length != 0) candidates = filteredCandidates
+
+        filteredCandidates = candidates.filter(t => util.searchClean(t).startsWith(cleaned))
         if (filteredCandidates.length != 0) candidates = filteredCandidates
     
         filteredCandidates = candidates.filter(t => util.caps(t) == util.caps(search))
