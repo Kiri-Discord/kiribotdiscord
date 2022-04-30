@@ -87,7 +87,8 @@ const passthrough = new Passthrough();
 
 
     const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
-        totalClusters: 1,
+        totalShards: 2,
+        totalClusters: 2,
         mode: "process",
         token: config.token,
     });

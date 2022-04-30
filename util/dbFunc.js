@@ -24,6 +24,77 @@ module.exports = class dbFunc {
         });
         if (save) await newGuild.save();
         return newGuild;
+    };
+    async purgeGuild(id) {
+        try {
+            await this.passthrough.db.guilds.findOneAndDelete({
+                guildID: id
+            });
+            await this.passthrough.db.embeds.deleteMany({
+                guildID: id,
+            });
+            
+            await this.passthrough.db.leveling.deleteMany({
+                guildId: id,
+            });
+            await this.passthrough.db.cooldowns.deleteMany({
+                guildId: id
+            });
+        
+            await this.passthrough.db.garden.deleteMany({
+                guildId: id
+            });
+            await this.passthrough.db.levelingRewards.deleteMany({
+                guildId: id,
+            });
+    
+            await this.passthrough.db.inventory.deleteMany({
+                guildId: id
+            });
+    
+            await this.passthrough.db.money.deleteMany({
+                guildId: id
+            });
+        
+            await this.passthrough.db.love.deleteMany({
+                guildID: id
+            });
+        
+            await this.passthrough.db.gameStorage.deleteMany({
+                guildId: id
+            });
+        
+            await hugSchema.deleteMany({
+                guildId: id,
+            });
+        
+            await punchSchema.deleteMany({
+                guildId: id,
+            });
+        
+            await musicSchema.deleteMany({
+                guildId: id,
+            });
+        
+            await slapSchema.deleteMany({
+                guildId: id,
+            });
+        
+            await cuddleSchema.deleteMany({
+                guildId: id,
+            });
+        
+            await kissSchema.deleteMany({
+                guildId: id,
+            });
+        
+            await patSchema.deleteMany({
+                guildId: id,
+            });
+            return true;
+        } catch (err) {
+            throw new Error(`An error occurred when trying to purge guild with id ${id}: `+ err, __dirname);
+        }
     }
     async purgeNonExistingGuilds(idsArray) {
         if (!idsArray) throw new Error('An full array of guild ids is required.', __dirname);

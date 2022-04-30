@@ -501,76 +501,10 @@ module.exports = class util {
 		const lowerArgs = args.map(a => a.toLowerCase())
 		if (queries.some(q => lowerArgs.includes(q))) return exec();
 	};
-	static async purgeDbGuild(client, id) {
-		client.guildsStorage.delete(id);
-	
-		await client.db.guilds.findOneAndDelete({
-			guildID: id
-		});
-		await client.db.embeds.deleteMany({
-			guildID: id,
-		});
-		
-		await client.db.leveling.deleteMany({
-			guildId: id,
-		});
-		await client.db.cooldowns.deleteMany({
-			guildId: id
-		});
-	
-		await client.db.garden.deleteMany({
-			guildId: id
-		});
-		await client.db.levelingRewards.deleteMany({
-            guildId: id,
-        });
-
-		await client.db.inventory.deleteMany({
-			guildId: id
-		});
-
-		await client.db.money.deleteMany({
-			guildId: id
-		});
-	
-	
-		await client.db.love.deleteMany({
-			guildID: id
-		});
-	
-		await client.db.gameStorage.deleteMany({
-			guildId: id
-		});
-	
-		await hugSchema.deleteMany({
-			guildId: id,
-		});
-	
-		await punchSchema.deleteMany({
-			guildId: id,
-		});
-	
-		await musicSchema.deleteMany({
-			guildId: id,
-		});
-	
-		await slapSchema.deleteMany({
-			guildId: id,
-		});
-	
-		await cuddleSchema.deleteMany({
-			guildId: id,
-		});
-	
-		await kissSchema.deleteMany({
-			guildId: id,
-		});
-	
-		await patSchema.deleteMany({
-			guildId: id,
-		});
-		return true;
-	};
+	// static async purgeDbGuild(client, id) {
+	// 	client.guildsStorage.delete(id);
+	// 	return true;
+	// };
 
 	static async purgeDbUser(client, guildId, userId) {
 		await client.db.leveling.findOneAndDelete({

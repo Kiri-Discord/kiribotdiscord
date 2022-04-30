@@ -14,4 +14,10 @@ module.exports = class dbFuncClient {
         if (!value) return null;
         else return value;
     }
+    async purgeGuild(id) {
+        if (!id) throw new Error('Guild ID is required to delete data.', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'purgeGuild', guildId: id });
+        if (!value) return null;
+        else return value;
+    }
 };
