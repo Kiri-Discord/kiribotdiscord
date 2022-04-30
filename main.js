@@ -64,26 +64,26 @@ const passthrough = new Passthrough();
     //     logger.log("info", "[MUSIC] Deleted all charts!");
     // });
 
-    // if (config.emojiServerIDs) {
-    //     for (const id of config.emojiServerIDs) {
-    //         try {
-    //             const { body } = await request
-    //                 .get(`https://discord.com/api/v9/guilds/${id}/emojis`)
-    //                 .set({ Authorization: `Bot ${config.token}` });
-    //             if (!body.length) continue;
-    //             else {
-    //                 body.forEach(emoji => cachedEmojis.set(emoji.id, {
-    //                     id: emoji.id,
-    //                     name: emoji.name,
-    //                     animated: emoji.animated
-    //                 }));
-    //             };
-    //             logger.info(`[DISCORD] Loaded ${body.length} emojis from server ${id}`);
-    //         } catch (err) {
-    //             logger.info(`[DISCORD] Could not fetch emoji from server ${id} (error: ${err}).`);
-    //         }
-    //     }
-    // }
+    if (config.emojiServerIDs) {
+        for (const id of config.emojiServerIDs) {
+            try {
+                const { body } = await request
+                    .get(`https://discord.com/api/v9/guilds/${id}/emojis`)
+                    .set({ Authorization: `Bot ${config.token}` });
+                if (!body.length) continue;
+                else {
+                    body.forEach(emoji => cachedEmojis.set(emoji.id, {
+                        id: emoji.id,
+                        name: emoji.name,
+                        animated: emoji.animated
+                    }));
+                };
+                logger.info(`[DISCORD] Loaded ${body.length} emojis from server ${id}`);
+            } catch (err) {
+                logger.info(`[DISCORD] Could not fetch emoji from server ${id} (error: ${err}).`);
+            }
+        }
+    }
 
 
     const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
@@ -109,9 +109,9 @@ const passthrough = new Passthrough();
     await manager.spawn({ timeout: -1 });
 
     // const res = await manager.broadcastEval(
-    //     async (c) => {
+    //     (c) => {
     //         try {
-    //             const guilds = await c.guilds.fetch();
+    //             const guilds = c.guilds.cache;
     //             if (!guilds || !guilds.size) return;
     //             return guilds.map((g) => g.id);
     //         } catch (err) {

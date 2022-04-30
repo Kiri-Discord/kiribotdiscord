@@ -8,9 +8,9 @@ module.exports = class dbFuncClient {
         if (!value) return null;
         else return value;
     };
-    async createGuild(id) {
+    async createGuild(id, save) {
         if (!id) throw new Error('Guild ID is required to create data.', __dirname);
-        const { value } = await this.client.cluster.request({ type: 'createGuild', guildId: id });
+        const { value } = await this.client.cluster.request({ type: 'createGuild', guildId: id, save });
         if (!value) return null;
         else return value;
     }

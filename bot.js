@@ -55,7 +55,7 @@ const client = new kiri({
         messages: {
             interval: 300,
             filter: Sweepers.filterByLifetime({
-                lifetime: 900,
+                lifetime: 800,
                 getComparisonTimestamp: (e) =>
                     e.editedTimestamp ?? e.createdTimestamp,
             }),
@@ -73,16 +73,16 @@ global.sync = sync;
 (async () => {
     // await require("./handler/module.js")(client);
 
-    // if (config.emojiServerIDs) {
-    //     const emojis = await client.cluster.evalOnManager((c) => [...c.cachedEmojis.values()]);
-    //     if (emojis.length) {
-    //         for (const emoji of emojis) {
-    //             const CachedEmoji = require("./structure/CachedEmoji");
-    //             const cachedEmoji = new CachedEmoji(emoji);
-    //             client.customEmojis.set(emoji.name, cachedEmoji);
-    //         }
-    //     }
-    // };
+    if (config.emojiServerIDs) {
+        const emojis = await client.cluster.evalOnManager((c) => [...c.cachedEmojis.values()]);
+        if (emojis.length) {
+            for (const emoji of emojis) {
+                const CachedEmoji = require("./structure/CachedEmoji");
+                const cachedEmoji = new CachedEmoji(emoji);
+                client.customEmojis.set(emoji.name, cachedEmoji);
+            }
+        }
+    };
 
     client.login(config.token);
 })();

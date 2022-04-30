@@ -43,10 +43,15 @@ module.exports = async(client, guild) => {
         if you have any questions come ask us in our support server or commmunity server!
         `)
         .setColor('#DAF7A6')
-        .setAuthor({name: "hi, i'm Kiri!"})
+        .setAuthor({ name: "hi, i'm Kiri!" })
         .setTimestamp()
         .setThumbnail(client.user.displayAvatarURL({ size: 4096 }))
-    // const owner = await client.users.cache.get(client.config.ownerID).catch(() => null);
+    // client.config.logChannels.forEach(id => {
+    //     const channel = client.channels.cache.get(id);
+    //     if (channel) channel.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    // });
+    // logger.info(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
+    // const owner = await client.users.fetch(client.config.ownerID).catch(() => null);
     // if (owner) owner.send(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
     if (channelbutcansendEmbed.size) {
         channelbutcansendEmbed.first().send({ embeds: [embed], components: [row] }).catch(() => null);
