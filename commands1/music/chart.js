@@ -4,7 +4,7 @@ const { millify } = require('millify');
 exports.run = async(client, message, args) => {
     const chart = await client.db.charts.find().sort([
         ['timesPlayed', 'descending']
-    ]);
+    ]).limit(10);
     const sedEmoji = client.customEmojis.get('sed');
     if (!chart.length) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `there is no music chart data avaliable for this month yet ${sedEmoji}` }] });
     const months = {

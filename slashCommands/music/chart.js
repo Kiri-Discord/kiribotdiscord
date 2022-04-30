@@ -6,7 +6,7 @@ exports.run = async(client, interaction) => {
     await interaction.deferReply();
     const chart = await client.db.charts.find().sort([
         ['timesPlayed', 'descending']
-    ]);
+    ]).limit(10);
     const sedEmoji = client.customEmojis.get('sed');
     if (!chart.length) return interaction.editReply({ embeds: [{ color: "#bee7f7", description: `there is no music chart data avaliable for this month yet ${sedEmoji}` }] });
     const months = {
