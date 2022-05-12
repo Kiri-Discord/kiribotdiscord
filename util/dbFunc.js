@@ -25,6 +25,67 @@ module.exports = class dbFunc {
         if (save) await newGuild.save();
         return newGuild;
     };
+    async purgeMember(guildId, userId) {
+        try {
+            await this.passthrough.db.leveling.findOneAndDelete({
+                guildId: guildId,
+                userId: userId,
+            });
+        
+            await this.passthrough.db.cooldowns.findOneAndDelete({
+                guildId: guildId,
+                userId: userId,
+            });
+            await this.passthrough.db.garden.findOneAndDelete({
+                guildId: guildId,
+                userId: userId,
+            });
+            await this.passthrough.db.gameStorage.findOneAndDelete({
+                guildId: guildId,
+                userId: userId,
+            });
+            await this.passthrough.db.money.findOneAndDelete({
+                guildId: guildId,
+                userId: userId,
+            });
+            await this.passthrough.db.inventory.findOneAndDelete({
+                guildId: guildId,
+                userId: userId,
+            });
+    
+            await this.passthrough.db.love.findOneAndDelete({
+                guildID: guildId,
+                userID: userId,
+            });
+            await hugSchema.findOneAndDelete({
+                userId: userId,
+                guildId: guildId,
+            });
+            await punchSchema.findOneAndDelete({
+                userId: userId,
+                guildId: guildId,
+            });
+            await slapSchema.findOneAndDelete({
+                userId: userId,
+                guildId: guildId,
+            });
+            await cuddleSchema.findOneAndDelete({
+                userId: userId,
+                guildId: guildId,
+            });
+            await kissSchema.findOneAndDelete({
+                userId: userId,
+                guildId: guildId,
+            });
+            await patSchema.findOneAndDelete({
+                userId: userId,
+                guildId: guildId,
+            });
+            return true;
+        } catch (err) {
+            throw new Error(`An error occurred when trying to purge guild with id ${id}: `+ err, __dirname);
+        }
+    }
     async purgeGuild(id) {
         try {
             await this.passthrough.db.guilds.findOneAndDelete({

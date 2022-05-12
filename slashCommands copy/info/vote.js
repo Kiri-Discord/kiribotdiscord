@@ -1,11 +1,11 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
-exports.run = async(client, message, args, prefix) => {
-    const votes = await client.utils.sendEvalRequest(`
-    cluster.manager.passthrough.db.vote.find({
-        userID: '${message.author.id}'
+exports.run = async(client, interaction) => {
+    await interaction.deferReply();
+    const votes = await client.db.vote.find({
+        userID: interaction.user.id
     });
-    `)
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
@@ -17,13 +17,15 @@ exports.run = async(client, message, args, prefix) => {
         .setURL('https://top.gg/bot/859116638820761630')
         .setTitle('vote for Kiri!')
         .setThumbnail(client.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
-        .setDescription(votes.length ? `you have ${votes.length} votes that you haven't converted to rewards! (you can only claim one reward for each vote)` : 'you have not vote yet :pensive:\nthere are some rewards below to obtain if you vote!')
+        .setDescription(votes.length ? `you have ${votes.length} votes that you haven't convert to rewards! (you can only claim one reward for each vote)` : 'you have not vote yet :pensive:\nthere are some rewards below to obtain if you vote!')
         .addField('vote rewards', `
-        ⏣ **50% to 80%** bonus from your daily rewards \`${prefix}daily\`
-        🎫 **1 Effect Ticket** \`${prefix}ticket\`
+        ⏣ **50% to 80%** bonus from your daily rewards \`/daily\`
+        🎫 **1 Effect Ticket** \`/ticket\`
         `)
-    return message.channel.send({ embeds: [embed], components: [row] });
+    return interaction.editReply({ embeds: [embed], components: [row] });
 };
+
+
 
 exports.help = {
     name: "vote",
@@ -34,7 +36,8 @@ exports.help = {
 
 exports.conf = {
     channelPerms: ["EMBED_LINKS"],
-    aliases: [],
-    cooldown: 4,
-    guildOnly: true,
+    data: new SlashCommandBuilder()
+        .setName(exports.help.name)
+        .setDescription(exports.help.description),
+    cooldown: 4
 };

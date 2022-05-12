@@ -9,7 +9,7 @@ module.exports = async(client, guild) => {
 
     logger.info(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members! (shard: ${guild.shardId}, cluster: ${client.cluster.id})`)
 
-    await client.dbFuncs.createGuild(guild.id, save);
+    await client.dbFuncs.createGuild(guild.id, true);
 
     const prefix = client.config.prefix;
     const channels = guild.channels.cache.filter(x => x.viewable && x.type === 'GUILD_TEXT' && x.permissionsFor(guild.me).has(['VIEW_CHANNEL', 'SEND_MESSAGES']));

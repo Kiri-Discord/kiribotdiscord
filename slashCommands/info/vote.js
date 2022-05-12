@@ -3,9 +3,11 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 exports.run = async(client, interaction) => {
     await interaction.deferReply();
-    const votes = await client.db.vote.find({
-        userID: interaction.user.id
+    const votes = await client.utils.sendEvalRequest(`
+    cluster.manager.passthrough.db.vote.find({
+        userID: '${message.author.id}'
     });
+    `)
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()

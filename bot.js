@@ -71,7 +71,7 @@ require("./handler/Event.js")(client);
 global.sync = sync;
 
 (async () => {
-    // await require("./handler/module.js")(client);
+    await require("./handler/module.js")(client);
 
     if (config.emojiServerIDs) {
         const emojis = await client.cluster.evalOnManager((c) => [...c.cachedEmojis.values()]);

@@ -36,6 +36,8 @@ const { promisify } = require('util');
 const globPromise = promisify(glob);
 const passthrough = new Passthrough();
 
+const cachedEmojis = new Map();
+
 (async () => {
     await mongo.init();
     // schedule.scheduleJob("0 0 1 * *", async () => {
@@ -94,7 +96,7 @@ const passthrough = new Passthrough();
     });
     manager.passthrough = passthrough;
     manager.ipcScripts = new Map();
-    manager.cachedEmojis = new Map();
+    manager.cachedEmojis = cachedEmojis;
     require("./handler/Event.js")(manager, true);
 
     const scripts = await globPromise(`${process.cwd()}/managerMessages/*.js`);

@@ -6,7 +6,12 @@ module.exports = class kiri extends Client {
     constructor(options) {
         super(options);
         this.utils = {
-            mention: mentionParsing
+            mention: mentionParsing,
+            sendEvalRequest: async (context) => {
+                const { value, error } = await this.cluster.request({ type: 'eval', eval: context });
+                if (error) return null;
+                return value;
+            }
         };
         this.deletedChannels = new WeakSet();
         this.recent = new Set();
