@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
         return start && start.getTime() <= now &&
   (
       (end && end.getTime() >= now) ||
-    (!end && e.reminder == "daily")
+      (!end && (e.type != "Unlock" && e.type != "Stream"))
   )
     }).sort((a, b) => {
         const endA = getEndTime(a, endTimezone)
