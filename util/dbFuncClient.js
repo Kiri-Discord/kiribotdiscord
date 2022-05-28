@@ -27,4 +27,22 @@ module.exports = class dbFuncClient {
         if (!value) return null;
         else return value;
     }
+    async fetchEmbeds(guildId) {
+        if (!guildId) throw new Error('Guild ID is required to fetch embed.', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'fetchEmbeds', guildId });
+        if (!value) return null;
+        else return value;
+    }
+    async saveEmbed(guildId, embed, id, creatorId) {
+        if (!guildId) throw new Error('Guild ID is required to create embed.', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'saveEmbed', guildId, embed, id, creatorId });
+        if (!value) return null;
+        else return value;
+    }
+    async deleteEmbed(guildId, id) {
+        if (!guildId) throw new Error('Guild ID is required to create embed.', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'deleteEmbed', guildId, id });
+        if (!value) return null;
+        else return value;
+    }
 };

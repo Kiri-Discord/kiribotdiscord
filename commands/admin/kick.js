@@ -4,7 +4,7 @@ const sendHook = require('../../features/webhook.js');
 exports.run = async(client, message, args, prefix) => {
     if (!args.length) return message.channel.send({ embeds: [{ color: "#abb7b2", description: `you should follow the correct usage! use \`${prefix}help kick\` to learn more :wink:` }] });
     const member = client.utils.parseMember(message, args[0])
-    const guildDB = client.guildsStorage.get(message.guild.id);
+    const guildDB = message.setting;
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const stareEmoji = client.customEmojis.get('staring') ? client.customEmojis.get('staring').toString() : ':pensive:';
 

@@ -11,7 +11,7 @@ exports.run = async (client, message, args, prefix) => {
                 },
             ],
         });
-    const guildDB = client.guildsStorage.get(message.guild.id);
+    const guildDB = message.setting;
     const logChannel = message.guild.channels.cache.get(guildDB.logChannelID);
     const duh = client.customEmojis.get("duh");
     if (!args[0])

@@ -10,6 +10,47 @@ module.exports = class dbFunc {
     constructor(passthrough) {
 		Object.defineProperty(this, 'passthrough', { value: passthrough });
 	};
+    async fetchEmbeds(guildId) {
+        let embeds = await this.passthrough.db.embeds.findOne({
+            guildID: guildId,
+        });
+        if (!embeds) embeds = new this.passthrough.db.embeds({
+            guildID: guildId,
+        })
+        return embeds.toObject();
+    }
+    async saveEmbed(guildId, embed, id, creatorId) {
+        let storage = await this.passthrough.db.embeds.findOne({
+            guildID: guildId,
+        });
+        if (!storage) storage = new this.passthrough.db.embeds({
+            guildID: guildId,
+        });
+
+        storage.embeds.push({
+            embed: embed,
+            _id: id,
+            creator: creatorId,
+        });
+        await storage.save();
+        return true;
+    }
+    async deleteEmbed(guildId, id) {
+        let storage = await this.passthrough.db.embeds.findOne({
+            guildID: guildId,
+        });
+        if (!storage) storage = new this.passthrough.db.embeds({
+            guildID: guildId,
+        });
+
+        const embed = storage.embeds.find((x) => x._id === id);
+        if (!embed) return false;
+
+        storage.embeds.pull(embed);
+        storage.markModified("embeds");
+        await storage.save();
+        return true;
+    }
     async existingGuild(id) {
         if (!id) throw new Error('Guild ID is required to check existing data.', __dirname);
         const guild = await this.passthrough.db.guilds.findOne({

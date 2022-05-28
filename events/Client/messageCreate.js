@@ -200,6 +200,7 @@ module.exports = async (client, message) => {
         setTimeout(() => timestamps.delete(cooldownID), cooldownAmount);
     }
     try {
+        message.setting = setting;
         commandFile.run(client, message, args, prefix, cmd);
         logger.log(
             "info",
