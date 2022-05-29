@@ -29,7 +29,7 @@ exports.run = async (client, message, args, prefix) => {
         let name = null;
         let setupMessage = null;
         let displayMessage = null;
-        const empty = client.customEmojis.get("empty");
+        const empty = client.customEmojis.get("empty").toString();
         const targetEmbed = {
             description: empty,
         };

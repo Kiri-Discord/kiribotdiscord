@@ -51,6 +51,15 @@ module.exports = class dbFunc {
         await storage.save();
         return true;
     }
+    async changeLevelingContent(guildId, content) {
+        const setting = await this.passthrough.db.guilds.findOne({
+            guildID: guildId
+        });
+        setting.levelings.content = content
+        setting.markModified('levelings');
+        await setting.save();
+        return true;
+    }
     async existingGuild(id) {
         if (!id) throw new Error('Guild ID is required to check existing data.', __dirname);
         const guild = await this.passthrough.db.guilds.findOne({

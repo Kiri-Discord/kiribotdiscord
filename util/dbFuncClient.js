@@ -35,13 +35,23 @@ module.exports = class dbFuncClient {
     }
     async saveEmbed(guildId, embed, id, creatorId) {
         if (!guildId) throw new Error('Guild ID is required to create embed.', __dirname);
+        if (!embed) throw new Error('Embed is required to create embed.', __dirname);
+        if (!id) throw new Error('Embed ID is required to create embed.', __dirname);
+        if (!creatorId) throw new Error('Creator ID is required to create embed.', __dirname);
         const { value } = await this.client.cluster.request({ type: 'saveEmbed', guildId, embed, id, creatorId });
         if (!value) return null;
         else return value;
     }
     async deleteEmbed(guildId, id) {
-        if (!guildId) throw new Error('Guild ID is required to create embed.', __dirname);
+        if (!guildId) throw new Error('Guild ID is required to delete embed.', __dirname);
+        if (!id) throw new Error('Embed ID is required to delete embed.', __dirname);
         const { value } = await this.client.cluster.request({ type: 'deleteEmbed', guildId, id });
+        if (!value) return null;
+        else return value;
+    }
+    async changeLevelingContent(guildId, content) {
+        if (!guildId || !content) throw new Error('Both content and guild ID is required to change or create content', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changeLevelingContent', guildId, content });
         if (!value) return null;
         else return value;
     }
