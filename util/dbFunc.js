@@ -62,6 +62,15 @@ module.exports = class dbFunc {
         await setting.save();
         return true;
     }
+    async changeByeDestination(guildId, destination) {
+        if (!guildId) throw new Error('Guild ID is required to change leveling destination.', __dirname);
+        await this.passthrough.db.guilds.findOneAndUpdate({
+            guildID: guildId,
+        }, {
+            byeChannelID: destination || null,
+        });
+        return true;
+    }
     async changeLevelingContent(guildId, content) {
         if (!guildId) throw new Error('Guild ID is required to change leveling content.', __dirname);
         const setting = await this.passthrough.db.guilds.findOne({

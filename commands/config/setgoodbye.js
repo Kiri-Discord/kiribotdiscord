@@ -4,13 +4,7 @@ const varReplace = require('../../util/variableReplace');
 
 exports.run = async(client, message, args, prefix) => {
         if (message.flags[0] === "off") {
-            await client.utils.sendEvalRequest(`
-            cluster.manager.passthrough.db.guilds.findOneAndUpdate({
-                guildID: '${message.guild.id}',
-            }, {
-                byeChannelID: null
-            });
-            `)
+            await client.dbFuncs.changeByeDestination(message.guild.id, null);
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`❌ goodbye feature has been disabled`);
@@ -22,13 +16,7 @@ exports.run = async(client, message, args, prefix) => {
 
             if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
             if (!channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send goodbye message to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.` }] });
-            await client.utils.sendEvalRequest(`
-            cluster.manager.passthrough.db.guilds.findOneAndUpdate({
-                guildID: '${message.guild.id}',
-            }, {
-                byeChannelID: '${channel.id}'
-            });
-            `)
+            await client.dbFuncs.changeByeDestination(message.guild.id, channel.id);
             const note = message.setting.byeContent.content === '{auto}' ? `a default goodbye message has been set because you haven't set a custom one yet. to use your own your custom goodbye message, do \`${prefix}setgoodbye content\`!` : '';
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
@@ -67,14 +55,8 @@ exports.run = async(client, message, args, prefix) => {
                 content: content.content
             };
         } else if (type.content.toLowerCase() === 'embed') {
-            let embedsStorage = client.db.embeds;
-            let storage = await embedsStorage.findOne({
-                guildID: message.guild.id
-            });
-            if (!storage) storage = new embedsStorage({
-                guildID: message.guild.id
-            });;
-            if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+            let storage = await client.dbFuncs.fetchEmbeds(message.guild.id);
+            if (!storage.embeds.length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             const embed2 = new MessageEmbed()
                 .setDescription(`what is the embed ID that you want to apply? :slight_smile:`)
                 .setFooter({text: 'this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"'});
@@ -82,20 +64,14 @@ exports.run = async(client, message, args, prefix) => {
             const content = await askString(message.channel, res => res.author.id === message.author.id);
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);
             if (!content) return message.channel.send("you didn't say anything :pensive:");
-            const targetEmbed = storage.embeds.toObject().find(x => x._id === content.content);
+            const targetEmbed = storage.embeds.find(x => x._id === content.content);
             if (!targetEmbed) return content.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${content.content}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             contentObject = {
                 type: 'embed',
                 content: targetEmbed
             };
         };
-        await client.dbFuncs.changeLevelingContent(message.guild.id, contentObject);
-        // db.byeContent = contentObject;
-        // await client.db.guilds.findOneAndUpdate({
-        //     guildID: message.guild.id,
-        // }, {
-        //     byeContent: contentObject
-        // });
+        await client.dbFuncs.changeByeContent(message.guild.id, contentObject);
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ your goodbye message has been set up!`, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } }] });
     };
     if (args[0].toLowerCase() === 'test') {
@@ -110,14 +86,8 @@ exports.run = async(client, message, args, prefix) => {
         };
         const channel = message.guild.channels.cache.get(setting.byeChannelID);
         if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
-            await client.db.guilds.findOneAndUpdate({
-                guildID: message.guild.id,
-            }, {
-                byeChannelID: null,
-                byeContent: null
-            });
-            db.byeChannelID = null;
-            db.byeContent = null;
+            await client.dbFuncs.changeByeDestination(message.guild.id, null);
+            await client.dbFuncs.changeByeContent(message.guild.id, null);
             return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send goodbye message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for goodbye message was also resetted. please set a new one using ${prefix}setgoodbye channel!` } }] });
         };
         if (setting.byeContent.type === 'plain') return channel.send(varReplace.replaceText(setting.byeContent.content, message.member, message.guild, { event: 'leave', type: setting.responseType }));
