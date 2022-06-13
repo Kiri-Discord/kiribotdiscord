@@ -15,7 +15,7 @@
     "author": "ryzenix",
     "license": "MIT",
     "dependencies": {
-        "@discordjs/builders": "^0.12.0",
+        "@discordjs/builders": "^0.15.0",
         "@discordjs/rest": "^0.4.0-dev.1645877008.a8321d8",
         "@sentry/node": "^6.18.1",
         "@sentry/tracing": "^6.18.1",
