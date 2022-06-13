@@ -3,14 +3,14 @@ const { askString } = require('../../util/util');
 const varReplace = require('../../util/variableReplace');
 
 exports.run = async(client, message, args, prefix) => {
-        const db = client.guildsStorage.get(message.guild.id);
         if (message.flags[0] === "off") {
-            db.byeChannelID = undefined;
-            await client.db.guilds.findOneAndUpdate({
-                guildID: message.guild.id,
+            await client.utils.sendEvalRequest(`
+            cluster.manager.passthrough.db.guilds.findOneAndUpdate({
+                guildID: '${message.guild.id}',
             }, {
                 byeChannelID: null
             });
+            `)
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`❌ goodbye feature has been disabled`);
@@ -22,18 +22,18 @@ exports.run = async(client, message, args, prefix) => {
 
             if (!channel) return message.reply({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
             if (!channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send goodbye message to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.` }] });
-            db.byeChannelID = channel.id;
-
-            const storageAfter = await client.db.guilds.findOneAndUpdate({
-                guildID: message.guild.id,
+            await client.utils.sendEvalRequest(`
+            cluster.manager.passthrough.db.guilds.findOneAndUpdate({
+                guildID: '${message.guild.id}',
             }, {
-                byeChannelID: channel.id
+                byeChannelID: '${channel.id}'
             });
-            const note = storageAfter.byeContent.content === '{auto}' ? `a default goodbye message has been set because you haven't set a custom one yet. to use your own your custom goodbye message, do \`${prefix}setgoodbye content\`!` : '';
+            `)
+            const note = message.setting.byeContent.content === '{auto}' ? `a default goodbye message has been set because you haven't set a custom one yet. to use your own your custom goodbye message, do \`${prefix}setgoodbye content\`!` : '';
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`☑️ the goodbye feature has been set to ${channel}!\n${note}`)
-                .setFooter({text: `the "${storageAfter.responseType}" response type has been set for all default upcoming greeting message.`})
+                .setFooter({text: `the "${message.setting.responseType}" response type has been set for all default upcoming greeting message.`})
             return message.channel.send({ embeds: [embed] });
         };
         if (args[0].toLowerCase() === 'content') {
@@ -89,12 +89,13 @@ exports.run = async(client, message, args, prefix) => {
                 content: targetEmbed
             };
         };
-        db.byeContent = contentObject;
-        await client.db.guilds.findOneAndUpdate({
-            guildID: message.guild.id,
-        }, {
-            byeContent: contentObject
-        });
+        await client.dbFuncs.changeLevelingContent(message.guild.id, contentObject);
+        // db.byeContent = contentObject;
+        // await client.db.guilds.findOneAndUpdate({
+        //     guildID: message.guild.id,
+        // }, {
+        //     byeContent: contentObject
+        // });
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ your goodbye message has been set up!`, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } }] });
     };
     if (args[0].toLowerCase() === 'test') {

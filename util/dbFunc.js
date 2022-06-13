@@ -36,6 +36,7 @@ module.exports = class dbFunc {
         return true;
     }
     async deleteEmbed(guildId, id) {
+        if (!guildId) throw new Error('Guild ID is required to delete embed.', __dirname);
         let storage = await this.passthrough.db.embeds.findOne({
             guildID: guildId,
         });
@@ -51,12 +52,32 @@ module.exports = class dbFunc {
         await storage.save();
         return true;
     }
+    async changeLevelingDestination(guildId, destination) {
+        if (!guildId) throw new Error('Guild ID is required to change leveling destination.', __dirname);
+        const setting = await this.passthrough.db.guilds.findOne({
+            guildID: guildId
+        });
+        if (!destination) setting.levelings.destination = null;
+        else setting.levelings.destination = destination;
+        await setting.save();
+        return true;
+    }
     async changeLevelingContent(guildId, content) {
+        if (!guildId) throw new Error('Guild ID is required to change leveling content.', __dirname);
         const setting = await this.passthrough.db.guilds.findOne({
             guildID: guildId
         });
         setting.levelings.content = content
         setting.markModified('levelings');
+        await setting.save();
+        return true;
+    }
+    async changeByeContent(guildId, content) {
+        if (!guildId) throw new Error('Guild ID is required to change bye content.', __dirname);
+        const setting = await this.passthrough.db.guilds.findOne({
+            guildID: guildId
+        });
+        setting.byeContent = content;
         await setting.save();
         return true;
     }

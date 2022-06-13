@@ -1,9 +1,9 @@
-exports.name = 'changeLevelingContent';
+exports.name = 'changeByeContent';
 
 exports.run = async (cluster, message) => {
     try {
         if (!message.guildId || !message.content) throw new Error('Guild ID and content are required to change content.', __dirname);
-        const data = await cluster.manager.passthrough.dbFuncs.changeLevelingContent(message.guildId, message.content);
+        const data = await cluster.manager.passthrough.dbFuncs.changeByeContent(message.guildId, message.content);
         if (!data) return message.reply({ value: null });
         else return message.reply({ value: data });
     } catch (error) {

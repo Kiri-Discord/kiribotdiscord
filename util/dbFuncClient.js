@@ -55,4 +55,16 @@ module.exports = class dbFuncClient {
         if (!value) return null;
         else return value;
     }
+    async changeByeContent(guildId, content) {
+        if (!guildId || !content) throw new Error('Both content and guild ID is required to change or create content', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changeByeContent', guildId, content });
+        if (!value) return null;
+        else return value;
+    }
+    async changeLevelingDestination(guildId, destination) {
+        if (!guildId) throw new Error('Both destination and guild ID is required to change or create destination', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changeLevelingDestination', guildId, channelId: destination });
+        if (!value) return null;
+        else return value;
+    }
 };

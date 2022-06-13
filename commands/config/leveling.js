@@ -24,32 +24,14 @@ exports.run = async(client, message, args, prefix) => {
             return message.channel.send({ embeds: [{ color: "#bee7f7", description: `❌ levelings has been disabled` }] });
         } else if (args[0].toLowerCase() === "announce") {
             if (!args[1]) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you haven't specified a destination for your leveling message yet!\nyou should choose one by using \`${prefix}leveling announce <there / #channel>\`!` }] });
-            if (args[1].toLowerCase === 'there') {
-                await client.utils.sendEvalRequest(`
-                cluster.manager.passthrough.db.guilds.findOne({
-                    guildID: '${message.guild.id}'
-                }).then(setting => {
-                    setting.levelings.destination = null;
-                    setting.save().then(() => {
-                        return true;
-                    })
-                })
-                `);
+            if (args[1].toLowerCase() === 'there') {
+                await client.dbFuncs.changeLevelingDestination(message.guild.id, null);
                 return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ levelings announcement will now be send in the same channel that the user is messaging!` }] });
             } else {
                 const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
                 if (!channel) return message.channel.send({ embeds: [{ color: "#bee7f7", description: 'i can\'t find that channel. pls mention a channel within this guild 😔' }] });
                 if (!channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) return message.reply({ embeds: [{ color: "#bee7f7", description: `i don't have the perms to send leveling announcement to ${channel}!\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again please :pensive:` }] });
-                await client.utils.sendEvalRequest(`
-                cluster.manager.passthrough.db.guilds.findOne({
-                    guildID: '${message.guild.id}'
-                }).then(setting => {
-                    setting.levelings.destination = '${channel.id}';
-                    setting.save().then(() => {
-                        return true;
-                    })
-                })
-                `);
+                await client.dbFuncs.changeLevelingDestination(message.guild.id, channel.id);
                 return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ levelings announcement will now be send in ${channel}!` }] });
             };
         } else if (args[0].toLowerCase() === "content") {
@@ -83,14 +65,8 @@ exports.run = async(client, message, args, prefix) => {
                 content: content.content
             };
         } else if (type.content.toLowerCase() === 'embed') {
-            let embedsStorage = client.db.embeds;
-            let storage = await embedsStorage.findOne({
-                guildID: message.guild.id
-            });
-            if (!storage) storage = new embedsStorage({
-                guildID: message.guild.id
-            });;
-            if (!storage.embeds.toObject().length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+            let storage = await client.dbFuncs.fetchEmbeds(message.guild.id);
+            if (!storage.embeds.length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             const embed2 = new MessageEmbed()
                 .setDescription(`what is the embed ID that you want to apply? :slight_smile:`)
                 .setFooter({text: 'this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"'});
@@ -98,7 +74,7 @@ exports.run = async(client, message, args, prefix) => {
             const content = await askString(message.channel, res => res.author.id === message.author.id);
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);
             if (!content) return message.channel.send("you didn't say anything :pensive:");
-            const targetEmbed = storage.embeds.toObject().find(x => x._id === content.content);
+            const targetEmbed = storage.embeds.find(x => x._id === content.content);
             if (!targetEmbed) return content.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${content.content}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             contentObject = {
                 type: 'embed',
@@ -116,20 +92,16 @@ exports.run = async(client, message, args, prefix) => {
         }]});
     } else if (args[0].toLowerCase() === 'test') {
         let channel;
-        const setting = await client.db.guilds.findOne({
-            guildID: message.guild.id
-        });
-        if (!setting.levelings.destination) channel = message.channel;
-        else channel = message.guild.channels.cache.get(setting.levelings.destination);
+        if (!message.setting.levelings.destination) channel = message.channel;
+        else channel = message.guild.channels.cache.get(message.setting.levelings.destination);
         if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
-            setting.levelings.destination = null;
-            await setting.save();
+            await client.dbFuncs.changeLevelingDestination(message.guild.id, null);
             return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send leveling announcement message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for leveling message was also resetted. please set a new one using ${prefix}leveling channel!` } }] });
         };
-        if (setting.levelings.content.type === 'plain') return channel.send(varReplace.replaceText(setting.levelings.content.content, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: 50, xp: 50 }));
-        else return channel.send({ embeds:[ varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: setting.responseType }, { level: 50, xp: 50 })] });
+        if (message.setting.levelings.content.type === 'plain') return channel.send(varReplace.replaceText(message.setting.levelings.content.content, message.member, message.guild, { event: 'level', type: message.setting.responseType }, { level: 50, xp: 50 }));
+        else return channel.send({ embeds:[ varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: message.setting.responseType }, { level: 50, xp: 50 })] });
     } else {
-        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ levelings is currently ${db.enableLevelings ? 'enabled' : 'disabled'} for our server. to setup the leveling system, use one of the following avaliable sub-command: \`off, on, content, announce, test\`!` }] })
+        return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ levelings is currently ${message.setting.enableLevelings ? 'enabled' : 'disabled'} for our server. to setup the leveling system, use one of the following avaliable sub-command: \`off, on, content, announce, test\`!` }] })
     };
 };
 
