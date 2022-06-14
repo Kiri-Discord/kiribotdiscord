@@ -85,4 +85,16 @@ module.exports = class dbFuncClient {
         if (!value) return null;
         else return value;
     }
+    async changeModLog(guildId, channelId) {
+        if (!guildId) throw new Error('Guild ID is required to modify mod log channel.', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changeModLog', guildId, channelId });
+        if (!value) return null;
+        else return value;
+    }
+    async changePrefix(guildId, prefix) {
+        if (!guildId || !prefix) throw new Error('Both Guild ID and prefix is required to set a new prefix.', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changePrefix', guildId, prefix });
+        if (!value) return null;
+        else return value;
+    }
 };

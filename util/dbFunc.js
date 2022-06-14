@@ -80,6 +80,23 @@ module.exports = class dbFunc {
         });
         return true;
     }
+    async changeModLog(guildId, channelId) {
+        if (!guildId) throw new Error('Guild ID is required to modify mod log channel.', __dirname);
+        await this.passthrough.db.guilds.findOneAndUpdate({
+            guildID: guildId,
+        }, {
+            logChannelID: channelId || null
+        });
+        return true;
+    }
+    async changePrefix(guildId, prefix) {
+        await this.passthrough.db.guilds.findOneAndUpdate({
+            guildID: guildId,
+        }, {
+            prefix
+        });
+        return true;
+    }
     async changeHiContent(guildId, content) {
         if (!guildId) throw new Error('Guild ID is required to change hi content.', __dirname);
         await this.passthrough.db.guilds.findOneAndUpdate({

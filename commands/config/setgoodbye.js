@@ -45,7 +45,7 @@ exports.run = async(client, message, args, prefix) => {
         if (type.content.toLowerCase() === 'plain') {
             const embed2 = new MessageEmbed()
                 .setDescription(`plain it is! so what content do you want to put in the goodbye message?\ntips: variable is supported! feel free to check out at \`${prefix}variables\`.`)
-                .setFooter({text: 'this message will be timed out in 2 minutes. you can also cancel this setup by "cancel"'});
+                .setFooter({text: 'this message will be timed out in 20 seconds. you can also cancel this setup by typing "cancel"'});
             await message.channel.send({ embeds: [embed2] })
             const content = await askString(message.channel, res => res.author.id === message.author.id, { time: 120000 });
             if (!content) return message.channel.send(`the setup is cancelled :pensive:`);
@@ -59,13 +59,21 @@ exports.run = async(client, message, args, prefix) => {
             if (!storage.embeds.length) return message.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server yet :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             const embed2 = new MessageEmbed()
                 .setDescription(`what is the embed ID that you want to apply? :slight_smile:`)
-                .setFooter({text: 'this message will be timed out in 20 seconds. you can also cancel this setup by "cancel"'});
+                .setFooter({text: 'this message will be timed out in 20 seconds. you can also cancel this setup by typing "cancel"'});
             await message.channel.send({ embeds: [embed2] });
-            const content = await askString(message.channel, res => res.author.id === message.author.id);
+            const content = await askString(message.channel, res => {
+                if (res.author.id !== message.author.id) return false;
+                const targetEmbed = storage.embeds.find(x => x._id.toLowerCase() === res.content.trim().toLowerCase());
+                if (!targetEmbed) {
+                    res.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${res.content}\`! you can try another name.`, footer: { text: `to create a new embed, do ${prefix}embeds new!` } }] });
+                    return false;
+                }
+                else return true;
+            });
             if (content === 0) return message.channel.send(`the setup is cancelled :pensive:`);
             if (!content) return message.channel.send("you didn't say anything :pensive:");
-            const targetEmbed = storage.embeds.find(x => x._id === content.content);
-            if (!targetEmbed) return content.reply({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${content.content}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
+            const targetEmbed = storage.embeds.find(x => x._id === content.content.trim().toLowerCase());
+            // if (!targetEmbed) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `there aren't any embed created on this server name \`${content.content}\` :pensive: to create a new embed, do \`${prefix}embeds new\`!` }] });
             contentObject = {
                 type: 'embed',
                 content: targetEmbed

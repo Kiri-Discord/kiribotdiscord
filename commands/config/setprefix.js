@@ -3,15 +3,8 @@ exports.run = async(client, message, args, prefix) => {
     if (args.length < 1) {
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ my current guild prefix here is \`${prefix}\` you could use \`${prefix}setprefix <prefix>\` to change it :D` }] });
     };
-    const db = client.guildsStorage.get(message.guild.id);
-    db.prefix = args[0];
-
-    await client.db.guilds.findOneAndUpdate({
-            guildID: message.guild.id,
-        }, {
-            prefix: args[0]
-        })
-        .catch(err => logger.log('error', err));
+    if (args.length < 2 || args.length > 8) return message.channel.send({ embeds: [{ color: "#bee7f7", description: `you can't choose a prefix that is larger than 8 or smaller than 3 characters :(` }] });
+    await client.dbFuncs.changePrefix(message.guild.id, args[0]);
     return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ my current guild prefix here has been updated to \`${args[0]}\`` }] });
 };
 

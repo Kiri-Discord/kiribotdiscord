@@ -88,7 +88,7 @@ exports.run = async (client, message, args, prefix) => {
                 if (res === 0) return ending(1);
                 if (!res) return ending(2);
                 const id = res.content.trim().split(/ +/g)[0];
-                if (storage.embeds.find((x) => x._id === id)) {
+                if (storage.embeds.find((x) => x._id.toLowerCase() === id.toLowerCase())) {
                     await deleteIfAble(res);
                     embed
                         .setAuthor({ name: "step 1 of 9"})
