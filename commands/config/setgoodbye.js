@@ -75,23 +75,20 @@ exports.run = async(client, message, args, prefix) => {
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `☑️ your goodbye message has been set up!`, footer: { text: `you can test it out using ${prefix}${exports.help.name} test!` } }] });
     };
     if (args[0].toLowerCase() === 'test') {
-        const setting = await client.db.guilds.findOne({
-            guildID: message.guild.id
-        });
-        if (!setting.byeChannelID) {
+        if (!message.setting.byeChannelID) {
             const embed = new MessageEmbed()
                 .setColor("#bee7f7")
                 .setDescription(`❌ the goodbye channel wasn't setup yet!`);
             return message.channel.send({embeds: [embed]});
         };
-        const channel = message.guild.channels.cache.get(setting.byeChannelID);
+        const channel = message.guild.channels.cache.get(message.setting.byeChannelID);
         if (!channel || !channel.viewable || !channel.permissionsFor(message.guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES'])) {
             await client.dbFuncs.changeByeDestination(message.guild.id, null);
             await client.dbFuncs.changeByeContent(message.guild.id, null);
             return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send goodbye message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for goodbye message was also resetted. please set a new one using ${prefix}setgoodbye channel!` } }] });
         };
-        if (setting.byeContent.type === 'plain') return channel.send(varReplace.replaceText(setting.byeContent.content, message.member, message.guild, { event: 'leave', type: setting.responseType }));
-        else return channel.send({ embeds: [varReplace.replaceEmbed(setting.byeContent.content.embed, message.member, message.guild, { event: 'leave', type: setting.responseType })] });
+        if (message.setting.byeContent.type === 'plain') return channel.send(varReplace.replaceText(message.setting.byeContent.content, message.member, message.guild, { event: 'leave', type: message.setting.responseType }));
+        else return channel.send({ embeds: [varReplace.replaceEmbed(message.setting.byeContent.content.embed, message.member, message.guild, { event: 'leave', type: message.setting.responseType })] });
     };
     return message.channel.send({ embeds: [{ color: "RED", description: `\`${args[0]}\` isn't a valid subcommand :pensive:` }] })
 };

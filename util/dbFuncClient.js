@@ -56,14 +56,26 @@ module.exports = class dbFuncClient {
         else return value;
     }
     async changeByeContent(guildId, content) {
-        if (!guildId || !content) throw new Error('Both content and guild ID is required to change or create content', __dirname);
+        if (!guildId) throw new Error('Guild ID is required to change or create content', __dirname);
         const { value } = await this.client.cluster.request({ type: 'changeByeContent', guildId, content });
         if (!value) return null;
         else return value;
     }
     async changeByeDestination(guildId, destination) {
         if (!guildId) throw new Error('Both destination and guild ID is required to change or create destination', __dirname);
-        const { value } = await this.client.cluster.request({ type: 'changeLevelingDestination', guildId, channelId: destination });
+        const { value } = await this.client.cluster.request({ type: 'changeByeDestination', guildId, channelId: destination });
+        if (!value) return null;
+        else return value;
+    }
+    async changeHiDestination(guildId, destination) {
+        if (!guildId) throw new Error('Both destination and guild ID is required to change or create destination', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changeHiDestination', guildId, channelId: destination });
+        if (!value) return null;
+        else return value;
+    }
+    async changeHiContent(guildId, content) {
+        if (!guildId) throw new Error('Guild ID is required to change or create content', __dirname);
+        const { value } = await this.client.cluster.request({ type: 'changeHiContent', guildId, content });
         if (!value) return null;
         else return value;
     }

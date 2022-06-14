@@ -99,7 +99,7 @@ exports.run = async(client, message, args, prefix) => {
             return message.reply({ embeds: [{ color: "#bee7f7", description: "i don't have the perms to send leveling announcement message to that channel! :pensive:\nplease allow the permission \`EMBED_LINKS\` **and** \`SEND_MESSAGES\` for me there before trying again.", footer: { text: `the channel for leveling message was also resetted. please set a new one using ${prefix}leveling channel!` } }] });
         };
         if (message.setting.levelings.content.type === 'plain') return channel.send(varReplace.replaceText(message.setting.levelings.content.content, message.member, message.guild, { event: 'level', type: message.setting.responseType }, { level: 50, xp: 50 }));
-        else return channel.send({ embeds:[ varReplace.replaceEmbed(setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: message.setting.responseType }, { level: 50, xp: 50 })] });
+        else return channel.send({ embeds:[ varReplace.replaceEmbed(message.setting.levelings.content.content.embed, message.member, message.guild, { event: 'level', type: message.setting.responseType }, { level: 50, xp: 50 })] });
     } else {
         return message.channel.send({ embeds: [{ color: "#bee7f7", description: `ℹ️ levelings is currently ${message.setting.enableLevelings ? 'enabled' : 'disabled'} for our server. to setup the leveling system, use one of the following avaliable sub-command: \`off, on, content, announce, test\`!` }] })
     };

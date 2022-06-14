@@ -71,6 +71,29 @@ module.exports = class dbFunc {
         });
         return true;
     }
+    async changeHiDestination(guildId, destination) {
+        if (!guildId) throw new Error('Guild ID is required to change hi destination.', __dirname);
+        await this.passthrough.db.guilds.findOneAndUpdate({
+            guildID: guildId,
+        }, {
+            greetChannelID: destination || null,
+        });
+        return true;
+    }
+    async changeHiContent(guildId, content) {
+        if (!guildId) throw new Error('Guild ID is required to change hi content.', __dirname);
+        await this.passthrough.db.guilds.findOneAndUpdate({
+            guildID: guildId,
+        }, {
+            greetContent: content
+        });
+        // const setting = await this.passthrough.db.guilds.findOne({
+        //     guildID: guildId
+        // });
+        // setting.greetContent = content;
+        // await setting.save();
+        return true;
+    }
     async changeLevelingContent(guildId, content) {
         if (!guildId) throw new Error('Guild ID is required to change leveling content.', __dirname);
         const setting = await this.passthrough.db.guilds.findOne({
@@ -83,11 +106,16 @@ module.exports = class dbFunc {
     }
     async changeByeContent(guildId, content) {
         if (!guildId) throw new Error('Guild ID is required to change bye content.', __dirname);
-        const setting = await this.passthrough.db.guilds.findOne({
-            guildID: guildId
+        await this.passthrough.db.guilds.findOneAndUpdate({
+            guildID: guildId,
+        }, {
+            byeContent: content
         });
-        setting.byeContent = content;
-        await setting.save();
+        // const setting = await this.passthrough.db.guilds.findOne({
+        //     guildID: guildId
+        // });
+        // setting.byeContent = content;
+        // await setting.save();
         return true;
     }
     async existingGuild(id) {
