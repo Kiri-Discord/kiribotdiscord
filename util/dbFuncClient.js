@@ -97,4 +97,8 @@ module.exports = class dbFuncClient {
         if (!value) return null;
         else return value;
     }
+    async fetchStorage(guildId, userId) {
+        if (!guildId) throw new Error('Guild ID is required to delete data.', __dirname);
+        if (!userId) throw new Error('User ID is required to delete data.', __dirname);
+    }
 };

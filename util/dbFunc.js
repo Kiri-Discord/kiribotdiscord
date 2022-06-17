@@ -150,6 +150,21 @@ module.exports = class dbFunc {
         if (save) await newGuild.save();
         return newGuild;
     };
+    async fetchMoney(guildId, userId, save) {
+        if (!guildId || !userId) throw new Error('Guild ID and user ID is required to fetch data', __dirname);
+        let storage = await this.passthrough.db.money.findOne({
+            userId,
+            guildId
+        });
+        if (!storage) {
+            storage = new this.passthrough.db.money({
+                userId,
+                guildId
+            });
+        };
+        if (save) await storage.save();
+        return storage;
+    };
     async purgeMember(guildId, userId) {
         try {
             await this.passthrough.db.leveling.findOneAndDelete({
