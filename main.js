@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 process.on("unhandledRejection", (error) => {
     logger.error(error);
 });
@@ -69,6 +67,11 @@ global.logger = winston.createLogger({
     ),
 });
 
+require("dotenv").config();
+const { Shard } = require('discord-cross-hosting');
+const Cluster = require('discord-hybrid-sharding');
+const kiri = require("./handler/ClientBuilder.js");
+
 if (config.sentryDSNURL && process.env.NO_SENTRY !== "true") {
     const sentry = require("@sentry/node");
     sentry.init({
@@ -85,9 +88,8 @@ sync.events.on("any", (file) => logger.info(`${file} was changed`));
 global.sync = sync;
 
 const mongo = require("./util/mongo");
-const kiri = require("./handler/ClientBuilder.js");
 const schedule = require("node-schedule");
-const { AutoPoster } = require("topgg-autoposter");
+// const { AutoPoster } = require("topgg-autoposter");
 const { Intents, Sweepers } = require("discord.js");
 
 const intents = new Intents();
@@ -105,6 +107,8 @@ intents.add(
 );
 
 const client = new kiri({
+    shards: Cluster.data.SHARD_LIST,
+    shardCount: Cluster.data.TOTAL_SHARDS,
     intents,
     allowedMentions: {
         parse: ["users", "roles"],
@@ -128,17 +132,20 @@ const client = new kiri({
 });
 client.on("warn", (warn) => logger.log("warn", warn));
 client.on("error", (err) => logger.log("error", err));
+client.cluster = new Cluster.Client(client);
+
+client.machine = new Shard(client.cluster);
 
 require("./handler/module.js")(client);
 require("./handler/Event.js")(client);
 
-if (config.topggkey && process.env.NO_TOPGG !== "true") {
-    const ap = AutoPoster(config.topggkey, client);
+// if (config.topggkey && process.env.NO_TOPGG !== "true") {
+//     const ap = AutoPoster(config.topggkey, client);
 
-    ap.on("posted", () => {
-        logger.info("Posted stats to Top.gg!");
-    });
-}
+//     ap.on("posted", () => {
+//         logger.info("Posted stats to Top.gg!");
+//     });
+// }
 
 (async () => {
     await mongo.init();
