@@ -29,42 +29,42 @@ module.exports = async client => {
             });
         })
     });
-    fs.readdir("./slashCommands/", (err, categories) => {
-        if (err) logger.log('error', err);
-        logger.log('info', `Found total ${categories.length} slash (/) categories.`);
-        categories.forEach(category => {
-            let moduleConf = require(`../slashCommands/${category}/module.json`);
-            if (!moduleConf) return;
-            moduleConf.path = `./slashCommands/${category}`;
-            moduleConf.cmds = [];
-            client.slashHelps.set(moduleConf.name, moduleConf);
-            fs.readdir(`./slashCommands/${category}`, (err, files) => {
-                logger.log('info', `Found total ${files.length - 1} slash (/) command(s) from ${category}.`);
-                if (err) logger.log('error', err);
-                files.forEach(file => {
-                    if (!file.endsWith(".js")) return;
-                    let prop = sync.require(`../slashCommands/${category}/${file}`);
-                    if (!prop.conf.adult && !prop.conf.context) client.allSlashCmds.push(prop.conf.data.name);
-                    if (!prop.conf.context) client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
-                    prop.subCommand = [];
-                    const command = prop.conf.data.toJSON();
-                    if (command.options && command.options.length) {
-                        const { options } = command;
-                        options.forEach(sub => {
-                            if (sub.type === 1) {
-                                client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name}`, desc: sub.description });
-                                prop.subCommand.push(`${prop.conf.data.name} ${sub.name}`);
-                            } else if (sub.type === 2) {
-                                sub.options.forEach(op => {
-                                    client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name} ${op.name}`, desc: op.description });
-                                    prop.subCommand.push(`${prop.conf.data.name} ${sub.name} ${op.name}`);
-                                })
-                            }
-                        })
-                    };
-                    client.slash.set(prop.conf.data.name, prop);
-                });
-            });
-        });
-    });
+    // fs.readdir("./slashCommands/", (err, categories) => {
+    //     if (err) logger.log('error', err);
+    //     logger.log('info', `Found total ${categories.length} slash (/) categories.`);
+    //     categories.forEach(category => {
+    //         let moduleConf = require(`../slashCommands/${category}/module.json`);
+    //         if (!moduleConf) return;
+    //         moduleConf.path = `./slashCommands/${category}`;
+    //         moduleConf.cmds = [];
+    //         client.slashHelps.set(moduleConf.name, moduleConf);
+    //         fs.readdir(`./slashCommands/${category}`, (err, files) => {
+    //             logger.log('info', `Found total ${files.length - 1} slash (/) command(s) from ${category}.`);
+    //             if (err) logger.log('error', err);
+    //             files.forEach(file => {
+    //                 if (!file.endsWith(".js")) return;
+    //                 let prop = sync.require(`../slashCommands/${category}/${file}`);
+    //                 if (!prop.conf.adult && !prop.conf.context) client.allSlashCmds.push(prop.conf.data.name);
+    //                 if (!prop.conf.context) client.slashHelps.get(moduleConf.name).cmds.push({ name: prop.conf.data.name, desc: prop.conf.data.description });
+    //                 prop.subCommand = [];
+    //                 const command = prop.conf.data.toJSON();
+    //                 if (command.options && command.options.length) {
+    //                     const { options } = command;
+    //                     options.forEach(sub => {
+    //                         if (sub.type === 1) {
+    //                             client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name}`, desc: sub.description });
+    //                             prop.subCommand.push(`${prop.conf.data.name} ${sub.name}`);
+    //                         } else if (sub.type === 2) {
+    //                             sub.options.forEach(op => {
+    //                                 client.slashHelps.get(moduleConf.name).cmds.push({ name: `${prop.conf.data.name} ${sub.name} ${op.name}`, desc: op.description });
+    //                                 prop.subCommand.push(`${prop.conf.data.name} ${sub.name} ${op.name}`);
+    //                             })
+    //                         }
+    //                     })
+    //                 };
+    //                 client.slash.set(prop.conf.data.name, prop);
+    //             });
+    //         });
+    //     });
+    // });
 };
