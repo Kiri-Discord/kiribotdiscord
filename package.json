@@ -16,7 +16,7 @@
     "license": "MIT",
     "dependencies": {
         "@discordjs/builders": "^0.15.0",
-        "@discordjs/rest": "^0.4.0-dev.1645877008.a8321d8",
+        "@discordjs/rest": "^1.1.0",
         "@sentry/node": "^7.2.0",
         "@sentry/tracing": "^6.18.1",
         "@vitalets/google-translate-api": "^8.0.0",
