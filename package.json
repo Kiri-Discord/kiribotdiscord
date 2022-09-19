@@ -30,7 +30,7 @@
         "color-parse": "^1.4.2",
         "colorthief": "^2.3.2",
         "common-tags": "^1.8.0",
-        "discord-api-types": "^0.34.0",
+        "discord-api-types": "^0.37.10",
         "discord.js": "^13.6.0",
         "dotenv": "^16.0.0",
         "duck-duck-scrape": "^2.1.5",
