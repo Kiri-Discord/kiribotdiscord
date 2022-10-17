@@ -18,7 +18,7 @@
         "@discordjs/builders": "^0.15.0",
         "@discordjs/rest": "^0.4.0-dev.1645877008.a8321d8",
         "@sentry/node": "^7.2.0",
-        "@sentry/tracing": "^6.18.1",
+        "@sentry/tracing": "^7.15.0",
         "@vitalets/google-translate-api": "^8.0.0",
         "aki-api": "^6.0.8",
         "array-move": "^3.0.1",
